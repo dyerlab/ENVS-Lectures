@@ -1,8 +1,8 @@
 rm( list=ls() )
 library(tidyverse)
 
-clean <- TRUE
-if( clean ) {
+
+if( 1 ) {
   # clean out all html files
   system("rm -rf docs/*")
   system("find lectures -iname '*.html' -delete")
@@ -11,9 +11,12 @@ if( clean ) {
   system("find lectures -iname '*2.css' -delete")
   system("find lectures -iname '*2.js' -delete")
   system("find lectures -iname '*2.map' -delete")
+  system("find lectures -iname '*2.svg' -delete")
+  system("find lectures -iname '*2.html' -delete")
   system("find lectures -iname '*3.css' -delete")
   system("find lectures -iname '*3.js' -delete")
   system("find lectures -iname '*3.map' -delete")
+  
 }
 
 

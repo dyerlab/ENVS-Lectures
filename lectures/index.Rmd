@@ -13,11 +13,7 @@ library(purrr)
 library(stringr)
 ```
 
-
-
-
 Below are all the lecture topics that I've developed for various classes taught at the [Center for Environmental Studies](https://ces.vcu.edu).  For more information on these lectures, feel free to contact me directly at [rjdyer@vcu.edu](mailto://rjdyer@vcu.edu).
-
 
 
 ```{r echo=FALSE}
@@ -38,6 +34,9 @@ titles <- unlist( map( str_replace( str_replace_all(files,"_", " "), "./", "" ),
 df <- data.frame( Topic=titles,
                   Connections =  paste( slides, homework, sep=" " )
                  )
+
+# fix a few special cases
+df$Topic[ which( df$Topic == "Ggplot") ] <- "GGPlot"
 
 df %>%
   knitr::kable(format="html", 

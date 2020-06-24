@@ -4,7 +4,7 @@ subtitle: "The Subtitle"
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: [envs543-styles.css, middlebury, middlebury-fonts]
+    css: ["envs543-styles.css", middlebury, middlebury-fonts]
     seal: false
     nature:
       titleSlideClass: ["center","middle"]
@@ -41,7 +41,10 @@ class: sectionTitle
 # Reproducible Research
 
 
+---
+class: middle center
 
+<strong>Reproducible Reseach</strong> is about reproducing the most *basic tenets* you were taught in your first physical science laboratory within your data analysis ecosystem.
 
 ---
 
@@ -50,6 +53,21 @@ class: sectionTitle
 # Markdown
 
 
+
+
+---
+class: middle center
+
+# What is Markdown
+
+<iframe src="https://player.vimeo.com/video/178485416?color=428bca" width="640" height="400" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+<p><a href="https://vimeo.com/178485416">What is R Markdown?</a> from <a href="https://vimeo.com/rstudioinc">RStudio, Inc.</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+
+---
+
+class: sectionTitle
+
+# Notebooks
 
 
 

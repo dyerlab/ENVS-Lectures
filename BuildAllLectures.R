@@ -22,9 +22,13 @@ for( folder in list.dirs("lectures",full.names = TRUE,recursive = FALSE) ) {
   print( paste("Building",folder) )
   blogdown::build_dir( folder )
 }
-rmarkdown::render("lectures/index.Rmd",)
+rmarkdown::render("lectures/index.Rmd")
 
 # Move over the contents of the lecture 
 system("cp -R lectures/ docs/")
 system("find docs -iname '*.Rmd' -delete" )
 system("find docs -name 'data' -type d -exec rm -rv {} + ")
+
+
+# clean up the lecture folder
+system("find lectures -iname '*.html' -delete")

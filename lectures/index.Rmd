@@ -27,7 +27,7 @@ slides <- paste("<a href='",
                 "' class='w3-button w3-round-large w3-blue'>Slides</a>", sep="")
 
 homework <- paste("<a href='", 
-                  paste(files,"homework.html",sep="/"), 
+                  paste(files,"homework.nb.html",sep="/"), 
                   "' class='w3-button w3-round-large w3-indigo'>Homework</a>", sep="")
 
 titles <- unlist( map( str_replace( str_replace_all(files,"_", " "), "./", "" ),

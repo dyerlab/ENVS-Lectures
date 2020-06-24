@@ -4,7 +4,7 @@ subtitle: "The Subtitle"
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: ["../envs543-styles.css", middlebury, middlebury-fonts]
+    css: ["envs543-styles.css", middlebury, middlebury-fonts]
     seal: false
     nature:
       titleSlideClass: ["center","middle"]

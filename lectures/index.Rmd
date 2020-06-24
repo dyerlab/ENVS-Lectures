@@ -1,0 +1,53 @@
+---
+title: "Lectures"
+author: "R.J. Dyer"
+date: ""
+output:
+  html_document:
+    css: "https://www.w3schools.com/w3css/4/w3.css"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(purrr)
+library(stringr)
+```
+
+
+Below are all the lecture topics that I've developed for various classes taught at the [Center for Environmental Studies](https://ces.vcu.edu).  For more information on these lectures, feel free to contact me directly at [rjdyer@vcu.edu](mailto://rjdyer@vcu.edu).
+
+
+
+```{r echo=FALSE}
+
+files <- list.dirs(recursive = FALSE)
+
+slides <- paste("<a href='", 
+                paste(files,"slides.html",sep="/"), 
+                "' class='w3-button w3-round-large w3-blue'>Slides</a>", sep="")
+
+homework <- paste("<a href='", 
+                  paste(files,"homework.html",sep="/"), 
+                  "' class='w3-button w3-round-large w3-indigo'>Homework</a>", sep="")
+
+titles <- unlist( map( str_replace( str_replace_all(files,"_", " "), "./", "" ),
+                       gtools::capwords ) )
+
+df <- data.frame( Topic=titles,
+                  Connections =  paste( slides, homework, sep=" " )
+                 )
+
+df %>%
+  knitr::kable(format="html", 
+               escape=FALSE, 
+               caption = "HTML lecture slides and homework for selected topics.") %>%
+  kableExtra::kable_styling( bootstrap_options = c("striped", 
+                                                   "hover", 
+                                                   "condensed", 
+                                                   "responsive"),
+                             full_width = FALSE,
+                             position = "left",
+                             fixed_thead = T)
+
+```
+

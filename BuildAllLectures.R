@@ -2,7 +2,7 @@ rm( list=ls() )
 library(tidyverse)
 
 
-if( 1 ) {
+if( 0 ) {
   # clean out all html files
   system("rm -rf docs/*")
   system("find lectures -iname '*.html' -delete")
@@ -16,7 +16,7 @@ if( 1 ) {
   system("find lectures -iname '*3.css' -delete")
   system("find lectures -iname '*3.js' -delete")
   system("find lectures -iname '*3.map' -delete")
-  
+  system("find lectures -name .DS_Store -delete")
 }
 
 

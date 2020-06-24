@@ -1,0 +1,28 @@
+body {
+  background-image: url("environment/images/contour.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: right center;
+}
+
+h1 {
+  color: rgb(251,116,28);
+}
+
+a {
+  color: rgb(87,114,127);
+  font-weight: bold;
+}
+
+a.hover {
+  color: rgb(251,116,28);
+}
+
+.title h1 {
+  font-size: 28pt;
+}
+
+caption {
+  font-size: 10pt;
+  color: grey;
+}

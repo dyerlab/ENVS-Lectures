@@ -22,7 +22,7 @@ for( folder in list.dirs("lectures",full.names = TRUE,recursive = FALSE) ) {
   print( paste("Building",folder) )
   blogdown::build_dir( folder )
 }
-rmarkdown::render("lectures/index.Rmd")
+rmarkdown::render("lectures/index.Rmd",)
 
 # Move over the contents of the lecture 
 system("cp -R lectures/ docs/")

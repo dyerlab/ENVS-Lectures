@@ -1,10 +1,10 @@
 ---
-title: "Lectures"
-author: "R.J. Dyer"
-date: ""
+title: "**Lectures**"
+author: "RJ Dyer"
+date: "Center for Environmental Studies"
 output:
   html_document:
-    css: "https://www.w3schools.com/w3css/4/w3.css"
+    css: ["https://www.w3schools.com/w3css/4/w3.css", "index_style.css"]
 ---
 
 ```{r setup, include=FALSE}
@@ -12,6 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(purrr)
 library(stringr)
 ```
+
+
 
 
 Below are all the lecture topics that I've developed for various classes taught at the [Center for Environmental Studies](https://ces.vcu.edu).  For more information on these lectures, feel free to contact me directly at [rjdyer@vcu.edu](mailto://rjdyer@vcu.edu).
@@ -51,3 +53,6 @@ df %>%
 
 ```
 
+<hr>
+
+This file last updated: `r date()`.

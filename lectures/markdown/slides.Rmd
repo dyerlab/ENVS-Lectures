@@ -52,6 +52,13 @@ class: sectionTitle
 
 # Markdown
 
+This is the coolesst
+
+---
+
+```{r}
+plot( mtcars$mpg ~ mtcars$disp)
+```
 
 
 

@@ -8,6 +8,12 @@ if( clean ) {
   system("find lectures -iname '*.html' -delete")
   system("find lectures -name 'libs' -type d -exec rm -rv {} + ")
   system("find lectures -name 'slides_files' -type d -exec rm -rv {} + ")
+  system("find lectures -iname '*2.css' -delete")
+  system("find lectures -iname '*2.js' -delete")
+  system("find lectures -iname '*2.map' -delete")
+  system("find lectures -iname '*3.css' -delete")
+  system("find lectures -iname '*3.js' -delete")
+  system("find lectures -iname '*3.map' -delete")
 }
 
 

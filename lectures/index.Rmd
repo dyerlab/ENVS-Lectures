@@ -20,10 +20,14 @@ Below are all the lecture topics that I've developed for various classes taught 
 
 files <- list.dirs(recursive = FALSE)
 
+video <- "<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ' class='w3-button w3-round-large w3-amber'>Video</a>"
+
 slides <- paste("<a href='", 
                 paste(files,"slides.html",sep="/"), 
-                "' class='w3-button w3-round-large w3-blue'>Slides</a>", sep="")
-
+                "' class='w3-button w3-round-large w3-orange'>Slides</a>", sep="")
+narriative <- paste("<a href='",
+                    paste(files,"narriative.nb.html", sep="/"),
+                    "' class='w3-button w3-round-large w3-blue'>Narriative</a>", sep="")
 homework <- paste("<a href='", 
                   paste(files,"homework.nb.html",sep="/"), 
                   "' class='w3-button w3-round-large w3-indigo'>Homework</a>", sep="")
@@ -32,7 +36,7 @@ titles <- unlist( map( str_replace( str_replace_all(files,"_", " "), "./", "" ),
                        gtools::capwords ) )
 
 df <- data.frame( Topic=titles,
-                  Connections =  paste( slides, homework, sep=" " )
+                  Connections =  paste( video,slides, narriative, homework, sep=" " )
                  )
 
 # fix a few special cases

@@ -1,0 +1,309 @@
+---
+title: "Data Types"
+output: 
+  html_notebook:
+      css: "envs543-styles.css"
+---
+
+```{r setup, include=FALSE}
+  library(emo)
+```
+
+Because `R` is a full language, rather than a `point-and-click` interface, it is important that we understand the general grammar and how to use it.
+
+
+# Assignments & Interactivity
+
+This document is an [R Notebook](https://dyerlab.github.io/ENVS-Lectures/notebooks/slides.html).  It is written in [R Markdown](https://dyerlab.github.io/ENVS-Lectures/markdown/slides.html) which allows you to mix in regular text (like this) with `R` code, analyses, and output as a single document.  This is a particularly helpful approach to working with data as you keep your code, raw data, analyses, and output all within a single area—thus making your research more [Reproducible](https://dyerlab.github.io/ENVS-Lectures/reproducible_research/slides.html).  If you would like to download a copy of these data, select `Download Rmd` from the `Code` menu at top right of this page and it this web document will produce the raw markdown you can view in [RStudio](https://rstudio.com).
+
+In this section, I take a brief detour to cover some of the most basic aspects of interacting with `R`.  I'll assume that you are interacting with it in the *Console*.  First, the `R` language specification makes a distinction between the assignment of a value to a variable and the query as to the equality of two objects.  In doing so, we do not use a single equals sign (e.g., `=`) for either of these operations.  
+
+## Variable Assignment
+
+Assignment requires two things (1) you must have a value or object and (2) you must have a variable or object to assign it to.  Instead of using a single equals character for this, `R` uses two characters in a sequence (no spaces between them) to denote *assignment* of a value (or set of values) to an object.  For example, the code below assigns the statement *not a loser* (which is a character data type) to a variable named `dr_dyer` (phew, that was close!).
+
+```{r}
+dr_dyer <- "not a loser"
+```
+
+Notice how the assignment operator is actually two separate characters, a *less than* sign and a *dash* right next together.  If you read it as a statement, it says, 
+
+> Dr Dyer is assigned the value of 'not a loser'
+
+This approach has *directionality* to it, as it looks a bit like an arrow.  For completeness, the reverse pointing arrow is also permissible.
+
+```{r}
+"still not a loser" -> dr_dyer
+```
+
+Notice here that we are taking the value and assigning it to the variable.  
+
+<div class="box-red">The only rule here is that the arrow must **always** point towards the entity receiving the data.  </div>
+
+For conventions, I'll stick mostly with the former throughout all the presentations for simplicity but your own coding style and your desire to craft more readable (and hense less-sucky) code will determine when each is more appropriate.
+
+## Equality
+
+Determing if two things are equal is another case where one could use the old `=` character.  R has descided against using it like this for clarity, readability, and general "make-sure-you-do-not-mistype-what-you-want-ability".  Instead of a single equals sign, we have two of them, right next to eachother.
+
+
+```{r}
+2 == 2
+dr_dyer == "a loser"
+```
+
+In this case, it is true, all values of `2` are identical to `2` and there is no indication that `dr_dyer` is *a loser*.  Notice the responses here are `TRUE` and `FALSE` (both actual logical variables as described below). Also notice how the variables assigned in the chuncks of code above (e.g., the `dr_dyer` part) are available throughout the document!  One of the really cool consequences of using markdown (imho).
+
+## Case Sensitivity
+
+This is totally going to bite you in the back side as you learn R, because generally humans are sloppy typists.  The `R` language is case-sensitive!  This means that the variables are different if they are not typed **exactly** the same.
+
+```{r}
+x <- 21
+X <- 42
+x == X
+```
+## Variable Naming
+
+While we are on the subject of typecase, it is important to say a few things about how we pick our variables.  If you want your "future self" to absolutely loath your "present self" then use variables like:
+
+```{r}
+x <- 21
+x2 <- 42
+x43 <- "bob"
+```
+
+which tells the person reading the code *absolutely nothing* about what the variable is representing.  
+
+Conversely, if you want to *make friends and influence people* through your code, try naming variables in a way that represents what they are being used for so that when you come back to this code later, it makes sense.
+
+```{r}
+the_meaning_of_life <- 42
+dr_dyers_loser_status <- FALSE
+depthOfTheRiver <- 32.345
+number.of.tacos.eaten <- 4
+```
+
+Here are the base rules for making a variable name:  
+
+  - It *must* start with a letter.  
+  - It cannot have any spaces in it.  
+  - It can have numbers or a few symbols within it (only if they actually do some good at making it more readable).
+  - They are *all* case sensitive (e.g., `Bob`, `BOb`, `BoB`, `boB`, `bOB`, and `Robert` are all completely different variable names).
+
+
+All variables in `R` have an intrinsic knowledge of what *class* of variable they belong to (e.g., numeric, logical, etc.).  You can ask a variable about it's class using the function `class()`.
+
+```{r}
+class( the_meaning_of_life )
+class( dr_dyers_loser_status )
+```
+
+These will become more important later on when we look at coercion.
+
+
+
+# Numerical Data
+
+> Numerical data contains all numerical represenations.
+
+By far, the most common kind of data we use in our analyses is numerical data. This may represent measured things like `height`, `snout-vent length` (whatever that is), `depth`, `age`, etc.  In data analysis, we commonly take (or obtain) measurements from several items and then try to characterize them using summaries and visualization.
+
+In `R`, the numerical data type can be defined as:
+
+```{r}
+X <- 42
+```
+
+Notice how the numerical value of `42` is assigned to the variable named `X`.  To have `R` print out the value of a particular variable, you can type its name in the console and it will give it to you.
+
+```{r}
+X
+```
+
+
+## Operators
+
+Numeric types have a ton of normal operators that can be used.  Some examples include: 
+
+The usual *arithmatic operators*:
+
+```{r}
+x <- 10
+y <- 23
+
+x + y
+x - y
+x * y
+x / y
+```
+
+You have the *exponentials*:
+
+```{r}
+## x raised to the y
+x^y
+
+## the inverse of an exponent is a root, here is the 23rd root of 10
+x^(1/y)
+```
+
+The *logrithmics*:
+
+```{r}
+## the natural log
+log(x)
+
+## Base 10 log
+log(x,base=10)
+```
+
+And the *modulus operator*:
+
+```{r}
+y %% x
+```
+
+If you didn't know what this one is, don't worry.  The modulus is just the *remainder after division* like you did in grade school.  The above code means that *23 divided by 10 has a remainder of 3*.  I include it here just to highlight the fact that many of the operators that we will be working with in `R` are created by more than just a single symbol residing at the top row of your computer keyboard.  There are just too few symbos on the normal keyboard to represent the breath of operators.  The authors of `R` have decided that using combinations of symbols to handle these and you will get used to them in not time at all.
+
+
+## Introspection & Coercion
+
+The `class()` of a numeric type is (wait for it)... `numeric` (those `R` programmers are sure clever).
+
+```{r}
+class( 42 )
+```
+
+<div class="box-yellow">In this case `class` is the name of the function and there are one or more things we pass to that function.  These **must** be enclosed in the parenthesis associated with `class`.  The parantheses **must** be *right next to* the name of the function. If you put a space betwen the word `class` and the parentheses, it may not work the way you would like it to.  You've been warned.
+
+The stuff inside the parenthesis are called *arguments* and are the data that we pass to the function itself. In this case we pass a value or varible to the `class` function and it does its magic and tells us what kind of data type it is.  Many functions have several arguements that can be passed to them, some optional, some not.  We will get more into that on the lecture covering [Functions](https://dyerlab.github.io/ENVS-Lectures/functions/slides.html).</div>
+
+It is also possible to inquire if a particular variable is of a certain class.  This is done by using the `is.*` set of functions.
+
+```{r}
+is.numeric( 42 )
+is.numeric( dr_dyer )
+```
+
+Sometimes we may need to turn one kind of class into another kind.   Consider the following:
+
+```{r}
+x <- "42"
+is.numeric( x )
+class(x)
+```
+
+It is a `character` data type because it is enclosed within a set of quotes.  However, we can *coerce* it into a numeric type by:
+
+```{r}
+y <- as.numeric( x )
+is.numeric( y )
+y
+```
+
+## Vectors of Numeric(s)
+
+It is rather rare that we work with a single number.   The main syntax in `R` used to make a colletion of objects is to enclose them into the `c()` function (*c* for *c*ombine and since we use it so often, making it as short as possible—anything we can do to type less is good for reducing the number of errors in our code).
+
+Here is how we can get a vector of `numeric` values.
+
+```{r}
+x <- c(1,2,3,4,5,6,7)
+x
+```
+
+The variable `x` contains a number of numeric types and is a single object.
+
+```{r}
+length( x )
+```
+
+
+
+### Sequences
+
+It would really suck if we had to type in all the elements into every array we want.  Say we want a vector of 100 numbers, it would be really likely if we had to type all the numbers `1, 2, 3, ... , 99, 100` (and quite boring `r emo::ji("zzz")`).  The main way we will get data into `R` is by loading it from files or databases, which we will get to later, but for now let's look at how we can specifically create sequences of values with a little bit of code.
+
+The first is the colon operator.  The syntax is `X:Y` which will produce the values from `X` to `Y` (inclusive on both ends).  In `R` we use it like this:
+
+```{r}
+y <- 3:8 
+y
+```
+
+This is just a shortcut for the more general `seq()` function (*seq* is short for *sequence*).  This function takes a value to start at and one to end with (inclusive just like above).
+
+```{r}
+y <- seq(3,8)
+y
+```
+
+These are the *required* arguments.  By default, the `seq()` function counts by $1.0$ (either up or down, depending upon the magnitude of the first and second argument).
+
+```{r}
+seq(8,3)
+```
+
+If we want it to count by some other interval, we can tell it by passing the *optional argument* `by=`.
+
+```{r}
+y <- seq(3,8,by=0.25)
+y
+```
+
+
+
+### Indexing
+
+**But**, it has `r length(x)` entities in it.  To get to these individual entities within the `x` we use a square bracket notation to indicate that we want to get an item *within* the variable `x` and must indicate which element (or elements) we are interested in getting.  The numeric indices within the brackets are 1-based (e.g., the first element is 1, the second is 2, etc.).  So the code
+
+```{r}
+x[4]
+```
+
+returns the 4$^{th}$ element in the vector.  This notation can be used to *get* as well as *set* values within the vector.
+
+```{r}
+x[2] <- 42
+x
+```
+
+### Slices
+
+In addition to getting a single entity from a vector, we can also grab a sequence of values.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Character Data
+
+> Character data can contain any typeable set of letters, numbers, and/or symbols (including `r ji("poop")`!)
+
+
+# Logical Data
+
+> Logical data represent TRUE/FALSE conditions.
+
+
+# Factor Data
+
+> Factor data represent categorical designations.
+
+Factors are generally similar to `character` data types but are used to help us coordinate groupings of things.  For example, if you were sampling spotted salamanders (*Ambystoma maculata*) from specific ponds at the VCU Rice Rivers Center, you would want to have some kind of data that allows you to name the sampling locations.  
+
+# Homework Questions
+
+Here are some homework question for you to jump into:
+
+1. What happens if you use the `seq()` function and specify a `by=` that goes in the wrong direction (e.g., `seq(3,8,by=-1)`)?

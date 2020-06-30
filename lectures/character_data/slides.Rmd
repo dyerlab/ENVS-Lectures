@@ -19,7 +19,7 @@ background-position: right
 background-size: auto
 
 
-# Correlation & Regression Models
+# Character Data
 
 
 
@@ -39,15 +39,7 @@ background-size: auto
 
 class: sectionTitle
 
-# Parametric Correlation
-
-
-
----
-
-class: sectionTitle
-
-# Non-Parametric Correlation
+# String Operations
 
 
 
@@ -56,17 +48,7 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Parametric Regression
-
-
-
-
----
-
-class: sectionTitle
-
-# Non-Parametric Regression
-
+# Alignments
 
 
 
@@ -74,9 +56,15 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Model Fitting
+# Mining Twitter
 
 
+
+---
+
+class: sectionTitle
+
+# Factors & forcats
 
 
 

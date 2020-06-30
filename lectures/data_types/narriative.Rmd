@@ -64,6 +64,7 @@ X <- 42
 x == X
 ```
 ## Variable Naming
+ 
 
 While we are on the subject of typecase, it is important to say a few things about how we pick our variables.  If you want your "future self" to absolutely loath your "present self" then use variables like:
 
@@ -256,17 +257,17 @@ y
 
 ### Indexing
 
-**But**, it has `r length(x)` entities in it.  To get to these individual entities within the `x` we use a square bracket notation to indicate that we want to get an item *within* the variable `x` and must indicate which element (or elements) we are interested in getting.  The numeric indices within the brackets are 1-based (e.g., the first element is 1, the second is 2, etc.).  So the code
+Even though these objects are solitary, they have several elements.  For example, the object `y` above has `r length(y)` entities in it.  To get to these individual entities within the `y` we use a square bracket notation to indicate that we want to get an item *within* the variable and must indicate which element (or elements) we are interested in getting.  The numeric indices within the brackets are 1-based (e.g., the first element is 1, the second is 2, etc.).  So the code
 
 ```{r}
-x[4]
+y[4]
 ```
 
 returns the 4$^{th}$ element in the vector.  This notation can be used to *get* as well as *set* values within the vector.
 
 ```{r}
-x[2] <- 42
-x
+y[2] <- 42
+y
 ```
 
 ### Slices

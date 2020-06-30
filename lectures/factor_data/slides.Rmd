@@ -19,7 +19,7 @@ background-position: right
 background-size: auto
 
 
-# Character Data & Factors in R
+# Factors in R
 
 
 

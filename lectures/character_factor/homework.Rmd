@@ -1,5 +1,0 @@
----
-title: "Character & Factor Data"
-output: html_notebook
----
-

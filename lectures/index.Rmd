@@ -24,9 +24,10 @@ files <- list.dirs(recursive = FALSE)
 video <- "<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ' class='w3-button w3-round-large w3-amber'>Video</a>"
 
 
-btn <- function(path, color, name) {
+btn <- function(path, color, name, as.nb=FALSE) {
+  nb <- ifelse( as.nb, ".nb", "")
   code <- paste( "<a href='", 
-                 path, "/",name,
+                 path, "/",name, nb,
                  ".html' class='w3-button w3-round-large w3-", 
                  color, "'>", Hmisc::capitalize(name),"</a>",
                  sep="")
@@ -38,7 +39,7 @@ video <- function( path, color, name ) {
   btn <- paste("<a href='",
                val,
                "' class='w3-button w3-round-large w3-", 
-                 color, "'>",name,"</a>", sep="")
+                 color, "'>",Hmisc::capitalize(name),"</a>", sep="")
   return(btn)
 }
 
@@ -59,7 +60,7 @@ for( path in files ) {
                     "")
   
   narriative <- ifelse( file.exists(  paste(path,"narriative.Rmd", sep="/") ),
-                    btn(path,"blue","narriative"),
+                    btn(path,"blue","narriative",as.nb = TRUE),
                     "")
 
 ##  tutorial <- ifelse( file.exists(  paste(path,"tutorial/tutorial.Rmd", sep="/") ),
@@ -68,7 +69,7 @@ for( path in files ) {
 
   
   homework <- ifelse( file.exists(  paste(path,"homework.Rmd", sep="/") ),
-                    btn(path,"indigo","homework"),
+                    btn(path,"indigo","homework", as.nb=TRUE),
                     "")
 
   buttons <- c(buttons, 

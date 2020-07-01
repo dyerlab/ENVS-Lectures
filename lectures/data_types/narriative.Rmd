@@ -44,7 +44,7 @@ For conventions, I'll stick mostly with the former throughout all the presentati
 
 ## Equality
 
-Determing if two things are equal is another case where one could use the old `=` character.  R has descided against using it like this for clarity, readability, and general "make-sure-you-do-not-mistype-what-you-want-ability".  Instead of a single equals sign, we have two of them, right next to eachother.
+Determining if two things are equal is another case where one could use the old `=` character.  R has decided against using it like this for clarity, readability, and general "make-sure-you-do-not-mistype-what-you-want-ability".  Instead of a single equals sign, we have two of them, right next to each other.
 
 
 ```{r}

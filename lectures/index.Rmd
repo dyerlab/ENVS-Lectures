@@ -11,6 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 library(purrr)
 library(stringr)
+library(tidyverse)
 ```
 
 Below are all the lecture topics that I've developed for various classes taught at the [Center for Environmental Studies](https://ces.vcu.edu).  For more information on these lectures, feel free to contact me directly at [rjdyer@vcu.edu](mailto://rjdyer@vcu.edu).
@@ -22,25 +23,66 @@ files <- list.dirs(recursive = FALSE)
 
 video <- "<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ' class='w3-button w3-round-large w3-amber'>Video</a>"
 
-slides <- paste("<a href='", 
-                paste(files,"slides.html",sep="/"), 
-                "' class='w3-button w3-round-large w3-orange'>Slides</a>", sep="")
-narriative <- paste("<a href='",
-                    paste(files,"narriative.nb.html", sep="/"),
-                    "' class='w3-button w3-round-large w3-blue'>Narriative</a>", sep="")
-homework <- paste("<a href='", 
-                  paste(files,"homework.nb.html",sep="/"), 
-                  "' class='w3-button w3-round-large w3-indigo'>Homework</a>", sep="")
+
+btn <- function(path, color, name) {
+  code <- paste( "<a href='", 
+                 path, "/",name,
+                 ".html' class='w3-button w3-round-large w3-", 
+                 color, "'>", Hmisc::capitalize(name),"</a>",
+                 sep="")
+  return( code )
+}
+
+video <- function( path, color, name ) {
+  val <- read_file(  paste(path,"video.txt",sep="/") )
+  btn <- paste("<a href='",
+               val,
+               "' class='w3-button w3-round-large w3-", 
+                 color, "'>",name,"</a>", sep="")
+  return(btn)
+}
+
 
 titles <- unlist( map( str_replace( str_replace_all(files,"_", " "), "./", "" ),
                        gtools::capwords ) )
 
+
+
+buttons <- numeric(0)
+for( path in files ) {
+
+  vid <- ifelse( file.exists(  paste(path,"video.txt", sep="/") ),
+                   video( path, "amber", "video"), "")
+
+  slides <- ifelse( file.exists(  paste(path,"slides.Rmd", sep="/") ),
+                    btn(path,"orange","slides"),
+                    "")
+  
+  narriative <- ifelse( file.exists(  paste(path,"narriative.Rmd", sep="/") ),
+                    btn(path,"blue","narriative"),
+                    "")
+
+##  tutorial <- ifelse( file.exists(  paste(path,"tutorial/tutorial.Rmd", sep="/") ),
+#3                    btn(path,"blue","tutorial"),
+##                    "")
+
+  
+  homework <- ifelse( file.exists(  paste(path,"homework.Rmd", sep="/") ),
+                    btn(path,"indigo","homework"),
+                    "")
+
+  buttons <- c(buttons, 
+               paste(vid,slides,narriative, homework))
+
+}
+
 df <- data.frame( Topic=titles,
-                  Connections =  paste( video,slides, narriative, homework, sep=" " )
+                  Connections = buttons
                  )
 
+
 # fix a few special cases
-df$Topic[ which( df$Topic == "Ggplot") ] <- "GGPlot"
+df$Topic[ which( df$Topic == "Ggplot") ] <- "GGPlot2"
 
 df %>%
   knitr::kable(format="html", 

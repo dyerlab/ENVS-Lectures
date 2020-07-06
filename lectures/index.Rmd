@@ -17,12 +17,11 @@ library(tidyverse)
 Below are all the lecture topics that I've developed for various classes taught at the [Center for Environmental Studies](https://ces.vcu.edu).  For more information on these lectures, feel free to contact me directly at [rjdyer@vcu.edu](mailto://rjdyer@vcu.edu).
 
 
-```{r echo=FALSE}
 
+```{r echo=FALSE, eval=TRUE}
 files <- list.dirs(recursive = FALSE)
 
 video <- "<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ' class='w3-button w3-round-large w3-amber'>Video</a>"
-
 
 btn <- function(path, color, name, as.nb=FALSE) {
   nb <- ifelse( as.nb, ".nb", "")

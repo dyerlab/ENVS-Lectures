@@ -1,5 +1,5 @@
 ---
-title: "**ENVS Quantiative Lecture Content**"
+title: "**Quantiative Lecture Content**"
 author: "RJ Dyer"
 date: "Center for Environmental Studies"
 output:
@@ -7,11 +7,7 @@ output:
     css: ["https://www.w3schools.com/w3css/4/w3.css", "index_style.css"]
     toc: true
     theme: flatly
-    toc_float:
-      collapsed: false
-      smooth_scroll: true
-      toc_side: right
-
+    toc_float: true
 ---
 
 

@@ -19,7 +19,7 @@ background-position: right
 background-size: auto
 
 
-# Data Types in R
+# Numerical Data in R
 
 
 
@@ -32,205 +32,251 @@ background-size: auto
 
 <img src="images/logo1.svg" width="400px">
 
----
-
-# Variable Assignment
-
-In R, we work algebraically assigning values to variables.  A variable is simply a container within which we store information.
-
-```{r}
-x <- 21
-x
-```
-
-
-Yes those are .red[two different and connected symbols]  used to assigne the value of 21 to the varialbe `x1`.  
-
---
-
-In my mind, I see this as:
-
-> The variable `x` is assigned the value of 21.
-
---
-
-You can also go in the opposite direction
-
-```{r}
-42 -> y
-y
-```
-
-
-
-
-
-
 
 ---
-
-class: sectionTitle
 
 # Numerical Data  
 
+In `R`, numerical data is largely represented by a data type called `numeric`.   
+
+--
+- For most purposes, this is the only data type we will need (though `integer` types and specialized libraries exist).  
 
 
+
+--
+- Magnitude determined by your computer (my MacBook can handle `r format(.Machine$double.xmin)` - `r format(.Machine$double.xmax)`).  
+
+
+
+---
+
+# Operators
+
+In many ways, `R` can act just like an interactive calculator.  *Arithmetic operators* are just like normal.
+
+```{r eval=FALSE}
+x <- 10
+y <- 23
+x + y
+x - y
+x * y
+x / y
+```
+
+
+# Exponential Operators
+
+*Exponents* use the carat on the keyboard (on us-english keyboards it is above the #6 key). So the value of $2^16$ is 
+
+```{r}
+2^16
+```
+
+--
+
+Roots are found by inverting the exponent.  For example, the $\;^3\sqrt{27}$ (cube-root of 27) is
+
+```{r}
+27^(1/3)
+```
+
+---
+
+# Logrithms
+
+The logrithms are provided as the function `log()` which defaults to the natural log
+
+```{r}
+log( 10 )
+```
+
+--
+
+You can change the base by passing the function the optional argument (make sure you separate the value from the optional argument with a comma).
+
+```{r}
+log( 10, base=10 )
+```
+
+
+---
+
+# Additional Operators
+
+.center[ *Potential Operations >>> Symbols on Keyboard* ]
+
+--
+
+.red[ Live keyboard Demo ]
+
+
+---
+# Additional Operators
+
+.center[ *Potential Operations >>> Symbols on Keyboard* ]
+
+*Modulus Operator*
+
+```{r}
+23 %% 10 
+```
+
+
+---
+
+# Order of Operations
+
+The order of precedence for operations are just like you learned in math class. 
+
+```{r}
+x1 <- 23
+y1 <- 55
+x2 <- 56
+y2 <- 63
+distance <- sqrt(  (x1-x2)^2 + (y1-y2)^2 )
+distance
+```
+
+---
+
+# `?Syntax`
+
+Operator        |    Description
+----------------|-------------------------------------------
+:: :::	        | access variables in a namespace
+$ @	            | component / slot extraction
+[ [[	          | indexing
+^	              | exponentiation (right to left)
+- +	            |  unary minus and plus
+:	              |   sequence operator
+%any%	          | special operators (including %% and %/%)
+* /	            | multiply, divide
++ -	            | (binary) add, subtract
+< > <= >= == !=	| ordering and comparison
+!	              | negation
+& &&	          | and
+&vert; &vert;&vert;	      | or
+~	              | as in formulae
+-> ->>	        | rightwards assignment
+<- <<-	        | assignment (right to left)
+=	              | assignment (right to left)
+?	              | help (unary and binary)
+
+
+
+---
+class: sectionTitle
+
+# Introspection & Coercion
 
 
 ---
 
 # Introspection
 
-In `R`, each variable can be querried about it's `class` (what kind of data that particular variable holds).  The follow
+In `R`, each variable can be queried about it's `class` (what kind of data that particular variable holds).  
 
 ```{r}
 x <- 42
 class( x )
+```
+
+--
+
+You can also ask if it is a particular type using the `is.numeric()` function.
+
+```{r}
 is.numeric( x )
 ```
+
 
 ---
 
 # Coercion 
 
-We can also *one representation* of our data into a different class (there are limitations).  For example, if we just read in a text file and it has a represented as text (a [Character Data Type](CharacterData.html) in `R`) but we need to have it function as a `numeric` type, we can use the following convention
+We can also turn *one representation* of our data into a different different type, though there are limitations.  For example, if we just read in a text file and it has a represented as text (a [Character Data Type](../character_data/slides.html) in `R`) but we need to have it function as a `numeric` type, we can use the following approach
 
 ```{r}
 x <- "42"
 class( x )
+```
+
+--
+
+The create a new variable who (if possible) contains the numeric representation of the character string `"42"`.
+```{r}
 y <- as.numeric( x )
 class(y)
-y
-```
-
-
----
-
-# Vectors of Numbers
-
-We are most commonly confronted with more than one datum point and R has been designed to be able to handle most of its operations on either single values in a variable or for vectors of values.  This is very convenient and speeds up computations considerably.
-
-```{r}
-x <- c(1,2,3,5,6,7)
-x
-```
-
-
----
-
-# Sequences
-
-You can create sequences of values by hooking up the `minimum` and `maximum` value with a colon (in either direction), though they only increment by `1`.
-
-```{r}
-x <- 1:9
-x
-y <- 10:2
-y
 ```
 
 ---
 
-# Sequences (again)
+# Coercion Fail
 
-For more complicated sequences, we can use the `seq()` function (for *sequence*^[Yes, these R programmers have a great sense of humor]).
-
-```{r}
-seq( 18, 42, by=2 )
-```
-
-and with floating point numbers (mmmm pi...)
+When it fails, it returns a warning and a missing data value.
 
 ```{r}
-seq( pi,4*pi, by=pi/2)
-```
-
-
----
-
-# Indexing
-
-When we have a vector, we can get and set values within it by indicating which element as an integer *index* (*n.b.,* indices in `R` start with 1 for the first element unlike some other languages \*cough cough Python\*).
-
-```{r}
-x <- 1:10
-x[3]
-x[5] <- 42
-x
-```
-
-
----
-
-
-# Slicing
-
-We can grab more than one element from a vector by using slices (which is a fancy way of saying that we are using a vector of numbers as an index).
-
-```{r}
-x <- 1:10
-x
-x[8:5]
-```
-
----
-
-
-# Fancy Slicing
-
-Here I use the expression `x %% 2 == 0` which has two new operators in it: 
- - `%%`: The *modulus* operator which returns the remainder after division, and  
- - `==`: The equality operator
-
-```{r}
-even <- (x %% 2 == 0)
-x[even]
-```
-
-
----
-
-
-# Grabbing Random Items
-
-
-It is not uncommon to take random samples.  Consider the following vector with 5 elements.
-
-```{r}
-favorite_number <- sample( 1:10, size = 1 )
-favorite_number
-```
-
-
----
-
-# Random Number**s**
-
-When asking for more than one item, we need to specify if any one of them can be repeatedly sampled.
-
-```{r}
-sample( 1:10, size = 2, replace=FALSE )
+as.numeric( "Bob" )
 ```
 
 --
 
+<div class="box-red">It should be noted that error messages in R may not be "comprehensible" to the user (and maybe not even to the programmer).</div>
+
+
+---
+class: sectionTitle
+
+# Caveats
+
+---
+
+
+# Order of Operations
+
+There are times that the order of operations will really come back to .red[bite you].  Consider this example where I create a sequence of numbers using the sequence operator (`:`)
+
 ```{r}
-sample( 1:2, size=10, replace=TRUE )
+n <- 4
+1:n
 ```
 
 --
 
-We can pull a single random number from it using the `sample()` function:
+So if we wanted to make a sequence from 1 to $n-1$, we *could* type this:
 
-```{r}
-sample( x, size=1 )
+```{r eval=FALSE}
+1:n-1
 ```
 
+--
 
+```{r echo=FALSE}
+1:n-1
+```
 
 ---
 
-# Numberical Approximations
+To *fix* this, feel free to be *verbose* in your use of parentheses.  If you are intending to get $10^2$, $10^3$ $\ldots$ $10^6$ and type it as:
+
+```{r}
+10^2:6
+```
+
+--
+
+What you want is:
+
+```{r}
+10^(2:6)
+```
+
+
+<div class="box-yellow">Notice how the second (and intended) code is actually easier to read than the first.</div>
+---
+
+# Numerical Approximations
 
 Computers use binary switches to represent numbers.  For integers, it is great, but for floating point numbers it .red[sucks], big time.  
 
@@ -260,29 +306,6 @@ print(y, digits=20)
 
 
 
----
-
-class: sectionTitle
-
-# Character Data
-
-
-
-
----
-
-class: sectionTitle
-
-# Logical Data
-
-
-
-
----
-
-class: sectionTitle
-
-# Factors
 
 
 

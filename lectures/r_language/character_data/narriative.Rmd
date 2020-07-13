@@ -60,7 +60,7 @@ nchar(phrase)
 
 The binary `+` operator has not been defined for objects of class `character`, which is understandable once we consider all the different ways we may want to put the values contained in the variables together.  If you try it, `R` will complain.
 
-```{r}
+```{r, error=TRUE}
 name + sport
 ```
 

@@ -5,7 +5,7 @@ library(tidyverse)
 if( 1 ) {
   # clean out all html files
   system("rm -rf docs/*")
-  #system("find lectures -iname '*.html' -delete")
+  system("find lectures -iname '*.html' -delete")
   system("find lectures -name 'libs' -type d -exec rm -rv {} + ")
   system("find lectures -name 'slides_files' -type d -exec rm -rv {} + ")
   system("find lectures -iname '*2.css' -delete")

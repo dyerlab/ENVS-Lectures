@@ -11,7 +11,7 @@
 
 
 
-<title>Data Containers</title>
+<title>Data Frames</title>
 
 <script>/*! jQuery v1.11.3 | (c) 2005, 2015 jQuery Foundation, Inc. | jquery.org/license */
 !function(a,b){"object"==typeof module&&"object"==typeof module.exports?module.exports=a.document?b(a,!0):function(a){if(!a.document)throw new Error("jQuery requires a window with a document");return b(a)}:b(a)}("undefined"!=typeof window?window:this,function(a,b){var c=[],d=c.slice,e=c.concat,f=c.push,g=c.indexOf,h={},i=h.toString,j=h.hasOwnProperty,k={},l="1.11.3",m=function(a,b){return new m.fn.init(a,b)},n=/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,o=/^-ms-/,p=/-([\da-z])/gi,q=function(a,b){return b.toUpperCase()};m.fn=m.prototype={jquery:l,constructor:m,selector:"",length:0,toArray:function(){return d.call(this)},get:function(a){return null!=a?0>a?this[a+this.length]:this[a]:d.call(this)},pushStack:function(a){var b=m.merge(this.constructor(),a);return b.prevObject=this,b.context=this.context,b},each:function(a,b){return m.each(this,a,b)},map:function(a){return this.pushStack(m.map(this,function(b,c){return a.call(b,c,b)}))},slice:function(){return this.pushStack(d.apply(this,arguments))},first:function(){return this.eq(0)},last:function(){return this.eq(-1)},eq:function(a){var b=this.length,c=+a+(0>a?b:0);return this.pushStack(c>=0&&b>c?[this[c]]:[])},end:function(){return this.prevObject||this.constructor(null)},push:f,sort:c.sort,splice:c.splice},m.extend=m.fn.extend=function(){var a,b,c,d,e,f,g=arguments[0]||{},h=1,i=arguments.length,j=!1;for("boolean"==typeof g&&(j=g,g=arguments[h]||{},h++),"object"==typeof g||m.isFunction(g)||(g={}),h===i&&(g=this,h--);i>h;h++)if(null!=(e=arguments[h]))for(d in e)a=g[d],c=e[d],g!==c&&(j&&c&&(m.isPlainObject(c)||(b=m.isArray(c)))?(b?(b=!1,f=a&&m.isArray(a)?a:[]):f=a&&m.isPlainObject(a)?a:{},g[d]=m.extend(j,f,c)):void 0!==c&&(g[d]=c));return g},m.extend({expando:"jQuery"+(l+Math.random()).replace(/\D/g,""),isReady:!0,error:function(a){throw new Error(a)},noop:function(){},isFunction:function(a){return"function"===m.type(a)},isArray:Array.isArray||function(a){return"array"===m.type(a)},isWindow:function(a){return null!=a&&a==a.window},isNumeric:function(a){return!m.isArray(a)&&a-parseFloat(a)+1>=0},isEmptyObject:function(a){var b;for(b in a)return!1;return!0},isPlainObject:function(a){var b;if(!a||"object"!==m.type(a)||a.nodeType||m.isWindow(a))return!1;try{if(a.constructor&&!j.call(a,"constructor")&&!j.call(a.constructor.prototype,"isPrototypeOf"))return!1}catch(c){return!1}if(k.ownLast)for(b in a)return j.call(a,b);for(b in a);return void 0===b||j.call(a,b)},type:function(a){return null==a?a+"":"object"==typeof a||"function"==typeof a?h[i.call(a)]||"object":typeof a},globalEval:function(b){b&&m.trim(b)&&(a.execScript||function(b){a.eval.call(a,b)})(b)},camelCase:function(a){return a.replace(o,"ms-").replace(p,q)},nodeName:function(a,b){return a.nodeName&&a.nodeName.toLowerCase()===b.toLowerCase()},each:function(a,b,c){var d,e=0,f=a.length,g=r(a);if(c){if(g){for(;f>e;e++)if(d=b.apply(a[e],c),d===!1)break}else for(e in a)if(d=b.apply(a[e],c),d===!1)break}else if(g){for(;f>e;e++)if(d=b.call(a[e],e,a[e]),d===!1)break}else for(e in a)if(d=b.call(a[e],e,a[e]),d===!1)break;return a},trim:function(a){return null==a?"":(a+"").replace(n,"")},makeArray:function(a,b){var c=b||[];return null!=a&&(r(Object(a))?m.merge(c,"string"==typeof a?[a]:a):f.call(c,a)),c},inArray:function(a,b,c){var d;if(b){if(g)return g.call(b,a,c);for(d=b.length,c=c?0>c?Math.max(0,d+c):c:0;d>c;c++)if(c in b&&b[c]===a)return c}return-1},merge:function(a,b){var c=+b.length,d=0,e=a.length;while(c>d)a[e++]=b[d++];if(c!==c)while(void 0!==b[d])a[e++]=b[d++];return a.length=e,a},grep:function(a,b,c){for(var d,e=[],f=0,g=a.length,h=!c;g>f;f++)d=!b(a[f],f),d!==h&&e.push(a[f]);return e},map:function(a,b,c){var d,f=0,g=a.length,h=r(a),i=[];if(h)for(;g>f;f++)d=b(a[f],f,c),null!=d&&i.push(d);else for(f in a)d=b(a[f],f,c),null!=d&&i.push(d);return e.apply([],i)},guid:1,proxy:function(a,b){var c,e,f;return"string"==typeof b&&(f=a[b],b=a,a=f),m.isFunction(a)?(c=d.call(arguments,2),e=function(){return a.apply(b||this,c.concat(d.call(arguments)))},e.guid=a.guid=a.guid||m.guid++,e):void 0},now:function(){return+new Date},support:k}),m.each("Boolean Number String Function Array Date RegExp Object Error".split(" "),function(a,b){h["[object "+b+"]"]=b.toLowerCase()});function r(a){var b="length"in a&&a.length,c=m.type(a);return"function"===c||m.isWindow(a)?!1:1===a.nodeType&&b?!0:"array"===c||0===b||"number"==typeof b&&b>0&&b-1 in a}var s=function(a){var b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u="sizzle"+1*new Date,v=a.document,w=0,x=0,y=ha(),z=ha(),A=ha(),B=function(a,b){return a===b&&(l=!0),0},C=1<<31,D={}.hasOwnProperty,E=[],F=E.pop,G=E.push,H=E.push,I=E.slice,J=function(a,b){for(var c=0,d=a.length;d>c;c++)if(a[c]===b)return c;return-1},K="checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",L="[\\x20\\t\\r\\n\\f]",M="(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",N=M.replace("w","w#"),O="\\["+L+"*("+M+")(?:"+L+"*([*^$|!~]?=)"+L+"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|("+N+"))|)"+L+"*\\]",P=":("+M+")(?:\\((('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|((?:\\\\.|[^\\\\()[\\]]|"+O+")*)|.*)\\)|)",Q=new RegExp(L+"+","g"),R=new RegExp("^"+L+"+|((?:^|[^\\\\])(?:\\\\.)*)"+L+"+$","g"),S=new RegExp("^"+L+"*,"+L+"*"),T=new RegExp("^"+L+"*([>+~]|"+L+")"+L+"*"),U=new RegExp("="+L+"*([^\\]'\"]*?)"+L+"*\\]","g"),V=new RegExp(P),W=new RegExp("^"+N+"$"),X={ID:new RegExp("^#("+M+")"),CLASS:new RegExp("^\\.("+M+")"),TAG:new RegExp("^("+M.replace("w","w*")+")"),ATTR:new RegExp("^"+O),PSEUDO:new RegExp("^"+P),CHILD:new RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\("+L+"*(even|odd|(([+-]|)(\\d*)n|)"+L+"*(?:([+-]|)"+L+"*(\\d+)|))"+L+"*\\)|)","i"),bool:new RegExp("^(?:"+K+")$","i"),needsContext:new RegExp("^"+L+"*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\("+L+"*((?:-\\d)?\\d*)"+L+"*\\)|)(?=[^-]|$)","i")},Y=/^(?:input|select|textarea|button)$/i,Z=/^h\d$/i,$=/^[^{]+\{\s*\[native \w/,_=/^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,aa=/[+~]/,ba=/'|\\/g,ca=new RegExp("\\\\([\\da-f]{1,6}"+L+"?|("+L+")|.)","ig"),da=function(a,b,c){var d="0x"+b-65536;return d!==d||c?b:0>d?String.fromCharCode(d+65536):String.fromCharCode(d>>10|55296,1023&d|56320)},ea=function(){m()};try{H.apply(E=I.call(v.childNodes),v.childNodes),E[v.childNodes.length].nodeType}catch(fa){H={apply:E.length?function(a,b){G.apply(a,I.call(b))}:function(a,b){var c=a.length,d=0;while(a[c++]=b[d++]);a.length=c-1}}}function ga(a,b,d,e){var f,h,j,k,l,o,r,s,w,x;if((b?b.ownerDocument||b:v)!==n&&m(b),b=b||n,d=d||[],k=b.nodeType,"string"!=typeof a||!a||1!==k&&9!==k&&11!==k)return d;if(!e&&p){if(11!==k&&(f=_.exec(a)))if(j=f[1]){if(9===k){if(h=b.getElementById(j),!h||!h.parentNode)return d;if(h.id===j)return d.push(h),d}else if(b.ownerDocument&&(h=b.ownerDocument.getElementById(j))&&t(b,h)&&h.id===j)return d.push(h),d}else{if(f[2])return H.apply(d,b.getElementsByTagName(a)),d;if((j=f[3])&&c.getElementsByClassName)return H.apply(d,b.getElementsByClassName(j)),d}if(c.qsa&&(!q||!q.test(a))){if(s=r=u,w=b,x=1!==k&&a,1===k&&"object"!==b.nodeName.toLowerCase()){o=g(a),(r=b.getAttribute("id"))?s=r.replace(ba,"\\$&"):b.setAttribute("id",s),s="[id='"+s+"'] ",l=o.length;while(l--)o[l]=s+ra(o[l]);w=aa.test(a)&&pa(b.parentNode)||b,x=o.join(",")}if(x)try{return H.apply(d,w.querySelectorAll(x)),d}catch(y){}finally{r||b.removeAttribute("id")}}}return i(a.replace(R,"$1"),b,d,e)}function ha(){var a=[];function b(c,e){return a.push(c+" ")>d.cacheLength&&delete b[a.shift()],b[c+" "]=e}return b}function ia(a){return a[u]=!0,a}function ja(a){var b=n.createElement("div");try{return!!a(b)}catch(c){return!1}finally{b.parentNode&&b.parentNode.removeChild(b),b=null}}function ka(a,b){var c=a.split("|"),e=a.length;while(e--)d.attrHandle[c[e]]=b}function la(a,b){var c=b&&a,d=c&&1===a.nodeType&&1===b.nodeType&&(~b.sourceIndex||C)-(~a.sourceIndex||C);if(d)return d;if(c)while(c=c.nextSibling)if(c===b)return-1;return a?1:-1}function ma(a){return function(b){var c=b.nodeName.toLowerCase();return"input"===c&&b.type===a}}function na(a){return function(b){var c=b.nodeName.toLowerCase();return("input"===c||"button"===c)&&b.type===a}}function oa(a){return ia(function(b){return b=+b,ia(function(c,d){var e,f=a([],c.length,b),g=f.length;while(g--)c[e=f[g]]&&(c[e]=!(d[e]=c[e]))})})}function pa(a){return a&&"undefined"!=typeof a.getElementsByTagName&&a}c=ga.support={},f=ga.isXML=function(a){var b=a&&(a.ownerDocument||a).documentElement;return b?"HTML"!==b.nodeName:!1},m=ga.setDocument=function(a){var b,e,g=a?a.ownerDocument||a:v;return g!==n&&9===g.nodeType&&g.documentElement?(n=g,o=g.documentElement,e=g.defaultView,e&&e!==e.top&&(e.addEventListener?e.addEventListener("unload",ea,!1):e.attachEvent&&e.attachEvent("onunload",ea)),p=!f(g),c.attributes=ja(function(a){return a.className="i",!a.getAttribute("className")}),c.getElementsByTagName=ja(function(a){return a.appendChild(g.createComment("")),!a.getElementsByTagName("*").length}),c.getElementsByClassName=$.test(g.getElementsByClassName),c.getById=ja(function(a){return o.appendChild(a).id=u,!g.getElementsByName||!g.getElementsByName(u).length}),c.getById?(d.find.ID=function(a,b){if("undefined"!=typeof b.getElementById&&p){var c=b.getElementById(a);return c&&c.parentNode?[c]:[]}},d.filter.ID=function(a){var b=a.replace(ca,da);return function(a){return a.getAttribute("id")===b}}):(delete d.find.ID,d.filter.ID=function(a){var b=a.replace(ca,da);return function(a){var c="undefined"!=typeof a.getAttributeNode&&a.getAttributeNode("id");return c&&c.value===b}}),d.find.TAG=c.getElementsByTagName?function(a,b){return"undefined"!=typeof b.getElementsByTagName?b.getElementsByTagName(a):c.qsa?b.querySelectorAll(a):void 0}:function(a,b){var c,d=[],e=0,f=b.getElementsByTagName(a);if("*"===a){while(c=f[e++])1===c.nodeType&&d.push(c);return d}return f},d.find.CLASS=c.getElementsByClassName&&function(a,b){return p?b.getElementsByClassName(a):void 0},r=[],q=[],(c.qsa=$.test(g.querySelectorAll))&&(ja(function(a){o.appendChild(a).innerHTML="<a id='"+u+"'></a><select id='"+u+"-\f]' msallowcapture=''><option selected=''></option></select>",a.querySelectorAll("[msallowcapture^='']").length&&q.push("[*^$]="+L+"*(?:''|\"\")"),a.querySelectorAll("[selected]").length||q.push("\\["+L+"*(?:value|"+K+")"),a.querySelectorAll("[id~="+u+"-]").length||q.push("~="),a.querySelectorAll(":checked").length||q.push(":checked"),a.querySelectorAll("a#"+u+"+*").length||q.push(".#.+[+~]")}),ja(function(a){var b=g.createElement("input");b.setAttribute("type","hidden"),a.appendChild(b).setAttribute("name","D"),a.querySelectorAll("[name=d]").length&&q.push("name"+L+"*[*^$|!~]?="),a.querySelectorAll(":enabled").length||q.push(":enabled",":disabled"),a.querySelectorAll("*,:x"),q.push(",.*:")})),(c.matchesSelector=$.test(s=o.matches||o.webkitMatchesSelector||o.mozMatchesSelector||o.oMatchesSelector||o.msMatchesSelector))&&ja(function(a){c.disconnectedMatch=s.call(a,"div"),s.call(a,"[s!='']:x"),r.push("!=",P)}),q=q.length&&new RegExp(q.join("|")),r=r.length&&new RegExp(r.join("|")),b=$.test(o.compareDocumentPosition),t=b||$.test(o.contains)?function(a,b){var c=9===a.nodeType?a.documentElement:a,d=b&&b.parentNode;return a===d||!(!d||1!==d.nodeType||!(c.contains?c.contains(d):a.compareDocumentPosition&&16&a.compareDocumentPosition(d)))}:function(a,b){if(b)while(b=b.parentNode)if(b===a)return!0;return!1},B=b?function(a,b){if(a===b)return l=!0,0;var d=!a.compareDocumentPosition-!b.compareDocumentPosition;return d?d:(d=(a.ownerDocument||a)===(b.ownerDocument||b)?a.compareDocumentPosition(b):1,1&d||!c.sortDetached&&b.compareDocumentPosition(a)===d?a===g||a.ownerDocument===v&&t(v,a)?-1:b===g||b.ownerDocument===v&&t(v,b)?1:k?J(k,a)-J(k,b):0:4&d?-1:1)}:function(a,b){if(a===b)return l=!0,0;var c,d=0,e=a.parentNode,f=b.parentNode,h=[a],i=[b];if(!e||!f)return a===g?-1:b===g?1:e?-1:f?1:k?J(k,a)-J(k,b):0;if(e===f)return la(a,b);c=a;while(c=c.parentNode)h.unshift(c);c=b;while(c=c.parentNode)i.unshift(c);while(h[d]===i[d])d++;return d?la(h[d],i[d]):h[d]===v?-1:i[d]===v?1:0},g):n},ga.matches=function(a,b){return ga(a,null,null,b)},ga.matchesSelector=function(a,b){if((a.ownerDocument||a)!==n&&m(a),b=b.replace(U,"='$1']"),!(!c.matchesSelector||!p||r&&r.test(b)||q&&q.test(b)))try{var d=s.call(a,b);if(d||c.disconnectedMatch||a.document&&11!==a.document.nodeType)return d}catch(e){}return ga(b,n,null,[a]).length>0},ga.contains=function(a,b){return(a.ownerDocument||a)!==n&&m(a),t(a,b)},ga.attr=function(a,b){(a.ownerDocument||a)!==n&&m(a);var e=d.attrHandle[b.toLowerCase()],f=e&&D.call(d.attrHandle,b.toLowerCase())?e(a,b,!p):void 0;return void 0!==f?f:c.attributes||!p?a.getAttribute(b):(f=a.getAttributeNode(b))&&f.specified?f.value:null},ga.error=function(a){throw new Error("Syntax error, unrecognized expression: "+a)},ga.uniqueSort=function(a){var b,d=[],e=0,f=0;if(l=!c.detectDuplicates,k=!c.sortStable&&a.slice(0),a.sort(B),l){while(b=a[f++])b===a[f]&&(e=d.push(f));while(e--)a.splice(d[e],1)}return k=null,a},e=ga.getText=function(a){var b,c="",d=0,f=a.nodeType;if(f){if(1===f||9===f||11===f){if("string"==typeof a.textContent)return a.textContent;for(a=a.firstChild;a;a=a.nextSibling)c+=e(a)}else if(3===f||4===f)return a.nodeValue}else while(b=a[d++])c+=e(b);return c},d=ga.selectors={cacheLength:50,createPseudo:ia,match:X,attrHandle:{},find:{},relative:{">":{dir:"parentNode",first:!0}," ":{dir:"parentNode"},"+":{dir:"previousSibling",first:!0},"~":{dir:"previousSibling"}},preFilter:{ATTR:function(a){return a[1]=a[1].replace(ca,da),a[3]=(a[3]||a[4]||a[5]||"").replace(ca,da),"~="===a[2]&&(a[3]=" "+a[3]+" "),a.slice(0,4)},CHILD:function(a){return a[1]=a[1].toLowerCase(),"nth"===a[1].slice(0,3)?(a[3]||ga.error(a[0]),a[4]=+(a[4]?a[5]+(a[6]||1):2*("even"===a[3]||"odd"===a[3])),a[5]=+(a[7]+a[8]||"odd"===a[3])):a[3]&&ga.error(a[0]),a},PSEUDO:function(a){var b,c=!a[6]&&a[2];return X.CHILD.test(a[0])?null:(a[3]?a[2]=a[4]||a[5]||"":c&&V.test(c)&&(b=g(c,!0))&&(b=c.indexOf(")",c.length-b)-c.length)&&(a[0]=a[0].slice(0,b),a[2]=c.slice(0,b)),a.slice(0,3))}},filter:{TAG:function(a){var b=a.replace(ca,da).toLowerCase();return"*"===a?function(){return!0}:function(a){return a.nodeName&&a.nodeName.toLowerCase()===b}},CLASS:function(a){var b=y[a+" "];return b||(b=new RegExp("(^|"+L+")"+a+"("+L+"|$)"))&&y(a,function(a){return b.test("string"==typeof a.className&&a.className||"undefined"!=typeof a.getAttribute&&a.getAttribute("class")||"")})},ATTR:function(a,b,c){return function(d){var e=ga.attr(d,a);return null==e?"!="===b:b?(e+="","="===b?e===c:"!="===b?e!==c:"^="===b?c&&0===e.indexOf(c):"*="===b?c&&e.indexOf(c)>-1:"$="===b?c&&e.slice(-c.length)===c:"~="===b?(" "+e.replace(Q," ")+" ").indexOf(c)>-1:"|="===b?e===c||e.slice(0,c.length+1)===c+"-":!1):!0}},CHILD:function(a,b,c,d,e){var f="nth"!==a.slice(0,3),g="last"!==a.slice(-4),h="of-type"===b;return 1===d&&0===e?function(a){return!!a.parentNode}:function(b,c,i){var j,k,l,m,n,o,p=f!==g?"nextSibling":"previousSibling",q=b.parentNode,r=h&&b.nodeName.toLowerCase(),s=!i&&!h;if(q){if(f){while(p){l=b;while(l=l[p])if(h?l.nodeName.toLowerCase()===r:1===l.nodeType)return!1;o=p="only"===a&&!o&&"nextSibling"}return!0}if(o=[g?q.firstChild:q.lastChild],g&&s){k=q[u]||(q[u]={}),j=k[a]||[],n=j[0]===w&&j[1],m=j[0]===w&&j[2],l=n&&q.childNodes[n];while(l=++n&&l&&l[p]||(m=n=0)||o.pop())if(1===l.nodeType&&++m&&l===b){k[a]=[w,n,m];break}}else if(s&&(j=(b[u]||(b[u]={}))[a])&&j[0]===w)m=j[1];else while(l=++n&&l&&l[p]||(m=n=0)||o.pop())if((h?l.nodeName.toLowerCase()===r:1===l.nodeType)&&++m&&(s&&((l[u]||(l[u]={}))[a]=[w,m]),l===b))break;return m-=e,m===d||m%d===0&&m/d>=0}}},PSEUDO:function(a,b){var c,e=d.pseudos[a]||d.setFilters[a.toLowerCase()]||ga.error("unsupported pseudo: "+a);return e[u]?e(b):e.length>1?(c=[a,a,"",b],d.setFilters.hasOwnProperty(a.toLowerCase())?ia(function(a,c){var d,f=e(a,b),g=f.length;while(g--)d=J(a,f[g]),a[d]=!(c[d]=f[g])}):function(a){return e(a,0,c)}):e}},pseudos:{not:ia(function(a){var b=[],c=[],d=h(a.replace(R,"$1"));return d[u]?ia(function(a,b,c,e){var f,g=d(a,null,e,[]),h=a.length;while(h--)(f=g[h])&&(a[h]=!(b[h]=f))}):function(a,e,f){return b[0]=a,d(b,null,f,c),b[0]=null,!c.pop()}}),has:ia(function(a){return function(b){return ga(a,b).length>0}}),contains:ia(function(a){return a=a.replace(ca,da),function(b){return(b.textContent||b.innerText||e(b)).indexOf(a)>-1}}),lang:ia(function(a){return W.test(a||"")||ga.error("unsupported lang: "+a),a=a.replace(ca,da).toLowerCase(),function(b){var c;do if(c=p?b.lang:b.getAttribute("xml:lang")||b.getAttribute("lang"))return c=c.toLowerCase(),c===a||0===c.indexOf(a+"-");while((b=b.parentNode)&&1===b.nodeType);return!1}}),target:function(b){var c=a.location&&a.location.hash;return c&&c.slice(1)===b.id},root:function(a){return a===o},focus:function(a){return a===n.activeElement&&(!n.hasFocus||n.hasFocus())&&!!(a.type||a.href||~a.tabIndex)},enabled:function(a){return a.disabled===!1},disabled:function(a){return a.disabled===!0},checked:function(a){var b=a.nodeName.toLowerCase();return"input"===b&&!!a.checked||"option"===b&&!!a.selected},selected:function(a){return a.parentNode&&a.parentNode.selectedIndex,a.selected===!0},empty:function(a){for(a=a.firstChild;a;a=a.nextSibling)if(a.nodeType<6)return!1;return!0},parent:function(a){return!d.pseudos.empty(a)},header:function(a){return Z.test(a.nodeName)},input:function(a){return Y.test(a.nodeName)},button:function(a){var b=a.nodeName.toLowerCase();return"input"===b&&"button"===a.type||"button"===b},text:function(a){var b;return"input"===a.nodeName.toLowerCase()&&"text"===a.type&&(null==(b=a.getAttribute("type"))||"text"===b.toLowerCase())},first:oa(function(){return[0]}),last:oa(function(a,b){return[b-1]}),eq:oa(function(a,b,c){return[0>c?c+b:c]}),even:oa(function(a,b){for(var c=0;b>c;c+=2)a.push(c);return a}),odd:oa(function(a,b){for(var c=1;b>c;c+=2)a.push(c);return a}),lt:oa(function(a,b,c){for(var d=0>c?c+b:c;--d>=0;)a.push(d);return a}),gt:oa(function(a,b,c){for(var d=0>c?c+b:c;++d<b;)a.push(d);return a})}},d.pseudos.nth=d.pseudos.eq;for(b in{radio:!0,checkbox:!0,file:!0,password:!0,image:!0})d.pseudos[b]=ma(b);for(b in{submit:!0,reset:!0})d.pseudos[b]=na(b);function qa(){}qa.prototype=d.filters=d.pseudos,d.setFilters=new qa,g=ga.tokenize=function(a,b){var c,e,f,g,h,i,j,k=z[a+" "];if(k)return b?0:k.slice(0);h=a,i=[],j=d.preFilter;while(h){(!c||(e=S.exec(h)))&&(e&&(h=h.slice(e[0].length)||h),i.push(f=[])),c=!1,(e=T.exec(h))&&(c=e.shift(),f.push({value:c,type:e[0].replace(R," ")}),h=h.slice(c.length));for(g in d.filter)!(e=X[g].exec(h))||j[g]&&!(e=j[g](e))||(c=e.shift(),f.push({value:c,type:g,matches:e}),h=h.slice(c.length));if(!c)break}return b?h.length:h?ga.error(a):z(a,i).slice(0)};function ra(a){for(var b=0,c=a.length,d="";c>b;b++)d+=a[b].value;return d}function sa(a,b,c){var d=b.dir,e=c&&"parentNode"===d,f=x++;return b.first?function(b,c,f){while(b=b[d])if(1===b.nodeType||e)return a(b,c,f)}:function(b,c,g){var h,i,j=[w,f];if(g){while(b=b[d])if((1===b.nodeType||e)&&a(b,c,g))return!0}else while(b=b[d])if(1===b.nodeType||e){if(i=b[u]||(b[u]={}),(h=i[d])&&h[0]===w&&h[1]===f)return j[2]=h[2];if(i[d]=j,j[2]=a(b,c,g))return!0}}}function ta(a){return a.length>1?function(b,c,d){var e=a.length;while(e--)if(!a[e](b,c,d))return!1;return!0}:a[0]}function ua(a,b,c){for(var d=0,e=b.length;e>d;d++)ga(a,b[d],c);return c}function va(a,b,c,d,e){for(var f,g=[],h=0,i=a.length,j=null!=b;i>h;h++)(f=a[h])&&(!c||c(f,d,e))&&(g.push(f),j&&b.push(h));return g}function wa(a,b,c,d,e,f){return d&&!d[u]&&(d=wa(d)),e&&!e[u]&&(e=wa(e,f)),ia(function(f,g,h,i){var j,k,l,m=[],n=[],o=g.length,p=f||ua(b||"*",h.nodeType?[h]:h,[]),q=!a||!f&&b?p:va(p,m,a,h,i),r=c?e||(f?a:o||d)?[]:g:q;if(c&&c(q,r,h,i),d){j=va(r,n),d(j,[],h,i),k=j.length;while(k--)(l=j[k])&&(r[n[k]]=!(q[n[k]]=l))}if(f){if(e||a){if(e){j=[],k=r.length;while(k--)(l=r[k])&&j.push(q[k]=l);e(null,r=[],j,i)}k=r.length;while(k--)(l=r[k])&&(j=e?J(f,l):m[k])>-1&&(f[j]=!(g[j]=l))}}else r=va(r===g?r.splice(o,r.length):r),e?e(null,g,r,i):H.apply(g,r)})}function xa(a){for(var b,c,e,f=a.length,g=d.relative[a[0].type],h=g||d.relative[" "],i=g?1:0,k=sa(function(a){return a===b},h,!0),l=sa(function(a){return J(b,a)>-1},h,!0),m=[function(a,c,d){var e=!g&&(d||c!==j)||((b=c).nodeType?k(a,c,d):l(a,c,d));return b=null,e}];f>i;i++)if(c=d.relative[a[i].type])m=[sa(ta(m),c)];else{if(c=d.filter[a[i].type].apply(null,a[i].matches),c[u]){for(e=++i;f>e;e++)if(d.relative[a[e].type])break;return wa(i>1&&ta(m),i>1&&ra(a.slice(0,i-1).concat({value:" "===a[i-2].type?"*":""})).replace(R,"$1"),c,e>i&&xa(a.slice(i,e)),f>e&&xa(a=a.slice(e)),f>e&&ra(a))}m.push(c)}return ta(m)}function ya(a,b){var c=b.length>0,e=a.length>0,f=function(f,g,h,i,k){var l,m,o,p=0,q="0",r=f&&[],s=[],t=j,u=f||e&&d.find.TAG("*",k),v=w+=null==t?1:Math.random()||.1,x=u.length;for(k&&(j=g!==n&&g);q!==x&&null!=(l=u[q]);q++){if(e&&l){m=0;while(o=a[m++])if(o(l,g,h)){i.push(l);break}k&&(w=v)}c&&((l=!o&&l)&&p--,f&&r.push(l))}if(p+=q,c&&q!==p){m=0;while(o=b[m++])o(r,s,g,h);if(f){if(p>0)while(q--)r[q]||s[q]||(s[q]=F.call(i));s=va(s)}H.apply(i,s),k&&!f&&s.length>0&&p+b.length>1&&ga.uniqueSort(i)}return k&&(w=v,j=t),r};return c?ia(f):f}return h=ga.compile=function(a,b){var c,d=[],e=[],f=A[a+" "];if(!f){b||(b=g(a)),c=b.length;while(c--)f=xa(b[c]),f[u]?d.push(f):e.push(f);f=A(a,ya(e,d)),f.selector=a}return f},i=ga.select=function(a,b,e,f){var i,j,k,l,m,n="function"==typeof a&&a,o=!f&&g(a=n.selector||a);if(e=e||[],1===o.length){if(j=o[0]=o[0].slice(0),j.length>2&&"ID"===(k=j[0]).type&&c.getById&&9===b.nodeType&&p&&d.relative[j[1].type]){if(b=(d.find.ID(k.matches[0].replace(ca,da),b)||[])[0],!b)return e;n&&(b=b.parentNode),a=a.slice(j.shift().value.length)}i=X.needsContext.test(a)?0:j.length;while(i--){if(k=j[i],d.relative[l=k.type])break;if((m=d.find[l])&&(f=m(k.matches[0].replace(ca,da),aa.test(j[0].type)&&pa(b.parentNode)||b))){if(j.splice(i,1),a=f.length&&ra(j),!a)return H.apply(e,f),e;break}}}return(n||h(a,o))(f,b,!p,e,aa.test(a)&&pa(b.parentNode)||b),e},c.sortStable=u.split("").sort(B).join("")===u,c.detectDuplicates=!!l,m(),c.sortDetached=ja(function(a){return 1&a.compareDocumentPosition(n.createElement("div"))}),ja(function(a){return a.innerHTML="<a href='#'></a>","#"===a.firstChild.getAttribute("href")})||ka("type|href|height|width",function(a,b,c){return c?void 0:a.getAttribute(b,"type"===b.toLowerCase()?1:2)}),c.attributes&&ja(function(a){return a.innerHTML="<input/>",a.firstChild.setAttribute("value",""),""===a.firstChild.getAttribute("value")})||ka("value",function(a,b,c){return c||"input"!==a.nodeName.toLowerCase()?void 0:a.defaultValue}),ja(function(a){return null==a.getAttribute("disabled")})||ka(K,function(a,b,c){var d;return c?void 0:a[b]===!0?b.toLowerCase():(d=a.getAttributeNode(b))&&d.specified?d.value:null}),ga}(a);m.find=s,m.expr=s.selectors,m.expr[":"]=m.expr.pseudos,m.unique=s.uniqueSort,m.text=s.getText,m.isXMLDoc=s.isXML,m.contains=s.contains;var t=m.expr.match.needsContext,u=/^<(\w+)\s*\/?>(?:<\/\1>|)$/,v=/^.[^:#\[\.,]*$/;function w(a,b,c){if(m.isFunction(b))return m.grep(a,function(a,d){return!!b.call(a,d,a)!==c});if(b.nodeType)return m.grep(a,function(a){return a===b!==c});if("string"==typeof b){if(v.test(b))return m.filter(b,a,c);b=m.filter(b,a)}return m.grep(a,function(a){return m.inArray(a,b)>=0!==c})}m.filter=function(a,b,c){var d=b[0];return c&&(a=":not("+a+")"),1===b.length&&1===d.nodeType?m.find.matchesSelector(d,a)?[d]:[]:m.find.matches(a,m.grep(b,function(a){return 1===a.nodeType}))},m.fn.extend({find:function(a){var b,c=[],d=this,e=d.length;if("string"!=typeof a)return this.pushStack(m(a).filter(function(){for(b=0;e>b;b++)if(m.contains(d[b],this))return!0}));for(b=0;e>b;b++)m.find(a,d[b],c);return c=this.pushStack(e>1?m.unique(c):c),c.selector=this.selector?this.selector+" "+a:a,c},filter:function(a){return this.pushStack(w(this,a||[],!1))},not:function(a){return this.pushStack(w(this,a||[],!0))},is:function(a){return!!w(this,"string"==typeof a&&t.test(a)?m(a):a||[],!1).length}});var x,y=a.document,z=/^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/,A=m.fn.init=function(a,b){var c,d;if(!a)return this;if("string"==typeof a){if(c="<"===a.charAt(0)&&">"===a.charAt(a.length-1)&&a.length>=3?[null,a,null]:z.exec(a),!c||!c[1]&&b)return!b||b.jquery?(b||x).find(a):this.constructor(b).find(a);if(c[1]){if(b=b instanceof m?b[0]:b,m.merge(this,m.parseHTML(c[1],b&&b.nodeType?b.ownerDocument||b:y,!0)),u.test(c[1])&&m.isPlainObject(b))for(c in b)m.isFunction(this[c])?this[c](b[c]):this.attr(c,b[c]);return this}if(d=y.getElementById(c[2]),d&&d.parentNode){if(d.id!==c[2])return x.find(a);this.length=1,this[0]=d}return this.context=y,this.selector=a,this}return a.nodeType?(this.context=this[0]=a,this.length=1,this):m.isFunction(a)?"undefined"!=typeof x.ready?x.ready(a):a(m):(void 0!==a.selector&&(this.selector=a.selector,this.context=a.context),m.makeArray(a,this))};A.prototype=m.fn,x=m(y);var B=/^(?:parents|prev(?:Until|All))/,C={children:!0,contents:!0,next:!0,prev:!0};m.extend({dir:function(a,b,c){var d=[],e=a[b];while(e&&9!==e.nodeType&&(void 0===c||1!==e.nodeType||!m(e).is(c)))1===e.nodeType&&d.push(e),e=e[b];return d},sibling:function(a,b){for(var c=[];a;a=a.nextSibling)1===a.nodeType&&a!==b&&c.push(a);return c}}),m.fn.extend({has:function(a){var b,c=m(a,this),d=c.length;return this.filter(function(){for(b=0;d>b;b++)if(m.contains(this,c[b]))return!0})},closest:function(a,b){for(var c,d=0,e=this.length,f=[],g=t.test(a)||"string"!=typeof a?m(a,b||this.context):0;e>d;d++)for(c=this[d];c&&c!==b;c=c.parentNode)if(c.nodeType<11&&(g?g.index(c)>-1:1===c.nodeType&&m.find.matchesSelector(c,a))){f.push(c);break}return this.pushStack(f.length>1?m.unique(f):f)},index:function(a){return a?"string"==typeof a?m.inArray(this[0],m(a)):m.inArray(a.jquery?a[0]:a,this):this[0]&&this[0].parentNode?this.first().prevAll().length:-1},add:function(a,b){return this.pushStack(m.unique(m.merge(this.get(),m(a,b))))},addBack:function(a){return this.add(null==a?this.prevObject:this.prevObject.filter(a))}});function D(a,b){do a=a[b];while(a&&1!==a.nodeType);return a}m.each({parent:function(a){var b=a.parentNode;return b&&11!==b.nodeType?b:null},parents:function(a){return m.dir(a,"parentNode")},parentsUntil:function(a,b,c){return m.dir(a,"parentNode",c)},next:function(a){return D(a,"nextSibling")},prev:function(a){return D(a,"previousSibling")},nextAll:function(a){return m.dir(a,"nextSibling")},prevAll:function(a){return m.dir(a,"previousSibling")},nextUntil:function(a,b,c){return m.dir(a,"nextSibling",c)},prevUntil:function(a,b,c){return m.dir(a,"previousSibling",c)},siblings:function(a){return m.sibling((a.parentNode||{}).firstChild,a)},children:function(a){return m.sibling(a.firstChild)},contents:function(a){return m.nodeName(a,"iframe")?a.contentDocument||a.contentWindow.document:m.merge([],a.childNodes)}},function(a,b){m.fn[a]=function(c,d){var e=m.map(this,b,c);return"Until"!==a.slice(-5)&&(d=c),d&&"string"==typeof d&&(e=m.filter(d,e)),this.length>1&&(C[a]||(e=m.unique(e)),B.test(a)&&(e=e.reverse())),this.pushStack(e)}});var E=/\S+/g,F={};function G(a){var b=F[a]={};return m.each(a.match(E)||[],function(a,c){b[c]=!0}),b}m.Callbacks=function(a){a="string"==typeof a?F[a]||G(a):m.extend({},a);var b,c,d,e,f,g,h=[],i=!a.once&&[],j=function(l){for(c=a.memory&&l,d=!0,f=g||0,g=0,e=h.length,b=!0;h&&e>f;f++)if(h[f].apply(l[0],l[1])===!1&&a.stopOnFalse){c=!1;break}b=!1,h&&(i?i.length&&j(i.shift()):c?h=[]:k.disable())},k={add:function(){if(h){var d=h.length;!function f(b){m.each(b,function(b,c){var d=m.type(c);"function"===d?a.unique&&k.has(c)||h.push(c):c&&c.length&&"string"!==d&&f(c)})}(arguments),b?e=h.length:c&&(g=d,j(c))}return this},remove:function(){return h&&m.each(arguments,function(a,c){var d;while((d=m.inArray(c,h,d))>-1)h.splice(d,1),b&&(e>=d&&e--,f>=d&&f--)}),this},has:function(a){return a?m.inArray(a,h)>-1:!(!h||!h.length)},empty:function(){return h=[],e=0,this},disable:function(){return h=i=c=void 0,this},disabled:function(){return!h},lock:function(){return i=void 0,c||k.disable(),this},locked:function(){return!i},fireWith:function(a,c){return!h||d&&!i||(c=c||[],c=[a,c.slice?c.slice():c],b?i.push(c):j(c)),this},fire:function(){return k.fireWith(this,arguments),this},fired:function(){return!!d}};return k},m.extend({Deferred:function(a){var b=[["resolve","done",m.Callbacks("once memory"),"resolved"],["reject","fail",m.Callbacks("once memory"),"rejected"],["notify","progress",m.Callbacks("memory")]],c="pending",d={state:function(){return c},always:function(){return e.done(arguments).fail(arguments),this},then:function(){var a=arguments;return m.Deferred(function(c){m.each(b,function(b,f){var g=m.isFunction(a[b])&&a[b];e[f[1]](function(){var a=g&&g.apply(this,arguments);a&&m.isFunction(a.promise)?a.promise().done(c.resolve).fail(c.reject).progress(c.notify):c[f[0]+"With"](this===d?c.promise():this,g?[a]:arguments)})}),a=null}).promise()},promise:function(a){return null!=a?m.extend(a,d):d}},e={};return d.pipe=d.then,m.each(b,function(a,f){var g=f[2],h=f[3];d[f[1]]=g.add,h&&g.add(function(){c=h},b[1^a][2].disable,b[2][2].lock),e[f[0]]=function(){return e[f[0]+"With"](this===e?d:this,arguments),this},e[f[0]+"With"]=g.fireWith}),d.promise(e),a&&a.call(e,e),e},when:function(a){var b=0,c=d.call(arguments),e=c.length,f=1!==e||a&&m.isFunction(a.promise)?e:0,g=1===f?a:m.Deferred(),h=function(a,b,c){return function(e){b[a]=this,c[a]=arguments.length>1?d.call(arguments):e,c===i?g.notifyWith(b,c):--f||g.resolveWith(b,c)}},i,j,k;if(e>1)for(i=new Array(e),j=new Array(e),k=new Array(e);e>b;b++)c[b]&&m.isFunction(c[b].promise)?c[b].promise().done(h(b,k,c)).fail(g.reject).progress(h(b,j,i)):--f;return f||g.resolveWith(k,c),g.promise()}});var H;m.fn.ready=function(a){return m.ready.promise().done(a),this},m.extend({isReady:!1,readyWait:1,holdReady:function(a){a?m.readyWait++:m.ready(!0)},ready:function(a){if(a===!0?!--m.readyWait:!m.isReady){if(!y.body)return setTimeout(m.ready);m.isReady=!0,a!==!0&&--m.readyWait>0||(H.resolveWith(y,[m]),m.fn.triggerHandler&&(m(y).triggerHandler("ready"),m(y).off("ready")))}}});function I(){y.addEventListener?(y.removeEventListener("DOMContentLoaded",J,!1),a.removeEventListener("load",J,!1)):(y.detachEvent("onreadystatechange",J),a.detachEvent("onload",J))}function J(){(y.addEventListener||"load"===event.type||"complete"===y.readyState)&&(I(),m.ready())}m.ready.promise=function(b){if(!H)if(H=m.Deferred(),"complete"===y.readyState)setTimeout(m.ready);else if(y.addEventListener)y.addEventListener("DOMContentLoaded",J,!1),a.addEventListener("load",J,!1);else{y.attachEvent("onreadystatechange",J),a.attachEvent("onload",J);var c=!1;try{c=null==a.frameElement&&y.documentElement}catch(d){}c&&c.doScroll&&!function e(){if(!m.isReady){try{c.doScroll("left")}catch(a){return setTimeout(e,50)}I(),m.ready()}}()}return H.promise(b)};var K="undefined",L;for(L in m(k))break;k.ownLast="0"!==L,k.inlineBlockNeedsLayout=!1,m(function(){var a,b,c,d;c=y.getElementsByTagName("body")[0],c&&c.style&&(b=y.createElement("div"),d=y.createElement("div"),d.style.cssText="position:absolute;border:0;width:0;height:0;top:0;left:-9999px",c.appendChild(d).appendChild(b),typeof b.style.zoom!==K&&(b.style.cssText="display:inline;margin:0;border:0;padding:1px;width:1px;zoom:1",k.inlineBlockNeedsLayout=a=3===b.offsetWidth,a&&(c.style.zoom=1)),c.removeChild(d))}),function(){var a=y.createElement("div");if(null==k.deleteExpando){k.deleteExpando=!0;try{delete a.test}catch(b){k.deleteExpando=!1}}a=null}(),m.acceptData=function(a){var b=m.noData[(a.nodeName+" ").toLowerCase()],c=+a.nodeType||1;return 1!==c&&9!==c?!1:!b||b!==!0&&a.getAttribute("classid")===b};var M=/^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,N=/([A-Z])/g;function O(a,b,c){if(void 0===c&&1===a.nodeType){var d="data-"+b.replace(N,"-$1").toLowerCase();if(c=a.getAttribute(d),"string"==typeof c){try{c="true"===c?!0:"false"===c?!1:"null"===c?null:+c+""===c?+c:M.test(c)?m.parseJSON(c):c}catch(e){}m.data(a,b,c)}else c=void 0}return c}function P(a){var b;for(b in a)if(("data"!==b||!m.isEmptyObject(a[b]))&&"toJSON"!==b)return!1;
@@ -1615,7 +1615,42 @@ font-size: 14px;
 opacity: 0.25;
 }
 .red { color: red; }
-</style>
+
+.box-blue,
+.box-gray,
+.box-green,
+.box-grey,
+.box-red,
+.box-yellow {
+margin:0 0 25px;
+overflow:hidden;
+padding:20px;
+-webkit-border-radius: 10px;
+border-radius: 10px; }
+.box-blue {
+background-color:#d8ecf7;
+border:1px solid #afcde3;
+}
+.box-gray {
+background-color:#e2e2e2;
+border:1px solid #bdbdbd;
+}
+.box-green {
+background-color:#d9edc2;
+border:1px solid #b2ce96;
+}
+.box-grey {
+background-color:#F5F5F5;
+border:1px solid #DDDDDD;
+}
+.box-red {
+background-color:#f9dbdb;
+border:1px solid #e9b3b3;
+}
+.box-yellow {
+background-color:#fef5c4;
+border:1px solid #fadf98;
+}</style>
 
 
 
@@ -1761,136 +1796,446 @@ summary {
 
 
 
-<h1 class="title toc-ignore">Data Containers</h1>
+<h1 class="title toc-ignore">Data Frames</h1>
 
 </div>
 
 
 <!-- rnb-text-begin -->
-<p>All of the collection types below can be applied to any of the data types discussed <a href="https://dyerlab.github.io/ENVS-Lectures/data_types/narriative.nb.html">previously</a>.</p>
-<div id="vectors-of-values" class="section level2">
-<h2>Vectors of Values</h2>
-<p>It is rather rare that we work with a single entity for any data type. The main syntax in <code>R</code> used to make a collection of objects is to enclose them into the <code>c()</code> function (<em>c</em> for <em>c</em>ombine and since we use it so often, making it as short as possible—anything we can do to type less is good for reducing the number of errors in our code).</p>
-<p>Here is how we can get a vector of <code>numeric</code> values.</p>
+<blockquote>
+<p>Data frames are a structure that can hold many different data types in one simple structure.</p>
+</blockquote>
+<p>Data frames are the <em>lingua franca</em> for <code>R</code>, especially once we start getting into more complicated analysis and manipulation. For simplicity, one can consider a <code>data.frame</code> object much like a spreadsheet. Each row represents a record on some object and each column—consisting of different kinds of data—are measurements on that object.</p>
+<p>By in large, you will load your data into these structures and pass them to functions for plotting, simulation, plotting, etc. It is a good idea to get used to these.</p>
+<div id="creating-data.frame-objects" class="section level2">
+<h2>Creating <code>data.frame</code> Objects</h2>
+<p>To make a <code>data.frame</code> we need to either:</p>
+<ol style="list-style-type: decimal">
+<li>Make it from scratch using vectors (the more complicated).</li>
+<li>Load it from a file (perhaps the easiest way).</li>
+</ol>
+<p>We shall start with the most complicated case.</p>
+<div id="creating-data.frame-objects-de-novo" class="section level3">
+<h3>Creating <code>data.frame</code> Objects <em>de novo</em></h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInggPC0gYygxLDIsMyw0LDUsNiw3KSIsIngiXX0= -->
-<pre class="r"><code>x &lt;- c(1,2,3,4,5,6,7)
-x</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjpbInNpdGUgPC0gYyggXCJDb25zdFwiLFwiRVNhblwiLCBcIkFxdVwiKSIsImxvbmdpdHVkZSA8LSBjKCAtMTExLjY3NSwgLTExMC4zNjg2LCAtMTEwLjEwNDMpIiwibGF0aXR1ZGUgPC0gYygyNS4wMjQ3LCAyNC40NTg3OSwgMjMuMjg1NSkiLCIiLCJzaXRlcyA8LSBkYXRhLmZyYW1lKCBTaXRlID0gc2l0ZSxcbiAgICAgICAgICAgICAgICAgICAgIExvbmdpdHVkZSA9IGxvbmdpdHVkZSxcbiAgICAgICAgICAgICAgICAgICAgIExhdGl0dWRlID0gbGF0aXR1ZGUgKSIsInNpdGVzIl19 -->
+<pre class="r"><code>site &lt;- c( &quot;Const&quot;,&quot;ESan&quot;, &quot;Aqu&quot;)
+longitude &lt;- c( -111.675, -110.3686, -110.1043)
+latitude &lt;- c(25.0247, 24.45879, 23.2855)
+
+sites &lt;- data.frame( Site = site,
+                     Longitude = longitude,
+                     Latitude = latitude )
+sites</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEgMiAzIDQgNSA2IDdcbiJ9 -->
-<pre><code>[1] 1 2 3 4 5 6 7</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Site"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Const","2":"-111.6750","3":"25.02470"},{"1":"ESan","2":"-110.3686","3":"24.45879"},{"1":"Aqu","2":"-110.1043","3":"23.28550"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The thing about <code>data.frame</code> objects is that the know how to organize and summarize their component variables.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoic3VtbWFyeShzaXRlcykifQ== -->
+<pre class="r"><code>summary(sites)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBTaXRlICAgICAgICAgICAgIExvbmdpdHVkZSAgICAgICAgIExhdGl0dWRlICAgIFxuIExlbmd0aDozICAgICAgICAgICBNaW4uICAgOi0xMTEuNyAgIE1pbi4gICA6MjMuMjkgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOi0xMTEuMCAgIDFzdCBRdS46MjMuODcgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOi0xMTAuNCAgIE1lZGlhbiA6MjQuNDYgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOi0xMTAuNyAgIE1lYW4gICA6MjQuMjYgIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOi0xMTAuMiAgIDNyZCBRdS46MjQuNzQgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOi0xMTAuMSAgIE1heC4gICA6MjUuMDIgIFxuIn0= -->
+<pre><code>     Site             Longitude         Latitude    
+ Length:3           Min.   :-111.7   Min.   :23.29  
+ Class :character   1st Qu.:-111.0   1st Qu.:23.87  
+ Mode  :character   Median :-110.4   Median :24.46  
+                    Mean   :-110.7   Mean   :24.26  
+                    3rd Qu.:-110.2   3rd Qu.:24.74  
+                    Max.   :-110.1   Max.   :25.02  </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>The variable <code>x</code> contains a number of numeric types and is a single object.</p>
+<p>Notice that each variable is summarized a way that gives as much information about the contnets of that variable. The <code>summary()</code> function is critical and one we will use over and over again.</p>
+</div>
+<div id="loading-from-file-andor-url" class="section level3">
+<h3>Loading from File and/or URL</h3>
+<p>You can also load a <code>data.frame</code> in using a local file or a URL to a file somewhere on the internet. The easiest way to do this is to have your file as a CSV (Comma-Separated-Value) format. This is usually a <span class="math inline">\(File \to Save\;As\)</span> kind of routine. It is important for reproducibility and collaboration to 1) Have only one version of your data set, and 2) Keep it in a format that is accessible such as plain text.</p>
+<p>Here is the full version of those data loaded above. It is located on a <a href="https://github.com/dyerlab/ENVS-Lectures">Github</a> website and is accessible to anyone with an internet connection.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoibGVuZ3RoKCB4ICkifQ== -->
-<pre class="r"><code>length( x )</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoidXJsIDwtIFwiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9tYXN0ZXIvZGF0YS9hcmFwYXQuY3N2XCIifQ== -->
+<pre class="r"><code>url &lt;- &quot;https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv&quot;</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDdcbiJ9 -->
-<pre><code>[1] 7</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<div id="sequences" class="section level3">
-<h3>Sequences</h3>
-<p>It would really suck if we had to type in all the elements into every array we want. Say we want a vector of 100 numbers, it would be really likely if we had to type all the numbers <code>1, 2, 3, ... , 99, 100</code> (and quite boring 💤). The main way we will get data into <code>R</code> is by loading it from files or databases, which we will get to later, but for now let’s look at how we can specifically create sequences of values with a little bit of code.</p>
-<p>The first is the colon operator. The syntax is <code>X:Y</code> which will produce the values from <code>X</code> to <code>Y</code> (inclusive on both ends). In <code>R</code> we use it like this:</p>
+<p>Once we have the url or file as a <code>character</code> object, we can use the built-in <code>read.csv()</code> function to load the data into a local variable. Here is what that looks like.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInkgPC0gMzo4ICIsInkiXX0= -->
-<pre class="r"><code>y &lt;- 3:8 
-y</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMgPC0gcmVhZC5jc3YodXJsKSIsInN1bW1hcnkoIFNhbXBsZXMgKSJdfQ== -->
+<pre class="r"><code>Samples &lt;- read.csv(url)
+summary( Samples )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDMgNCA1IDYgNyA4XG4ifQ== -->
-<pre><code>[1] 3 4 5 6 7 8</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>This is just a shortcut for the more general <code>seq()</code> function (<em>seq</em> is short for <em>sequence</em>). This function takes a value to start at and one to end with (inclusive just like above).</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInkgPC0gc2VxKDMsOCkiLCJ5Il19 -->
-<pre class="r"><code>y &lt;- seq(3,8)
-y</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDMgNCA1IDYgNyA4XG4ifQ== -->
-<pre><code>[1] 3 4 5 6 7 8</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>These are the <em>required</em> arguments. By default, the <code>seq()</code> function counts by <span class="math inline">\(1.0\)</span> (either up or down, depending upon the magnitude of the first and second argument).</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoic2VxKDgsMykifQ== -->
-<pre class="r"><code>seq(8,3)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDggNyA2IDUgNCAzXG4ifQ== -->
-<pre><code>[1] 8 7 6 5 4 3</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>If we want it to count by some other interval, we can tell it by passing the <em>optional argument</em> <code>by=</code>.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInkgPC0gc2VxKDMsOCxieT0wLjI1KSIsInkiXX0= -->
-<pre class="r"><code>y &lt;- seq(3,8,by=0.25)
-y</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSAzLjAwIDMuMjUgMy41MCAzLjc1IDQuMDAgNC4yNSA0LjUwIDQuNzUgNS4wMCA1LjI1IDUuNTAgNS43NSA2LjAwIDYuMjUgNi41MFxuWzE2XSA2Ljc1IDcuMDAgNy4yNSA3LjUwIDcuNzUgOC4wMFxuIn0= -->
-<pre><code> [1] 3.00 3.25 3.50 3.75 4.00 4.25 4.50 4.75 5.00 5.25 5.50 5.75 6.00 6.25 6.50
-[16] 6.75 7.00 7.25 7.50 7.75 8.00</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiICAgU3RyYXR1bSAgICAgICAgICAgIExvbmdpdHVkZSAgICAgICAgIExhdGl0dWRlICAgIFxuIExlbmd0aDozOSAgICAgICAgICBNaW4uICAgOi0xMTQuMyAgIE1pbi4gICA6MjMuMDggIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOi0xMTIuOSAgIDFzdCBRdS46MjQuNTIgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOi0xMTEuNSAgIE1lZGlhbiA6MjYuMjEgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOi0xMTEuNyAgIE1lYW4gICA6MjYuMTQgIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOi0xMTAuNCAgIDNyZCBRdS46MjcuNDcgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOi0xMDkuMSAgIE1heC4gICA6MjkuMzMgIFxuIn0= -->
+<pre><code>   Stratum            Longitude         Latitude    
+ Length:39          Min.   :-114.3   Min.   :23.08  
+ Class :character   1st Qu.:-112.9   1st Qu.:24.52  
+ Mode  :character   Median :-111.5   Median :26.21  
+                    Mean   :-111.7   Mean   :26.14  
+                    3rd Qu.:-110.4   3rd Qu.:27.47  
+                    Max.   :-109.1   Max.   :29.33  </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="indexing" class="section level3">
-<h3>Indexing</h3>
-<p>Even though these objects are solitary, they have several elements. For example, the object <code>y</code> above has 21 entities in it. To get to these individual entities within the <code>y</code> we use a square bracket notation to indicate that we want to get an item <em>within</em> the variable and must indicate which element (or elements) we are interested in getting. The numeric indices within the brackets are 1-based (e.g., the first element is 1, the second is 2, etc.). So the code</p>
+</div>
+<div id="working-with-data.frame-objects" class="section level2">
+<h2>Working with <code>data.frame</code> Objects</h2>
+<p>A variable representing a <code>data.frame</code> has properties and constituents just like a vector. The size of the <code>data.frame</code> is defined as the <code>dim</code>ensions of it and represents the number of <em>rows</em> and <em>columns</em> it contains.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoieVs0XSJ9 -->
-<pre class="r"><code>y[4]</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoibnJvdyggU2FtcGxlcyApIn0= -->
+<pre class="r"><code>nrow( Samples )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDMuNzVcbiJ9 -->
-<pre><code>[1] 3.75</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDM5XG4ifQ== -->
+<pre><code>[1] 39</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoibmNvbCggU2FtcGxlcyApIn0= -->
+<pre class="r"><code>ncol( Samples )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDNcbiJ9 -->
+<pre><code>[1] 3</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>returns the 4<span class="math inline">\(^{th}\)</span> element in the vector. This notation can be used to <em>get</em> as well as <em>set</em> values within the vector.</p>
+<p>or use the <code>dim()</code> function which returns both of them.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInlbMl0gPC0gNDIiLCJ5Il19 -->
-<pre class="r"><code>y[2] &lt;- 42
-y</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiZGltKCBTYW1wbGVzICkifQ== -->
+<pre class="r"><code>dim( Samples )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSAgMy4wMCA0Mi4wMCAgMy41MCAgMy43NSAgNC4wMCAgNC4yNSAgNC41MCAgNC43NSAgNS4wMCAgNS4yNSAgNS41MCAgNS43NVxuWzEzXSAgNi4wMCAgNi4yNSAgNi41MCAgNi43NSAgNy4wMCAgNy4yNSAgNy41MCAgNy43NSAgOC4wMFxuIn0= -->
-<pre><code> [1]  3.00 42.00  3.50  3.75  4.00  4.25  4.50  4.75  5.00  5.25  5.50  5.75
-[13]  6.00  6.25  6.50  6.75  7.00  7.25  7.50  7.75  8.00</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDM5ICAzXG4ifQ== -->
+<pre><code>[1] 39  3</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>Each variable within the <code>data.frame</code> is represented by the name we gave it when we added it to the <code>data.frame</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoibmFtZXMoIFNhbXBsZXMgKSJ9 -->
+<pre class="r"><code>names( Samples )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiU3RyYXR1bVwiICAgXCJMb25naXR1ZGVcIiBcIkxhdGl0dWRlXCIgXG4ifQ== -->
+<pre><code>[1] &quot;Stratum&quot;   &quot;Longitude&quot; &quot;Latitude&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjpbIlN0cmF0dW1cbiIsIkxvbmdpdHVkZVxuIiwiTGF0aXR1ZGVcbiJdfQ== -->
+<pre><code>Stratum
+
+Longitude
+
+Latitude</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The individual elements are available using the square bracket notation, just like for <a href="../vectors/narriative.nb.html">vectors</a> <em>with the exception that</em> we have two coordinates instead of just one. The first coordinate is for <em>row</em> and the second is for <em>column</em>. So to grab the 10<span class="math inline">\(^{th}\)</span> <code>Stratum</code> name (row), which is the 1<span class="math inline">\(^{st}\)</span> variable (column) in the <code>data.frame</code>, we use:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiU2FtcGxlc1sxMCwxXSJ9 -->
+<pre class="r"><code>Samples[10,1]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiU0ZyXCJcbiJ9 -->
+<pre><code>[1] &quot;SFr&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU0ZyXG4ifQ== -->
+<pre><code>SFr</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>While this is OK, it assumes we remember that the <code>Stratum</code> variable is the first variable in the <code>data.frame</code>. If you have data sets with thousands of columns of data in them, it becomes less-than-optimal to use variable numbers to index, which is why we can use the variable name itself in the following format.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiU2FtcGxlcyRTdHJhdHVtWzEwXSJ9 -->
+<pre class="r"><code>Samples$Stratum[10]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiU0ZyXCJcbiJ9 -->
+<pre><code>[1] &quot;SFr&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU0ZyXG4ifQ== -->
+<pre><code>SFr</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Here, we use the name of the <code>data.frame</code> connected to the name of the variable using the dollar sign ($) to hook them up.</p>
+<div class="box-yellow">
+For readability, it is advised that you use the dollar-sign notation to get and set values within a <code>data.frame</code>. It will always be more clear to you and anyone who reads your code if you are as verbose as you can be in your code. Trust me, your <em>future self</em> will like you much better if you adopt this habit as soon as possible.
+</div>
+<p>Similar to for <a href="../vectors/narriative.nb.html">vectors</a>, we can grab the head and tail of the whole data frame.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiaGVhZCggU2FtcGxlcyApIn0= -->
+<pre class="r"><code>head( Samples )</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"88","2":"-114.2935","3":"29.32541","_rn_":"1"},{"1":"9","2":"-113.9449","3":"29.01457","_rn_":"2"},{"1":"84","2":"-113.6679","3":"28.96651","_rn_":"3"},{"1":"175","2":"-113.4897","3":"28.72796","_rn_":"4"},{"1":"177","2":"-113.9914","3":"28.66056","_rn_":"5"},{"1":"173","2":"-112.8698","3":"28.40846","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoidGFpbChTYW1wbGVzLCBuPTQpIn0= -->
+<pre class="r"><code>tail(Samples, n=4)</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"98","2":"-109.6487","3":"23.07570","_rn_":"36"},{"1":"101","2":"-110.5744","3":"27.90509","_rn_":"37"},{"1":"32","2":"-109.3270","3":"26.63783","_rn_":"38"},{"1":"102","2":"-109.1263","3":"26.38014","_rn_":"39"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>We can use the same approach for setting values within a <code>data.frame</code>. Here I’ll expand the <em>SFr</em> notion to represent the full location name.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMkU3RyYXR1bVsxMF0gPC0gXCJTYW4gRnJhbmNpc3F1aXRvXCIiLCJoZWFkKCBTYW1wbGVzLCBuPTEwKSJdfQ== -->
+<pre class="r"><code>Samples$Stratum[10] &lt;- &quot;San Francisquito&quot;
+head( Samples, n=10)</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"88","2":"-114.2935","3":"29.32541","_rn_":"1"},{"1":"9","2":"-113.9449","3":"29.01457","_rn_":"2"},{"1":"84","2":"-113.6679","3":"28.96651","_rn_":"3"},{"1":"175","2":"-113.4897","3":"28.72796","_rn_":"4"},{"1":"177","2":"-113.9914","3":"28.66056","_rn_":"5"},{"1":"173","2":"-112.8698","3":"28.40846","_rn_":"6"},{"1":"171","2":"-113.1826","3":"28.22308","_rn_":"7"},{"1":"89","2":"-113.3999","3":"28.03661","_rn_":"8"},{"1":"159","2":"-113.3161","3":"27.52944","_rn_":"9"},{"1":"San Francisquito","2":"-112.9640","3":"27.36320","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div class="box-red">
+<p><strong>ALERT:</strong> If you received an error message with some like</p>
+<pre><code>Warning message:
+In `[&lt;-.factor`(`*tmp*`, 10, value = c(30L, 32L, 29L, 19L, 20L,  :
+  invalid factor level, NA generated</code></pre>
+<p>It is because the <code>read.csv()</code> function has a default value that converts any column with a <code>character</code> variable type into a <code>factor</code> data type… This is a <strong>stupid</strong> default option and you should change the default value in your <code>R</code> options file - To fix this issue, see <a href="../environment/narriative.nb.html">r environment</a> for or remember that <em>every time you load in data</em>, you must add the optional argument <code>stringsAsFactors=FALSE</code> to the <code>read.csv()</code> function call.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiU2FtcGxlcyA8LSByZWFkLmNzdih1cmwsIHN0cmluZ0FzRmFjdG9ycz1GQUxTRSkifQ== -->
+<pre class="r"><code>Samples &lt;- read.csv(url, stringAsFactors=FALSE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Run that and try to replace the Stratum name as above.</p>
 </div>
 <div id="slices" class="section level3">
 <h3>Slices</h3>
-<p>In addition to getting a single entity from a vector, we can also grab a sequence of values by using a set of indices within the square brackets. For example, if I wanted the first five entries of <code>y</code> I could ask for it as:</p>
+<p>Just like for <a href="../vectors/narriative.nb.html">vectors</a>, we can also take slices of components from <code>data.frame</code> objects. However, what we get in return depends on specifically what we ask for.</p>
+<p>For example, taking from a single column in the <code>data.frame</code> returns a slice of that particular variable type.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoieVsxOjVdIn0= -->
-<pre class="r"><code>y[1:5]</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjpbInggPC0gU2FtcGxlc1sxOjMsIDFdIiwieCJdfQ== -->
+<pre class="r"><code>x &lt;- Samples[1:3, 1]
+x</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdICAzLjAwIDQyLjAwICAzLjUwICAzLjc1ICA0LjAwXG4ifQ== -->
-<pre><code>[1]  3.00 42.00  3.50  3.75  4.00</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiODhcIiBcIjlcIiAgXCI4NFwiXG4ifQ== -->
+<pre><code>[1] &quot;88&quot; &quot;9&quot;  &quot;84&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjpbIjg4XG4iLCI5XG4iLCI4NFxuIl19 -->
+<pre><code>88
+
+9
+
+84</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiY2xhc3MoeCkifQ== -->
+<pre class="r"><code>class(x)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiY2hhcmFjdGVyXCJcbiJ9 -->
+<pre><code>[1] &quot;character&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiY2hhcmFjdGVyXG4ifQ== -->
+<pre><code>character</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>This is because all the returned values are from a single data column, which by definition <em>must</em> be the same kind of data.</p>
+<p>You can ask <code>R</code> to return it as a <code>data.frame</code> rather than just a vector (in case you need to have a data.frame to work with) by passing an optional argument to the square brackets. You will notice it retains the row numbers.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbIngxIDwtIFNhbXBsZXNbIDE6MywgMSwgZHJvcD1GQUxTRV0iLCJ4MSJdfQ== -->
+<pre class="r"><code>x1 &lt;- Samples[ 1:3, 1, drop=FALSE]
+x1</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"88","_rn_":"1"},{"1":"9","_rn_":"2"},{"1":"84","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-source-begin eyJkYXRhIjoiY2xhc3MoeDEpIn0= -->
+<pre class="r"><code>class(x1)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5mcmFtZVwiXG4ifQ== -->
+<pre><code>[1] &quot;data.frame&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiZGF0YS5mcmFtZVxuIn0= -->
+<pre><code>data.frame</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>However, if we take the same number of object but from a row instead of a column, we can <em>only</em> get a <code>data.frame</code> object in return.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbInkgPC0gU2FtcGxlc1sxLCAxOjNdIiwieSJdfQ== -->
+<pre class="r"><code>y &lt;- Samples[1, 1:3]
+y</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"88","2":"-114.2935","3":"29.32541","_rn_":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-source-begin eyJkYXRhIjoiY2xhc3MoeSkifQ== -->
+<pre class="r"><code>class(y)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5mcmFtZVwiXG4ifQ== -->
+<pre><code>[1] &quot;data.frame&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiZGF0YS5mcmFtZVxuIn0= -->
+<pre><code>data.frame</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>because this time, we are asking for the three variables representing the first record. Because these values are being drawn from across different columns of data, <code>R</code> does not concatenate these into a single vector and coearce them to the least common data type. Rather it makes a new <code>data.frame</code> object for you and returns that.</p>
+</div>
+<div id="modifying-existing-data-frames" class="section level3">
+<h3>Modifying Existing Data Frames</h3>
+<p>Once we have a <code>data.frame</code> in memory, we can also add to it. If we are adding columns, we can append a single varible onto it and <code>R</code> will put it on the far right side of the <code>data.frame</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMkSUQgPC0gMTpucm93KFNhbXBsZXMpIiwic3VtbWFyeSggU2FtcGxlcyApIl19 -->
+<pre class="r"><code>Samples$ID &lt;- 1:nrow(Samples)
+summary( Samples )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgU3RyYXR1bSAgICAgICAgICAgIExvbmdpdHVkZSAgICAgICAgIExhdGl0dWRlICAgICAgICAgICBJRCAgICAgIFxuIExlbmd0aDozOSAgICAgICAgICBNaW4uICAgOi0xMTQuMyAgIE1pbi4gICA6MjMuMDggICBNaW4uICAgOiAxLjAgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOi0xMTIuOSAgIDFzdCBRdS46MjQuNTIgICAxc3QgUXUuOjEwLjUgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOi0xMTEuNSAgIE1lZGlhbiA6MjYuMjEgICBNZWRpYW4gOjIwLjAgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOi0xMTEuNyAgIE1lYW4gICA6MjYuMTQgICBNZWFuICAgOjIwLjAgIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOi0xMTAuNCAgIDNyZCBRdS46MjcuNDcgICAzcmQgUXUuOjI5LjUgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOi0xMDkuMSAgIE1heC4gICA6MjkuMzMgICBNYXguICAgOjM5LjAgIFxuIn0= -->
+<pre><code>   Stratum            Longitude         Latitude           ID      
+ Length:39          Min.   :-114.3   Min.   :23.08   Min.   : 1.0  
+ Class :character   1st Qu.:-112.9   1st Qu.:24.52   1st Qu.:10.5  
+ Mode  :character   Median :-111.5   Median :26.21   Median :20.0  
+                    Mean   :-111.7   Mean   :26.14   Mean   :20.0  
+                    3rd Qu.:-110.4   3rd Qu.:27.47   3rd Qu.:29.5  
+                    Max.   :-109.1   Max.   :29.33   Max.   :39.0  </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>If we want to add rows to the <code>data.frame</code>, it is a bit more involved because we are going to have to either a list object whose variables are of the same order as the original <code>data.frame</code> or anoher entire <code>data.frame</code> (whose names are identical to the original)</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoibmFtZXMoU2FtcGxlcykifQ== -->
+<pre class="r"><code>names(Samples)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiU3RyYXR1bVwiICAgXCJMb25naXR1ZGVcIiBcIkxhdGl0dWRlXCIgIFwiSURcIiAgICAgICBcbiJ9 -->
+<pre><code>[1] &quot;Stratum&quot;   &quot;Longitude&quot; &quot;Latitude&quot;  &quot;ID&quot;       </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjpbIlN0cmF0dW1cbiIsIkxvbmdpdHVkZVxuIiwiTGF0aXR1ZGVcbiIsIklEXG4iXX0= -->
+<pre><code>Stratum
+
+Longitude
+
+Latitude
+
+ID</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>To add a single row, we use <code>rbind()</code> and pass it the <code>data.frame</code> and a new <a href="../lists/narriative.nb.html">list</a> object.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMgPC0gcmJpbmQoIFNhbXBsZXMsIGxpc3QoXCJMb3MgQ2Fib3NcIiwtMTA5LjcxMjQsIDIzLjA3OTksIDQwKSkiLCJ0YWlsKFNhbXBsZXMpIl19 -->
+<pre class="r"><code>Samples &lt;- rbind( Samples, list(&quot;Los Cabos&quot;,-109.7124, 23.0799, 40))
+tail(Samples)</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["ID"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Mat","2":"-110.1091","3":"23.08984","4":"35","_rn_":"35"},{"1":"98","2":"-109.6487","3":"23.07570","4":"36","_rn_":"36"},{"1":"101","2":"-110.5744","3":"27.90509","4":"37","_rn_":"37"},{"1":"32","2":"-109.3270","3":"26.63783","4":"38","_rn_":"38"},{"1":"102","2":"-109.1263","3":"26.38014","4":"39","_rn_":"39"},{"1":"Los Cabos","2":"-109.7124","3":"23.07990","4":"40","_rn_":"40"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>You can also use another <code>data.frame</code>, which in this case must have the same named varaibles as the original.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbIm1vcmVzaXRlcyA8LSBkYXRhLmZyYW1lKCBJRCA9IDQxOjQyLFxuICAgICAgICAgICAgICAgICAgICAgICAgIFN0cmF0dW0gPSBjKFwiTG9zIEJhcnJpbGVzXCIsXCJDb21vbmR1XCIpLFxuICAgICAgICAgICAgICAgICAgICAgICAgIExvbmdpdHVkZSA9IGMoLTEwOS43MDI2LCAtMTExLjg0NDIpLFxuICAgICAgICAgICAgICAgICAgICAgICAgIExhdGl0dWRlID0gYygyMy42ODExLCAyNi4wNzA4KSBcbiAgICAgICAgICAgICAgICAgICAgICAgICApIiwibmFtZXMobW9yZXNpdGVzKSJdfQ== -->
+<pre class="r"><code>moresites &lt;- data.frame( ID = 41:42,
+                         Stratum = c(&quot;Los Barriles&quot;,&quot;Comondu&quot;),
+                         Longitude = c(-109.7026, -111.8442),
+                         Latitude = c(23.6811, 26.0708) 
+                         )
+names(moresites)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiSURcIiAgICAgICAgXCJTdHJhdHVtXCIgICBcIkxvbmdpdHVkZVwiIFwiTGF0aXR1ZGVcIiBcbiJ9 -->
+<pre><code>[1] &quot;ID&quot;        &quot;Stratum&quot;   &quot;Longitude&quot; &quot;Latitude&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjpbIklEXG4iLCJTdHJhdHVtXG4iLCJMb25naXR1ZGVcbiIsIkxhdGl0dWRlXG4iXX0= -->
+<pre><code>ID
+
+Stratum
+
+Longitude
+
+Latitude</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>However, notice that the order in which these varaibles in <code>moresites</code> is different than those in <code>Samples</code>. The <code>rbind()</code> function rearranges the order when it concatenates onto the rows.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMgPC0gcmJpbmQoIFNhbXBsZXMsIG1vcmVzaXRlcykiLCJ0YWlsKCBTYW1wbGVzICkiXX0= -->
+<pre class="r"><code>Samples &lt;- rbind( Samples, moresites)
+tail( Samples )</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["ID"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"101","2":"-110.5744","3":"27.90509","4":"37","_rn_":"37"},{"1":"32","2":"-109.3270","3":"26.63783","4":"38","_rn_":"38"},{"1":"102","2":"-109.1263","3":"26.38014","4":"39","_rn_":"39"},{"1":"Los Cabos","2":"-109.7124","3":"23.07990","4":"40","_rn_":"40"},{"1":"Los Barriles","2":"-109.7026","3":"23.68110","4":"41","_rn_":"41"},{"1":"Comondu","2":"-111.8442","3":"26.07080","4":"42","_rn_":"42"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>To delete a column of data, assign it the value of <code>NULL</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMkSUQgPC0gTlVMTCIsInN1bW1hcnkoU2FtcGxlcykiXX0= -->
+<pre class="r"><code>Samples$ID &lt;- NULL
+summary(Samples)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgU3RyYXR1bSAgICAgICAgICAgIExvbmdpdHVkZSAgICAgICAgIExhdGl0dWRlICAgIFxuIExlbmd0aDo0MiAgICAgICAgICBNaW4uICAgOi0xMTQuMyAgIE1pbi4gICA6MjMuMDggIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOi0xMTIuOCAgIDFzdCBRdS46MjQuMjggIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOi0xMTEuNSAgIE1lZGlhbiA6MjYuMDQgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOi0xMTEuNiAgIE1lYW4gICA6MjYuMDEgIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOi0xMTAuMyAgIDNyZCBRdS46MjcuMzkgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOi0xMDkuMSAgIE1heC4gICA6MjkuMzMgIFxuIn0= -->
+<pre><code>   Stratum            Longitude         Latitude    
+ Length:42          Min.   :-114.3   Min.   :23.08  
+ Class :character   1st Qu.:-112.8   1st Qu.:24.28  
+ Mode  :character   Median :-111.5   Median :26.04  
+                    Mean   :-111.6   Mean   :26.01  
+                    3rd Qu.:-110.3   3rd Qu.:27.39  
+                    Max.   :-109.1   Max.   :29.33  </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>or use negative indices to delete rows.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMgPC0gU2FtcGxlc1sgLTQyOi00MCwgXSIsInN1bW1hcnkoU2FtcGxlcykiXX0= -->
+<pre class="r"><code>Samples &lt;- Samples[ -42:-40, ]
+summary(Samples)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgU3RyYXR1bSAgICAgICAgICAgIExvbmdpdHVkZSAgICAgICAgIExhdGl0dWRlICAgIFxuIExlbmd0aDozOSAgICAgICAgICBNaW4uICAgOi0xMTQuMyAgIE1pbi4gICA6MjMuMDggIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOi0xMTIuOSAgIDFzdCBRdS46MjQuNTIgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOi0xMTEuNSAgIE1lZGlhbiA6MjYuMjEgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOi0xMTEuNyAgIE1lYW4gICA6MjYuMTQgIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOi0xMTAuNCAgIDNyZCBRdS46MjcuNDcgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOi0xMDkuMSAgIE1heC4gICA6MjkuMzMgIFxuIn0= -->
+<pre><code>   Stratum            Longitude         Latitude    
+ Length:39          Min.   :-114.3   Min.   :23.08  
+ Class :character   1st Qu.:-112.9   1st Qu.:24.52  
+ Mode  :character   Median :-111.5   Median :26.21  
+                    Mean   :-111.7   Mean   :26.14  
+                    3rd Qu.:-110.4   3rd Qu.:27.47  
+                    Max.   :-109.1   Max.   :29.33  </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<hr />
+<p>The <code>data.frame</code> object is a fundamental component of your <code>R</code> work flow and being able to manipulate data within it and extract data from it are a huge part of becoming data literate.</p>
 <!-- rnb-text-end -->
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRGF0YSBDb250YWluZXJzIgpvdXRwdXQ6IAogIGh0bWxfbm90ZWJvb2s6CiAgICAgIGNzczogImVudnM1NDMtc3R5bGVzLmNzcyIKLS0tCgpBbGwgb2YgdGhlIGNvbGxlY3Rpb24gdHlwZXMgYmVsb3cgY2FuIGJlIGFwcGxpZWQgdG8gYW55IG9mIHRoZSBkYXRhIHR5cGVzIGRpc2N1c3NlZCBbcHJldmlvdXNseV0oaHR0cHM6Ly9keWVybGFiLmdpdGh1Yi5pby9FTlZTLUxlY3R1cmVzL2RhdGFfdHlwZXMvbmFycmlhdGl2ZS5uYi5odG1sKS4KCgojIyBWZWN0b3JzIG9mIFZhbHVlcwoKSXQgaXMgcmF0aGVyIHJhcmUgdGhhdCB3ZSB3b3JrIHdpdGggYSBzaW5nbGUgZW50aXR5IGZvciBhbnkgZGF0YSB0eXBlLiAgIFRoZSBtYWluIHN5bnRheCBpbiBgUmAgdXNlZCB0byBtYWtlIGEgY29sbGVjdGlvbiBvZiBvYmplY3RzIGlzIHRvIGVuY2xvc2UgdGhlbSBpbnRvIHRoZSBgYygpYCBmdW5jdGlvbiAoKmMqIGZvciAqYypvbWJpbmUgYW5kIHNpbmNlIHdlIHVzZSBpdCBzbyBvZnRlbiwgbWFraW5nIGl0IGFzIHNob3J0IGFzIHBvc3NpYmxl4oCUYW55dGhpbmcgd2UgY2FuIGRvIHRvIHR5cGUgbGVzcyBpcyBnb29kIGZvciByZWR1Y2luZyB0aGUgbnVtYmVyIG9mIGVycm9ycyBpbiBvdXIgY29kZSkuICAKCkhlcmUgaXMgaG93IHdlIGNhbiBnZXQgYSB2ZWN0b3Igb2YgYG51bWVyaWNgIHZhbHVlcy4KCmBgYHtyfQp4IDwtIGMoMSwyLDMsNCw1LDYsNykKeApgYGAKClRoZSB2YXJpYWJsZSBgeGAgY29udGFpbnMgYSBudW1iZXIgb2YgbnVtZXJpYyB0eXBlcyBhbmQgaXMgYSBzaW5nbGUgb2JqZWN0LgoKYGBge3J9Cmxlbmd0aCggeCApCmBgYAoKCgojIyMgU2VxdWVuY2VzCgpJdCB3b3VsZCByZWFsbHkgc3VjayBpZiB3ZSBoYWQgdG8gdHlwZSBpbiBhbGwgdGhlIGVsZW1lbnRzIGludG8gZXZlcnkgYXJyYXkgd2Ugd2FudC4gIFNheSB3ZSB3YW50IGEgdmVjdG9yIG9mIDEwMCBudW1iZXJzLCBpdCB3b3VsZCBiZSByZWFsbHkgbGlrZWx5IGlmIHdlIGhhZCB0byB0eXBlIGFsbCB0aGUgbnVtYmVycyBgMSwgMiwgMywgLi4uICwgOTksIDEwMGAgKGFuZCBxdWl0ZSBib3JpbmcgYHIgZW1vOjpqaSgienp6IilgKS4gIFRoZSBtYWluIHdheSB3ZSB3aWxsIGdldCBkYXRhIGludG8gYFJgIGlzIGJ5IGxvYWRpbmcgaXQgZnJvbSBmaWxlcyBvciBkYXRhYmFzZXMsIHdoaWNoIHdlIHdpbGwgZ2V0IHRvIGxhdGVyLCBidXQgZm9yIG5vdyBsZXQncyBsb29rIGF0IGhvdyB3ZSBjYW4gc3BlY2lmaWNhbGx5IGNyZWF0ZSBzZXF1ZW5jZXMgb2YgdmFsdWVzIHdpdGggYSBsaXR0bGUgYml0IG9mIGNvZGUuCgpUaGUgZmlyc3QgaXMgdGhlIGNvbG9uIG9wZXJhdG9yLiAgVGhlIHN5bnRheCBpcyBgWDpZYCB3aGljaCB3aWxsIHByb2R1Y2UgdGhlIHZhbHVlcyBmcm9tIGBYYCB0byBgWWAgKGluY2x1c2l2ZSBvbiBib3RoIGVuZHMpLiAgSW4gYFJgIHdlIHVzZSBpdCBsaWtlIHRoaXM6CgpgYGB7cn0KeSA8LSAzOjggCnkKYGBgCgpUaGlzIGlzIGp1c3QgYSBzaG9ydGN1dCBmb3IgdGhlIG1vcmUgZ2VuZXJhbCBgc2VxKClgIGZ1bmN0aW9uICgqc2VxKiBpcyBzaG9ydCBmb3IgKnNlcXVlbmNlKikuICBUaGlzIGZ1bmN0aW9uIHRha2VzIGEgdmFsdWUgdG8gc3RhcnQgYXQgYW5kIG9uZSB0byBlbmQgd2l0aCAoaW5jbHVzaXZlIGp1c3QgbGlrZSBhYm92ZSkuCgpgYGB7cn0KeSA8LSBzZXEoMyw4KQp5CmBgYAoKVGhlc2UgYXJlIHRoZSAqcmVxdWlyZWQqIGFyZ3VtZW50cy4gIEJ5IGRlZmF1bHQsIHRoZSBgc2VxKClgIGZ1bmN0aW9uIGNvdW50cyBieSAkMS4wJCAoZWl0aGVyIHVwIG9yIGRvd24sIGRlcGVuZGluZyB1cG9uIHRoZSBtYWduaXR1ZGUgb2YgdGhlIGZpcnN0IGFuZCBzZWNvbmQgYXJndW1lbnQpLgoKYGBge3J9CnNlcSg4LDMpCmBgYAoKSWYgd2Ugd2FudCBpdCB0byBjb3VudCBieSBzb21lIG90aGVyIGludGVydmFsLCB3ZSBjYW4gdGVsbCBpdCBieSBwYXNzaW5nIHRoZSAqb3B0aW9uYWwgYXJndW1lbnQqIGBieT1gLgoKYGBge3J9CnkgPC0gc2VxKDMsOCxieT0wLjI1KQp5CmBgYAoKCgojIyMgSW5kZXhpbmcKCkV2ZW4gdGhvdWdoIHRoZXNlIG9iamVjdHMgYXJlIHNvbGl0YXJ5LCB0aGV5IGhhdmUgc2V2ZXJhbCBlbGVtZW50cy4gIEZvciBleGFtcGxlLCB0aGUgb2JqZWN0IGB5YCBhYm92ZSBoYXMgYHIgbGVuZ3RoKHkpYCBlbnRpdGllcyBpbiBpdC4gIFRvIGdldCB0byB0aGVzZSBpbmRpdmlkdWFsIGVudGl0aWVzIHdpdGhpbiB0aGUgYHlgIHdlIHVzZSBhIHNxdWFyZSBicmFja2V0IG5vdGF0aW9uIHRvIGluZGljYXRlIHRoYXQgd2Ugd2FudCB0byBnZXQgYW4gaXRlbSAqd2l0aGluKiB0aGUgdmFyaWFibGUgYW5kIG11c3QgaW5kaWNhdGUgd2hpY2ggZWxlbWVudCAob3IgZWxlbWVudHMpIHdlIGFyZSBpbnRlcmVzdGVkIGluIGdldHRpbmcuICBUaGUgbnVtZXJpYyBpbmRpY2VzIHdpdGhpbiB0aGUgYnJhY2tldHMgYXJlIDEtYmFzZWQgKGUuZy4sIHRoZSBmaXJzdCBlbGVtZW50IGlzIDEsIHRoZSBzZWNvbmQgaXMgMiwgZXRjLikuICBTbyB0aGUgY29kZQoKYGBge3J9CnlbNF0KYGBgCgpyZXR1cm5zIHRoZSA0JF57dGh9JCBlbGVtZW50IGluIHRoZSB2ZWN0b3IuICBUaGlzIG5vdGF0aW9uIGNhbiBiZSB1c2VkIHRvICpnZXQqIGFzIHdlbGwgYXMgKnNldCogdmFsdWVzIHdpdGhpbiB0aGUgdmVjdG9yLgoKYGBge3J9CnlbMl0gPC0gNDIKeQpgYGAKCiMjIyBTbGljZXMKCkluIGFkZGl0aW9uIHRvIGdldHRpbmcgYSBzaW5nbGUgZW50aXR5IGZyb20gYSB2ZWN0b3IsIHdlIGNhbiBhbHNvIGdyYWIgYSBzZXF1ZW5jZSBvZiB2YWx1ZXMgYnkgdXNpbmcgYSBzZXQgb2YgaW5kaWNlcyB3aXRoaW4gdGhlIHNxdWFyZSBicmFja2V0cy4gIEZvciBleGFtcGxlLCBpZiBJIHdhbnRlZCB0aGUgZmlyc3QgZml2ZSBlbnRyaWVzIG9mIGB5YCBJIGNvdWxkIGFzayBmb3IgaXQgYXM6CgpgYGB7cn0KeVsxOjVdCmBgYAoKCgoKCgoKCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRGF0YSBGcmFtZXMiCm91dHB1dDogCiAgaHRtbF9ub3RlYm9vazoKICAgICAgY3NzOiAiZW52czU0My1zdHlsZXMuY3NzIgotLS0KCgoKCj4gRGF0YSBmcmFtZXMgYXJlIGEgc3RydWN0dXJlIHRoYXQgY2FuIGhvbGQgbWFueSBkaWZmZXJlbnQgZGF0YSB0eXBlcyBpbiBvbmUgc2ltcGxlIHN0cnVjdHVyZS4KCkRhdGEgZnJhbWVzIGFyZSB0aGUgKmxpbmd1YSBmcmFuY2EqIGZvciBgUmAsIGVzcGVjaWFsbHkgb25jZSB3ZSBzdGFydCBnZXR0aW5nIGludG8gbW9yZSBjb21wbGljYXRlZCBhbmFseXNpcyBhbmQgbWFuaXB1bGF0aW9uLiAgRm9yIHNpbXBsaWNpdHksIG9uZSBjYW4gY29uc2lkZXIgYSBgZGF0YS5mcmFtZWAgb2JqZWN0IG11Y2ggbGlrZSBhIHNwcmVhZHNoZWV0LiAgRWFjaCByb3cgcmVwcmVzZW50cyBhIHJlY29yZCBvbiBzb21lIG9iamVjdCBhbmQgZWFjaCBjb2x1bW7igJRjb25zaXN0aW5nIG9mIGRpZmZlcmVudCBraW5kcyBvZiBkYXRh4oCUYXJlIG1lYXN1cmVtZW50cyBvbiB0aGF0IG9iamVjdC4gIAoKQnkgaW4gbGFyZ2UsIHlvdSB3aWxsIGxvYWQgeW91ciBkYXRhIGludG8gdGhlc2Ugc3RydWN0dXJlcyBhbmQgcGFzcyB0aGVtIHRvIGZ1bmN0aW9ucyBmb3IgcGxvdHRpbmcsIHNpbXVsYXRpb24sIHBsb3R0aW5nLCBldGMuICBJdCBpcyBhIGdvb2QgaWRlYSB0byBnZXQgdXNlZCB0byB0aGVzZS4KCgojIyBDcmVhdGluZyBgZGF0YS5mcmFtZWAgT2JqZWN0cwoKVG8gbWFrZSBhIGBkYXRhLmZyYW1lYCB3ZSBuZWVkIHRvIGVpdGhlcjoKCiAgMS4gTWFrZSBpdCBmcm9tIHNjcmF0Y2ggdXNpbmcgdmVjdG9ycyAodGhlIG1vcmUgY29tcGxpY2F0ZWQpLgogIDIuIExvYWQgaXQgZnJvbSBhIGZpbGUgKHBlcmhhcHMgdGhlIGVhc2llc3Qgd2F5KS4KCldlIHNoYWxsIHN0YXJ0IHdpdGggdGhlIG1vc3QgY29tcGxpY2F0ZWQgY2FzZS4gIAoKIyMjIENyZWF0aW5nIGBkYXRhLmZyYW1lYCBPYmplY3RzICpkZSBub3ZvKgoKYGBge3J9CnNpdGUgPC0gYyggIkNvbnN0IiwiRVNhbiIsICJBcXUiKQpsb25naXR1ZGUgPC0gYyggLTExMS42NzUsIC0xMTAuMzY4NiwgLTExMC4xMDQzKQpsYXRpdHVkZSA8LSBjKDI1LjAyNDcsIDI0LjQ1ODc5LCAyMy4yODU1KQoKc2l0ZXMgPC0gZGF0YS5mcmFtZSggU2l0ZSA9IHNpdGUsCiAgICAgICAgICAgICAgICAgICAgIExvbmdpdHVkZSA9IGxvbmdpdHVkZSwKICAgICAgICAgICAgICAgICAgICAgTGF0aXR1ZGUgPSBsYXRpdHVkZSApCnNpdGVzCmBgYAoKVGhlIHRoaW5nIGFib3V0IGBkYXRhLmZyYW1lYCBvYmplY3RzIGlzIHRoYXQgdGhlIGtub3cgaG93IHRvIG9yZ2FuaXplIGFuZCBzdW1tYXJpemUgdGhlaXIgY29tcG9uZW50IHZhcmlhYmxlcy4KCmBgYHtyfQpzdW1tYXJ5KHNpdGVzKQpgYGAKCk5vdGljZSB0aGF0IGVhY2ggdmFyaWFibGUgaXMgc3VtbWFyaXplZCBhIHdheSB0aGF0IGdpdmVzIGFzIG11Y2ggaW5mb3JtYXRpb24gYWJvdXQgdGhlIGNvbnRuZXRzIG9mIHRoYXQgdmFyaWFibGUuIFRoZSBgc3VtbWFyeSgpYCBmdW5jdGlvbiBpcyBjcml0aWNhbCBhbmQgb25lIHdlIHdpbGwgdXNlIG92ZXIgYW5kIG92ZXIgYWdhaW4uCgojIyMgTG9hZGluZyBmcm9tIEZpbGUgYW5kL29yIFVSTAoKWW91IGNhbiBhbHNvIGxvYWQgYSBgZGF0YS5mcmFtZWAgaW4gdXNpbmcgYSBsb2NhbCBmaWxlIG9yIGEgVVJMIHRvIGEgZmlsZSBzb21ld2hlcmUgb24gdGhlIGludGVybmV0LiAgVGhlIGVhc2llc3Qgd2F5IHRvIGRvIHRoaXMgaXMgdG8gaGF2ZSB5b3VyIGZpbGUgYXMgYSBDU1YgKENvbW1hLVNlcGFyYXRlZC1WYWx1ZSkgZm9ybWF0LiAgVGhpcyBpcyB1c3VhbGx5IGEgJEZpbGUgXHRvIFNhdmVcO0FzJCBraW5kIG9mIHJvdXRpbmUuICBJdCBpcyBpbXBvcnRhbnQgZm9yIHJlcHJvZHVjaWJpbGl0eSBhbmQgY29sbGFib3JhdGlvbiB0byAxKSBIYXZlIG9ubHkgb25lIHZlcnNpb24gb2YgeW91ciBkYXRhIHNldCwgYW5kIDIpIEtlZXAgaXQgaW4gYSBmb3JtYXQgdGhhdCBpcyBhY2Nlc3NpYmxlIHN1Y2ggYXMgcGxhaW4gdGV4dC4KCkhlcmUgaXMgdGhlIGZ1bGwgdmVyc2lvbiBvZiB0aG9zZSBkYXRhIGxvYWRlZCBhYm92ZS4gIEl0IGlzIGxvY2F0ZWQgb24gYSBbR2l0aHViXShodHRwczovL2dpdGh1Yi5jb20vZHllcmxhYi9FTlZTLUxlY3R1cmVzKSB3ZWJzaXRlIGFuZCBpcyBhY2Nlc3NpYmxlIHRvIGFueW9uZSB3aXRoIGFuIGludGVybmV0IGNvbm5lY3Rpb24uCgpgYGB7cn0KdXJsIDwtICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vZHllcmxhYi9FTlZTLUxlY3R1cmVzL21hc3Rlci9kYXRhL2FyYXBhdC5jc3YiCmBgYAoKT25jZSB3ZSBoYXZlIHRoZSB1cmwgb3IgZmlsZSBhcyBhIGBjaGFyYWN0ZXJgIG9iamVjdCwgd2UgY2FuIHVzZSB0aGUgYnVpbHQtaW4gYHJlYWQuY3N2KClgIGZ1bmN0aW9uIHRvIGxvYWQgdGhlIGRhdGEgaW50byBhIGxvY2FsIHZhcmlhYmxlLiAgSGVyZSBpcyB3aGF0IHRoYXQgbG9va3MgbGlrZS4KCmBgYHtyfQpTYW1wbGVzIDwtIHJlYWQuY3N2KHVybCkKc3VtbWFyeSggU2FtcGxlcyApCmBgYAoKCgojIyBXb3JraW5nIHdpdGggYGRhdGEuZnJhbWVgIE9iamVjdHMKCkEgdmFyaWFibGUgcmVwcmVzZW50aW5nIGEgYGRhdGEuZnJhbWVgIGhhcyBwcm9wZXJ0aWVzIGFuZCBjb25zdGl0dWVudHMganVzdCBsaWtlIGEgdmVjdG9yLiAgVGhlIHNpemUgb2YgdGhlIGBkYXRhLmZyYW1lYCBpcyBkZWZpbmVkIGFzIHRoZSBgZGltYGVuc2lvbnMgb2YgaXQgYW5kIHJlcHJlc2VudHMgdGhlIG51bWJlciBvZiAqcm93cyogYW5kICpjb2x1bW5zKiBpdCBjb250YWlucy4KCmBgYHtyfQpucm93KCBTYW1wbGVzICkKbmNvbCggU2FtcGxlcyApCmBgYAoKb3IgdXNlIHRoZSBgZGltKClgIGZ1bmN0aW9uIHdoaWNoIHJldHVybnMgYm90aCBvZiB0aGVtLgoKYGBge3J9CmRpbSggU2FtcGxlcyApCmBgYAoKCkVhY2ggdmFyaWFibGUgd2l0aGluIHRoZSBgZGF0YS5mcmFtZWAgaXMgcmVwcmVzZW50ZWQgYnkgdGhlIG5hbWUgd2UgZ2F2ZSBpdCB3aGVuIHdlIGFkZGVkIGl0IHRvIHRoZSBgZGF0YS5mcmFtZWAuCgpgYGB7cn0KbmFtZXMoIFNhbXBsZXMgKQpgYGAKClRoZSBpbmRpdmlkdWFsIGVsZW1lbnRzIGFyZSBhdmFpbGFibGUgdXNpbmcgdGhlIHNxdWFyZSBicmFja2V0IG5vdGF0aW9uLCBqdXN0IGxpa2UgZm9yIFt2ZWN0b3JzXSguLi92ZWN0b3JzL25hcnJpYXRpdmUubmIuaHRtbCkgKndpdGggdGhlIGV4Y2VwdGlvbiB0aGF0KiB3ZSBoYXZlIHR3byBjb29yZGluYXRlcyBpbnN0ZWFkIG9mIGp1c3Qgb25lLiAgVGhlIGZpcnN0IGNvb3JkaW5hdGUgaXMgZm9yICpyb3cqIGFuZCB0aGUgc2Vjb25kIGlzIGZvciAqY29sdW1uKi4gIFNvIHRvIGdyYWIgdGhlIDEwJF57dGh9JCBgU3RyYXR1bWAgbmFtZSAocm93KSwgd2hpY2ggaXMgdGhlIDEkXntzdH0kIHZhcmlhYmxlIChjb2x1bW4pIGluIHRoZSBgZGF0YS5mcmFtZWAsIHdlIHVzZToKCmBgYHtyfQpTYW1wbGVzWzEwLDFdCmBgYAoKV2hpbGUgdGhpcyBpcyBPSywgaXQgYXNzdW1lcyB3ZSByZW1lbWJlciB0aGF0IHRoZSBgU3RyYXR1bWAgdmFyaWFibGUgaXMgdGhlIGZpcnN0IHZhcmlhYmxlIGluIHRoZSBgZGF0YS5mcmFtZWAuICBJZiB5b3UgaGF2ZSBkYXRhIHNldHMgd2l0aCB0aG91c2FuZHMgb2YgY29sdW1ucyBvZiBkYXRhIGluIHRoZW0sIGl0IGJlY29tZXMgbGVzcy10aGFuLW9wdGltYWwgdG8gdXNlIHZhcmlhYmxlIG51bWJlcnMgdG8gaW5kZXgsIHdoaWNoIGlzIHdoeSB3ZSBjYW4gdXNlIHRoZSB2YXJpYWJsZSBuYW1lIGl0c2VsZiBpbiB0aGUgZm9sbG93aW5nIGZvcm1hdC4KCmBgYHtyfQpTYW1wbGVzJFN0cmF0dW1bMTBdCmBgYAoKSGVyZSwgd2UgdXNlIHRoZSBuYW1lIG9mIHRoZSBgZGF0YS5mcmFtZWAgY29ubmVjdGVkIHRvIHRoZSBuYW1lIG9mIHRoZSB2YXJpYWJsZSB1c2luZyB0aGUgZG9sbGFyIHNpZ24gKFwkKSB0byBob29rIHRoZW0gdXAuICAKCjxkaXYgY2xhc3M9ImJveC15ZWxsb3ciPkZvciByZWFkYWJpbGl0eSwgaXQgaXMgYWR2aXNlZCB0aGF0IHlvdSB1c2UgdGhlIGRvbGxhci1zaWduIG5vdGF0aW9uIHRvIGdldCBhbmQgc2V0IHZhbHVlcyB3aXRoaW4gYSBgZGF0YS5mcmFtZWAuICBJdCB3aWxsIGFsd2F5cyBiZSBtb3JlIGNsZWFyIHRvIHlvdSBhbmQgYW55b25lIHdobyByZWFkcyB5b3VyIGNvZGUgaWYgeW91IGFyZSBhcyB2ZXJib3NlIGFzIHlvdSBjYW4gYmUgaW4geW91ciBjb2RlLiAgVHJ1c3QgbWUsIHlvdXIgKmZ1dHVyZSBzZWxmKiB3aWxsIGxpa2UgeW91IG11Y2ggYmV0dGVyIGlmIHlvdSBhZG9wdCB0aGlzIGhhYml0IGFzIHNvb24gYXMgcG9zc2libGUuPC9kaXY+CgoKU2ltaWxhciB0byBmb3IgW3ZlY3RvcnNdKC4uL3ZlY3RvcnMvbmFycmlhdGl2ZS5uYi5odG1sKSwgd2UgY2FuIGdyYWIgdGhlIGhlYWQgYW5kIHRhaWwgb2YgdGhlIHdob2xlIGRhdGEgZnJhbWUuCgpgYGB7cn0KaGVhZCggU2FtcGxlcyApCmBgYAoKYGBge3J9CnRhaWwoU2FtcGxlcywgbj00KQpgYGAKCgpXZSBjYW4gdXNlIHRoZSBzYW1lIGFwcHJvYWNoIGZvciBzZXR0aW5nIHZhbHVlcyB3aXRoaW4gYSBgZGF0YS5mcmFtZWAuICBIZXJlIEknbGwgZXhwYW5kIHRoZSAqU0ZyKiBub3Rpb24gdG8gcmVwcmVzZW50IHRoZSBmdWxsIGxvY2F0aW9uIG5hbWUuCgpgYGB7cn0KU2FtcGxlcyRTdHJhdHVtWzEwXSA8LSAiU2FuIEZyYW5jaXNxdWl0byIKaGVhZCggU2FtcGxlcywgbj0xMCkKYGBgCgo8ZGl2IGNsYXNzPSJib3gtcmVkIj4KKipBTEVSVDoqKiAgSWYgeW91IHJlY2VpdmVkIGFuIGVycm9yIG1lc3NhZ2Ugd2l0aCBzb21lIGxpa2UgCmBgYApXYXJuaW5nIG1lc3NhZ2U6CkluIGBbPC0uZmFjdG9yYChgKnRtcCpgLCAxMCwgdmFsdWUgPSBjKDMwTCwgMzJMLCAyOUwsIDE5TCwgMjBMLCAgOgogIGludmFsaWQgZmFjdG9yIGxldmVsLCBOQSBnZW5lcmF0ZWQKYGBgCkl0IGlzIGJlY2F1c2UgdGhlIGByZWFkLmNzdigpYCBmdW5jdGlvbiBoYXMgYSBkZWZhdWx0IHZhbHVlIHRoYXQgY29udmVydHMgYW55IGNvbHVtbiB3aXRoIGEgYGNoYXJhY3RlcmAgdmFyaWFibGUgdHlwZSBpbnRvIGEgYGZhY3RvcmAgZGF0YSB0eXBlLi4uICBUaGlzIGlzIGEgKipzdHVwaWQqKiBkZWZhdWx0IG9wdGlvbiBhbmQgeW91IHNob3VsZCBjaGFuZ2UgdGhlIGRlZmF1bHQgdmFsdWUgaW4geW91ciBgUmAgb3B0aW9ucyBmaWxlIC0gVG8gZml4IHRoaXMgaXNzdWUsIHNlZSBbciBlbnZpcm9ubWVudF0oLi4vZW52aXJvbm1lbnQvbmFycmlhdGl2ZS5uYi5odG1sKSBmb3Igb3IgcmVtZW1iZXIgdGhhdCAqZXZlcnkgdGltZSB5b3UgbG9hZCBpbiBkYXRhKiwgeW91IG11c3QgYWRkIHRoZSBvcHRpb25hbCBhcmd1bWVudCBgc3RyaW5nc0FzRmFjdG9ycz1GQUxTRWAgdG8gdGhlIGByZWFkLmNzdigpYCBmdW5jdGlvbiBjYWxsLgoKYGBge3IgZXZhbD1GQUxTRX0KU2FtcGxlcyA8LSByZWFkLmNzdih1cmwsIHN0cmluZ0FzRmFjdG9ycz1GQUxTRSkKYGBgCgpSdW4gdGhhdCBhbmQgdHJ5IHRvIHJlcGxhY2UgdGhlIFN0cmF0dW0gbmFtZSBhcyBhYm92ZS4KPC9kaXY+CgoKCiMjIyBTbGljZXMKCkp1c3QgbGlrZSBmb3IgW3ZlY3RvcnNdKC4uL3ZlY3RvcnMvbmFycmlhdGl2ZS5uYi5odG1sKSwgd2UgY2FuIGFsc28gdGFrZSBzbGljZXMgb2YgY29tcG9uZW50cyBmcm9tIGBkYXRhLmZyYW1lYCBvYmplY3RzLiAgSG93ZXZlciwgd2hhdCB3ZSBnZXQgaW4gcmV0dXJuIGRlcGVuZHMgb24gc3BlY2lmaWNhbGx5IHdoYXQgd2UgYXNrIGZvci4gIAoKRm9yIGV4YW1wbGUsIHRha2luZyBmcm9tIGEgc2luZ2xlIGNvbHVtbiBpbiB0aGUgYGRhdGEuZnJhbWVgIHJldHVybnMgYSBzbGljZSBvZiB0aGF0IHBhcnRpY3VsYXIgdmFyaWFibGUgdHlwZS4KCmBgYHtyfQp4IDwtIFNhbXBsZXNbMTozLCAxXQp4CmNsYXNzKHgpCmBgYAoKVGhpcyBpcyBiZWNhdXNlIGFsbCB0aGUgcmV0dXJuZWQgdmFsdWVzIGFyZSBmcm9tIGEgc2luZ2xlIGRhdGEgY29sdW1uLCB3aGljaCBieSBkZWZpbml0aW9uICptdXN0KiBiZSB0aGUgc2FtZSBraW5kIG9mIGRhdGEuICAKCllvdSBjYW4gYXNrIGBSYCB0byByZXR1cm4gaXQgYXMgYSBgZGF0YS5mcmFtZWAgcmF0aGVyIHRoYW4ganVzdCBhIHZlY3RvciAoaW4gY2FzZSB5b3UgbmVlZCB0byBoYXZlIGEgZGF0YS5mcmFtZSB0byB3b3JrIHdpdGgpIGJ5IHBhc3NpbmcgYW4gb3B0aW9uYWwgYXJndW1lbnQgdG8gdGhlIHNxdWFyZSBicmFja2V0cy4gIFlvdSB3aWxsIG5vdGljZSBpdCByZXRhaW5zIHRoZSByb3cgbnVtYmVycy4KCmBgYHtyfQp4MSA8LSBTYW1wbGVzWyAxOjMsIDEsIGRyb3A9RkFMU0VdCngxCmNsYXNzKHgxKQpgYGAKCgpIb3dldmVyLCBpZiB3ZSB0YWtlIHRoZSBzYW1lIG51bWJlciBvZiBvYmplY3QgYnV0IGZyb20gYSByb3cgaW5zdGVhZCBvZiBhIGNvbHVtbiwgd2UgY2FuICpvbmx5KiBnZXQgYSBgZGF0YS5mcmFtZWAgb2JqZWN0IGluIHJldHVybi4KCmBgYHtyfQp5IDwtIFNhbXBsZXNbMSwgMTozXQp5CmNsYXNzKHkpCmBgYAoKYmVjYXVzZSB0aGlzIHRpbWUsIHdlIGFyZSBhc2tpbmcgZm9yIHRoZSB0aHJlZSB2YXJpYWJsZXMgcmVwcmVzZW50aW5nIHRoZSBmaXJzdCByZWNvcmQuICBCZWNhdXNlIHRoZXNlIHZhbHVlcyBhcmUgYmVpbmcgZHJhd24gZnJvbSBhY3Jvc3MgZGlmZmVyZW50IGNvbHVtbnMgb2YgZGF0YSwgYFJgIGRvZXMgbm90IGNvbmNhdGVuYXRlIHRoZXNlIGludG8gYSBzaW5nbGUgdmVjdG9yIGFuZCBjb2VhcmNlIHRoZW0gdG8gdGhlIGxlYXN0IGNvbW1vbiBkYXRhIHR5cGUuIFJhdGhlciBpdCBtYWtlcyBhIG5ldyBgZGF0YS5mcmFtZWAgb2JqZWN0IGZvciB5b3UgYW5kIHJldHVybnMgdGhhdC4KCgojIyMgTW9kaWZ5aW5nIEV4aXN0aW5nIERhdGEgRnJhbWVzCgpPbmNlIHdlIGhhdmUgYSBgZGF0YS5mcmFtZWAgaW4gbWVtb3J5LCB3ZSBjYW4gYWxzbyBhZGQgdG8gaXQuICBJZiB3ZSBhcmUgYWRkaW5nIGNvbHVtbnMsIHdlIGNhbiBhcHBlbmQgYSBzaW5nbGUgdmFyaWJsZSBvbnRvIGl0IGFuZCBgUmAgd2lsbCBwdXQgaXQgb24gdGhlIGZhciByaWdodCBzaWRlIG9mIHRoZSBgZGF0YS5mcmFtZWAuCgpgYGB7cn0KU2FtcGxlcyRJRCA8LSAxOm5yb3coU2FtcGxlcykKc3VtbWFyeSggU2FtcGxlcyApCmBgYAoKCklmIHdlIHdhbnQgdG8gYWRkIHJvd3MgdG8gdGhlIGBkYXRhLmZyYW1lYCwgaXQgaXMgYSBiaXQgbW9yZSBpbnZvbHZlZCBiZWNhdXNlIHdlIGFyZSBnb2luZyB0byBoYXZlIHRvIGVpdGhlciBhIGxpc3Qgb2JqZWN0IHdob3NlIHZhcmlhYmxlcyBhcmUgb2YgdGhlIHNhbWUgb3JkZXIgYXMgdGhlIG9yaWdpbmFsIGBkYXRhLmZyYW1lYCBvciBhbm9oZXIgZW50aXJlIGBkYXRhLmZyYW1lYCAod2hvc2UgbmFtZXMgYXJlIGlkZW50aWNhbCB0byB0aGUgb3JpZ2luYWwpCgpgYGB7cn0KbmFtZXMoU2FtcGxlcykKYGBgCgpUbyBhZGQgYSBzaW5nbGUgcm93LCB3ZSB1c2UgYHJiaW5kKClgIGFuZCBwYXNzIGl0IHRoZSBgZGF0YS5mcmFtZWAgYW5kIGEgbmV3IFtsaXN0XSguLi9saXN0cy9uYXJyaWF0aXZlLm5iLmh0bWwpIG9iamVjdC4KCmBgYHtyfQpTYW1wbGVzIDwtIHJiaW5kKCBTYW1wbGVzLCBsaXN0KCJMb3MgQ2Fib3MiLC0xMDkuNzEyNCwgMjMuMDc5OSwgNDApKQp0YWlsKFNhbXBsZXMpCmBgYAoKWW91IGNhbiBhbHNvIHVzZSBhbm90aGVyIGBkYXRhLmZyYW1lYCwgd2hpY2ggaW4gdGhpcyBjYXNlIG11c3QgaGF2ZSB0aGUgc2FtZSBuYW1lZCB2YXJhaWJsZXMgYXMgdGhlIG9yaWdpbmFsLiAgCgpgYGB7cn0KbW9yZXNpdGVzIDwtIGRhdGEuZnJhbWUoIElEID0gNDE6NDIsCiAgICAgICAgICAgICAgICAgICAgICAgICBTdHJhdHVtID0gYygiTG9zIEJhcnJpbGVzIiwiQ29tb25kdSIpLAogICAgICAgICAgICAgICAgICAgICAgICAgTG9uZ2l0dWRlID0gYygtMTA5LjcwMjYsIC0xMTEuODQ0MiksCiAgICAgICAgICAgICAgICAgICAgICAgICBMYXRpdHVkZSA9IGMoMjMuNjgxMSwgMjYuMDcwOCkgCiAgICAgICAgICAgICAgICAgICAgICAgICApCm5hbWVzKG1vcmVzaXRlcykKYGBgCgpIb3dldmVyLCBub3RpY2UgdGhhdCB0aGUgb3JkZXIgaW4gd2hpY2ggdGhlc2UgdmFyYWlibGVzIGluIGBtb3Jlc2l0ZXNgIGlzIGRpZmZlcmVudCB0aGFuIHRob3NlIGluIGBTYW1wbGVzYC4gIFRoZSBgcmJpbmQoKWAgZnVuY3Rpb24gcmVhcnJhbmdlcyB0aGUgb3JkZXIgd2hlbiBpdCBjb25jYXRlbmF0ZXMgb250byB0aGUgcm93cy4KCmBgYHtyfQpTYW1wbGVzIDwtIHJiaW5kKCBTYW1wbGVzLCBtb3Jlc2l0ZXMpCnRhaWwoIFNhbXBsZXMgKQpgYGAKClRvIGRlbGV0ZSBhIGNvbHVtbiBvZiBkYXRhLCBhc3NpZ24gaXQgdGhlIHZhbHVlIG9mIGBOVUxMYC4KCmBgYHtyfQpTYW1wbGVzJElEIDwtIE5VTEwKc3VtbWFyeShTYW1wbGVzKQpgYGAKCm9yIHVzZSBuZWdhdGl2ZSBpbmRpY2VzIHRvIGRlbGV0ZSByb3dzLgoKYGBge3J9ClNhbXBsZXMgPC0gU2FtcGxlc1sgLTQyOi00MCwgXQpzdW1tYXJ5KFNhbXBsZXMpCmBgYAoKLS0tCgpUaGUgYGRhdGEuZnJhbWVgIG9iamVjdCBpcyBhIGZ1bmRhbWVudGFsIGNvbXBvbmVudCBvZiB5b3VyIGBSYCB3b3JrIGZsb3cgYW5kIGJlaW5nIGFibGUgdG8gbWFuaXB1bGF0ZSBkYXRhIHdpdGhpbiBpdCBhbmQgZXh0cmFjdCBkYXRhIGZyb20gaXQgYXJlIGEgaHVnZSBwYXJ0IG9mIGJlY29taW5nIGRhdGEgbGl0ZXJhdGUuCgoKCgoKCgoKCgoKCgoKCgoKCgo=</div>
 
 
 

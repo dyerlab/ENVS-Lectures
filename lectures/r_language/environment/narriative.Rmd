@@ -5,6 +5,70 @@ output:
     css: "envs543-styles.css"
 ---
 
+> The R Environment consists of the language interpreter as well as packages and other software components that help you be more effective.
+
+## Getting R
+
+To get R, go to the [Comprehensive R Archive Network](https://cran.r-project.org) and download the installer for your particular platform.  What this installs is the *Base R* set of software, with just enough that you could go from there.  If you are on the Windows platform, please also install the optional [Rtools](https://cran.r-project.org/bin/windows/Rtools/) software so you can get packages from GitHub and GitLab.  If you are on Mac or Linux, you do not need this.
+
+
+### Updating R from Previous Version
+
+If you already had a version of `R` and want to upgrade it you may want to read this section so you can minimized the amount of hassle you run into with your packages.  When you update the base R system, the set of all the packages you have installed are not moved over *en mass*. You will have to actively install these packages again for the new version.  Here is some code to use to make your life easier.
+
+Before you upgrade base `R`, run the following code.  This looks at the current installation and sees what packages you already have installed and saves a list of them to the Desktop.
+
+```{r eval=FALSE}
+pkgs <- installed.packages()
+pkgs <- names( is.na(pkgs[,4]))
+save(pkgs,file="~/Desktop/pkgs.rda")
+```
+
+Next, install your new version of R and start it up.  In the new version, run the following code.  It will read the data file from your Desktop and then look at what you now have installed and finds the difference between the two.  Then it automatically install all the packages that you previously had into the new version of `R`.
+
+```{r eval=FALSE}
+new_pkgs <- installed.packages()
+new_pkgs <- names( is.na(new_pkgs[,4]))
+load("~/Desktop/pkgs.rda")
+to_install <- setdiff( pkgs, new_pkgs )
+install.packages( to_install )
+update.packages( ask=FALSE )
+```
+
+
+
+## RStudio
+
+While you can interact with R using the standard console interface, it is frankly caught in the '90's with respect to user-interface and interactions.  One of the best things you can do to increase your productivity in `R` is to install the [RStudio](https://rstudio.com) integrated development environment (IDE).
+
+Just like the base `R`, simply go to the website and download the Open Source version of RStudio.  If you want to pay for a version, you are welcome to do so.  However, the open source version is identical to the paid version and that is what I recommend you use.  Select the appropriate version for your platform, and install it.
+
+
+
+## Packages
+
+One of the most important components of the `R` ecosystem is that it is extensible by its users, like you and me.  The base functionality of `R` is defined by a few packages that are installed along with the base system.  To add functionality to `R`, we can install additional packages that offer special functionalities.
+
+At present, there are over 16,000 user contributed libraries available to install on your machine.  Chances are you will only need a minor subset of them to complete your work. However, if you find that there is missing functionality for the kind of work you do, you too can contribute code to the package repository.
+
+
+<iframe src="https://cran.r-project.org/web/packages/available_packages_by_name.html" width="600px" height="600px"></iframe>
+
+
+To install a package from within `R`, use the function `install.functions()` and pass it the name (or names) of the packages you want to install. `R` will go out and download the package and install it on your system.  So for example, to install the `tidyverse` package we would use
+
+```{r eval=FALSE, echo=TRUE}
+install.packages( "tidyverse")
+```
+
+
+To update packges on your machine (the authors of the packages are continually working to fix bugs and add functionality), use the following command (n.b., I always add the `ask=FALSE` option to this one because if you do not it will ask you for each library if you want it updated—I always want all of the updated and not have to sit there and type "Y" "Y" "Y" ...).
+
+```{r}
+update.packages( ask=FALSE )
+```
+
+
 
 
 ## Setting Optional Startup Values
@@ -21,4 +85,7 @@ Type the following into the Terminal and hit return.
 ```{bash eval=FALSE}
 echo "options( stringsAsFactors=FALSE )" >> ~/.Rprofile
 ```
+
+
+
 

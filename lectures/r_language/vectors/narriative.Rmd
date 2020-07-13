@@ -7,7 +7,9 @@ output:
 
 ```{r startup, include=FALSE}
 library(tidyverse)
+library(raster)
 library(leaflet)
+theme_set( theme_minimal())
 ```
 
 > Vectors are a collection of a single kind of data
@@ -63,20 +65,41 @@ y
 ```
 
 
-Another way we
+Another way we can use the `seq()` function is to create a vector of values that are equally spaced.  For example, consider the sampling locations below where I collected Sonoran desert bark beetles (*Araptus attenuatus*).  
+
+```{r echo=FALSE, message=FALSE}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv"
+read_csv(url) %>%
+  filter( Stratum %in% c("98","88")) %>%
+  leaflet() %>%
+  addProviderTiles("Stamen.TerrainBackground") %>%
+  addPolylines(~Longitude, ~Latitude, color="#ff000088", weight = 3 ) %>%
+  addMarkers( ~Longitude, ~Latitude, label = ~Stratum)
+```
+If I wanted an elevation profile along the Baja Califorinia Peninsula (the red line), I could ask for a sequence in latitude (the north-south dimension) with exactly 50 equally spaced entities starting at the southern site near Cabo San Lucas and finishing up just north of Nva. Chapala (n.b., the data are in longitude and latitude).
+
+```{r}
+coords <- cbind(  seq(-109.6487	, -114.2935	, length.out = 50), 
+                  seq( 23.07, 29.32, length.out = 50) )
+
+coords[1:5,]
+```
+
+From these locals we, we can then quickly query an elevation raster to extract the values at those sites
 
 ```{r echo=FALSE}
-
-
+load("../../../data/alt.rda")
+pts <- SpatialPoints( coords )
+vals <- extract( alt, pts )
+data.frame( Latitude=coords[,2], Elevation=vals) %>%
+  ggplot( aes(Latitude,Elevation)) + 
+  geom_line( color="red") + ylab("Elevation (m)")
 ```
 
 
+## Indexing
 
-
-
-### Indexing
-
-Even though these objects are solitary, they have several elements.  For example, the object `y` above has `r length(y)` entities in it.  To get to these individual entities within the `y` we use a square bracket notation to indicate that we want to get an item *within* the variable and must indicate which element (or elements) we are interested in getting.  The numeric indices within the brackets are 1-based (e.g., the first element is 1, the second is 2, etc.).  So the code
+Since `vector` objects contains collections of variables, we often need to *get* or *set* the value at a particular location or within a slice of the vector.  For example, the object `y` above has `r length(y)` entities in it.  To get to these individual entities within the `y` we use a square bracket notation to indicate that we want to get an item *within* the variable and must indicate which element (or elements) we are interested in getting.  The numeric indices within the brackets are 1-based (e.g., the first element is 1, the second is 2, etc.).  So the code
 
 ```{r}
 y[4]
@@ -89,19 +112,166 @@ y[2] <- 42
 y
 ```
 
-### Slices
+In addition to numbers, you can also do logical values.
 
-In addition to getting a single entity from a vector, we can also grab a sequence of values by using a set of indices within the square brackets.  For example, if I wanted the first five entries of `y` I could ask for it as:
+```{r}
+x <- 1:5
+x[ c(TRUE, FALSE, TRUE, FALSE, FALSE) ]
+```
+
+
+## Slices
+
+In addition to getting a single entity from a vector, we can also grab a sequence of values by using a sequence of indices within the square brackets.  For example, if I wanted the first five entries of `y` I could ask for it as:
 
 ```{r}
 y[1:5]
 ```
 
 
+You can also grab the end parts of a vector using the `head()` and `tail()` functions.  By default, they return 6 entries each, though you can customize it.
+
+```{r}
+y
+head(y, n=2)
+tail(y, n=3)
+```
+
+The `tail()` function is really convienent because you do not have to know how many elements are in the vector to grab the last few.  If you were going to use indices, you'd have to figure out how many elements are in the vector.
+
+```{r}
+to <- length(y)
+from <- to - 6
+y[from:to]
+```
+
+
+
+
+## Dropping Values 
+
+While less often used, it is sometimes convienent to remove some values from a vector.  We can do this by passing a negative index.
+
+```{r}
+x <- 1:5
+x[-3]
+```
+
+It works with slices as well:
+
+```{r}
+x[-(2:4)]
+```
+
+<div class="box-red">
+However, unless you assign this back to `x`, the values in x are not changed in any way.  
+```{r}
+x
+```
+
+If you want to change the values in `x` then you would have to reassign the values back to x
+
+```{r}
+x <- x[-(2:4)]
+x
+```
+</div>
 
 
 
 
 
+
+## Concatenating Vectors
+
+WE can concatinate vectors together (as well as vectors and individual elements)
+
+```{r}
+x <- 1:5
+y <- 6:10
+z <- c(x,y, 12)
+z
+```
+
+If you attempt to concatenate things with different data types, it will coerce them all (if possible) into the least common denominator.  For example, if we look at the first five counting integers and the first five letters of the English alphabet, when they are concatenated, `R` will coerce the letters into `character` data types to enforce the requirement that all entities in a vector are the same data type.
+
+
+```{r}
+a <- 1:5
+b <- LETTERS[1:5]
+c(a,b)
+```
+
+
+
+## Vector Arithmatic
+
+Just like we can use opertors to work on single entites (numeric, character, logical, etc.), you can apply the same operations on vectors of data types.
+
+```{r}
+x <- 1:5
+x * 12   
+```
+
+```{r}
+b <- 6:10
+x + b 
+```
+
+
+
+
+
+## Named Vectors
+
+Thus far, we've seen individual elements in a `vector` represented by only the numerical index.
+
+```{r}
+x 
+```
+
+There are several occasions where being more *verbose* in our data may increase interpretation and readability.  One way to to this is to assign an actual name to one or more (or all) of the elements in a vector rather than just having them sitting in a row right next to each other (like above).  By default, the `names()` of elements in a vector are blank (which the total absence of anything in `R` is `NULL`.
+
+```{r}
+names(x)
+```
+
+However, we can assign values to those name like this:
+
+```{r}
+names(x) <- c("James", "Patuxent", "Potomac", "Rappahannock", "York")
+x
+```
+
+
+Once you name these elements, you can similarily use the names as indice.
+
+```{r}
+x[ c("James","Potomac")]
+```
+
+## The Recycling Rule
+
+Operations on vectors that expect a particular length are handled (somewhat gracefully) using the 
+
+<div class="box-green">*Recycling Rule*: The shorter of the two vectors will be stretched by reusing values from the start to equal the length of the larger vector.</div>
+
+
+```{r}
+x <- c(10,20,30)
+y <- c(1,2,3,4,5,6,7,8,9) 
+x + y
+```
+
+If the shorter vector length is not a clean multiple of the larger one, it will issue a warning to let you know in case these dangling parts could cause problems.
+
+```{r}
+y <- 1:10
+x + y
+```
+
+
+
+---
 
 

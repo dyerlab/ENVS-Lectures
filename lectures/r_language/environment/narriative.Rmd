@@ -1,0 +1,24 @@
+---
+title: "The R Environment"
+output: 
+  html_notebook:
+    css: "envs543-styles.css"
+---
+
+
+
+## Setting Optional Startup Values
+
+
+By far, one of the most annoying options that `R` has turned on by default is the `stringsAsFactors=TRUE` setting that is turned on for `read.csv()`.  This means that every time you read in a file from your computer or from online, it turns every column that has non-numeric values in it into a `factor`.  If you are new to `R`, just trust me, this is annoying.
+
+Startup options for R are located in a text file in your home directory.  This file is named `.Rprofile` and since it starts with a period, it is invisible to you in the file browser/finder.  We can put options in this file that will be read each time R starts up.  Here is a quick method to do it.  In RStudio, open the Terminal Tab (usually next to the R Console tab).
+
+The following code set the option of `stringsAsFactors` to `FALSE` and concatenates that onto the end of your `.Rprofile` text file (making it if it is missing).  Make sure the double greather-than signs are there, that has the text concatenated onto the end of the file if it exists.  If you only put one of them, it will overwrite the file and replace it with this one line.
+
+Type the following into the Terminal and hit return.
+
+```{bash eval=FALSE}
+echo "options( stringsAsFactors=FALSE )" >> ~/.Rprofile
+```
+

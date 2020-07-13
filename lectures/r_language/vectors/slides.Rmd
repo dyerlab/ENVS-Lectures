@@ -19,9 +19,7 @@ background-position: right
 background-size: auto
 
 
-# Data Containers
-
-### vectors - data.frame - list - matrix
+# Vector Data Containers
 
 
 
@@ -32,12 +30,6 @@ background-size: auto
 
 <img src="images/logo1.svg" width="400px">
 
----
-
-class: sectionTitle
-
-# Vectors
-
 
 
 
@@ -45,25 +37,35 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Data Frames
+# Caveats
 
 
 
 
 ---
 
-class: sectionTitle
+# The Recycling Rule
 
-# Lists
+Operations on vectors that expect a particular length are handled (somewhat gracefully) using the 
 
+<div class="box-green">*Recycling Rule*: The shorter of the two vectors will be stretched by reusing values from the start to equal the length of the larger vector.</div>
 
+--
 
----
+```{r}
+x <- c(10,20,30)
+y <- c(1,2,3,4,5,6,7,8,9) 
+x + y
+```
 
-class: sectionTitle
+--
 
-# Matrices
+If the shorter vector length is not a clean multiple of the larger one, it will issue a warning to let you know in case these dangling parts could cause problems.
 
+```{r}
+y <- 1:10
+x + y
+```
 
 
 

@@ -1,5 +1,0 @@
----
-title: "Character Data"
-output: html_notebook
----
-

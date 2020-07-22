@@ -69,6 +69,8 @@ And the *modulus operator*:
 y %% x
 ```
 
+
+
 If you didn't know what this one is, don't worry.  The modulus is just the *remainder after division* like you did in grade school.  The above code means that *23 divided by 10 has a remainder of 3*.  I include it here just to highlight the fact that many of the operators that we will be working with in `R` are created by more than just a single symbol residing at the top row of your computer keyboard.  There are just too few symbos on the normal keyboard to represent the breath of operators.  The authors of `R` have decided that using combinations of symbols to handle these and you will get used to them in not time at all.
 
 ## Introspection & Coercion

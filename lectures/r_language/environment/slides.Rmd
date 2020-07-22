@@ -7,6 +7,7 @@ output:
     css: [envs543-styles.css, middlebury, middlebury-fonts]
     seal: false
     nature:
+      ratio: "16:9"
       titleSlideClass: ["center","middle"]
       highlightStyle: github
       highlightLines: true
@@ -44,6 +45,7 @@ knitr::opts_chunk$set( echo = TRUE,
                        message = FALSE,
                        error = FALSE)
 library(tidyverse)
+library(leaflet) 
 theme_set( theme_minimal( base_size = 20))
 library(DT)
 ```
@@ -238,7 +240,7 @@ datatable( araptus )
 
 # Data & Narrative
 
-The spatial distribution of $N =$ `r sum(araptus$Males) + sum(araptus$Females)` individuals were sampled from $K =$ `r nrow(araptus)` sampling sites covered the entire known extent for *Araptus attenuatus* (Figure 1).  On average the sex ratio (Females:Males) within each of the sampling locales varied considerably, ranging from a low of `r format(min( araptus$Females / araptus$Males ), digits=3)` to `r format(max( araptus$Females / araptus$Males ), digits=3)`.
+The spatial distribution of $N =$ `r sum(araptus$Males) + sum(araptus$Females)` individuals were sampled from $K =$ `r nrow(araptus)` sampling sites covering the entire known extent for *Araptus attenuatus* (Figure \ref{fig-sampling}).  The observed sex ratio (Females:Males) within each of the sampling locales varied considerably, ranging from a low of `r format(min( araptus$Females / araptus$Males ), digits=3)` to `r format(max( araptus$Females / araptus$Males ), digits=3)`.
 
 --
 
@@ -248,15 +250,12 @@ model <- glm( (Females / Males) ~ log(Suitability),
               family = Gamma() )
 ```
 
-
-Female beetles seem to be selecting locales in more suitable habitats (Figure 2), which is consistent with a Gaussian log normal distribution (GLM; intercept = `r format(summary(model)$coefficients[1,1], digits=3)`; coef =`r format(summary(model)$coefficients[2,1], digits=3)`; P =`r format(summary(model)$coefficients[2,4], digits=3)`)..  This suggests that males who establish brood chambers at the margins of the species niche are actively selected against by maturing females.
+Female beetles seem to be selecting locales in more suitable habitats (Figure \ref{fig-habitat}), which is consistent with a Gaussian log normal distribution (GLM; intercept = `r format(summary(model)$coefficients[1,1], digits=3)`; coef =`r format(summary(model)$coefficients[2,1], digits=3)`; P =`r format(summary(model)$coefficients[2,4], digits=3)`; Figure \ref{fig-glm}).  This suggests that males who establish brood chambers at the margins of the species niche are actively selected against by maturing females.
 
 ---
 class: center middle
 
 ```{r echo=FALSE}
-library(leaflet) 
-
 leaflet(data = araptus) %>%
   addProviderTiles(provider="Stamen.TerrainBackground") %>%
   addCircleMarkers(weight=1, fill=TRUE, color="#fff") %>%
@@ -264,8 +263,6 @@ leaflet(data = araptus) %>%
                       labelOptions = labelOptions(noHide=TRUE,
                                                   direction='center',
                                                   textOnly = TRUE))
-
-
 ```
 
 

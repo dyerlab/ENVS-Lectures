@@ -7,9 +7,45 @@ output:
 
 > The R Environment consists of the language interpreter as well as packages and other software components that help you be more effective.
 
+
+
 ## Getting R
 
 To get R, go to the [Comprehensive R Archive Network](https://cran.r-project.org) and download the installer for your particular platform.  What this installs is the *Base R* set of software, with just enough that you could go from there.  If you are on the Windows platform, please also install the optional [Rtools](https://cran.r-project.org/bin/windows/Rtools/) software so you can get packages from GitHub and GitLab.  If you are on Mac or Linux, you do not need this.
+
+The base package installs the R.app (on mac, R.exe on Windows, and /bin/R on Linux).  This is the base R program and provides a direct connection to the R interpreter through what we call the Console.  When you start it up, it will give you message about the current version.
+
+<!-- INSERT IMAGE HERE -->
+
+The *Console* is a direct interactive environment.  In this context, you can type stuff into the console and `R` will return the answer, just like a normal calculator.  This is *excellent* for quick interactions and iteratively creating more complext graphics.  Don't worry though, much of what we will be doing is a lot more complex than typing in a command and hitting return and getting an answer, that is where we use scripts and markdown documents.
+
+<div class="box-green">The console is a great way to interact with R and has a lot of cool features.  One of the most important ones is the "recall previous things I typed" feature that is engaged by using the *up and down cursor* keys.  `R` keeps a 'history' of all the things that go through the terminal (and even saves them for you to a local file with your project).  Being an error-prone typist, this is a very helpful feature.</div>
+
+## R Packages
+
+One of the most important components of the `R` ecosystem is that it is extensible by its users, like you and me.  The base functionality of `R` is defined by a few packages that are installed along with the base system.  To add functionality to `R`, we can install additional packages that offer special functionality.
+
+At present, there are over 16,000 user contributed libraries available to install on your machine.  Chances are you will only need a minor subset of them to complete your work. However, if you find that there is missing functionality for the kind of work you do, you too can contribute code to the package repository.
+
+
+<iframe src="https://cran.r-project.org/web/packages/available_packages_by_name.html" width="600px" height="600px"></iframe>
+
+
+To install a package from within `R`, use the function `install.functions()` and pass it the name (or names) of the packages you want to install. `R` will go out and download the package and install it on your system.  So for example, to install the `tidyverse` package we would use
+
+```{r eval=FALSE, echo=TRUE}
+install.packages( "tidyverse")
+```
+
+
+To update packages on your machine (the authors of the packages are continually working to fix bugs and add functionality), use the following command (n.b., I always add the `ask=FALSE` option to this one because if you do not it will ask you for each library if you want it updated—I always want all of the updated and not have to sit there and type "Y" "Y" "Y" ...).
+
+```{r}
+update.packages( ask=FALSE )
+```
+
+
+
 
 
 ### Updating R from Previous Version
@@ -45,40 +81,15 @@ Just like the base `R`, simply go to the website and download the Open Source ve
 
 
 
-## Packages
-
-One of the most important components of the `R` ecosystem is that it is extensible by its users, like you and me.  The base functionality of `R` is defined by a few packages that are installed along with the base system.  To add functionality to `R`, we can install additional packages that offer special functionalities.
-
-At present, there are over 16,000 user contributed libraries available to install on your machine.  Chances are you will only need a minor subset of them to complete your work. However, if you find that there is missing functionality for the kind of work you do, you too can contribute code to the package repository.
-
-
-<iframe src="https://cran.r-project.org/web/packages/available_packages_by_name.html" width="600px" height="600px"></iframe>
-
-
-To install a package from within `R`, use the function `install.functions()` and pass it the name (or names) of the packages you want to install. `R` will go out and download the package and install it on your system.  So for example, to install the `tidyverse` package we would use
-
-```{r eval=FALSE, echo=TRUE}
-install.packages( "tidyverse")
-```
-
-
-To update packges on your machine (the authors of the packages are continually working to fix bugs and add functionality), use the following command (n.b., I always add the `ask=FALSE` option to this one because if you do not it will ask you for each library if you want it updated—I always want all of the updated and not have to sit there and type "Y" "Y" "Y" ...).
-
-```{r}
-update.packages( ask=FALSE )
-```
-
-
-
 
 ## Setting Optional Startup Values
 
 
 By far, one of the most annoying options that `R` has turned on by default is the `stringsAsFactors=TRUE` setting that is turned on for `read.csv()`.  This means that every time you read in a file from your computer or from online, it turns every column that has non-numeric values in it into a `factor`.  If you are new to `R`, just trust me, this is annoying.
 
-Startup options for R are located in a text file in your home directory.  This file is named `.Rprofile` and since it starts with a period, it is invisible to you in the file browser/finder.  We can put options in this file that will be read each time R starts up.  Here is a quick method to do it.  In RStudio, open the Terminal Tab (usually next to the R Console tab).
+Start up options for R are located in a text file in your home directory.  This file is named `.Rprofile` and since it starts with a period, it is invisible to you in the file browser/finder.  We can put options in this file that will be read each time R starts up.  Here is a quick method to do it.  In RStudio, open the Terminal Tab (usually next to the R Console tab).
 
-The following code set the option of `stringsAsFactors` to `FALSE` and concatenates that onto the end of your `.Rprofile` text file (making it if it is missing).  Make sure the double greather-than signs are there, that has the text concatenated onto the end of the file if it exists.  If you only put one of them, it will overwrite the file and replace it with this one line.
+The following code set the option of `stringsAsFactors` to `FALSE` and concatenates that onto the end of your `.Rprofile` text file (making it if it is missing).  Make sure the double greater-than signs are there, that has the text concatenated onto the end of the file if it exists.  If you only put one of them, it will overwrite the file and replace it with this one line.
 
 Type the following into the Terminal and hit return.
 

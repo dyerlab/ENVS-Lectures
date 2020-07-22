@@ -9,6 +9,7 @@ output:
 library(tidyverse)
 library(raster)
 library(leaflet)
+library(emo)
 theme_set( theme_minimal())
 ```
 
@@ -30,7 +31,6 @@ The variable `x` contains a number of numeric types and is a single object.
 ```{r}
 length( x )
 ```
-
 
 
 ## Vectors from Sequences
@@ -242,6 +242,8 @@ However, we can assign values to those name like this:
 names(x) <- c("James", "Patuxent", "Potomac", "Rappahannock", "York")
 x
 ```
+
+
 
 
 Once you name these elements, you can similarily use the names as indice.

@@ -5,9 +5,6 @@ output:
       css: "envs543-styles.css"
 ---
 
-
-
-
 > Data frames are a structure that can hold many different data types in one simple structure.
 
 Data frames are the *lingua franca* for `R`, especially once we start getting into more complicated analysis and manipulation.  For simplicity, one can consider a `data.frame` object much like a spreadsheet.  Each row represents a record on some object and each column—consisting of different kinds of data—are measurements on that object.  

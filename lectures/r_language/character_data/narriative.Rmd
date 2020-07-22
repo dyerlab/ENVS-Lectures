@@ -66,6 +66,7 @@ name + sport
 
 The `paste()` function is designed to take a collection of `character` variables and smush them togethers.  By default, it inserts a space between each of the variables and/or values passed to it.
 
+
 ```{r}
 paste( name, "plays", sport )
 ```

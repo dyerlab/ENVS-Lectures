@@ -1,0 +1,55 @@
+---
+title: "Your Document Title"
+author: "Document Author"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library( knitr )
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+
+```{r}
+
+Prework <- c("r_language/environment",
+             "r_language/numerical_data/",
+             "r_language/character_data/",
+             "r_language/data_frames/"
+             )
+
+Week1 <- c("markdown/reproducible_research",
+           "markdown/markdown",
+           "markdown/notebooks")
+
+
+Week2 <- c("visualization/ggplot_univariate/",
+           "visualization/ggplot_multivariate/")
+  
+Week3 <- Week4 <- Week5 <- c()
+  
+Week6 <- Week7 <- Week8 <- Week9 <- Week10 <- Week11 <- Week12 <- Week13 <- c()
+
+
+
+```
+
+
+
+
+
+
+
+
+
+```{r}
+knitr::kable( df )
+```
+

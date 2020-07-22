@@ -40,7 +40,7 @@ install.packages( "tidyverse")
 
 To update packages on your machine (the authors of the packages are continually working to fix bugs and add functionality), use the following command (n.b., I always add the `ask=FALSE` option to this one because if you do not it will ask you for each library if you want it updated—I always want all of the updated and not have to sit there and type "Y" "Y" "Y" ...).
 
-```{r}
+```{r eval=FALSE}
 update.packages( ask=FALSE )
 ```
 

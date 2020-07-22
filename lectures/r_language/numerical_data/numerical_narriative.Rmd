@@ -9,7 +9,6 @@ output:
   library(emo)
 ```
 
-
 > Numerical data contains all numerical represenations.
 
 By far, the most common kind of data we use in our analyses is numerical data. This may represent measured things like `height`, `snout-vent length` (whatever that is), `depth`, `age`, etc.  In data analysis, we commonly take (or obtain) measurements from several items and then try to characterize them using summaries and visualization.

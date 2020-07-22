@@ -23,6 +23,14 @@ h1 {
 }
 
 
+.remark-slide-number {
+  font-size: 10pt;
+  margin-bottom: -11.6px;
+  margin-right: 10px;
+  color: #FFFFFF; /* white */
+  opacity: 1; /* default: 0.5 */
+}
+
 
 /* Colored Content Boxes */
 

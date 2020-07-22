@@ -90,7 +90,7 @@ If you have a vector of `character` types, by default, it considers the pasting 
 paste( phrase , "!")
 ```
 
-However if you intention is to take the elements of the vector and paste them together, then you need to specify that using the `collapse` optional argument.  By default, it is set to `NULL`, and that state tells the function to apply the paste()-ing to each element.  However, if you set `collaapse` to something other than `NULL`, it will use that to take all the elements and put them into a single response.
+However if you intention is to take the elements of the vector and paste them together, then you need to specify that using the `collapse` optional argument.  By default, it is set to `NULL`, and that state tells the function to apply the paste()-ing to each element.  However, if you set `collapse` to something other than `NULL`, it will use that to take all the elements and put them into a single response.
 
 ```{r}
 paste( phrase, collapse = " is not good at ") 

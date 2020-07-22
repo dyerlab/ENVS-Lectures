@@ -3,3 +3,4 @@ title: "Leaflet Graphics"
 output: html_notebook
 ---
 
+https://dominicroye.github.io/en/2018/accessing-openstreetmap-data-with-r/

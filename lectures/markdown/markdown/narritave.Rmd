@@ -1,0 +1,31 @@
+---
+title: "Markdown & Notebooks"
+output: 
+  html_notebook:
+    css: "envs543-styles.css"
+---
+
+> Markdown & Notebooks provide interactive documents for more effective data communication
+
+# Impetus
+
+In current data analytics and communication, there are a wide variety of platforms on which we can provide summaries and insights regarding our work.  Each of these end points requires a non-insignificant amount of effort to learn these systems.
+
+
+
+
+## Text Markup
+
+
+
+## R Code & Text
+
+
+```{r}
+print("This is text from a chunk")
+```
+
+
+
+
+

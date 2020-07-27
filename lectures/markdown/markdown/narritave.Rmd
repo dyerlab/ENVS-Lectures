@@ -9,16 +9,134 @@ output:
 
 # Impetus
 
-In current data analytics and communication, there are a wide variety of platforms on which we can provide summaries and insights regarding our work.  Each of these end points requires a non-insignificant amount of effort to learn these systems.
+In current data analytics and communication, there are a wide variety of platforms on which we can provide summaries and insights regarding our work.  Each of these end points requires a non-insignificant amount of effort to learn these systems.  Moreover, they all are *cul de sacs* in that all the effort you exert to learn one will not allow you to get the benefits of any other platform than the one you just learned.
 
+> This is stupid.  - R. Dyer
 
+Enter [Pandoc](https://pandoc.org), the universal document converter.  Some really smart programmers have put together a set of software that allows you to convert from or two (and hence between) different document types given that most documents are regularly structured.  With Pandoc, it does not matter if you do or do not have Word or Powerpoint or EPub or LaTeX or whatever, as long as you can create one of the supported types, you can convert that input into a huge variety of output types.
 
+## Pandoc Supported Conversions
+
+![Conversion Formats](https://live.staticflickr.com/65535/50159170006_45b8ed35a0_c_d.jpg)
+
+This is critical for us because Code is just text.  Once it is evaluated, it can replaced with:  
+
+  - Numerical values from one or more calcualtions,
+  - Textual content from analyses or manipulation, or 
+  - Graphical content from plots.
+
+As such, we can embed R code within raw text to create our analyses and documents.  
+
+# Markdown
+
+For maximum usability, the document that we embed our code into should be as widely available as possible—unhindered by the necessity of having a particular program just to view the content.   For this, R uses [Markdown](https://en.wikipedia.org/wiki/Markdown), created by John Gruber & Aaron Swartz in 2004.  Markdown was created so that people are enabled "...to write using an easy-to-read and easy-to-write plain text format..."
+
+Because everything is text, it is easy share and collaborate using Markdown, and for R, it is how we can make a wide array of output document types including (but not limited to):  
+
+- Conventional documents (PDF, Word, RTF, etc.)
+- HTML pages with interactive elements (this document here is an interactive html document).
+- Presentations (LaTeX, Powerpoint, JavaScript, etc.)
+- Dashboards with interactive content.
 
 ## Text Markup
 
+When we make a document, presentation, or any other output, there are only a finite set of different text components we can put into the document.  The document itself does not need to be heavy or bloated, it is just text (though surprisingly, a blank Word document on my laptop with nothing in the document itself is still 12KB in size!).  Common elements include:
+
+- Headers & Titles
+- Typography such as italic, bold, underline, strike through
+- Lists (numbered or as bullets)
+- Pictures and links
+- Page numbers, tables of contents, etc.
+
+What Markdown does is allows you to type these components and use 'marking' around the elements to make them different from regular text.  It is really, amazingly simple.  
+
+Title and headers are created by prepending a hashtag
+
+&#35; Header 1  
+&#35;&#35; Header 2  
+&#35;&#35;&#35; Header 3  
+&#35;&#35;&#35;&#35; Header 4  
+
+are knit into the following headers styles.
+
+# Header 1
+## Header 2
+### Header 3
+#### Header 4
+
+The actual appearance of the headers are determined by where it is being presented (e.g., in Word it will take the default typography and font attributes, etc.).
+
+In text markdown examples are shown below and are contained within paragraphs of text.  Individual paragraphs are delimited by either a blank line between them or two spaces at the end of the sentence.    
+
+Markdown       |  Rendered As
+---------------|------------------
+plain text     |  plain text
+&#42;italic&#42; | *italic*
+&#42;&#42;bold&#42;&#42; | **bold** 
+&#126;&#126;strike through&#126;&#126;  | ~~strike through~~ 
+
+You can also embed links and images.  Both of these are configured in two parts.  For links, you need to specify the text that can be clicked upon and it *must* be surrounded in *square brackets*. The link to the web or file or image is right next to the square brackets and is contained within *parantheses*.  The difference breween link and image is that images have alterntive text (or at times captions) and the whole thing has an exclamation mark in front of it.  Here are some examples.
+
+Markdown       |  Rendered As
+---------------|------------------
+&#91;CES&#93;&#40;https&#58;&#47;&#47;ces.vcu.edu&#41; | [CES](https://ces.vcu.edu)
+!&#91;Goat&#93;&#40;https&#58;&#47;&#47;bit.ly/3fRVlfl&#41;| ![alt text](https://bit.ly/3fRVlfl)
 
 
-## R Code & Text
+Lists (both numbered and unordered) are created using dashes or asterisks.
+
+
+&#45; Bullet 1  
+&#45; Bullet 2  
+&#45; Bullet 3  
+
+Will be turned into an unordered list as:
+
+- Bullet 1  
+- Bullet 2  
+- Bullet 3 
+
+Whereas the following raw text.[^1]
+
+&#48;&#46; First  
+&#49;&#46; Second  
+&#50;&#46; Third  
+
+Will be rendered in list format as:
+
+1. First  
+1. Second   
+1. Third
+
+Actually, you *can* just use `1.` in front of every line if you like, it will auto-number them for you when it makes a list.  Helpful if you are making a numbered list that you are moving things around in.
+
+
+
+
+## Code & Text
+
+On of the strengths of RMarkdown is the ability to mix code and text together in one place.  This allows us to bring all of our analyses *and* data as close to one another as possible, helping with reproducability and error reduction.
+
+### Inline Code
+
+
+You can easily integrate code, into the text, either to be displayed *OR* to be evaluated.  For example, in `R` you get the value of $\pi$ by the constant `pi`. Type that into the console and it will return `r pi`.
+
+If you look at the RMarkdown for that paragraph above, it looks like the following before knitting:
+
+![](https://live.staticflickr.com/65535/50158828858_3574f0bdf5_c_d.jpg)
+
+Notice the following parts:  
+
+- Symbols: The $\pi$ symbol is created by the name of the symbol surrounded by dollar signs.  &#36;&#x5c;pi&#36;.  There are a ton of symbols and equations you can use from LaTeX.
+- Text rendered as code (in typography) but not evaluated.  Both the &grave;R&grave; and the &grave;pi&grave; are examples here.  Nothing is evaluated, but *looks* like code.
+- Evaluated R Code.  Any code betweeen &grave;r and &grave; will be evaluated as R code within the text.  When you knit the document, it will be run and the contents between the &grave;r and &grave; are replaced by the output of the `R` code.  The example here was &grave;pi&grave; at the end of the last sentence.
+
+
+
+
+### Code Chunks
+
 
 
 ```{r}
@@ -27,5 +145,99 @@ print("This is text from a chunk")
 
 
 
+```{r eval=FALSE}
+print("Dr. Dyer is my favorite professor")
+```
 
 
+
+
+## Document Types
+
+RMarkdown can be converted easily into a variety of document types. Let's take a look at some of them.
+
+
+
+### RMarkdown Document
+
+In RStudio, select *File $\to$ New File $\to$ R Markdown...* and you should see the following dialog.
+
+![New R Markdown Dialog from RStudio](https://live.staticflickr.com/65535/50159543217_2ff02834cb_c_d.jpg)
+
+For most of this class, we will be using HTML output.  This creates a stand-alone document, with all the content embedded within it as a self-contained HTML web page.  This is preferable at this point because it we will be working with interactive graphics, included maps, overlays, graphics, dynamic data tables, etc.  None of these components can be embedded within PDF or Word documents, though you could take a picture of them and use that...  But that would defeat the purpose now wouldn't it?  
+
+The raw document in RStudio looks like this:
+
+![Base R Markdown](https://live.staticflickr.com/65535/50159564677_b1839ba410_c_d.jpg)
+There are a couple different parts to this document itself that need to be highlighted.  
+
+1. *The meta data:*  The part at the top of the document, lines 1-6, are meta data that summarize the document and specify how it would be converted into a final document.  The process of converting the markdown to a final document type is called *knitting* (and there is a *knit* button above the rw document).  For manuscripts and web pages and presentations, the values of title author and date are used for the top of the document.  
+
+2. *Code Chunks:*  Raw code (R or other languages) that is to be evaluated when we knit the document is enclosed within *chunks*.  These chunks are delimited by three back ticks (the tick is found on the key just to the left of the '1' key on english (USA) keyboards).  The first and last line **must** have these three ticks and *everyting* contained within them will be evaluated as `R` code when you knit the document.  
+
+3. *Chunk Options:*  On the first line of each code chunk, there is a curly bracket with `r` and potentially other items within it.  The `r` specifies that the code will be `R` code and the other components are either an alias to for the chunk (e.g., the `setup`, `cars` and `pressure` on lines 8, 18 & 26) or options that apply to the overall chunk (the rest of the stuff between the curly brackets on the same lines).  The names allow you to refer to the chunk from the text (such as referencing a Figure whose number will be automatically determined when knit) and the options allow you to determine the behavior of the chunk (figure size, orientation, showing, evalating, supressing warnings, etc.). 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### R Notebooks
+
+
+
+[^1]: This is a footnote and is defined by enclosing square brackets and a carat symbol (&#94;) where you want to put the footnote in the text (e.g., &#91;&#94;1&#93;) and then at the bottom of the document add the text (this part) prepended by &#91;&#94;1&#93;&#58;.  The linking to the footnote and back to the place you put it will be automagically inserted.

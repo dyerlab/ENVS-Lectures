@@ -342,6 +342,7 @@ map('state', projection = "polyconic" )
 I grabbed some census data from the US Census site for each state and saved it as a CSV file.  It is currently hosted on a Github site I use for all my ENVS teaching and we can read it directly from Github using the URL.
 
 ```{r}
+library(readr)
 url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/lectures/visualization/basic_visualization/states.csv"
 sz <- read_csv( url )
 head(sz)

@@ -1,5 +1,0 @@
----
-title: "Multivariate GGPlot"
-output: html_notebook
----
-

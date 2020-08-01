@@ -1,13 +1,9 @@
 ---
-title: "Basic Maps"
+title: "Choropleth Maps"
 output: html_notebook
 ---
 
-## Maps
-
-There are many several different mapping components, here are a few examples.
-
-*Choropleth Map - regional colors*
+## Base R Plotting
 
 A choropleth map displays divided geographic regions that are colored in relation to some numerical value.  The `maps` library provides some basic maps for you to do some quick visualization.  Here is a map of the continental US.  
 
@@ -19,9 +15,9 @@ map('state', projection = "polyconic" )
 
 I grabbed some census data from the US Census site for each state and saved it as a CSV file.  It is currently hosted on a Github site I use for all my ENVS teaching and we can read it directly from Github using the URL.
 
-```{r}
+```{r message=FALSE}
 library(readr)
-url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/lectures/visualization/basic_visualization/states.csv"
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/lectures/spatial/basic_maps/states.csv"
 sz <- read_csv( url )
 head(sz)
 ```
@@ -40,12 +36,12 @@ colors <- colorRampPalette( colors )(49)
 colors
 ```
 
-
+Then I can `cut` the data into 49 chunks and then assign each state to one of thos
 
 
 
 ```{r}
-groups <- cut( sz$population, 48 )
+groups <- cut( sz$population, 49 )
 sz$colors <- colors[ groups ]
 head(sz)
 ```

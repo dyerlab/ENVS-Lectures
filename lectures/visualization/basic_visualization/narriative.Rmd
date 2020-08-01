@@ -3,11 +3,9 @@ title: "Basic Data Visualization in R"
 output: html_notebook
 ---
 
-```{r setup, include=FALSE }
+```{r setup, include=FALSE, echo=FALSE }
 ## https://www.r-graph-gallery.com
 ```
-
-
 
 ## The Data
 
@@ -325,57 +323,5 @@ text( 7.4, 4.2, cor.text )
 
 
 
-## Maps
 
-There are many several different mapping components, here are a few examples.
-
-*Choropleth Map - regional colors*
-
-A choropleth map displays divided geographic regions that are colored in relation to some numerical value.  The `maps` library provides some basic maps for you to do some quick visualization.  Here is a map of the continental US.  
-
-```{r}
-library(maps)
-map('state', projection = "polyconic" )
-```
-
-
-I grabbed some census data from the US Census site for each state and saved it as a CSV file.  It is currently hosted on a Github site I use for all my ENVS teaching and we can read it directly from Github using the URL.
-
-```{r}
-library(readr)
-url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/lectures/visualization/basic_visualization/states.csv"
-sz <- read_csv( url )
-head(sz)
-```
-In this data set, there are 48 states (Hawaii & Alaska are not there) and the District of Columbia.  To color these, I'm going to use a color palette defined in the `RColorBrewer` library that goes from yellow to orange to red.  This is a sequential color ramp (see  `brewer.pal.info` for other palettes).
-
-```{r}
-library(RColorBrewer)
-colors <- brewer.pal(9,"YlOrRd")
-colors
-```
-
-Then I'm going stretch these colors out from 9 distinct colors to 49 colors, one for each State and D.C.
-
-```{r}
-colors <- colorRampPalette( colors )(49)
-colors
-```
-
-
-
-
-
-```{r}
-groups <- cut( sz$population, 48 )
-sz$colors <- colors[ groups ]
-head(sz)
-```
-
-```{r}
-map( 'state', 
-     col=sz$colors, 
-     fill=TRUE, 
-     projection="polyconic")
-```
 

@@ -1,0 +1,87 @@
+---
+title: "Plotting with GGPlot2"
+output: 
+  html_notebook:
+    css: "envs543-styles.css"
+    fig_caption: yes
+---
+
+> The `ggplot2` library is a gramattical approach to data display.
+
+In base `R`, the graphics are generally produced by adding a lot of optional arguments to a single function such as `plot()` or `barplot()` or `boxplot()`.  We can get some kinds of overlays using `text()` or `points()` or `lines()` but there is not a cohesive framework for setting this up.
+
+For any moderately complex graphical display, these approaches become unwieldy.  Consider the graph below whose data are from a 2011 article in *The Economist* measuring human development and perception of corruption for 173 countries.
+
+```{r echo=FALSE}
+library( ggplot2 )
+library( ggrepel )
+library( readr )
+data <- read.csv("EconomistData.csv")
+Region <- as.character( data$Region )
+Region[ Region == "SSA"] <- "Sub-Saharan Africa"
+Region[ Region == "Asia Pacific"] <- "Asia & Oceania"
+Region[ Region == "East EU Cemt Asia"] <- "Central & Eastern Europe"
+Region[ Region == "MENA" ] <- "Middle East & North Africa"
+Region[ Region == "SSA"] <- "Sub-Saharan Africa"
+Region[ Region == "EU W. Europe"] <- "OECD"
+region_order <- c("OECD",
+                  "Americas",
+                  "Asia & Oceania",
+                  "Central & Eastern Europe",
+                  "Middle East & North Africa",
+                  "Sub-Saharan Africa")
+Region <- factor(Region, ordered=TRUE, levels=region_order)
+data$Region <- Region
+country2label <- c("Russia", "Venezuela", "Iraq", "Myanmar", "Sudan",
+                   "Afghanistan", "Congo", "Greece", "Argentina", "Brazil",
+                   "India", "Italy", "China", "South Africa", "Spane",
+                   "Botswana", "Cape Verde", "Bhutan", "Rwanda", "France",
+                   "United States", "Germany", "Britain", "Barbados", "Norway",
+                   "Japan","New Zealand", "Singapore")
+df <- data[ data$Country %in% country2label, ]
+colors <- c("#24576D","#099DD7","#28AADC","#248E84","#F2583F","#96503F")
+p <- ggplot( data, aes( x=CPI, y=HDI))
+p <- p + stat_smooth(method="lm", formula=y~log(x), se=FALSE, color="red")
+p <- p + geom_point( aes(color=Region), shape=1, size=3)
+p <- p + scale_color_manual(name = "", values = colors)
+p <- p + geom_text_repel( aes(label=Country), data=df , force=10 )
+p <- p + xlab("Corruption Perceptions Index, 2011 (10=least corrupt)")
+p <- p + ylab("Human Development Index, 2011 (1=best)")
+p <- p + ggtitle("Corruption and Human Development")
+p <- p + xlim(c(0.5,10.5)) + ylim(c(0.2,1.0))
+p <- p + theme_minimal()
+p <- p + theme( legend.position="top",
+                panel.grid.major = element_line( color="grey50", size=0.5),
+                panel.grid.major.x = element_blank(),
+                axis.line.y = element_blank(),
+                axis.ticks.y = element_blank() )
+p
+```
+
+This graphic is constructed from several *additive* components including:  
+
+- A raw `data.frame` that has several kinds of data (CPI, HDI, region, names, etc.).  
+- A *aesthetic* statement indicating which columns of data to use and how to use them in the plot (designating x-axis vs color, etc.).  
+- An estimate of a trendline through the data (the red one), which displays a statistical summary of the raw data.   
+- A set of geometric overlays for the points which include size and shape configurations.  
+- Specified color scheme for the regions.
+- Labeling of a subset of the data (which is done using a separate `data.frame` derived from the first).
+- Labels on axes.
+- A legend positioned in a specific fashion.  
+- A title over the whole thing.  
+- A theme for the rest of the coloring and customized lines and grids.
+
+Truth be told (and you can look at the RMD of this file to verify), this one graphic required 42 relatively terse lines of code to construct!  If all of that code was stuffed into the *optional arguments* for a few functions, I think I would go mad.  
+
+Luckily for us, there are people who spend a lot of time working on these issues and thinking about how to best help us effectively display data.  One of these indivisuals was Leland Wilkinson, whose book *The Grammar of Graphics* defined just such a system.
+
+
+
+
+
+
+
+
+
+
+

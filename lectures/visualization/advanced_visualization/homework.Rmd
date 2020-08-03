@@ -1,5 +1,0 @@
----
-title: "Plotting & GGPlot"
-output: html_notebook
----
-

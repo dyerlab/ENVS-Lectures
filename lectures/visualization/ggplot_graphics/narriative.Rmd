@@ -8,9 +8,11 @@ output:
 
 > The `ggplot2` library is a gramattical approach to data display.
 
-In base `R`, the graphics are generally produced by adding a lot of optional arguments to a single function such as `plot()` or `barplot()` or `boxplot()`.  We can get some kinds of overlays using `text()` or `points()` or `lines()` but there is not a cohesive framework for setting this up.
+In base `R`, the graphics are generally produced by adding a lot of optional arguments to a single function such as `plot()` or `barplot()` or `boxplot()`.  We can get some kinds of overlays using `text()` or `points()` or `lines()` but there is not a cohesive framework for setting this up.  For even moderately complex graphical display, these approaches become unwieldy when we have to cram all that information into extra optional arguments.  
 
-For any moderately complex graphical display, these approaches become unwieldy.  Consider the graph below whose data are from a 2011 article in *The Economist* measuring human development and perception of corruption for 173 countries.
+![base plot in R](https://live.staticflickr.com/65535/50184447608_a5ca7680f5_c_d.jpg)
+
+Consider the graph below whose data are from a 2011 article in *The Economist* measuring human development and perception of corruption for 173 countries.  Both the amount of data and the way in which the data are displayed (physically and aesthetically) are somewhat complex.
 
 ```{r echo=FALSE}
 library( ggplot2 )
@@ -58,7 +60,7 @@ p <- p + theme( legend.position="top",
 p
 ```
 
-This graphic is constructed from several *additive* components including:  
+This graphic is constructed from several *additive* components[^1] including:  
 
 - A raw `data.frame` that has several kinds of data (CPI, HDI, region, names, etc.).  
 - A *aesthetic* statement indicating which columns of data to use and how to use them in the plot (designating x-axis vs color, etc.).  
@@ -73,15 +75,298 @@ This graphic is constructed from several *additive* components including:
 
 Truth be told (and you can look at the RMD of this file to verify), this one graphic required 42 relatively terse lines of code to construct!  If all of that code was stuffed into the *optional arguments* for a few functions, I think I would go mad.  
 
-Luckily for us, there are people who spend a lot of time working on these issues and thinking about how to best help us effectively display data.  One of these indivisuals was Leland Wilkinson, whose book *The Grammar of Graphics* defined just such a system.
+Luckily for us, there are people who spend a lot of time working on these issues and thinking about how to best help us effectively display data.  One of these individuals was Leland Wilkinson, whose book *The Grammar of Graphics* defined just such a system.
+
+![The Grammar of Graphics by Leland Wilkinson](https://live.staticflickr.com/65535/50184460853_63ea8a2a97_w_d.jpg)
+
+This philosophy has been inserted into the `R` Ecosystem by Hadley Wickham in the `ggplot2` library, which is descbribed as: 
+
+> A system for 'declaratively' creating graphics, based on "The Grammar of Graphics". You provide the data, tell 'ggplot2' how to map variables to aesthetics, what graphical primitives to use, and it takes care of the details.
+
+Throughout the majority of this course, we will be using this library and this approach for all but the most trivial of graphical displays.
+
+## Basic ggplot
+
+As outlined above, the basis of this appraoch is an additive (and iterative) process of creating a graphic.  This all starts with the data.  For our purposes, we will use the same iris `data.frame` as in the previous section on base graphics. 
+
+![The iris data](https://live.staticflickr.com/65535/50163458792_2e3e877468_c_d.jpg)
+
+```{r}
+summary( iris )
+```
+
+
+
+We start building a graphic using the `ggplot()` function and passing it the `data.frame` object.  This will initialize the graphic, though it will not plot anything.  
+
+```{r}
+library(ggplot2)
+
+ggplot( iris )
+```
+
+Next, we need to tell the plot which variables it will be using from the `data.frame`.  For simplicity, we do not need to make special data objects with just the variables we want to plot, we can pass around the whole `data.frame` object and just indicate to ggplot which ones we want to use by specifying the *aesthetics* to be used.
+
+```{r}
+ggplot( iris , aes( x=Sepal.Length ) )
+```
+
+At this point, there is enough information to make an axis in the graph because the underlying data has been identified.  What has not been specified to date is the way in which we want to represent the data.  To do this, we add geometries to the graph.  In this case, I'm going to add a histogram 
+
+```{r}
+ggplot( iris, aes(x=Sepal.Length) ) + geom_histogram()
+```
+Now we have a base graph!
+
+
+## Aestheics and Scope
+
+The location of the data and the `aes()` determines the *scope* of the assignment.  What I mean by this is:  
+
+- If the data and `aes()` is in the the `ggplot()` function, then everything in the whole plot *inherits* that assignment.
+- If you put them in one or more of the components you add to `ggplot()` then the they are localized to *only* those layers.
+
+So the following statements are all identical for this most basic of plots.
+
+```{r eval=FALSE}
+ggplot( iris, aes(x=Sepal.Length) ) + geom_histogram()
+ggplot( iris ) + geom_historgram( aes(x=Sepal.Length) )
+ggplot() + geom_histogram( aes(x=Sepal.Length), data=iris)
+```
+
+- In the first case, the `geom_histogram()` inherits both data and aesthetics from `ggplot()`.  
+- In the second one, it inherits only the data but has it's own specification for aesthetics.
+- In the last one, `ggplot()` only specifies the presence of a graph and all the data and aesthetics are localized within `geom_histogram()` function.
+
+Where this becomes important is when we want to make more complicated graphics like the one above.  The data that has the country CDI and HDI also has the names of the countries.  However, only a subset of the country names are plot.  This is because both the geometric layer and the text layer that has the names are using different `data.frame` objects.
+
+Here is a more simplistic example where I overlay a density plot (as a red line) on top of the histogram.
+
+```{r}
+ggplot( iris, aes(x=Sepal.Length) ) + geom_histogram() + geom_density( col="red")
+```
+
+Both the `geom_histogram` and the `geom_density` use the same data and same specification for how to deal with the y-axis.  However, the density is depicted as a frequency on the y-axis whereas the histogram uses counts.  Also notice how the `col="red"` is localized just for the `geom_density()` layer.
+
+We can override the way in which `geom_histogram` uses the y-axis by changing the *aesthetics* for that particular geometric layer.  Here, I'm goint to add another `aes()` just within the `geom_histogram()` function and have it treat y as the density rather than the count (yes that is two periods before and after the word density).
+
+```{r}
+ggplot( iris, aes(x=Sepal.Length) ) + geom_histogram(aes(y=..density..)) + geom_density( col="red" )
+```
+
+By default, everything inside the `ggplot()` function call is inherited by all the remaining components unless it is specifically overridden.  Here is a more pedantic version where only the raw `data.frame` is in the `ggplot` and the rest is in each of the geometric layers.
+
+```{r}
+ggplot( iris ) + 
+  geom_histogram( aes(x=Sepal.Length, y=..density..) ) + 
+  geom_density( aes(x=Sepal.Length), col="red", lwd=2)
+```
+
+
+## Labels & Titles
+
+Just like we added geometric layers to the plot to make histograms and densities, we do the same for labels and titles.
+
+
+```{r}
+ggplot( iris,  aes(x=Sepal.Length) ) + 
+  geom_histogram( aes(y=..density..), bins = 10, fill="lightgray", col="darkgrey" ) + 
+  geom_density( col="red", lwd=1.5) + 
+  xlab("Length") + ylab("Density") + 
+  ggtitle("Sepal Lengths for Three Iris Species")
+```
 
 
 
 
 
+## Scatter Plots
+
+With two columns of data, we can make the old scatter plot using the `geom_point()` function.
+
+
+```{r}
+ggplot( iris, aes(x=Sepal.Length, y=Sepal.Width) ) + geom_point( col="purple") 
+```
+
+In this plot, we are hiding some of the information by having all the points be the same color and shape.  We could have a `geom_point` for each species as follows:
+
+```{r}
+ggplot(  ) + 
+  geom_point( aes( x = Sepal.Length, y = Sepal.Width), data=iris[ 1:50,], col="red") + 
+  geom_point( aes( x = Sepal.Length, y = Sepal.Width), data=iris[ 51:100,], col="yellow" ) + 
+  geom_point( aes( x = Sepal.Length, y = Sepal.Width), data=iris[ iris$Species == "virginica", ], col="darkgreen" ) 
+```
+
+But that is *a lot* of typing.  In cases like this, where there is a an actual column of data that we want to use to change the appearance (e.g., in this case the `Species` column), we can put this within the `aes()` directly and `ggplot()` will handle the specifics for you.  Anything we do to reduce the amount of typing we must do is going to help us be more accurate analysts.  
+
+```{r}
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width, col=Species) ) + geom_point()
+```
 
 
 
+### In or Out of `aes()`
+
+Notice in the last graph I put the name of the data column in the aesthetic but have the color (`col`) within the `aes()` function call in the graph before that, I put color outside of the `aes()` in the `geom_point()` function.  What gives?  Here is a simple rule.  
+
+> If information from within the `data.frame` is needed to customize the display of data then it must be designated within the `aes()`, whereas if the display of the data is to be applied to the entire geometric layer, it is specified outside of the `aes()` call.
+
+Here is an example, where I have the color of the shapes determined by a value in the `data.frame` but have the shape[^2] applied to all the points, independent of any data in the `data.frame`.
+
+```{r}
+ggplot( iris ) + geom_point(aes( x = Sepal.Length, y = Sepal.Width, col=Species), shape=5)
+```
+
+We can build these things in an iterative fashion making things easier to read.  In what follows I will use the basic plot from above **but** assign it to the variable `p` as I add things to it.  It can be as iterative as you like and you can add a bunch of stuff and wait until the end to display it.
+
+```{r}
+p <- ggplot( iris ) 
+p <- p + geom_point(aes( x = Sepal.Length, y = Sepal.Width, col=Species, shape=Species), size=3, alpha=0.75 ) 
+p <- p + xlab("Sepal Length") 
+p <- p + ylab("Sepal Width")
+```
+
+The overall class of the plot varible is
+
+```{r}
+class(p)
+```
+
+And there is no plot output until we display it specifically.
+
+```{r}
+p
+```
+
+## Themes
+
+The overall coloration of the plot is determined by the theme.  
+
+
+```{r}
+p + theme_bw()
+```
+
+
+```{r}
+p + theme_dark()
+```
+
+```{r}
+p + theme_minimal()
+```
+
+
+```{r}
+p + theme_linedraw()
+```
+
+
+```{r}
+p + theme_void()
+```
+
+You can even define your own themes to customize all the text and lines.
+
+One thing that I like to do is to specify a default theme for all my plots.  You can accomplish this using  `theme_set()` and from this point forward, this theme will be used as the default (again, we need to try as hard as possible to minimzie the amount of typing we do to minimize the amount of mistakes we make).
+
+```{r}
+theme_set( theme_bw() )
+```
 
 
 
+## Boxplots
+
+
+```{r}
+ggplot( iris, aes( x = Sepal.Length) ) + geom_boxplot( notch=TRUE )
+```
+
+```{r}
+ggplot( iris, aes(x=Species, y=Sepal.Length) )  + geom_boxplot( notch=TRUE )
+```
+
+## Overlays
+
+Just like in the previous 
+
+```{r}
+p <- ggplot( iris, aes(Sepal.Length, Sepal.Width) ) + 
+  geom_point(col="red") + 
+  xlab("Sepal Length") + 
+  ylab("Sepal Width")
+```
+
+
+The order by which you add the components to the `ggplot()` will determine the order of the layers from bottom to top—the.  Layers added earlier will be covered by content in layers that are added later.  Compare the following plot that takes the length and width of the sepals and overlays a linear regression line over the top.
+
+```{r}
+p + geom_point(col="red") + 
+  stat_smooth( formula = y ~ x, method="lm", alpha=1.0)
+```
+
+Compare that plot to the one below.  Notice how puting `stat_smooth()` in front of the call to `geom_point()` layes the regression smoothing line and error zone *underneath* the points.
+
+```{r}
+p + stat_smooth(formula = y ~ x, method="lm", alpha=1.0) + 
+  geom_point(col="red") 
+```
+
+## Labeling
+
+We can create two kinds of annotations, text on the raw graph and text associated with some of the points.  Labels of the first kind can be added direclty by placing raw data inside the `aes()` function.  
+
+I'll start by taking the correlation between sepal width and length.
+
+```{r}
+cor <- cor.test( iris$Sepal.Length, iris$Sepal.Width )
+cor
+```
+
+And then grab the raw data from it and make a message.
+
+```{r}
+cor.text <- paste( "r = ", format( cor$estimate, digits=4), "; P = ", format( cor$p.value, digits=4 ), sep="" ) 
+cor.text
+```
+
+That I'll stick onto the graph directly 
+
+```{r}
+p + geom_text( aes(x=7.25, y=4.25, label=cor.text))
+```
+
+Alternatively, we may want to label specific points.  Here I find the mean values for each species.
+
+```{r}
+mean_Length <- by( iris$Sepal.Length, iris$Species, mean, simplify = TRUE)
+mean_Width <- by( iris$Sepal.Width, iris$Species, mean, simplify = TRUE)
+mean_Values <- data.frame(  Species = levels( iris$Species), 
+                            Sepal.Length = as.numeric( mean_Length ), 
+                            Sepal.Width = as.numeric( mean_Width ) ) 
+mean_Values
+```
+
+To plot and label these mean values, I'm going to use two steps.  First, since I named the columns of the new `data.frame` the same as before, we can just inherit the `aes()` but substitute in this new `data.frame` and add `label=Species` to the the *aesthetics*.  
+
+
+```{r}
+p + geom_text( data=mean_Values, aes(label=Species) )
+```
+
+But that is a bit messy. Here is a slick helper library for that that will try to minimize the overlap.
+
+```{r}
+library( ggrepel ) 
+p + geom_label_repel( data=mean_Values, aes(label=Species) )
+```
+Slick.
+
+---
+
+
+
+[^1]: Literally, we add these toghter using the plus '+' sign just like we were going to develop an equation. 
+[^2]: The shapes are the same as the `pch` offerings covered in the lecture on graphing using Base R routines  [here](https://dyerlab.github.io/ENVS-Lectures/visualization/basic_visualization/narriative.nb.html).

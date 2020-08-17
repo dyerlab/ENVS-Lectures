@@ -7,6 +7,11 @@ output: html_notebook
 ## https://www.r-graph-gallery.com
 ```
 
+> Data visualization is key to providing effective communication of your data.
+
+![Jonathan Swan](https://live.staticflickr.com/65535/50195862297_dd15b6c11a_c_d.jpg)
+
+
 ## The Data
 
 The `iris` flower data set (also known as *Fisher's Iris data set*) is a multivariate data set introduced by the British statistician, eugenicist, and biologist [Ronald Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) in his [1936](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-1809.1936.tb02137.x) paper entitled, *The use of multiple measurements in taxonomic problems as an example of linear discriminant analysis*.

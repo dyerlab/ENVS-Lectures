@@ -1,0 +1,100 @@
+---
+title: "The Title"
+subtitle: "The Subtitle"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["envs543-styles.css", middlebury, middlebury-fonts]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+class: left, bottom
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+
+# RMarkdown & Notebooks
+
+
+
+### Environmental Data Literacy
+
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<img src="images/logo1.svg" width="400px">
+
+
+
+---
+
+class: sectionTitle
+
+# Reproducible Research
+
+
+---
+class: middle center
+
+<strong>Reproducible Reseach</strong> is about reproducing the most *basic tenets* you were taught in your first physical science laboratory within your data analysis ecosystem.
+
+---
+
+class: sectionTitle
+
+# Markdown
+
+This is the coolesst
+
+---
+
+```{r}
+plot( mtcars$mpg ~ mtcars$disp)
+```
+
+
+
+---
+class: middle center
+
+# What is Markdown
+
+<iframe src="https://player.vimeo.com/video/178485416?color=428bca" width="640" height="400" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+<p><a href="https://vimeo.com/178485416">What is R Markdown?</a> from <a href="https://vimeo.com/rstudioinc">RStudio, Inc.</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+
+---
+
+class: sectionTitle
+
+# Notebooks
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# Questions?
+
+
+![Peter Sellers](images/peter_sellers.gif)
+]
+
+<p>&nbsp;</p>
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+
+

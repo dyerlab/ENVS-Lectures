@@ -1,0 +1,147 @@
+---
+title: "Character Data"
+output: 
+  html_notebook:
+    css: "envs543-styles.css"
+---
+
+```{r startup, include=FALSE}
+library( tidyverse )
+```
+
+
+
+> Character data represents textual content.
+
+The data type `character` is intended to represent textual data such as *actual texts*, names of objects, and other contnet that is intended to help both you and the audience you are trying to reach better understand your data. 
+
+```{r}
+name <- "Dyer"
+sport <- "Frolf"
+```
+
+The two variables above have a sequence of characters enclosed by a double quote.  You can use a single quote instead, *however* the enclosing quoting characters must be the same (e.g., you cannot start with a single quote and end with a double).
+
+## Lengths
+
+The length of a string is a measure of how many varibles there are, not the number of characters within it.  For example, the length of `dyer` is
+
+```{r}
+length(name)
+```
+
+because it only has one character but the number of characters within it is:
+
+```{r}
+nchar(name)
+```
+
+Length is defined specifically on the number of elements in a vector, and technically the variable `dyer` is a vector of length one.  If we concatinate them into a vector (go see the vector content)
+
+```{r}
+phrase <- c( name, sport )
+```
+
+we find that it has a length of 2
+
+```{r}
+length(phrase)
+```
+
+And if we ask the vector how many characters are in the elements it contains, it gives us a vector of numeric types representing the number of letters in each of the elements.
+
+```{r}
+nchar(phrase)
+```
+
+
+
+## Putting Character Objects Together
+
+The binary `+` operator has not been defined for objects of class `character`, which is understandable once we consider all the different ways we may want to put the values contained in the variables together.  If you try it, `R` will complain.
+
+```{r, error=TRUE}
+name + sport
+```
+
+The `paste()` function is designed to take a collection of `character` variables and smush them togethers.  By default, it inserts a space between each of the variables and/or values passed to it.
+
+
+```{r}
+paste( name, "plays", sport )
+```
+
+Although, you can have any kind of separator you like:
+
+```{r}
+paste(name, sport, sep=" is no good at ")
+```
+
+The elements you pass to `paste()` do not need to be held in variables, you can put quoted `character` values in there as well.
+
+```{r}
+paste( name, " the ", sport, "er", sep="") 
+```
+
+
+If you have a vector of `character` types, by default, it considers the pasting operation to be applied to every element of the vector.
+
+```{r}
+paste( phrase , "!")
+```
+
+However if you intention is to take the elements of the vector and paste them together, then you need to specify that using the `collapse` optional argument.  By default, it is set to `NULL`, and that state tells the function to apply the paste()-ing to each element.  However, if you set `collapse` to something other than `NULL`, it will use that to take all the elements and put them into a single response.
+
+```{r}
+paste( phrase, collapse = " is not good at ") 
+```
+
+
+## String Operations
+
+Many times, we need to extract components from within a longer `character` element.  Here is a longer bit of text as an example.
+
+```{r}
+corpus <- "An environmental impact statement (EIS), under United States environmental law, is a document required by the 1969 National Environmental Policy Act (NEPA) for certain actions 'significantly affecting the quality of the human environment'.[1] An EIS is a tool for decision making. It describes the positive and negative environmental effects of a proposed action, and it usually also lists one or more alternative actions that may be chosen instead of the action described in the EIS. Several U.S. state governments require that a document similar to an EIS be submitted to the state for certain actions. For example, in California, an Environmental Impact Report (EIR) must be submitted to the state for certain actions, as described in the California Environmental Quality Act (CEQA). One of the primary authors of the act is Lynton K. Caldwell."
+```
+
+### Splits
+
+We can split the original string into several components by specifying which particular character or set of characters we wish to use to break it apart.  Here is an example using the space character to pull it apart into words.
+
+
+```{r}
+str_split( corpus, pattern=" ", simplify=TRUE)
+```
+
+which shows `r length(str_split( corpus, pattern=" ", simplify=TRUE))` words in the text.  
+
+<div class="box-yellow">I need to point out that I added the `simplify=TRUE` option to `str_split`.  Had I not done that, it would have returned a [list](../lists/narriative.html) object that contained the individual vector of words. There are various reasons that it returns a list, none of which I can frankly understand, that is just the way the authors of the function made it.</div>
+
+## Substrings
+
+There are two different things you may want to do with substrings; find them and replace them.  Here are some ways to figure out where they are.
+
+```{r}
+str_detect(corpus, "Environment")
+```
+
+```{r}
+str_count( corpus, "Environment")
+```
+
+```{r}
+str_locate_all( corpus, "Environment")
+```
+
+We can also replace instances of one substring with another.
+
+```{r}
+str_replace_all(corpus, "California", "Virginia")
+```
+
+There is a lot more fun stuff to do with string based data.
+
+-- 
+
+

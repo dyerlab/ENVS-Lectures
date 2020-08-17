@@ -1,0 +1,112 @@
+---
+title: "Numerical Data"
+output: 
+  html_notebook:
+      css: "envs543-styles.css"
+---
+
+```{r setup, include=FALSE}
+  library(emo)
+```
+
+> Numerical data contains all numerical represenations.
+
+By far, the most common kind of data we use in our analyses is numerical data. This may represent measured things like `height`, `snout-vent length` (whatever that is), `depth`, `age`, etc.  In data analysis, we commonly take (or obtain) measurements from several items and then try to characterize them using summaries and visualization.
+
+In `R`, the numerical data type can be defined as:
+
+```{r}
+X <- 42
+```
+
+Notice how the numerical value of `42` is assigned to the variable named `X`.  To have `R` print out the value of a particular variable, you can type its name in the console and it will give it to you.
+
+```{r}
+X
+```
+
+
+## Operators
+
+Numeric types have a ton of normal operators that can be used.  Some examples include: 
+
+The usual *arithmatic operators*:
+
+```{r}
+x <- 10
+y <- 23
+
+x + y
+x - y
+x * y
+x / y
+```
+
+You have the *exponentials*:
+
+```{r}
+## x raised to the y
+x^y
+
+## the inverse of an exponent is a root, here is the 23rd root of 10
+x^(1/y)
+```
+
+The *logrithmics*:
+
+```{r}
+## the natural log
+log(x)
+
+## Base 10 log
+log(x,base=10)
+```
+
+And the *modulus operator*:
+
+```{r}
+y %% x
+```
+
+
+
+If you didn't know what this one is, don't worry.  The modulus is just the *remainder after division* like you did in grade school.  The above code means that *23 divided by 10 has a remainder of 3*.  I include it here just to highlight the fact that many of the operators that we will be working with in `R` are created by more than just a single symbol residing at the top row of your computer keyboard.  There are just too few symbos on the normal keyboard to represent the breath of operators.  The authors of `R` have decided that using combinations of symbols to handle these and you will get used to them in not time at all.
+
+## Introspection & Coercion
+
+The `class()` of a numeric type is (wait for it)... `numeric` (those `R` programmers are sure clever).
+
+```{r}
+class( 42 )
+```
+
+<div class="box-yellow">In this case `class` is the name of the function and there are one or more things we pass to that function.  These **must** be enclosed in the parenthesis associated with `class`.  The parantheses **must** be *right next to* the name of the function. If you put a space betwen the word `class` and the parentheses, it may not work the way you would like it to.  You've been warned.
+
+The stuff inside the parenthesis are called *arguments* and are the data that we pass to the function itself. In this case we pass a value or varible to the `class` function and it does its magic and tells us what kind of data type it is.  Many functions have several arguements that can be passed to them, some optional, some not.  We will get more into that on the lecture covering [Functions](https://dyerlab.github.io/ENVS-Lectures/functions/slides.html).</div>
+
+It is also possible to inquire if a particular variable is of a certain class.  This is done by using the `is.*` set of functions.
+
+```{r}
+is.numeric( 42 )
+is.numeric( "dr dyer" )
+```
+
+Sometimes we may need to turn one kind of class into another kind.   Consider the following:
+
+```{r}
+x <- "42"
+is.numeric( x )
+class(x)
+```
+
+It is a `character` data type because it is enclosed within a set of quotes.  However, we can *coerce* it into a numeric type by:
+
+```{r}
+y <- as.numeric( x )
+is.numeric( y )
+y
+```
+
+
+
+

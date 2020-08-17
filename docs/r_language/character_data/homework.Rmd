@@ -1,0 +1,91 @@
+---
+title: "Character Data Activity"
+author: "Your Name Here"
+output: html_notebook
+---
+
+## Assignment
+
+OK, so lets start with some fun stuff.  In the code chunk below, create a variable called `name` and assign it a value equal to your name.
+
+```{r}
+first_name <- ""
+```
+
+Now, how any characters are in your name?  Don't count them by hand, use `nchar()` and put the code in the following chunk.
+
+```{r}
+### number of characters in your name
+```
+
+Assign the variable `last_name` the value of your last name.
+
+```{r}
+last_name <- ""
+```
+
+And in the following chunck, make a variable named `full_name` that uses `paste()` to put together your `first_name` and `last_name`.
+
+```{r}
+### Your full name 
+```
+
+Now pay attention, this is **very important**.  Take the output of the last chunk (e.g., your full name), and *copy it to the 3$^{rd}$ line of this document where it say `author: "Your Name Here"`!  That way I know whose work this is!  Nice Job! 
+
+## String Operations
+
+So we'll have a little fun with this one.  Here are the lyrics to a popular song from the Beetles, entitled *Hey Jude*.
+
+```{r}
+lyrics <- "Hey Jude don't make it bad Take a sad song and make it better Remember to let her into your heart Then you can start to make it better Hey Jude don't be afraid You were made to go out and get her The minute you let her under your skin Then you begin to make it better And anytime you feel the pain Hey Jude refrain Don't carry the world upon your shoulders For well you know that it's a fool Who plays it cool By making his world a little colder Na na na na na Na na na na Hey Jude don't let me down You have found her now go and get her let it out and let it in Remember to let her into your heart hey Jude Then you can start to make it better So let it out and let it in Hey Jude begin You're waiting for someone to perform with And don't you know that it's just you Hey Jude you'll do The movement you need is on your shoulder Na na na na na Na na na na yeah Hey Jude don't make it bad Take a sad song and make it better Remember to let her under your skin Then you'll begin to make it better Better better better better better ah Na na na na na na na yeah Yeah yeah yeah yeah yeah yeah Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Jude Jude Judy Judy Judy Judy ow wow Na na na na na na na my my my Na na na na hey Jude Jude Jude Jude Jude Jude Na na na na na na na yeah yeah yeah Na na na na hey Jude yeah you know you can make it Jude Jude you're not gonna break it Na na na na na na na don't make it bad Jude take a sad song and make it better Na na na na hey Jude oh Jude Jude hey Jude wa Na na na na na na na oh Jude Na na na na hey Jude hey hey hey hey Na na na na na na na hey hey Na na na na hey Jude now Jude Jude Jude Jude Jude Na na na na na na na Jude yeah yeah yeah yeah Na na na na hey Jude Na na na na na na na Na na na na hey Jude na na na na na na na na na Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na yeah make it Jude Na na na na hey Jude yeah yeah yeah yeah yeah Yeah Yeah Yeah Yeah Na na na na na na na yeah yeah yeah yeah Yeah Yeah Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude"
+```
+
+I thought it would be interesting to take a look at word frequencies for this song.  To do so, we should probably first make everything the same case (in this case, I'll make it all lower case using the function `tolower()`.
+
+```{r}
+## To remove case differences.
+lyrics <- tolower(lyrics)
+```
+
+Next, let's first start by loading in a library that has some string functions. 
+
+```{r}
+library(stringr)
+```
+
+In the recorded lecture, I showed how to split a string into sections using the function `str_split()` function.  Split the lyrics into a single vector as I showed in the recorded lecture and assign it to a variable named `words`.  In the talk I point out that you should add the optional argument `simplify=TRUE` to the optional values in the `str_split()` function, make sure to do that here as well.
+
+```{r}
+### Split the lyrics into a vector
+words <- str_split(lyrics, pattern = " ", simplify = TRUE )
+```
+
+Now here is something new.  The function `table()` takes a vector of values and tallies the count of each element.  In this case, it will allow you to count each word in that song.  Make a new variable named `word.freqs` to hold the result and then print it out (by just typing the variable name by itself in the chunk and running the chunk).
+
+```{r}
+### Make a table of the words to get counts
+
+```
+
+Here is another new thing.  You can use the `sort()` function to sort the word list by the magnitude of occurrences. It also has an optional argument `decreasing` that you can set to `TRUE` and have the results presented in decreasing order.  (You can see the help file for `sort()` by typing in the console `?sort` and hitting return).
+
+```{r}
+### Sort the words in decreasing order.
+
+```
+
+### One-Million Point Question!
+
+What are the five most common words in that song?
+
+List of words in decreasing frequency (replace the {XXXX} stuff below to answer:  
+
+1. {most common has X}
+2. {second most common has X}
+3. {third most common has X}
+4. {fourth most common has X}
+5. {fifth most common has X}
+
+---
+
+That was easy (and perhaps fun?)!

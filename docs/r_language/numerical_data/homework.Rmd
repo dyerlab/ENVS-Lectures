@@ -1,0 +1,23 @@
+---
+title: "Data Types Homework"
+subtitle: "YOUR NAME HERE"
+output: html_notebook
+      
+---
+
+---
+
+## Instructions 
+
+Here are some homework question for you work on.  Fill out the part above by replacing the `YOUR NAME HERE` with your *actual* name and save this file as `YOURNAME_HOMEWORK_DATATYPES.Rmd` in your local directory.  If you are looking at this in a browser, use the `Download Rmd` option in the Code menu at the top right corner of this page.  
+The questions below are intended to be answered by you trying out the code (e.g., typing it into the Console in RStudio) and then writing the answer under the question.
+
+Before you turn it in, save it and hit the "Preview" button on the toolbar at the top of the page to make it into HTML.  Submit the HTML as your assignment, it will be named something like `YOURNAME_HOMEOWRK_DATATYPES.nb.html`.
+
+--- 
+
+## Questions
+
+1. What happens if you use the `seq()` function and specify a `by=` that goes in the wrong direction (e.g., `seq(3,8,by=-1)`)?
+
+2. If you type 

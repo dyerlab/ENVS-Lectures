@@ -1,0 +1,70 @@
+---
+title: "Rasters"
+output: html_notebook
+---
+
+```{r}
+library(raster)
+```
+
+
+
+
+Load in an elevation raster for Baja California, Mexico.
+
+```{r}
+url <- "../../../data/alt_22.tif"
+r <- raster( url )
+r
+```
+
+```{r}
+plot(r)
+```
+
+
+
+
+
+```{r}
+sum( is.na(values(r)))
+```
+
+## Cropping
+
+One of the first things to do is to crop the data down to size.  If we are working on Baja California, there is no need to have the rest of Mexico and all that empty Pacific Ocean there.
+
+```{r}
+baja_extent <- extent( c(-116.3, -109, 22.5, 30 ) )
+alt <- crop( r, baja_extent )
+plot(alt)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

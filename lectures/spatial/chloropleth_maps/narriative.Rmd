@@ -3,6 +3,7 @@ title: "Choropleth Maps"
 output: html_notebook
 ---
 
+
 ## Base R Plotting
 
 A choropleth map displays divided geographic regions that are colored in relation to some numerical value.  The `maps` library provides some basic maps for you to do some quick visualization.  Here is a map of the continental US.  
@@ -17,7 +18,7 @@ I grabbed some census data from the US Census site for each state and saved it a
 
 ```{r message=FALSE}
 library(readr)
-url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/lectures/spatial/basic_maps/states.csv"
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/lectures/spatial/chloropleth_maps/states.csv"
 sz <- read_csv( url )
 head(sz)
 ```

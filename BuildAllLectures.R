@@ -2,7 +2,8 @@ rm( list=ls() )
 library(tidyverse)
 
 
-if( 1 ) {
+
+if( FALSE ) {
   # clean out all html files
   system("rm -rf docs/*")
   system("find lectures -iname '*.html' -delete")

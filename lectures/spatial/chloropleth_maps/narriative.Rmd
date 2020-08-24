@@ -13,6 +13,12 @@ library(maps)
 map('state', projection = "polyconic" )
 ```
 
+Some stuff to add. This is the stuff.
+
+- First  
+- Second  
+- Thrird  
+
 
 I grabbed some census data from the US Census site for each state and saved it as a CSV file.  It is currently hosted on a Github site I use for all my ENVS teaching and we can read it directly from Github using the URL.
 
@@ -23,6 +29,7 @@ sz <- read_csv( url )
 head(sz)
 ```
 In this data set, there are 48 states (Hawaii & Alaska are not there) and the District of Columbia.  To color these, I'm going to use a color palette defined in the `RColorBrewer` library that goes from yellow to orange to red.  This is a sequential color ramp (see  `brewer.pal.info` for other palettes).
+
 
 ```{r}
 library(RColorBrewer)

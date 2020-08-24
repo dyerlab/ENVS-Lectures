@@ -28,10 +28,9 @@ for( folder in list.dirs("lectures",full.names = TRUE,recursive = FALSE) ) {
 rmarkdown::render("lectures/index.Rmd")
 
 # Move over the contents of the lecture 
-system("cp -R lectures/ docs/")
+#system("cp -R lectures/ docs/")
+system("rsync -raz --progress  lectures/ docs/")
 system("find docs -iname '*.Rmd' -delete" )
-system("find docs -name 'data' -type d -exec rm -rv {} + ")
-
 
 # clean up the lecture folder
-system("find lectures -iname '*.html' -delete")
+#system("find lectures -iname '*.html' -delete")

@@ -96,7 +96,6 @@ However if you intention is to take the elements of the vector and paste them to
 paste( phrase, collapse = " is not good at ") 
 ```
 
-
 ## String Operations
 
 Many times, we need to extract components from within a longer `character` element.  Here is a longer bit of text as an example.
@@ -109,14 +108,13 @@ corpus <- "An environmental impact statement (EIS), under United States environm
 
 We can split the original string into several components by specifying which particular character or set of characters we wish to use to break it apart.  Here is an example using the space character to pull it apart into words.
 
-
 ```{r}
 str_split( corpus, pattern=" ", simplify=TRUE)
 ```
 
 which shows `r length(str_split( corpus, pattern=" ", simplify=TRUE))` words in the text.  
 
-<div class="box-yellow">I need to point out that I added the `simplify=TRUE` option to `str_split`.  Had I not done that, it would have returned a [list](../lists/narriative.html) object that contained the individual vector of words. There are various reasons that it returns a list, none of which I can frankly understand, that is just the way the authors of the function made it.</div>
+<div class="box-yellow">I need to point out that I added the `simplify=TRUE` option to `str_split`.  Had I not done that, it would have returned a [list](../lists/narriative.nb.html) object that contained the individual vector of words. There are various reasons that it returns a list, none of which I can frankly understand, that is just the way the authors of the function made it.</div>
 
 ## Substrings
 
@@ -141,6 +139,10 @@ str_replace_all(corpus, "California", "Virginia")
 ```
 
 There is a lot more fun stuff to do with string based data.
+
+
+
+
 
 -- 
 

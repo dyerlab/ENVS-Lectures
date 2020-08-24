@@ -1,5 +1,0 @@
----
-title: "Spatial Lines & Points Data"
-output: html_notebook
----
-

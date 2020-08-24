@@ -1,5 +1,0 @@
----
-title: "Markdown & Notebooks"
-output: html_notebook
----
-

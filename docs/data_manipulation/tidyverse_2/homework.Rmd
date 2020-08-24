@@ -1,7 +1,0 @@
----
-title: "Tidyverse Judo"
-output: html_notebook
----
-
-
-

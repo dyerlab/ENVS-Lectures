@@ -1,5 +1,0 @@
----
-title: "Databases"
-output: html_notebook
----
-

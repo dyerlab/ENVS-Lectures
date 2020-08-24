@@ -1,8 +1,0 @@
----
-title: "Analysis of Variance"
-output: 
-  html_notebook:
-    css: "envs543-styles.css"
----
-
-# Impetus

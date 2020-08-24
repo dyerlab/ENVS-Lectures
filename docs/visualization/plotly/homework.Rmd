@@ -1,5 +1,0 @@
----
-title: "Plotly Graphics"
-output: html_notebook
----
-

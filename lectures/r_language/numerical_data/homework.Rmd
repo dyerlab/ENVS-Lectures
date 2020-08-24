@@ -1,23 +1,35 @@
 ---
-title: "Data Types Homework"
+title: "Numerical Data Types"
 subtitle: "YOUR NAME HERE"
 output: html_notebook
-      
----
-
 ---
 
 ## Instructions 
 
-Here are some homework question for you work on.  Fill out the part above by replacing the `YOUR NAME HERE` with your *actual* name and save this file as `YOURNAME_HOMEWORK_DATATYPES.Rmd` in your local directory.  If you are looking at this in a browser, use the `Download Rmd` option in the Code menu at the top right corner of this page.  
+Fill out the part above by replacing the `YOUR NAME HERE` with your *actual* name and save this file as `YOURNAME_HOMEWORK_DATATYPES.Rmd` in your local directory.  If you are looking at this in a browser, use the `Download Rmd` option in the Code menu at the top right corner of this page.  
+
 The questions below are intended to be answered by you trying out the code (e.g., typing it into the Console in RStudio) and then writing the answer under the question.
 
 Before you turn it in, save it and hit the "Preview" button on the toolbar at the top of the page to make it into HTML.  Submit the HTML as your assignment, it will be named something like `YOURNAME_HOMEOWRK_DATATYPES.nb.html`.
 
 --- 
 
-## Questions
+## Activities
 
-1. What happens if you use the `seq()` function and specify a `by=` that goes in the wrong direction (e.g., `seq(3,8,by=-1)`)?
+*1. Define Data: Insert a chunk and define two variables, $N_A$ and $N_B$, which define the number of samples taken from the field.*  
 
-2. If you type 
+*2. Inline R: Write a paragraph of text that mimics something like the methods section of a scientific paper where you indicate how many total samples were collected and how many were sampled from sites $A$ and $B$.  These should be 'in-line' R code, use the variables directly.*
+
+*3. Some Math: Consider Dr. Dyer's need for fresh [charcuterie](https://en.wikipedia.org/wiki/Charcuterie) in his life.   Luckily, RVA has a spectacular butcher in Carytown, [Belmont Butchery](http://belmontbutchery.com).  Below are the coordinates for both Dyer's office and the purveyor of fine products.  Use your old friend, the pythagorean theorem to figure out the distance between these two points (n.b., I know degrees are not a good measure of distance but this is about you working on making equations).*
+
+```{r}
+lat.office <- 37.5445796
+lon.office <- -77.454640
+lat.belmont <- 37.554462
+lon.belmont <- 77.479170
+```
+
+
+*4. External Content: Insert an image below (funny memes would be awesome).*
+
+

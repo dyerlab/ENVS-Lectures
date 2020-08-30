@@ -354,9 +354,7 @@ In `R`, there are `r length( colors() )` different *named* colors accessable thr
 sample( colors(), size=5, replace = FALSE )
 ```
 
---
-
-In plots, you can specify the color by using the name.
+---
 
 
 ```{r}
@@ -501,7 +499,7 @@ meanSepalLength
 
 # The BarPlot
 
-```{r}
+```{r fig.height=5}
 barplot( meanSepalLength, 
          names.arg = c("setosa","versicolor","virginica"), 
          xlab="Iris Species",
@@ -622,6 +620,6 @@ background-size: auto
 
 <p>&nbsp;</p>
 
-.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+.bottom[ If you have any questions for about the content presented herein, please feel free to drop a comment on the class LMS and I'll get back to you as soon as possible.]
 
 

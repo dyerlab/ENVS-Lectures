@@ -1,5 +1,5 @@
 ---
-title: "The Title"
+title: "Basic Data Visualization"
 subtitle: "The Subtitle"
 output:
   xaringan::moon_reader:
@@ -18,8 +18,16 @@ background-image: url("images/contour.png")
 background-position: right
 background-size: auto
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width=10, fig.align='center')
+library(knitr)
+library(kableExtra)
+library( magrittr )
+```
 
-# Univariate Data Visusalization with GGPlot
+
+
+# Basic Data Visualization
 
 
 
@@ -33,20 +41,66 @@ background-size: auto
 <img src="images/logo1.svg" width="400px">
 
 
+---
+class: center, middle
+background-image: url("images/DataWorkCycle.png")
+background-size: contain 
+
 
 ---
 
-class: sectionTitle
+# The Example Data - Iris
 
-# Built-in Plotting
+There is a classic data set in statistics called *Fisher's Iris Data Set* (see more about [Ronald Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) ) looking at 50 measurements of *sepal* and *pedal* lengths amongst three species of *Iris*.<sup>1</sup>
+
+![Iris species](https://live.staticflickr.com/65535/50163458792_2e3e877468_c_d.jpg)
+.footnote[[1] These data were first published in Fisher RA (1936) The use of multiple measurements in taxonomic problems. *Annals of Eugenics*, **7**:  [doi](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-1809.1936.tb02137.x)).]
+
 
 
 ---
 
-class: sectionTitle
+# Anatomy of a Flower
 
-# The Grammar of Graphics
+--
+![Iris morphology](https://live.staticflickr.com/65535/50274494323_4e215e571b_c_d.jpg)
 
+
+---
+
+# The Example Data - Iris
+
+```{r echo=FALSE}
+DT::datatable( iris, 
+               options = list(pageLength=8),
+               fillContainer = FALSE)
+```
+
+
+
+---
+
+# The Example Data - Iris
+
+```{r}
+summary( iris )
+```
+
+
+---
+
+
+# Learning Objectives
+
+For this lecture, the learning objectives include:   
+
+- Create univariate and bivariate plots of data (continuous-continuous & continuous-categorical).  
+
+
+- Apply varying basic symbologies for representing data in plots.  
+
+
+- Use named and hex colors to better   
 
 
 ---
@@ -59,6 +113,75 @@ class: sectionTitle
 
 ---
 
+# A Single Vector of Data
+
+```{r}
+sepal_length <- iris$Sepal.Length
+head(sepal_length)
+```
+
+---
+
+# A Single Vector of Data - Histograms
+
+```{r}
+hist( sepal_length )
+```
+
+
+---
+
+# Arguments to Customize Plots
+
+- `xlab` & `ylab`: The names attached to both x- and y-axes.  
+
+
+- `main`: The title on top of the graph.  
+
+
+- `breaks`: This controls the way in which the original data are partitioned (e.g., the width of the bars along the x-axis).     
+   - If you pass a single number, `n` to this option, the data will be partitioned into `n` bins.  
+   - If you pass a sequence of values to this, it will use this sequence as the boundaries of bins.  
+
+
+- `col`: The color of the bar (not the border)  
+
+
+- `probability`: A flag as either `TRUE` or `FALSE` (the default) to have the y-axis scaled by total likelihood of each bins rather than a count of the numbrer of elements in that range.  
+
+
+
+
+
+---
+
+# Density Plots
+
+```{r}
+d_sepal.length <- density( sepal_length )
+d_sepal.length
+```
+
+--
+
+```{r}
+class(d_sepal.length)
+```
+
+
+
+---
+
+# Density Plots
+
+
+```{r}
+plot( d_sepal.length )
+```
+
+
+---
+
 class: sectionTitle
 
 # Bivariate Data
@@ -67,9 +190,148 @@ class: sectionTitle
 
 ---
 
+# The Generality of `plot()`
+
+In `R`, many objects understand how to `plot` themselves.  
+
+- Density objects
+
+- Analyses (regression, ANOVA, etc)
+
+- points, lines, polygons, & rasters
+
+
+---
+
+# A Scatter Plot
+
+```{r fig.width=10}
+plot( iris$Sepal.Length, iris$Sepal.Width )
+```
+
+---
+
+# Functional Forms
+
+
+### Listing Data as Separate Values
+
+```{r eval=FALSE}
+plot( x, y )
+```
+
+--
+
+&nbsp;
+
+### List Functional Form of the Data
+
+```{r eval=FALSE}
+plot( y ~ x)
+```
+
+
+---
+
 class: sectionTitle
 
-# Multivariate Data
+# Customizing Plots
+
+
+
+---
+
+# `plot()` Options
+
+Parameter | Description
+----------|-----------------------------------------------------------------------------------------------------------
+`type`    | The kind of plot to show ('p'oint, 'l'ine, 'b'oth, or 'o'ver).  A point plot is the default.
+`pch`     | The character (or symbol) being used to plot.  There 26 recognized general characters to use for plotting.  The default is `pch=1`. 
+`col`     | The color of the symbols/lines that are plot.
+`cex`     | The magnification size of the character being plot.  The default is `cex=1` and deviation from that will increase (cex > 1) or decrease (0 < cex < 1) the scaling of the symbols.  Also works for `cex.lab` and `cex.axis`.
+`lwd`     | The width of any lines in the plot.
+`lty`     | The type of line to be plot (solid, dashed, etc.)
+`bty`     | The 'Box' type around the plot ("o", "1", "7","c","u", "]", and my favorite "n")
+
+
+---
+
+```{r echo=FALSE}
+par(mar=c(3,3,3,3))
+num <- 0 ; 
+num1 <- 0
+plot(0,0 , xlim=c(0,21) , ylim=c(0.5,6.5), col="white" , yaxt="n" , ylab="Parameter" , xlab="", bty="n")
+
+for (i in seq(1,20)){
+   points(i,1 , pch=i , cex=3)
+   points(i,2 , col=i , pch=16 , cex=3)
+   points(i,3 , col="black" , pch=16 , cex=i*0.25)
+   if(i %in% c(seq(1,18,3))){
+      num=num+1
+      points(c(i,i+2), c(4,4) , col="black" , lty=num , type="l" , lwd=2)
+      text(i+1.1 , 4.25 , num)
+   }
+   
+   if(i %in% c(seq(1,20,5))){
+      num1=num1+1
+      points(c(i,i+1,i+2,i+3), c(5,5,5,5) , col="black"  , type=c("p","l","b","o")[num1] , lwd=2)
+      text(i+1.5 , 5.3 , c("p","l","b","o")[num1] )
+      points(c(i,i+1,i+2,i+3), c(6,6,6,6) , col="black"  , type="l",  lwd=num1)
+      text(i+1.5 , 6.25 , num1 )
+      
+   }
+}
+
+axis(2, at = c(1,2,3,4,5,6), 
+     labels = c("pch" , "col" , "cex" , "lty", "type" , "lwd" ), 
+     tick = TRUE, 
+     col = "black", 
+     las = 1 )
+```
+
+
+
+
+---
+
+# Species Differences in the `iris` dataset
+
+```{r}
+summary( iris )
+```
+
+
+---
+
+# Symbology
+
+
+```{r}
+symbol <- as.numeric( iris$Species)
+symbol
+```
+
+
+
+
+---
+
+# Species Differences by Symbol
+
+```{r}
+plot( iris$Sepal.Length, iris$Sepal.Width, pch=symbol )
+```
+
+
+---
+
+# Additional Customizations
+
+```{r fig.height=6, fig.width=8}
+plot( Sepal.Width ~ Sepal.Length, data = iris, 
+      pch = symbol, bty="n", cex=1.5, cex.axis=1.5, cex.lab = 1.5, 
+      xlab="Sepal Length", ylab="Sepal Width")
+```
 
 
 
@@ -79,27 +341,267 @@ class: sectionTitle
 
 # Color Spaces
 
+##  Named & Hexadecimal 
+
+
+---
+
+# Named Colors
+
+In `R`, there are `r length( colors() )` different *named* colors accessable through the function `colors()`.  
+
+```{r}
+sample( colors(), size=5, replace = FALSE )
+```
+
+--
+
+In plots, you can specify the color by using the name.
+
+
+```{r}
+raw_colors <- sample( colors(), size=3, replace=FALSE)
+colors <- raw_colors[ symbol ]
+colors
+```
+
+
+---
+
+# Adding a Legend
+
+--
+
+```{r fig.height=6}
+plot( Sepal.Width ~ Sepal.Length, data = iris,
+      col = colors, pch=20, bty="n", cex=2,
+      xlab="Sepal Length", ylab="Sepal Width")
+legend(6.5,4.3, pch=20, cex=1.5, col=raw_colors,legend=levels(iris$Species) )
+```
+
+
+---
+
+# Hex Colors
+
+Color spaces defined by: 
+
+ - Red 
+ - Green 
+ - Blue 
+
+--
+
+In base-16 no less:
+
+> 0 1 2 3 4 5 6 7 8 9 A B C D E F
+
+So for 2-digits, that is 256 distinct values for each color
+
+> 00 → FF
+
+
+---
+
+# Hex Colors
+
+Represented triplets of RRGGBB preceded by hashtag
+
+```{r}
+raw_colors <- c("#86cb92", "#8e4162", "#260F26")
+colors <- raw_colors[ symbol ]
+```
+
+---
+
+```{r echo=FALSE}
+plot( Sepal.Width ~ Sepal.Length, data = iris,
+      col = colors, pch=20, bty="n", cex=2,
+      xlab="Sepal Length", ylab="Sepal Width")
+legend(6.5,4.3, pch=20, cex=1.5, col=raw_colors,legend=levels(iris$Species) )
+```
+
+
+---
+
+# Color Theme Generators
+
+Google up something like "Color Theme Generator" and see what you find.
+
+One I use is: [coolors](https://coolors.co)
+
+
+
+
+
+
+---
+
+# Color Brewer  
+
+
+[Color Brewer](https://colorbrewer2.org)
+
+
+---
+
+# Color Brewer in R
+
+```{r echo=FALSE}
+DT::datatable( RColorBrewer::brewer.pal.info, 
+               options = list(pageLength=8),
+               fillContainer = FALSE )
+```
+
+
+---
+
+```{r}
+library(RColorBrewer)
+display.brewer.all()
+```
+
+
+
 
 
 ---
 
 class: sectionTitle
 
-# Transformations
+# Categorical Data
+
+
+---
+
+# Categorical Dependent Data
+
+```{r echo=FALSE}
+DT::datatable( iris,
+               options = list(pageLength=7),
+               fillContainer = FALSE)
+```
+
+
+---
+
+# Mean Sepal Length, by Species
+
+```{r}
+mu.Setosa <- mean( iris$Sepal.Length[ iris$Species == "setosa" ])
+mu.Versicolor <- mean( iris$Sepal.Length[ iris$Species == "versicolor" ])
+mu.Virginica <- mean( iris$Sepal.Length[ iris$Species == "virginica" ])
+
+meanSepalLength <- c( mu.Setosa, mu.Versicolor, mu.Virginica )
+meanSepalLength
+```
+
+
+---
+
+# The BarPlot
+
+```{r}
+barplot( meanSepalLength, 
+         names.arg = c("setosa","versicolor","virginica"), 
+         xlab="Iris Species",
+         ylab="Mean Sepal Length")
+```
+
+
+---
+
+# A Shortcut
+
+```{r eval=FALSE }
+mu.Setosa <- mean( iris$Sepal.Length[ iris$Species == "setosa" ])
+mu.Versicolor <- mean( iris$Sepal.Length[ iris$Species == "versicolor" ])
+mu.Virginica <- mean( iris$Sepal.Length[ iris$Species == "virginica" ])
+
+meanSepalLength <- c( mu.Setosa, mu.Versicolor, mu.Virginica )
+meanSepalLength
+```
+
+--
+
+```{r}
+meanSepalLength <- by( iris$Sepal.Length, iris$Species, mean )
+meanSepalLength
+```
+
+---
+
+```{r}
+barplot( meanSepalLength, 
+         xlab = "Iris Species",
+         ylab = "Average Sepal Length")
+```
+
+
+
+---
+
+# The Boxplot - High Density Information
+
+A boxplot contains a high amount of information content and is appropriate when the groupings on the x-axis are categorical.  For each category, the graphical representation includes:  
+
+- The median value for the raw data
+
+- A box indicating the area between the first and third quartile (e.g,. the values enclosing the 25% - 75% of the data).  The top and bottoms are often referred to as the *hinges* of the box.
+
+- A notch (if requested), represents confidence around the estimate of the median.
+
+- Whiskers extending out to shows $\pm 1.5 * IQR$ (the Inner Quartile Range)
+
+- Any points of the data that extend beyond the whiskers are plot as points.
+
+
+---
+
+```{r}
+boxplot( Sepal.Length ~ Species, data=iris, 
+         notch=TRUE, ylab="Sepal Length")
+```
 
 
 
 
+---
+
+class: sectionTitle
+
+# Overrlaying Text
 
 
+---
+
+# Textifying Your Plot
+
+--
+
+```{r}
+cor <- cor.test( iris$Sepal.Length, iris$Sepal.Width )
+cor
+```
+
+--
+
+```{r}
+cor.text <- paste( "r = ", format( cor$estimate, digits=4), "; P = ", format( cor$p.value, digits=4 ), sep="" ) 
+cor.text
+```
 
 
+---
 
-
-
-
-
-
+```{r}
+plot( Sepal.Width ~ Sepal.Length, data = iris, 
+      col=colors, 
+      pch=20, 
+      bty="n", 
+      xlab="Sepal Length", ylab="Sepal Width")
+text( 6.5, 4.2, cor.text, cex=1.2 )
+```
 
 
 

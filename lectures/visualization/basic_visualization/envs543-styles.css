@@ -13,6 +13,10 @@ h1 {
   font-size: 102px;
 }
 
+.footnote {
+  font-size: 12px;
+}
+
 .remark-slide-number {
   font-size: 14px;
   opacity: 0.25;
@@ -21,6 +25,50 @@ h1 {
 .red { 
   color: red; 
 }
+
+
+
+/*  Table Stuff */
+
+table {
+  padding: 0; 
+  
+}
+
+table tr {
+  background-color: white;
+  margin: 0;
+  padding: 0; 
+}
+    
+table tr:nth-child(2n) {
+  background-color: #f8f8f8; 
+}
+    
+table tr th {
+ font-weight: bold;
+ text-align: left;
+ margin: 0;
+ padding: 6px 13px; 
+ background-color: #d7d7d7; 
+}
+    
+table tr td {
+ text-align: left;
+ margin: 0;
+ padding: 6px 13px; 
+}
+table tr th :first-child, table tr td :first-child {
+ margin-top: 0; 
+}
+
+table tr th :last-child, table tr td :last-child {
+margin-bottom: 0; 
+}
+
+
+
+
 
 
 /* Colored Content Boxes */

@@ -145,7 +145,7 @@ We can use the same technique to use `col` instead of `pch`.  Here I make a vect
 ```{r}
 raw_colors <- c("red","gold","forestgreen")
 colors <- raw_colors[ symbol ]
-colors
+colors[1:10]
 ```
 
 In addition to the general form for the function `plot(x,y)` we used above, we can use an alternative designation based upon what is called the *functional form*.  The *functional form* is how we designate functions in `R`, such as regression anlaysis.  This basic syntax for this is `y ~ x`, that is the response variable (on the y-axis) is a function of the predictor (on the x-axis).

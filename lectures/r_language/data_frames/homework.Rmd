@@ -1,5 +1,89 @@
 ---
-title: "Data Containers"
+title: "Vectors & Data Frames In-Class"
+author: "Your Name Here"
 output: html_notebook
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Vectors & Data Frames
+
+Vectors and data frames are the foundation of data analysis in R.  Essentially, most everything we work with will be contained within one of these container types.  As such, it is important for us to get a good understanding and gain a high level of comfort and understaning of how to access and set data in these structures.
+
+### Creating 
+
+In the chunk below, I have create a three vectors of data.  Use these data to create a data frame named `df` and then show a summary of `df`.
+
+```{r}
+names <- c("Bob","Alice","Jane")
+age <- c(22,65,36)
+flag <- c(FALSE, FALSE, TRUE)
+
+## Make df and summarize here
+##
+
+```
+
+Add a new column of data to this data frame (you can make it up, which is what I did with the data above...).  Then summarize.
+
+```{r}
+## Add new column
+```
+
+
+Add a new row of data to the `data.frame` then summarize it. 
+
+```{r}
+## Add new row
+```
+
+
+
+### Manipulating Data
+
+In reality, we spend very little time working with data as small as this, so let's jump into a slightly larger data set.  There is a built-in data set measuing air quality in New York entitled `airquality` (I know, tricky right?).  It is available on every stock installation and this is what it looks like.
+
+```{r}
+summary( airquality )
+```
+
+Manipulate the data frame in the following ways:  
+
+1. These data were collected in 1973.  Create a new column of data that represents a textual version of the date (month, day, and year) then drop (delete) the columns Month and Day.  
+2. Change the `Temp` column to `Temperature` (no need to not use the whole word) and convert the data in it Celsius.  
+
+
+```{r}
+## manipulate airquality data frame (make text date column and convert f -> c)
+
+
+
+
+```
+
+And show your creation.
+
+```{r}
+### Show the first few rows
+head( airquality )
+```
+
+
+## Extracting Data Questions
+
+OK, now we have some data to work with, use that data frame to extract the following information and answer the following questions.
+
+
+1.  What were the hottest and coldest dates recorded in this data set?   
+
+
+2.  How many of the days in the data recorded higher than the average wind speed? 
+
+3. How many rows of data are there with no missing values for any of recorded observations?
+
+
+4. On what days was the solar radiation greater than 300 Langleys in Central Park?
+
 

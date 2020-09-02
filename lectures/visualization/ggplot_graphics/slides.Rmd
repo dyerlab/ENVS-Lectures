@@ -11,7 +11,14 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+    ratio: '16x9'
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE,
+                      fig.align = 'center',
+                      out.width="60%" )
+```
 
 class: left, bottom
 background-image: url("images/contour.png")
@@ -19,7 +26,7 @@ background-position: right
 background-size: auto
 
 
-# Bivariate Visusalization with GGPlot
+# Visusalization with GGPlot
 
 
 
@@ -34,11 +41,143 @@ background-size: auto
 
 
 
+
+
+
 ---
 
 class: sectionTitle
 
-# Built-in Plotting
+# Online Repositories
+
+
+
+---
+
+# Data Integrity
+
+Where data lives is an indication of its integrity.  The following characteristics are indications of 
+
+- Central location   
+
+- Easily accessible
+
+- Described (metadata)  
+
+- Versioning
+
+
+
+---
+
+background-image: url("https://live.staticflickr.com/65535/50294277523_f97d3cfd61_c_d.jpg")
+background-position: center
+background-size: auto
+
+# GitHub/GitLab
+
+[Dyerlab GitHub Repository](https://github.com/dyerlab) 
+
+
+
+---
+
+# Loading Directly
+
+## GitHub or other Repository
+
+```{r}
+library( readr )
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv"
+data <- read_csv(url)
+```
+
+---
+
+# Loading Directly
+
+```{r}
+head( data )
+```
+
+---
+
+# Loading From Google Drive
+
+You can keep you data in a spreadsheet on Google Docs and then configure your repostitory to make it available for download to anyone who has a 
+
+[Here](https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s) is a data set from the Rice Rivers Center with the following characteristics:
+
+- 8200 records
+
+- The following variables: `DateTime, RecordID, PAR, WindSpeed_mph, WindDir, AirTempF, RelHumidity, BP_HG, Rain_in, H2O_TempC, SpCond_mScm, Salinity_ppt, PH, PH_mv, Turbidity_ntu, Chla_ugl, BGAPC_CML, BGAPC_rfu, ODO_sat, ODO_mgl, Depth_ft, Depth_m, SurfaceWaterElev_m_levelNad83m`
+
+
+---
+
+# Making Data Available
+
+.pull-left[
+- Put your data into a Google Spreadsheet  
+
+- Select `Publish to the Web` 
+
+- Select `Link`, which sheet to publish, and `Comma-separated values (csv)`
+
+- Retrieve very long URL.
+]
+
+.pull-right[
+![Publish Dialog](https://live.staticflickr.com/65535/50295015666_d6aeb39873_c_d.jpg)
+]
+
+---
+
+# Load in the Data
+
+```{r}
+## NOTICE I SPLIT THIS SO IT FITS ON ONE LINE IN THE SLIDE
+
+url_parts <- c( "https://docs.google.com/spreadsheets/d/e", 
+                "/2PACX-1vRm_v8JJPSipkDywT354v2owDBWa1j82",
+                "_OhvdQmSBRztSv8YuWZBYe73T3jiY6suQhYoGCiV",
+                "Y3gu9jW/pub?gid=0&single=true&output=csv" )
+
+rice <- read_csv( paste(url_parts, collapse="") )
+```
+
+
+
+
+---
+
+# Making Data Available
+
+.pull-left[
+- Put your data into a Google Spreadsheet  
+
+- Select `Publish to the Web` 
+
+- Select `Link`, which sheet to publish, and `Comma-separated values (csv)`
+
+- Retrieve very long URL.
+]
+
+.pull-right[
+![Publish Dialog](https://live.staticflickr.com/65535/50294350108_d8ebc88016_c_d.jpg)
+]
+
+---
+
+# The Rice Data
+
+```{r echo=FALSE, warning=FALSE}
+head(rice)
+```
+
+```{r echo=FALSE}
+rm( list=c("rice"))
+```
 
 
 ---
@@ -51,9 +190,249 @@ class: sectionTitle
 
 ---
 
-class: sectionTitle
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50295214407_bc0f4d10b6_c_d.jpg")
+background-position: center
+background-size: auto
 
-# Univariate Data
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50294412713_25bbd52230_c_d.jpg")
+background-position: center
+background-size: auto
+
+
+
+---
+
+# Components of Graphical Objects
+
+- A aesthetic statement indicating which columns of data to use and how to use them in the plot (designating x-axis vs color, etc.).
+- An estimate of a trendline through the data (the red one), which displays a statistical summary of the raw data.
+- A set of geometric overlays for the points which include size and shape configurations.
+- Specified color scheme for the regions.
+- Labeling of a subset of the data (which is done using a separate data.frame derived from the first).
+- Labels on axes.
+- A legend positioned in a specific fashion.
+- A title over the whole thing.
+- A theme for the rest of the coloring and customized lines and grids.
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50295214407_bc0f4d10b6_c_d.jpg")
+background-position: center
+background-size: auto
+
+
+
+---
+
+# The Grammar of Graphics
+
+
+.pull-left[ Components of graphics:
+
+- Data  
+
+- Aesthetics  
+
+- Transformations  
+
+- Partitions  
+
+- Auxillary Text 
+
+- Overlays
+]
+
+.pull-right[ 
+![asdf](https://live.staticflickr.com/65535/50295255672_46390d9ee5_w_d.jpg)
+]
+
+
+---
+
+# The `ggplot2` Library
+
+.pull-left[
+![Tidyverse](https://live.staticflickr.com/65535/50295284047_ebb5dec2e8_w_d.jpg)
+]
+
+
+.pull-right[
+  ### R Packages for Data Science
+  
+  - RStudio + Hadley Wickham
+  
+  - Collection of Packages
+  
+  - Makes you .red[AWESOME]
+  
+```{r}
+library( ggplot2 )
+```
+
+]
+
+
+
+---
+
+# The Aesthetics
+
+An *aesthetic* is a function that allows you to tell the graphics which columns of data are to be used in the creation of graph features.
+
+```{r eval=FALSE}
+aes( x = Sepal.Length, y = Sepal.Width )
+```
+
+--
+
+Commonly included **within** the initial call to `ggplot()`
+
+```{r eval=FALSE}
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width ) )
+```
+
+---
+
+# Stepwise Creation of a Plot
+
+```{r out.width='600px', out.height = '420px'}
+ggplot( iris ) 
+```
+
+
+
+---
+
+```{r}
+ggplot( iris, aes( x = Sepal.Length) ) 
+```
+
+---
+
+```{r }
+options(repr.plot.width = 14, repr.plot.height = 8)
+ggplot( iris, aes( x = Sepal.Length) ) + geom_histogram()
+```
+
+
+
+
+---
+
+# Simple Density Plot
+
+
+```{r}
+ggplot( iris, aes( x = Sepal.Length) ) + geom_density() 
+```
+
+
+
+---
+
+# A Scatter Plot 
+
+```{r}
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + geom_point() 
+```
+
+
+
+
+---
+
+# Scatterplot with Colors
+
+*Aesthetics* also contribute to symbologies and colors
+
+```{r}
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width, color=Species) ) + 
+  geom_point() 
+```
+
+
+
+---
+
+# In & Out of `aes()`
+
+```{r}
+ggplot( iris ) + 
+  geom_point(aes( x = Sepal.Length, y = Sepal.Width, col=Species), shape=5)
+```
+
+
+---
+
+# Iterative Building of Graphics
+
+```{r}
+p <- ggplot( iris )
+p <- p + geom_point( aes( x = Sepal.Length, 
+                          y = Sepal.Width, 
+                          col=Species, 
+                          shape=Species), 
+                     size=3, 
+                     alpha=0.75 ) 
+p <- p + xlab("Sepal Length")
+p <- p + ylab("Sepal Length")
+class(p)
+```
+
+
+---
+
+# Printing out `p`
+
+```{r out.width="70%"}
+p
+```
+
+
+
+
+
+
+
+
+---
+
+# Scope of Visibility
+
+Only things in `ggplot()` apply to *all* following components.  Placing `aes()` or `data=` parts in later components *only* make them visible to that particular component.
+
+```{r eval=FALSE }
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  geom_point() + 
+  stat_smooth() 
+```
+
+--
+
+```{r eval=FALSE}
+ggplot( iris ) + 
+  geom_point( aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  stat_smooth(  aes( x = Sepal.Length, y = Sepal.Width) )
+```
+
+
+--
+
+```{r eval=FALSE}
+ggplot() + 
+  geom_point( aes( x = Sepal.Length, y = Sepal.Width), data = iris )  + 
+  stat_smooth( aes( x = Sepal.Length, y = Sepal.Width), data = iris )  
+```
 
 
 
@@ -61,7 +440,130 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Bivariate Data
+# Themes
+
+## Additive Components to the Plot
+
+
+
+---
+
+class: middle
+background-image: url("https://media.giphy.com/media/dWEk3w1Uo97qw/giphy.gif")
+background-position: center
+background-size: cover
+
+
+
+.top[
+<font color="white" size=24>Themes are also Customizable!!</font>
+]
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+
+---
+
+```{r}
+p + theme_bw()
+```
+
+
+---
+
+```{r}
+p + theme_gray()
+```
+
+---
+
+```{r}
+p + theme_linedraw()
+```
+
+
+---
+
+```{r}
+p + theme_dark()
+```
+
+
+---
+
+```{r}
+p + theme_minimal()
+```
+
+
+---
+
+```{r}
+p + theme_classic()
+```
+
+
+
+---
+
+```{r}
+p + theme_void()
+```
+
+
+
+
+---
+
+# Boxplot
+
+```{r}
+ggplot( iris, aes( x = Sepal.Length) ) + 
+  geom_boxplot( notch=TRUE )
+```
+
+
+---
+
+```{r}
+ggplot( iris, aes(x=Species, y=Sepal.Length) )  + 
+  geom_boxplot( notch=TRUE )
+```
+
 
 
 
@@ -69,38 +571,88 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Multivariate Data
+# Overlays
+
+
 
 
 
 ---
 
-class: sectionTitle
+# Overlaying a Trendline
 
-# Color Spaces
+```{r}
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  geom_point()  + 
+  stat_smooth()
+```
+
+
+---
+
+# Stacking Order 
+
+```{r}
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  geom_point( color="red")  + 
+  stat_smooth( fill="black", alpha=1)
+```
+
+
+---
+
+# Stacking Order 
+
+```{r}
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  stat_smooth( fill="black", alpha=1) + 
+  geom_point( color="red")  
+```
+
+---
+
+# On-The-Fly Transformations
+
+Customizing the y-axis data format...
+
+```{r}
+ggplot( iris, aes(x = Sepal.Length) ) + 
+  geom_histogram( aes( y = ..density.. ), color="green", fill="orange", bins = 15 ) + 
+  geom_density( color = "magenta", lwd=1.5 )  
+```
 
 
 
 ---
 
-class: sectionTitle
+# Textual Overlays
 
-# Transformations
-
-
-
-
-
-
+```{r}
+cor_model <- cor.test( iris$Sepal.Length, iris$Sepal.Width)
+cor_model
+names( cor_model ) 
+```
 
 
+---
 
+# Formatting as Text
 
+```{r}
+cor.text <- paste( "r = ", 
+                   format( cor_model$estimate, digits=4), 
+                   ";\n P = ", 
+                   format( cor_model$p.value, digits=4 ), 
+                   sep="" ) 
+cor.text
+```
 
+---
 
-
-
-
+```{r out.width="75%"}
+p + geom_text( aes(x=7.25, y=4.25, label=cor.text), 
+               col="#0c2c84" )
+```
 
 
 ---

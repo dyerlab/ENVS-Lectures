@@ -11,13 +11,15 @@
     <textarea id="source">
 
 
+
+
 class: left, bottom
 background-image: url("images/contour.png")
 background-position: right
 background-size: auto
 
 
-# Bivariate Visusalization with GGPlot
+# Visusalization with GGPlot
 
 
 
@@ -32,11 +34,170 @@ background-size: auto
 
 
 
+
+
+
 ---
 
 class: sectionTitle
 
-# Built-in Plotting
+# Online Repositories
+
+
+
+---
+
+# Data Integrity
+
+Where data lives is an indication of its integrity.  The following characteristics are indications of 
+
+- Central location   
+
+- Easily accessible
+
+- Described (metadata)  
+
+- Versioning
+
+
+
+---
+
+background-image: url("https://live.staticflickr.com/65535/50294277523_f97d3cfd61_c_d.jpg")
+background-position: center
+background-size: auto
+
+# GitHub/GitLab
+
+[Dyerlab GitHub Repository](https://github.com/dyerlab) 
+
+
+
+---
+
+# Loading Directly
+
+## GitHub or other Repository
+
+
+```r
+library( readr )
+url &lt;- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv"
+data &lt;- read_csv(url)
+```
+
+---
+
+# Loading Directly
+
+
+```r
+head( data )
+```
+
+```
+## # A tibble: 6 x 3
+##   Stratum Longitude Latitude
+##   &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+## 1 88          -114.     29.3
+## 2 9           -114.     29.0
+## 3 84          -114.     29.0
+## 4 175         -113.     28.7
+## 5 177         -114.     28.7
+## 6 173         -113.     28.4
+```
+
+---
+
+# Loading From Google Drive
+
+You can keep you data in a spreadsheet on Google Docs and then configure your repostitory to make it available for download to anyone who has a 
+
+[Here](https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s) is a data set from the Rice Rivers Center with the following characteristics:
+
+- 8200 records
+
+- The following variables: `DateTime, RecordID, PAR, WindSpeed_mph, WindDir, AirTempF, RelHumidity, BP_HG, Rain_in, H2O_TempC, SpCond_mScm, Salinity_ppt, PH, PH_mv, Turbidity_ntu, Chla_ugl, BGAPC_CML, BGAPC_rfu, ODO_sat, ODO_mgl, Depth_ft, Depth_m, SurfaceWaterElev_m_levelNad83m`
+
+
+---
+
+# Making Data Available
+
+.pull-left[
+- Put your data into a Google Spreadsheet  
+
+- Select `Publish to the Web` 
+
+- Select `Link`, which sheet to publish, and `Comma-separated values (csv)`
+
+- Retrieve very long URL.
+]
+
+.pull-right[
+![Publish Dialog](https://live.staticflickr.com/65535/50295015666_d6aeb39873_c_d.jpg)
+]
+
+---
+
+# Load in the Data
+
+
+```r
+## NOTICE I SPLIT THIS SO IT FITS ON ONE LINE IN THE SLIDE
+
+url_parts &lt;- c( "https://docs.google.com/spreadsheets/d/e", 
+                "/2PACX-1vRm_v8JJPSipkDywT354v2owDBWa1j82",
+                "_OhvdQmSBRztSv8YuWZBYe73T3jiY6suQhYoGCiV",
+                "Y3gu9jW/pub?gid=0&amp;single=true&amp;output=csv" )
+
+rice &lt;- read_csv( paste(url_parts, collapse="") )
+```
+
+
+
+
+---
+
+# Making Data Available
+
+.pull-left[
+- Put your data into a Google Spreadsheet  
+
+- Select `Publish to the Web` 
+
+- Select `Link`, which sheet to publish, and `Comma-separated values (csv)`
+
+- Retrieve very long URL.
+]
+
+.pull-right[
+![Publish Dialog](https://live.staticflickr.com/65535/50294350108_d8ebc88016_c_d.jpg)
+]
+
+---
+
+# The Rice Data
+
+
+```
+## # A tibble: 6 x 23
+##   DateTime RecordID   PAR WindSpeed_mph WindDir AirTempF RelHumidity BP_HG
+##   &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+## 1 1/1/201…    43816     0          3.87    14.6     31.0        80.5  30.3
+## 2 1/1/201…    43817     0          4.79    18.5     30.7        82.1  30.3
+## 3 1/1/201…    43818     0          3.61    16.2     31.2        81.9  30.3
+## 4 1/1/201…    43819     0          2.99    11.5     30.5        83    30.3
+## 5 1/1/201…    43820     0          3.52    11.3     30.9        81.8  30.3
+## 6 1/1/201…    43821     0          3.83    20.0     30.6        82.8  30.3
+## # … with 15 more variables: Rain_in &lt;dbl&gt;, H2O_TempC &lt;dbl&gt;, SpCond_mScm &lt;dbl&gt;,
+## #   Salinity_ppt &lt;dbl&gt;, PH &lt;dbl&gt;, PH_mv &lt;dbl&gt;, Turbidity_ntu &lt;dbl&gt;,
+## #   Chla_ugl &lt;dbl&gt;, BGAPC_CML &lt;dbl&gt;, BGAPC_rfu &lt;dbl&gt;, ODO_sat &lt;dbl&gt;,
+## #   ODO_mgl &lt;dbl&gt;, Depth_ft &lt;dbl&gt;, Depth_m &lt;dbl&gt;,
+## #   SurfaceWaterElev_m_levelNad83m &lt;dbl&gt;
+```
+
+
 
 
 ---
@@ -49,9 +210,284 @@ class: sectionTitle
 
 ---
 
-class: sectionTitle
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50295214407_bc0f4d10b6_c_d.jpg")
+background-position: center
+background-size: auto
 
-# Univariate Data
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50294412713_25bbd52230_c_d.jpg")
+background-position: center
+background-size: auto
+
+
+
+---
+
+# Components of Graphical Objects
+
+- A aesthetic statement indicating which columns of data to use and how to use them in the plot (designating x-axis vs color, etc.).
+- An estimate of a trendline through the data (the red one), which displays a statistical summary of the raw data.
+- A set of geometric overlays for the points which include size and shape configurations.
+- Specified color scheme for the regions.
+- Labeling of a subset of the data (which is done using a separate data.frame derived from the first).
+- Labels on axes.
+- A legend positioned in a specific fashion.
+- A title over the whole thing.
+- A theme for the rest of the coloring and customized lines and grids.
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50295214407_bc0f4d10b6_c_d.jpg")
+background-position: center
+background-size: auto
+
+
+
+---
+
+# The Grammar of Graphics
+
+
+.pull-left[ Components of graphics:
+
+- Data  
+
+- Aesthetics  
+
+- Transformations  
+
+- Partitions  
+
+- Auxillary Text 
+
+- Overlays
+]
+
+.pull-right[ 
+![asdf](https://live.staticflickr.com/65535/50295255672_46390d9ee5_w_d.jpg)
+]
+
+
+---
+
+# The `ggplot2` Library
+
+.pull-left[
+![Tidyverse](https://live.staticflickr.com/65535/50295284047_ebb5dec2e8_w_d.jpg)
+]
+
+
+.pull-right[
+  ### R Packages for Data Science
+  
+  - RStudio + Hadley Wickham
+  
+  - Collection of Packages
+  
+  - Makes you .red[AWESOME]
+  
+
+```r
+library( ggplot2 )
+```
+
+]
+
+
+
+---
+
+# The Aesthetics
+
+An *aesthetic* is a function that allows you to tell the graphics which columns of data are to be used in the creation of graph features.
+
+
+```r
+aes( x = Sepal.Length, y = Sepal.Width )
+```
+
+--
+
+Commonly included **within** the initial call to `ggplot()`
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width ) )
+```
+
+---
+
+# Stepwise Creation of a Plot
+
+
+```r
+ggplot( iris ) 
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-9-1.png" width="600px" height="420px" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length) ) 
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-10-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+options(repr.plot.width = 14, repr.plot.height = 8)
+ggplot( iris, aes( x = Sepal.Length) ) + geom_histogram()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-11-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+# Simple Density Plot
+
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length) ) + geom_density() 
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-12-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+# A Scatter Plot 
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + geom_point() 
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-13-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+# Scatterplot with Colors
+
+*Aesthetics* also contribute to symbologies and colors
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width, color=Species) ) + 
+  geom_point() 
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+# In &amp; Out of `aes()`
+
+
+```r
+ggplot( iris ) + 
+  geom_point(aes( x = Sepal.Length, y = Sepal.Width, col=Species), shape=5)
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-15-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Iterative Building of Graphics
+
+
+```r
+p &lt;- ggplot( iris )
+p &lt;- p + geom_point( aes( x = Sepal.Length, 
+                          y = Sepal.Width, 
+                          col=Species, 
+                          shape=Species), 
+                     size=3, 
+                     alpha=0.75 ) 
+p &lt;- p + xlab("Sepal Length")
+p &lt;- p + ylab("Sepal Length")
+class(p)
+```
+
+```
+## [1] "gg"     "ggplot"
+```
+
+
+---
+
+# Printing out `p`
+
+
+```r
+p
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-17-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+
+
+
+
+
+
+---
+
+# Scope of Visibility
+
+Only things in `ggplot()` apply to *all* following components.  Placing `aes()` or `data=` parts in later components *only* make them visible to that particular component.
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  geom_point() + 
+  stat_smooth() 
+```
+
+--
+
+
+```r
+ggplot( iris ) + 
+  geom_point( aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  stat_smooth(  aes( x = Sepal.Length, y = Sepal.Width) )
+```
+
+
+--
+
+
+```r
+ggplot() + 
+  geom_point( aes( x = Sepal.Length, y = Sepal.Width), data = iris )  + 
+  stat_smooth( aes( x = Sepal.Length, y = Sepal.Width), data = iris )  
+```
 
 
 
@@ -59,7 +495,157 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Bivariate Data
+# Themes
+
+## Additive Components to the Plot
+
+
+
+---
+
+class: middle
+background-image: url("https://media.giphy.com/media/dWEk3w1Uo97qw/giphy.gif")
+background-position: center
+background-size: cover
+
+
+
+.top[
+&lt;font color="white" size=24&gt;Themes are also Customizable!!&lt;/font&gt;
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+
+---
+
+
+```r
+p + theme_bw()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-21-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
+p + theme_gray()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-22-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+p + theme_linedraw()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-23-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
+p + theme_dark()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-24-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
+p + theme_minimal()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-25-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
+p + theme_classic()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-26-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+
+```r
+p + theme_void()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-27-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+# Boxplot
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length) ) + 
+  geom_boxplot( notch=TRUE )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-28-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
+ggplot( iris, aes(x=Species, y=Sepal.Length) )  + 
+  geom_boxplot( notch=TRUE )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-29-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
 
 
 
@@ -67,38 +653,131 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Multivariate Data
+# Overlays
+
+
 
 
 
 ---
 
-class: sectionTitle
+# Overlaying a Trendline
 
-# Color Spaces
+
+```r
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  geom_point()  + 
+  stat_smooth()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-30-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Stacking Order 
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  geom_point( color="red")  + 
+  stat_smooth( fill="black", alpha=1)
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-31-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Stacking Order 
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  stat_smooth( fill="black", alpha=1) + 
+  geom_point( color="red")  
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-32-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# On-The-Fly Transformations
+
+Customizing the y-axis data format...
+
+
+```r
+ggplot( iris, aes(x = Sepal.Length) ) + 
+  geom_histogram( aes( y = ..density.. ), color="green", fill="orange", bins = 15 ) + 
+  geom_density( color = "magenta", lwd=1.5 )  
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-33-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 
 
 ---
 
-class: sectionTitle
-
-# Transformations
+# Textual Overlays
 
 
+```r
+cor_model &lt;- cor.test( iris$Sepal.Length, iris$Sepal.Width)
+cor_model
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  iris$Sepal.Length and iris$Sepal.Width
+## t = -1.4403, df = 148, p-value = 0.1519
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.27269325  0.04351158
+## sample estimates:
+##        cor 
+## -0.1175698
+```
+
+```r
+names( cor_model ) 
+```
+
+```
+## [1] "statistic"   "parameter"   "p.value"     "estimate"    "null.value" 
+## [6] "alternative" "method"      "data.name"   "conf.int"
+```
 
 
+---
+
+# Formatting as Text
 
 
+```r
+cor.text &lt;- paste( "r = ", 
+                   format( cor_model$estimate, digits=4), 
+                   ";\n P = ", 
+                   format( cor_model$p.value, digits=4 ), 
+                   sep="" ) 
+cor.text
+```
+
+```
+## [1] "r = -0.1176;\n P = 0.1519"
+```
+
+---
 
 
+```r
+p + geom_text( aes(x=7.25, y=4.25, label=cor.text), 
+               col="#0c2c84" )
+```
 
-
-
-
-
-
-
+&lt;img src="slides_files/figure-html/unnamed-chunk-36-1.png" width="75%" style="display: block; margin: auto;" /&gt;
 
 
 ---

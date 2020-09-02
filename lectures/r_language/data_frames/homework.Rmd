@@ -1,12 +1,8 @@
 ---
-title: "Vectors & Data Frames In-Class"
+title: "Vectors & Data Frames Homework"
 author: "Your Name Here"
 output: html_notebook
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ## Vectors & Data Frames
 

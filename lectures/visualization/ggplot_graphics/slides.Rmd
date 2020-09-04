@@ -9,15 +9,17 @@ output:
     nature:
       titleSlideClass: ["center","middle"]
       highlightStyle: github
+      ratio: "16:9"
       highlightLines: true
       countIncrementalSlides: false
-    ratio: '16x9'
+    
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE,
                       fig.align = 'center',
-                      out.width="60%" )
+                      fig.retina = 3,
+                      out.width="40%")
 ```
 
 class: left, bottom
@@ -131,23 +133,6 @@ You can keep you data in a spreadsheet on Google Docs and then configure your re
 ![Publish Dialog](https://live.staticflickr.com/65535/50295015666_d6aeb39873_c_d.jpg)
 ]
 
----
-
-# Load in the Data
-
-```{r}
-## NOTICE I SPLIT THIS SO IT FITS ON ONE LINE IN THE SLIDE
-
-url_parts <- c( "https://docs.google.com/spreadsheets/d/e", 
-                "/2PACX-1vRm_v8JJPSipkDywT354v2owDBWa1j82",
-                "_OhvdQmSBRztSv8YuWZBYe73T3jiY6suQhYoGCiV",
-                "Y3gu9jW/pub?gid=0&single=true&output=csv" )
-
-rice <- read_csv( paste(url_parts, collapse="") )
-```
-
-
-
 
 ---
 
@@ -166,6 +151,27 @@ rice <- read_csv( paste(url_parts, collapse="") )
 .pull-right[
 ![Publish Dialog](https://live.staticflickr.com/65535/50294350108_d8ebc88016_c_d.jpg)
 ]
+
+---
+
+# Load in the Data
+
+```{r}
+## 
+## NOTICE I SPLIT THIS SO IT FITS ON ONE LINE IN THE SLIDES
+##
+
+url_parts <- c( "https://docs.google.com/spreadsheets/d/e", 
+                "/2PACX-1vRm_v8JJPSipkDywT354v2owDBWa1j82",
+                "_OhvdQmSBRztSv8YuWZBYe73T3jiY6suQhYoGCiV",
+                "Y3gu9jW/pub?gid=0&single=true&output=csv" )
+
+rice <- read_csv( paste(url_parts, collapse="") )
+```
+
+
+
+
 
 ---
 
@@ -212,13 +218,21 @@ background-size: auto
 # Components of Graphical Objects
 
 - A aesthetic statement indicating which columns of data to use and how to use them in the plot (designating x-axis vs color, etc.).
+
 - An estimate of a trendline through the data (the red one), which displays a statistical summary of the raw data.
+
 - A set of geometric overlays for the points which include size and shape configurations.
+
 - Specified color scheme for the regions.
+
 - Labeling of a subset of the data (which is done using a separate data.frame derived from the first).
+
 - Labels on axes.
+
 - A legend positioned in a specific fashion.
+
 - A title over the whole thing.
+
 - A theme for the rest of the coloring and customized lines and grids.
 
 
@@ -289,7 +303,7 @@ library( ggplot2 )
 
 An *aesthetic* is a function that allows you to tell the graphics which columns of data are to be used in the creation of graph features.
 
-```{r eval=FALSE}
+```{r}
 aes( x = Sepal.Length, y = Sepal.Width )
 ```
 
@@ -305,7 +319,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width ) )
 
 # Stepwise Creation of a Plot
 
-```{r out.width='600px', out.height = '420px'}
+```{r}
 ggplot( iris ) 
 ```
 
@@ -319,8 +333,9 @@ ggplot( iris, aes( x = Sepal.Length) )
 
 ---
 
-```{r }
-options(repr.plot.width = 14, repr.plot.height = 8)
+# Adding Geometry Layer
+
+```{r}
 ggplot( iris, aes( x = Sepal.Length) ) + geom_histogram()
 ```
 
@@ -394,7 +409,7 @@ class(p)
 
 # Printing out `p`
 
-```{r out.width="70%"}
+```{r}
 p
 ```
 
@@ -496,6 +511,8 @@ background-size: cover
 <p>&nbsp;</p>
 
 
+
+
 ---
 
 ```{r}
@@ -547,6 +564,20 @@ p + theme_void()
 
 
 
+
+---
+
+# Customizing Theme Components
+
+
+```{r}
+p + theme_bw( base_size = 18 )
+```
+
+```{r echo=FALSE}
+ggplot2::theme_set( theme_bw( base_size=16) )
+```
+
 ---
 
 # Boxplot
@@ -559,10 +590,36 @@ ggplot( iris, aes( x = Sepal.Length) ) +
 
 ---
 
+# Species Differences
+
 ```{r}
 ggplot( iris, aes(x=Species, y=Sepal.Length) )  + 
   geom_boxplot( notch=TRUE )
 ```
+
+
+---
+
+# Species Differences Fill Colors
+
+```{r}
+ggplot( iris, aes(x=Species, y=Sepal.Length) )  + 
+  geom_boxplot( notch=TRUE, fill=c("#002145") ) +
+  ylab("Sepal Length")
+```
+
+
+
+---
+
+# Species Differences Fill Colors
+
+```{r}
+ggplot( iris, aes(x=Species, y=Sepal.Length) )  + 
+  geom_boxplot( notch=TRUE, fill=c("#002145", "#a5acaf","#66c010") ) +
+  ylab("Sepal Length")
+```
+
 
 
 
@@ -590,6 +647,18 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) +
 
 ---
 
+# Overlaying a Trendline
+
+```{r}
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  geom_point()  + 
+  stat_smooth( method="lm", formula = "y ~ x")
+```
+
+
+
+---
+
 # Stacking Order 
 
 ```{r}
@@ -609,6 +678,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) +
   geom_point( color="red")  
 ```
 
+
 ---
 
 # On-The-Fly Transformations
@@ -617,7 +687,9 @@ Customizing the y-axis data format...
 
 ```{r}
 ggplot( iris, aes(x = Sepal.Length) ) + 
-  geom_histogram( aes( y = ..density.. ), color="green", fill="orange", bins = 15 ) + 
+  geom_histogram( aes( y = ..density.. ), 
+                  color="green", 
+                  fill="orange", bins = 15 ) + 
   geom_density( color = "magenta", lwd=1.5 )  
 ```
 
@@ -630,8 +702,14 @@ ggplot( iris, aes(x = Sepal.Length) ) +
 ```{r}
 cor_model <- cor.test( iris$Sepal.Length, iris$Sepal.Width)
 cor_model
+```
+
+--
+
+```{r}
 names( cor_model ) 
 ```
+
 
 
 ---
@@ -650,8 +728,65 @@ cor.text
 ---
 
 ```{r out.width="75%"}
-p + geom_text( aes(x=7.25, y=4.25, label=cor.text), 
-               col="#0c2c84" )
+p + geom_text( aes(x=7.25, y=4.25, label=cor.text) )
+```
+
+---
+
+# Labels
+
+
+```{r}
+sLength <- by( iris$Sepal.Length, iris$Species, mean )
+sWidth <- by( iris$Sepal.Width, iris$Species, mean )
+
+df <- data.frame( Sepal.Length = as.numeric( sLength ),
+                  Sepal.Width = as.numeric( sWidth ),
+                  Species = levels( iris$Species ) )
+df
+```
+
+---
+
+# Labels
+
+```{r}
+ggplot( iris, aes(Sepal.Length, Sepal.Width) ) + 
+  geom_point( aes(color=Species) ) + 
+  geom_text( aes(label=Species), data=df) 
+```
+
+
+
+
+---
+
+# Smart Labels
+
+```{r}
+library( ggrepel )
+```
+
+![ggrepel Help](https://live.staticflickr.com/65535/50305860422_f3cf5f5545_c_d.jpg)
+
+
+---
+
+```{r}
+ggplot( iris, aes(Sepal.Length, Sepal.Width) ) + 
+  geom_point( aes(color=Species) ) + 
+  geom_label_repel( aes(label=Species), data=df )
+```
+
+---
+
+# Remove Legend
+
+```{r}
+ggplot( iris, aes(Sepal.Length, Sepal.Width) ) + 
+  geom_point( aes(color=Species) ) + 
+  geom_label_repel( aes(label=Species), data=df ) + 
+  guides( color = FALSE )
 ```
 
 
@@ -672,6 +807,7 @@ background-size: auto
 
 <p>&nbsp;</p>
 
-.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+.bottom[ If you have any questions for about the content presented herein, please feel free to send me  
+an [email](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
 
 

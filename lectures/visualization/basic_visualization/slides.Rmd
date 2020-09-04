@@ -51,7 +51,7 @@ background-image: url("images/throw_into_pool.gif")
 background-position: center
 background-size: cover
 
-## .white[How most learn to make grphics]
+## .white[How most learn to make graphics]
 
 
 ---

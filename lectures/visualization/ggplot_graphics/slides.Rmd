@@ -43,6 +43,18 @@ background-size: auto
 
 
 
+---
+
+# Learning Objectives
+
+- Set up online repositories for data such as Google Drive and retrieve it directly into RStudio for utilization.
+
+- Describe how the Grammar of Graphics deviates from built-in `plot`ting commands.
+
+- Use an `aes`-thetic to define which data components of the data will be used in constructing the graphic.
+
+- Apply `geom`metric data layers to existing plots.
+
 
 
 
@@ -685,7 +697,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) +
 
 Customizing the y-axis data format...
 
-```{r}
+```{r out.width="30%"}
 ggplot( iris, aes(x = Sepal.Length) ) + 
   geom_histogram( aes( y = ..density.. ), 
                   color="green", 
@@ -727,7 +739,7 @@ cor.text
 
 ---
 
-```{r out.width="75%"}
+```{r out.width="55%"}
 p + geom_text( aes(x=7.25, y=4.25, label=cor.text) )
 ```
 

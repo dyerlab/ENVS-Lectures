@@ -198,19 +198,16 @@ rice &lt;- read_csv( paste(url_parts, collapse="") )
 
 ```
 ## # A tibble: 6 x 23
-##   DateTime RecordID   PAR WindSpeed_mph WindDir AirTempF RelHumidity BP_HG Rain_in
-##   &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
-## 1 1/1/201…    43816     0          3.87    14.6     31.0        80.5  30.3       0
-## 2 1/1/201…    43817     0          4.79    18.5     30.7        82.1  30.3       0
-## 3 1/1/201…    43818     0          3.61    16.2     31.2        81.9  30.3       0
-## 4 1/1/201…    43819     0          2.99    11.5     30.5        83    30.3       0
-## 5 1/1/201…    43820     0          3.52    11.3     30.9        81.8  30.3       0
-## 6 1/1/201…    43821     0          3.83    20.0     30.6        82.8  30.3       0
-## # … with 14 more variables: H2O_TempC &lt;dbl&gt;, SpCond_mScm &lt;dbl&gt;,
-## #   Salinity_ppt &lt;dbl&gt;, PH &lt;dbl&gt;, PH_mv &lt;dbl&gt;, Turbidity_ntu &lt;dbl&gt;,
-## #   Chla_ugl &lt;dbl&gt;, BGAPC_CML &lt;dbl&gt;, BGAPC_rfu &lt;dbl&gt;, ODO_sat &lt;dbl&gt;,
-## #   ODO_mgl &lt;dbl&gt;, Depth_ft &lt;dbl&gt;, Depth_m &lt;dbl&gt;,
-## #   SurfaceWaterElev_m_levelNad83m &lt;dbl&gt;
+##   DateTime RecordID   PAR WindSpeed_mph WindDir AirTempF RelHumidity BP_HG Rain_in H2O_TempC SpCond_mScm Salinity_ppt    PH PH_mv
+##   &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 1/1/201…    43816     0          3.87    14.6     31.0        80.5  30.3       0      6.44       0.13          0.06  7.22 -10.9
+## 2 1/1/201…    43817     0          4.79    18.5     30.7        82.1  30.3       0      6.49       0.137         0.06  7.52 -26.8
+## 3 1/1/201…    43818     0          3.61    16.2     31.2        81.9  30.3       0      6.38       0.134         0.06  7.53 -27.4
+## 4 1/1/201…    43819     0          2.99    11.5     30.5        83    30.3       0      6.42       0.136         0.06  7.53 -27.4
+## 5 1/1/201…    43820     0          3.52    11.3     30.9        81.8  30.3       0      6.35       0.132         0.06  7.55 -28.3
+## 6 1/1/201…    43821     0          3.83    20.0     30.6        82.8  30.3       0      6.31       0.13          0.06  7.56 -29.1
+## # … with 9 more variables: Turbidity_ntu &lt;dbl&gt;, Chla_ugl &lt;dbl&gt;, BGAPC_CML &lt;dbl&gt;, BGAPC_rfu &lt;dbl&gt;, ODO_sat &lt;dbl&gt;, ODO_mgl &lt;dbl&gt;,
+## #   Depth_ft &lt;dbl&gt;, Depth_m &lt;dbl&gt;, SurfaceWaterElev_m_levelNad83m &lt;dbl&gt;
 ```
 
 
@@ -363,7 +360,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width ) )
 ggplot( iris ) 
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-9-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-11-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -374,7 +371,7 @@ ggplot( iris )
 ggplot( iris, aes( x = Sepal.Length) ) 
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-10-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-12-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -385,7 +382,7 @@ ggplot( iris, aes( x = Sepal.Length) )
 ggplot( iris, aes( x = Sepal.Length) ) + geom_histogram()
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-11-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-13-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -400,7 +397,7 @@ ggplot( iris, aes( x = Sepal.Length) ) + geom_histogram()
 ggplot( iris, aes( x = Sepal.Length) ) + geom_density() 
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-12-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -413,7 +410,7 @@ ggplot( iris, aes( x = Sepal.Length) ) + geom_density()
 ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + geom_point() 
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-13-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-15-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -430,7 +427,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width, color=Species) ) +
   geom_point() 
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-16-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -444,7 +441,7 @@ ggplot( iris ) +
   geom_point(aes( x = Sepal.Length, y = Sepal.Width, col=Species), shape=5)
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-15-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-17-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -479,7 +476,7 @@ class(p)
 p
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-17-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-19-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -591,7 +588,7 @@ background-size: cover
 p + theme_bw()
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-21-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-23-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -601,33 +598,13 @@ p + theme_bw()
 p + theme_gray()
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-22-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-24-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 
 ```r
 p + theme_linedraw()
-```
-
-&lt;img src="slides_files/figure-html/unnamed-chunk-23-1.png" width="40%" style="display: block; margin: auto;" /&gt;
-
-
----
-
-
-```r
-p + theme_dark()
-```
-
-&lt;img src="slides_files/figure-html/unnamed-chunk-24-1.png" width="40%" style="display: block; margin: auto;" /&gt;
-
-
----
-
-
-```r
-p + theme_minimal()
 ```
 
 &lt;img src="slides_files/figure-html/unnamed-chunk-25-1.png" width="40%" style="display: block; margin: auto;" /&gt;
@@ -637,10 +614,30 @@ p + theme_minimal()
 
 
 ```r
-p + theme_classic()
+p + theme_dark()
 ```
 
 &lt;img src="slides_files/figure-html/unnamed-chunk-26-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
+p + theme_minimal()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-27-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
+p + theme_classic()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-28-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -651,7 +648,7 @@ p + theme_classic()
 p + theme_void()
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-27-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-29-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -667,7 +664,23 @@ p + theme_void()
 p + theme_bw( base_size = 18 )
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-28-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-30-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse
+
+# Create Your Own Themes
+
+
+
+```r
+source("theme_dyerlab_grey.R")
+p + theme_dyerlab_grey()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-31-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+
 
 
 
@@ -681,7 +694,7 @@ ggplot( iris, aes( x = Sepal.Length) ) +
   geom_boxplot( notch=TRUE )
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-30-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-33-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -694,7 +707,7 @@ ggplot( iris, aes(x=Species, y=Sepal.Length) )  +
   geom_boxplot( notch=TRUE )
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-31-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-34-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -708,7 +721,7 @@ ggplot( iris, aes(x=Species, y=Sepal.Length) )  +
   ylab("Sepal Length")
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-32-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-35-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -723,7 +736,7 @@ ggplot( iris, aes(x=Species, y=Sepal.Length) )  +
   ylab("Sepal Length")
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-33-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-36-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -750,7 +763,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) +
   stat_smooth()
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-34-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-37-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -764,7 +777,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) +
   stat_smooth( method="lm", formula = "y ~ x")
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-35-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-38-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -779,7 +792,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) +
   stat_smooth( fill="black", alpha=1)
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-36-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-39-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -793,7 +806,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) +
   geom_point( color="red")  
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-37-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-40-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -811,7 +824,7 @@ ggplot( iris, aes(x = Sepal.Length) ) +
   geom_density( color = "magenta", lwd=1.5 )  
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-38-1.png" width="30%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-41-1.png" width="30%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -847,8 +860,7 @@ names( cor_model )
 ```
 
 ```
-## [1] "statistic"   "parameter"   "p.value"     "estimate"    "null.value" 
-## [6] "alternative" "method"      "data.name"   "conf.int"
+## [1] "statistic"   "parameter"   "p.value"     "estimate"    "null.value"  "alternative" "method"      "data.name"   "conf.int"
 ```
 
 
@@ -878,7 +890,7 @@ cor.text
 p + geom_text( aes(x=7.25, y=4.25, label=cor.text) )
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-42-1.png" width="55%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-45-1.png" width="55%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -914,7 +926,7 @@ ggplot( iris, aes(Sepal.Length, Sepal.Width) ) +
   geom_text( aes(label=Species), data=df) 
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-44-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-47-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -940,7 +952,7 @@ ggplot( iris, aes(Sepal.Length, Sepal.Width) ) +
   geom_label_repel( aes(label=Species), data=df )
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-46-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-49-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -954,7 +966,7 @@ ggplot( iris, aes(Sepal.Length, Sepal.Width) ) +
   guides( color = FALSE )
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-47-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-50-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 ---

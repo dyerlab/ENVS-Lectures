@@ -586,6 +586,19 @@ p + theme_void()
 p + theme_bw( base_size = 18 )
 ```
 
+---
+class: inverse
+
+# Create Your Own Themes
+
+
+```{r}
+source("theme_dyerlab_grey.R")
+p + theme_dyerlab_grey()
+```
+
+
+
 ```{r echo=FALSE}
 ggplot2::theme_set( theme_bw( base_size=16) )
 ```

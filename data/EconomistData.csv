@@ -1,0 +1,174 @@
+Country,HDI,CPI,Region
+Afghanistan,0.398,1.5,Asia & Oceania
+Albania,0.739,3.1,Central & Eastern Europe
+Algeria,0.698,2.9,Middle East & North Africa
+Angola,0.486,2,Sub-Saharan Africa
+Argentina,0.797,3,Americas
+Armenia,0.716,2.6,Central & Eastern Europe
+Australia,0.929,8.8,Asia & Oceania
+Austria,0.885,7.8,OECD
+Azerbaijan,0.7,2.4,Central & Eastern Europe
+Bahamas,0.771,7.3,Americas
+Bahrain,0.806,5.1,Middle East & North Africa
+Bangladesh,0.5,2.7,Asia & Oceania
+Barbados,0.793,7.8,Americas
+Belarus,0.756,2.4,Central & Eastern Europe
+Belgium,0.886,7.5,OECD
+Benin,0.427,3,Sub-Saharan Africa
+Bhutan,0.522,5.7,Asia & Oceania
+Bolivia,0.663,2.8,Americas
+Bosnia and Herzegovina,0.733,3.2,Central & Eastern Europe
+Botswana,0.633,6.1,Sub-Saharan Africa
+Brazil,0.718,3.8,Americas
+Britain,0.863,7.8,OECD
+Bulgaria,0.771,3.3,OECD
+Burkina Faso,0.331,3,Sub-Saharan Africa
+Burundi,0.316,1.9,Sub-Saharan Africa
+Cambodia,0.523,2.1,Asia & Oceania
+Cameroon,0.482,2.5,Sub-Saharan Africa
+Canada,0.908,8.7,Americas
+Cape Verde,0.568,5.5,Sub-Saharan Africa
+Central African Republic,0.343,2.2,Sub-Saharan Africa
+Chad,0.328,2,Sub-Saharan Africa
+Chile,0.805,7.2,Americas
+China,0.687,3.6,Asia & Oceania
+Colombia,0.71,3.4,Americas
+Comoros,0.433,2.4,Sub-Saharan Africa
+Congo,0.286,2,Sub-Saharan Africa
+Congo  Republic,0.533,2.2,Sub-Saharan Africa
+Costa Rica,0.744,4.8,Americas
+Côte d'Ivoire,0.4,2.2,Sub-Saharan Africa
+Croatia,0.796,4,Central & Eastern Europe
+Cuba,0.776,4.2,Americas
+Cyprus,0.84,6.3,OECD
+Czech Republic,0.865,4.4,OECD
+Denmark,0.895,9.4,OECD
+Djibouti,0.43,3,Sub-Saharan Africa
+Dominica,0.724,5.2,Americas
+Dominican Republic,0.689,2.6,Americas
+Ecuador,0.72,2.7,Americas
+Egypt,0.644,2.9,Middle East & North Africa
+El Salvador,0.674,3.4,Americas
+Equatorial Guinea,0.537,1.9,Sub-Saharan Africa
+Eritrea,0.349,2.5,Sub-Saharan Africa
+Estonia,0.835,6.4,OECD
+Ethiopia,0.363,2.7,Sub-Saharan Africa
+Finland,0.882,9.4,OECD
+France,0.884,7,OECD
+Gabon,0.674,3,Sub-Saharan Africa
+Gambia,0.42,3.5,Sub-Saharan Africa
+Georgia,0.733,4.1,Central & Eastern Europe
+Germany,0.905,8,OECD
+Ghana,0.541,3.9,Sub-Saharan Africa
+Greece,0.861,3.4,OECD
+Guatemala,0.574,2.7,Americas
+Guinea,0.344,2.1,Sub-Saharan Africa
+Guinea-Bissau,0.353,2.2,Sub-Saharan Africa
+Guyana,0.633,2.5,Americas
+Haiti,0.454,1.8,Americas
+Honduras,0.625,2.6,Americas
+Hong Kong,0.898,8.4,Asia & Oceania
+Hungary,0.816,4.6,OECD
+Iceland,0.898,8.3,OECD
+India,0.547,3.1,Asia & Oceania
+Indonesia,0.617,3,Asia & Oceania
+Iran,0.707,2.7,Middle East & North Africa
+Iraq,0.573,1.8,Middle East & North Africa
+Ireland,0.908,7.5,OECD
+Israel,0.888,5.8,Middle East & North Africa
+Italy,0.874,3.9,OECD
+Jamaica,0.727,3.3,Americas
+Japan,0.901,8,Asia & Oceania
+Jordan,0.698,4.5,Middle East & North Africa
+Kazakhstan,0.745,2.7,Central & Eastern Europe
+Kenya,0.509,2.2,Sub-Saharan Africa
+Kiribati,0.624,3.1,Asia & Oceania
+Korea (South),0.897,5.4,Asia & Oceania
+Kuwait,0.76,4.6,Middle East & North Africa
+Kyrgyzstan,0.615,2.1,Central & Eastern Europe
+Laos,0.524,2.2,Asia & Oceania
+Latvia,0.805,4.2,OECD
+Lebanon,0.739,2.5,Middle East & North Africa
+Lesotho,0.45,3.5,Sub-Saharan Africa
+Liberia,0.329,3.2,Sub-Saharan Africa
+Libya,0.76,2,Middle East & North Africa
+Lithuania,0.81,4.8,OECD
+Luxembourg,0.867,8.5,OECD
+Madagascar,0.48,3,Sub-Saharan Africa
+Malawi,0.4,3,Sub-Saharan Africa
+Malaysia,0.761,4.3,Asia & Oceania
+Maldives,0.661,2.5,Asia & Oceania
+Mali,0.359,2.8,Sub-Saharan Africa
+Malta,0.832,5.6,OECD
+Mauritania,0.453,2.4,Sub-Saharan Africa
+Mauritius,0.728,5.1,Sub-Saharan Africa
+Mexico,0.77,3,Americas
+Moldova,0.649,2.9,Central & Eastern Europe
+Mongolia,0.653,2.7,Asia & Oceania
+Montenegro,0.771,4,Central & Eastern Europe
+Morocco,0.582,3.4,Middle East & North Africa
+Mozambique,0.322,2.7,Sub-Saharan Africa
+Myanmar,0.483,1.5,Asia & Oceania
+Namibia,0.625,4.4,Sub-Saharan Africa
+Nepal,0.458,2.2,Asia & Oceania
+Netherlands,0.91,8.9,OECD
+New Zealand,0.908,9.5,Asia & Oceania
+Nicaragua,0.589,2.5,Americas
+Niger,0.295,2.5,Sub-Saharan Africa
+Nigeria,0.459,2.4,Sub-Saharan Africa
+Norway,0.943,9,OECD
+Oman,0.705,4.8,Middle East & North Africa
+Pakistan,0.504,2.5,Asia & Oceania
+Panama,0.768,3.3,Americas
+Papua New Guinea,0.466,2.2,Asia & Oceania
+Paraguay,0.665,2.2,Americas
+Peru,0.725,3.4,Americas
+Philippines,0.644,2.6,Asia & Oceania
+Poland,0.813,5.5,OECD
+Portugal,0.809,6.1,OECD
+Qatar,0.831,7.2,Middle East & North Africa
+Romania,0.781,3.6,OECD
+Russia,0.755,2.4,Central & Eastern Europe
+Rwanda,0.429,5,Sub-Saharan Africa
+Saint Lucia,0.723,7,Americas
+Saint Vincent and the Grenadines,0.717,5.8,Americas
+Samoa,0.688,3.9,Asia & Oceania
+Saudi Arabia,0.77,4.4,Middle East & North Africa
+Senegal,0.459,2.9,Sub-Saharan Africa
+Serbia,0.766,3.3,Central & Eastern Europe
+Seychelles,0.773,4.8,Sub-Saharan Africa
+Sierra Leone,0.336,2.5,Sub-Saharan Africa
+Singapore,0.866,9.2,Asia & Oceania
+Slovakia,0.834,4,OECD
+Slovenia,0.884,5.9,OECD
+Solomon Islands,0.51,2.7,Asia & Oceania
+South Africa,0.619,4.1,Sub-Saharan Africa
+Spain,0.878,6.2,OECD
+Sri Lanka,0.691,3.3,Asia & Oceania
+Sudan,0.408,1.6,Sub-Saharan Africa
+Suriname,0.68,3,Americas
+Swaziland,0.522,3.1,Sub-Saharan Africa
+Sweden,0.904,9.3,OECD
+Switzerland,0.903,8.8,OECD
+Syria,0.632,2.6,Middle East & North Africa
+Tajikistan,0.607,2.3,Central & Eastern Europe
+Tanzania,0.466,3,Sub-Saharan Africa
+Thailand,0.682,3.4,Asia & Oceania
+Timor-Leste,0.495,2.4,Asia & Oceania
+Togo,0.435,2.4,Sub-Saharan Africa
+Tonga,0.704,3.1,Asia & Oceania
+Trinidad and Tobago,0.76,3.2,Americas
+Tunisia,0.698,3.8,Middle East & North Africa
+Turkey,0.699,4.2,Central & Eastern Europe
+Turkmenistan,0.686,1.6,Central & Eastern Europe
+Uganda,0.446,2.4,Sub-Saharan Africa
+Ukraine,0.729,2.3,Central & Eastern Europe
+United Arab Emirates,0.846,6.8,Middle East & North Africa
+United States,0.91,7.1,Americas
+Uruguay,0.783,7,Americas
+Uzbekistan,0.641,1.6,Central & Eastern Europe
+Vanuatu,0.617,3.5,Asia & Oceania
+Venezuela,0.735,1.9,Americas
+Yemen,0.462,2.1,Middle East & North Africa
+Zambia,0.43,3.2,Sub-Saharan Africa
+Zimbabwe,0.376,2.2,Sub-Saharan Africa

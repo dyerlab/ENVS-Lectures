@@ -1,0 +1,43 @@
+---
+title: "Spatial Data"
+author: "Points, Lines, and Polygons"
+output: html_notebook
+---
+
+```{r startup, include=FALSE}
+
+```
+
+
+
+
+# Requirements
+
+```{r}
+libraries <- c("sf","sp","rgdal","raster","rgeos","dplyr")
+toInstall <- setdiff( libraries, installed.packages() )
+install.packages( toInstall)
+```
+
+
+# Points
+
+Points are coordinates in 2- or 3-dimensional space.  They are represented as numeric vectors in `data.frame` objects or as stand-alone vectors.
+
+```{r message=FALSE}
+library( readr )
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv"
+arapat <- read_csv( url )
+summary( arapat )
+```
+
+
+
+
+### The `sp` Library
+
+
+
+
+### The `sf` Library - Simple Features
+

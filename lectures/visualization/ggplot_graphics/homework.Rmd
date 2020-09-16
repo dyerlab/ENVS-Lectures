@@ -1,0 +1,205 @@
+---
+title: "Graphics in R"
+author: "Your Name Here"
+output: 
+  html_notebook:
+    fig_caption: yes
+---
+
+# The Data
+
+For this homework we will be working with the data that were used in the lecture on `ggplot` from the 2011 *The Economist* article looking at the relationship between human development and perceived corruption.
+
+![*Figure 1:* The relationship between the perception of corruption and the human development index from 2011 for 174 nations states.](https://live.staticflickr.com/65535/50294412713_25bbd52230_c_d.jpg)
+
+The data are located on the [class GitHub site](https://github.com/dyerlab/ENVS-Lectures) and can be accessed by the following URL, which is being presented as a CSV file.
+
+```{r}
+# The URL for the data on GitHub
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/EconomistData.csv"
+```
+
+Use the URL above and load the data into R and present a summary.  Name this data frame `df` because some code below that I give assumes that name.
+
+```{r}
+## Load the data here.
+df <- 
+```
+
+As it stands, we are going to need to turn the `Region` column from a raw `character` type to a `factor` data type.  To to this, we can use the function `as.factor()` and assign it back to the `data.frame`.
+
+
+```{r}
+# Turn Region into factor
+```
+
+
+*In all the plot on this homework, you must make an legend when appropriate and label the axes properly.*
+
+
+# Univariate Data
+
+For this section, focus on histograms and density plots.  Create a historgram plot and a density plot, one for built-in graphics and the other using `ggplot`.  Feel free to embellish them as you please but you **must** have properly labeled axes.
+
+```{r}
+# Built-in hist for HDI
+
+```
+
+```{r}
+# Density plot for HDI using built-in graphics
+
+```
+
+Now for CPI, do the same things using `ggplot` graphics.  You must first load in the `ggplot` library.
+
+```{r}
+# Load in GGPlot library
+library( ggplot2 )
+```
+
+Then make the plots
+
+```{r}
+# GGPlot histogram
+```
+
+```{r}
+# GGPlot density Plot
+```
+
+```{r}
+# Overlay density on top of histogram using ggplot
+```
+
+
+# Categorical Data
+
+For data that has both categorical data and continuous data, we can display the data in several different ways.  
+
+## Bar Plots 
+
+For standard bar plots, we will create a new `data.frame` that has average values for the continuous variable across each of the levels of the categorical variable.  You can do this manually or by using the `by()` function.  If you use `by()` you'll need to coerce it into a numeric data vector via `as.numeric()`.  If you need a reminder of this, check out [this slide](https://dyerlab.github.io/ENVS-Lectures/visualization/basic_visualization/slides.html#51).
+
+```{r}
+# Create new data.frame with averages for HDI by Region
+```
+
+Create a barplot using built-in graphics.
+
+```{r}
+# barplot
+```
+
+GGPlot has several ways to look at these kinds of data.  There is a [Cheat Sheet](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf) for a bunch of `ggplot` functions in Canvas (as well as GitHub from that link).  
+
+To create a bar plot in `ggplot` one can use the `geom_col()` geometric layer.  
+
+```{r}
+# geom_col plot
+```
+
+That plot looks great but the x-axis labels are all screwed up.  To fix this you can add some customization to the theme by changing the text elements on the x axis.  The code in the chunk below, when added to your plot code, will rotate the angle of the text by 45° and justified.  Add your code to this chunk and see how this changes the axis labels (feel free to play around with them).
+
+```{r}
+# Fix the axes
+{YOUR PLOT CODE HERE}   + theme(axis.text.x = element_text(angle = 45, hjust=1))
+```
+
+## Box plots & others
+
+A Boxplot needs all the data to be able to display the distribution of values, so we'll be using the whole data frame again.
+
+```{r}
+# boxplot of HDI by Region using built-in graphics.
+```
+
+Now the same using `ggplot`.
+
+```{r}
+# GGPlot geom_boxplot
+```
+
+The `ggplot` library has additional ways to visualize these kinds of data. Look at the CheatSheet if you need assistance or the built-in help file for `geom_violin` to make this plot.
+
+
+
+```{r}
+# Look up geom_violin and use that for plotting
+```
+
+### Adding Colors
+
+Take the violin plot above and color each region in a different color.  
+
+```{r}
+# Colored violins
+```
+
+
+# Continuous Bivariate Data
+
+Using the built-in `plot()` function create the following scatter plots. The plot characters and other customization are found on [this slide](https://dyerlab.github.io/ENVS-Lectures/visualization/basic_visualization/slides.html#28) from the lecture on built-in graphics.
+
+
+```{r}
+# HDI as a function of CPI with Regions defined by plot character  + legend
+```
+
+Use whatever color scheme you like.
+
+```{r}
+# HDI as a function of CPI with Regions defined by color + legend
+```
+
+Now do the same with `ggplot` using regions as either plot character or color.
+
+```{r}
+# HDI as function of CPI with Region differences.
+```
+
+
+
+# Labels
+
+OK, so the last thing we are going to do is define a separate `data.frame` that has just the labels so we can make it look a bit like the original plot.  To do this, I define a new data.frame with just the countries that I'm interested in plotting.
+
+```{r}
+Country <- c("Russia", "Venezuela", "Iraq", "Myanmar", "Sudan",
+             "Afghanistan", "Congo", "Greece", "Argentina", "Brazil", 
+             "India", "Italy", "China", "South Africa", "Spane", 
+             "Botswana", "Cape Verde", "Bhutan", "Rwanda", "France", 
+             "United States", "Germany", "Britain", "Barbados", "Norway", 
+             "Japan","New Zealand", "Singapore")
+df.labels <- data.frame( Country )
+```
+
+Next, I take this new data.frame and the original one and use the `merge()` function.
+
+![*Figure 2:* Help file for `merge()`.](https://live.staticflickr.com/65535/50348700586_c9ee681494_c_d.jpg)
+
+What this function *requires* is that the two data.frames **must** have a colum with the same name.  In this case, both the original data.frame had one named `Country` as did the new one.  I'm assuming that the original data was loaded in as the variable `df` as requested above—if you named it something else, then replace your variable name with the `df` in the first line of the code below.
+
+```{r}
+df.labels <- merge( df.labels, df)
+df.labels
+```
+
+
+Now, let's load in the `ggrepel` library[^1] and use both of these data.frames to add labels to a scatter plot.  To do this, you'll have to use the full data frame to lay down a `geom_point()` layer and then add the `geom_text_repel()` layer using the other `df.labels` data.frame. To make it look right, you may need to futz around with the various data mappings in the `aes` functions.  See [this slide](https://dyerlab.github.io/ENVS-Lectures/visualization/ggplot_graphics/slides.html#62) for a refresher on what `ggrepel` needs to do its job.
+
+```{r}
+# GGRepel 
+library( ggrepel )
+```
+
+
+
+
+
+
+
+
+[^1]: If you get an error when trying to load in the ggrepel library saying it could not find the library, then install it using `install.packages("ggrepel")`.
+
+

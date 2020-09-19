@@ -1,0 +1,167 @@
+---
+title: "The Tidyverse"
+output: html_notebook
+---
+
+> The set of libraries contained within `tidyverse` allow us to easily and quickly manipulate and work with data.
+
+# The Data
+
+For this section, we will use a moderate sized data set from the [Rice Rivers Center](https://ricerivers.vcu.edu) which contains water and atmospheric data from a stream of sensors in both the James River and on the bluff overlooking the river.
+
+```{r}
+library( readr )
+url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
+rice <- read_csv( url )
+names(rice)
+```
+
+These data have `r nrow( rice ) ` records measured on the `r ncol( rice )` columns.
+
+
+# Workflows for Data Analyses.
+
+If we think about it, there are some fundamental processes that we use to work with and manipulate data.  These include:  
+
+- *Select* columns of data to use (e.g., set the columns that `ggplot` will use to plot).  
+- *Filter* rows of data based upon some criteria (e.g., select only `Species == setosa` on the `iris` data set).
+- *Mutate* the data itself by converting it (e.g., convert `rice$AirTempF` to celcius).
+- *Arrange* the order of the rows in a `data.frame` (e.g., sort by `rice$Detph_m` to find the lowest-or hightest-tides in the data frame).
+- *Group* data into partitions based upon a `factor` or other column of data (e.g., separating the values of `Sepal.Length` for each of the `Species` groups in the `iris` data set).
+- *Summarize* data to show means, variances, sums, etc. (e.g., estimate the `mean` value of `Sepal.Length` for each `Species` in the `iris` data set).
+
+These *verbs* and/or *actions* can be combined in many ways to allow us to extract information from raw data.  Examples may include:
+
+- "Does it rain more often on Mondays than other days of the week?"  
+- "What is the distribution of high tide marks for each day in January?"
+- "Make a plot showing the relationship between water salinity and pH."
+
+
+# Standard `R` Approaches
+
+To begin, we will walk through the ways that this can be done using normal `R` syntax, which will include a being cleaver in how we use indices, mix in a bunch of logical operators, and a smattering of `$` operators, and we are good to go!
+
+
+## Selecting Columns
+
+To select columns, we use either the column names as character objects in the column index position (e.g., after the comma in the square brackets[^1])
+
+```{r}
+df <- rice[, c("DateTime","PAR","WindDir","PH")]
+summary( df )
+```
+
+or the column indices in the square-brackets.
+
+```{r}
+df <- rice[ c(1,3,5,13)]
+summary( df )
+```
+
+As you can see, the first one is probably more effective than the second one because by simply looking at the code, we can see what columns we are going to grab.  Moreover, if you are using `RStudio` for this, you should be able to get the very helpful autocorrect to pop up and give you the names of the columns.  
+
+![Figure 1: Popup help for column names in `RStudio` for a data frame in memory](https://live.staticflickr.com/65535/50359964467_03232a3716_w_d.jpg)
+
+Using numbers has no help like this.
+
+## Filtering Rows
+
+To filter rows, we can do the same thing as for selecting columns.  Here we can either numerical values to take slices (e.g., I'm grabbing the first 96 entries which correspond to all the entries taken on January 1, 2014):
+
+
+```{r}
+df1 <- df[ 1:96, ]
+head( df1 )
+```
+Or we can use logical operators that test some `logical` condition based upon the values in the `data.frame`.  
+
+For logical operators (returning `TRUE`, `FALSE` or `NA`), the following are available:
+
+Operator | Definition 
+---------|------------------------
+`!=`     | Not equal to
+`==`     | Equal to
+`>`      | Strictly greater than
+`>=`     | Greater than OR equal to
+`<`      | Strictly less than
+`<=`     | Less than or equal to.
+
+For example, maybe I only want estimates where PAR (Photosynthetically Active Radition—the spectral range ofsolar radiation from 400 to 700 nanometers that photosynthetic organisms are able to use in the process of photosynthesis) is greater than zero (e.g., daytime to plants).
+
+```{r}
+df1 <- df[ df$PAR > 0, ]
+summary( df1 )
+```
+
+We can also use functions that return `TRUE` or `FALSE` such as `is.na()`
+
+```{r}
+df[ is.na(df$PH), ]
+```
+
+or mathematical expressions (here I use the [moduluo operator](https://en.wikipedia.org/wiki/Modulo_operation)—the remainder left over after normal division) to grab every other row.  If I apply it to a sequence of values, I can get every even index
+
+```{r}
+(1:10 %% 2)==0
+```
+
+or every odd index 
+
+```{r}
+(1:10 %% 2) == 1 
+```
+
+or every 3 (or whatever)
+
+```{r}
+(1:20 %% 3) == 0 
+```
+
+We can even select a *random* subset of rows using the `sample()` function.   Here I'll select 5 rows randomly (see `?sample` for more specifics on using this):
+
+```{r}
+idx <- sample( 1:nrow(df), size=5, replace=FALSE)
+idx 
+df[ idx,  ]
+```
+
+
+
+### Combinations of Indices
+
+We can combine individual statements using `AND` as well as `OR` operators to make more complicated selections.  In R, to combine logical operators we use the `&` for `AND` and `|` for `OR`.
+
+So if I'm looking for a sample of data where the is light and/or the wind is coming from a certain direction, I could combine these operators as (n.b., I am only showing rows 25-35 as there are some interesting combinsions here):
+
+```{r}
+par <- df$PAR > 0
+wind <- df$WindDir < 30
+cbind( par, wind )[30:35,]
+```
+
+To look at what happens when we combine them, using `&` 
+
+```{r}
+cbind( par, wind, par & wind)[30:35,]
+```
+
+as well as `|`
+
+```{r}
+cbind( par, wind, par | wind)[30:35,]
+```
+
+So to put it all together as indices for `df` we can just shove these into the square brackets:
+
+```{r}
+df1 <- df[ df$PAR > 0 & df$WindDir < 30, ]
+head( df1 )
+```
+
+## Mutation
+
+To mutate 
+
+[^1]: Remember that if you leave either the row or column index empty in the square brackets, it will include all observations (e.g., if you leave row empty all rows will be returned whereas if you leave column empty all columns will be returned).
+
+

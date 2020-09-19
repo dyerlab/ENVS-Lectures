@@ -23,7 +23,9 @@ Use the URL above and load the data into R and present a summary.  Name this dat
 
 ```{r}
 ## Load the data here.
-df <- 
+library( readr )
+
+df <- read_csv( url )
 ```
 
 As it stands, we are going to need to turn the `Region` column from a raw `character` type to a `factor` data type.  To to this, we can use the function `as.factor()` and assign it back to the `data.frame`.
@@ -31,6 +33,8 @@ As it stands, we are going to need to turn the `Region` column from a raw `chara
 
 ```{r}
 # Turn Region into factor
+
+df$Region <- as.factor( df$Region  )
 ```
 
 

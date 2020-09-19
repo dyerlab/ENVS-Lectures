@@ -160,8 +160,251 @@ head( df1 )
 
 ## Mutation
 
-To mutate 
+To mutate columns of data in a `data.frame`, we use re-assignment.  As an example, let's jump into the first column of data in the `rice` data, the character column with Date & Time values.  As it stands now, these data are of class:
+
+```{r}
+class( rice$DateTime )
+```
+
+So, the value in 
+
+```{r}
+rice$DateTime[234]
+```
+
+is simply a string of characters, as far as `R` is concerned.  Dates and times are sticky things in data analysis because they do not work the way we think they should.  Here are some wrinkles:
+
+1. There are many types of calendars, we use the Julian calendar.  However, there are many other calendars that are in use that we may run into.  Each of these calendars has a different starting year (e.g., in the Assyrian calendar it is year 6770, it is 4718 in the Chinese calendar, 2020 in the Gregorian, and 1442 in the Islamic calendar).
+2. Our calendar has leap years (+1 day in February) as well as leap seconds because it is based on the rotation around the sun, others are based upon the lunar cycle and have other corrections. 
+3. On this planet, we have 24 different time zones. Some states (looking at you Arizona) don't feel it necessary to follow the other states around so they may be the same as PST some of the year and the same as MST the rest of the year.  The provence of Newfoundland decided to be half-way between time zones so they are GMT-2:30. Some states have more than one time zone even if they are not large in size (hello Indiana).
+4. Dates and time are made up of odd units, 60-seconds a minute, 60-minutes an hour, 24-hours a day, 7-days a week, 2-weeks a fortnight, 28,29,30,or 31-days in a month, 365 or 366 days in a year, 100 years in a century, etc.
+
+Fortunately, some smart programmers have figured this out for us already.  What they did is made the second as the base unit of time and designated 00:00:00 on 1 January 1970 as the *unix epoch*.  Time on most modern computers is measured from that starting point.  It is much easier to measure the difference between two points in time using the seconds since unix epich *and then* translate it into one or more of these caledars than to deal with all the different calendars each time. So under the hood, much of the date and time issues are kept in terms of epoch seconds.  
+
+```{r}
+unclass( Sys.time() )
+```
+
+To make date data types you need to ahve a raw `character` string such as 
+
+```{r}
+rice$DateTime[1]
+```
+
+and then we need to be able to tell the conversion function what the various elements within that string represent.  There are many ways to make dates and time, 10/14 or 14 Oct or October 14 or Julian day 287, etc.  These are designated by a format string were we indicate what element represents a *day* or *month* or *year* object.  These are found by looking at the documentation for`?strptime`.
+
+In our case, we have:  
+- Month as 1 or 2 digits  
+- Day as 1 or 2 digits  
+- Year as 4 digits  
+- a space to separate date from time   
+- hour (not 24-hour though)  
+- minutes in 2 digits  
+- seconds in 2 digits  
+- a space to separate time from timezone   
+- timezone  
+- `/` separating date objects  
+- `:` separating time objects  
+
+To make the format string, we need to look up how to encode these items.   Essentially, the format consists of a percent sign with an upper or lower case letter to represent all these objects (except for the whitespace and punctuation parts).
+
+The items in `rice` for a date & time object such as `r rice$DateTime[45]` are encoded as:
+
+```{r}
+format <- "%m/%d/%Y %I:%M:%S %p"
+```
+
+Now, we can convert the character string in the data frame 
+
+```{r}
+record <- rice$DateTime[1]
+record
+class( record )
+```
+
+to a Date object.  I like using the `lubridate` library[^2] as it has a lot of additional functionality that we'll play with a bit later.
+
+```{r}
+library( lubridate )
+x <- parse_date_time( record, orders=format, tz = "EST" )
+x
+class(x)
+```
+
+
+Very cool.  
+
+So, now let's apply that and *mutate* the original data, replacing the date and time column with a Date object.
+
+```{r}
+rice$Date <- parse_date_time( rice$DateTime, 
+                              orders=format,
+                              tz = "EST")
+summary( rice$Date )
+```
+
+Now, we can ask *Date-like* questions about the data such as what day of the week was the first sample taken?
+
+```{r warning=FALSE }
+weekdays( rice$Date[1] )
+```
+
+What is the range of dates?
+
+```{r}
+range( rice$Date )
+```
+
+What is the median of samples
+
+```{r}
+median( rice$Date )
+```
+
+and what julian ordinal day (e.g., how many days since start of the year) is the last record.
+
+```{r}
+yday( rice$Date[8199] )
+```
+
+
+
+Just for fun, I'll add a column to the data that has weekday.
+
+```{r}
+rice$Weekday <- weekdays( rice$Date )
+summary( rice$Weekday )
+class( rice$Weekday )
+```
+
+However, we should probably turn it into a factor (e.g., a data type with pre-defined levels—and for us here—an intrinsic order of the levels).
+
+```{r}
+rice$Weekday <- factor( rice$Weekday, 
+                        ordered = TRUE, 
+                        levels = c("Monday","Tuesday","Wednesday",
+                                   "Thursday", "Friday",
+                                   "Saturday", "Sunday")
+                        )
+summary( rice$Weekday )
+```
+
+
+## Arrange
+
+To arrange data in a data.frame, we `order` it.  Let's say we want sort in decreasing order of `PAR`.
+
+```{r}
+df <- rice[ order( rice$PAR, decreasing=TRUE), ]
+head( df )
+```
+
+For sorting with more than one column, just add it to the `order()` function.
+
+```{r}
+df <- rice[ order( rice$PAR, rice$WindSpeed_mph, decreasing = TRUE), ]
+head( df )
+```
+(compare the last two rows between these two outputs).
+
+## Grouping 
+
+As we showed in the lecture on basic graphics on the [slide](https://dyerlab.github.io/ENVS-Lectures/visualization/basic_visualization/slides.html#48) discussing making data for the barplot, we can group data by existing data columns (Species in that case or Weekday in this one) by filtering the rows under some condition. 
+
+```{r}
+monday <- rice[ rice$Weekday == "Monday",]
+max( monday$PAR )
+tuesday <- rice[ rice$Weekday == "Tuesday",]
+max( tuesday$PAR )
+```
+
+## Summarizing
+
+To summarize some data, we did have a shortcut back on those barplot [slides](https://dyerlab.github.io/ENVS-Lectures/visualization/basic_visualization/slides.html#51) using the `by()` function.
+
+So for PAR, we can look at maximum values by day of the week
+
+```{r}
+maxPAR <- by( rice$PAR, rice$Weekday, max )
+barplot( maxPAR, las=2 , ylab="PAR", main="Maximum PAR at the Rice Center")
+```
+
+If we wanted to make a data.frame from the summary values, say to get the mean non-zero values of PAR and the standard deviation of records taken at noon each day we'd have to combine some of the methods above.
+
+```{r}
+noon <- seq( rice$Date[49], rice$Date[7729], length.out = 81 )
+noon[1:10]
+```
+
+Notice what I did here.  The `Date` variable we made above knows how to make sequences out of date objects because it knows what constitutes a day.  I took the noon entry for 1/1/2014 and the noon entry for 3/22/2014 and made a sequence equal in length to the number of days between them.  Next I can pull out only the entries in the full data set equal to values *in* that vector (I use the `%in%` operator, which is a *set* operator) and make a new data set from just the noon entries.
+
+```{r}
+rice_noon <- rice[ rice$Date %in% noon, ]
+```
+
+And then make a new data set of both the mean and standard deviation of those values.
+
+```{r}
+df <- data.frame( Weekday = levels( rice_noon$Weekday ) )
+df$PAR <- by( rice_noon$PAR, rice_noon$Weekday, mean )
+df$sd <- by( rice_noon$PAR, rice_noon$Weekday, sd )
+```
+
+Then we could use it to make a table:
+
+```{r}
+library( knitr )
+kable( df, output="html",digits = 2,caption = "Table 1: Mean and standard deviation of PAR at the Rice Center in 2014." )
+```
+
+or them using `ggplot`
+
+```{r}
+library( ggplot2 )
+ggplot( df, aes(x=Weekday, y=PAR) ) + 
+  geom_col() + 
+  geom_errorbar( aes(ymin=PAR, ymax=PAR+sd ) ) + 
+  theme_classic()
+```
+
+HOLD THE BOAT!
+
+Notice how those values on the x-axis do not conform to the ordering of the week.  That is because we made this new data with just the levels but did not make them into an ordered factor.  To clean up, let's do that first.
+
+```{r}
+df$Weekday <- factor( df$Weekday, 
+                      ordered=TRUE,
+                      levels = levels( rice$Weekday) )
+df$Workdays <- c( rep("Work Day", 5), "Weekend","Weekend")
+summary( df )
+```
+
+Now when we plot it, it looks correct (same plot code copied here but using modified data frame).
+
+```{r}
+library( RColorBrewer )
+ggplot( df, aes(x=Weekday, y=PAR) ) + 
+  geom_errorbar( aes(ymin=PAR-sd, ymax=PAR+sd ) ) + 
+  geom_col( aes( fill=Workdays ) ) + 
+  theme_classic() +
+  scale_fill_brewer( type="qual",palette = 4)
+```
+
+# Data Workflows for Standard `R`
+
+OK, so the main workflows we adopt in R require us to do some fundamental data manipulations including tasks such as *select*, *filter*, *mutate*, *arrange*, *group*, and *summarize*.  All basic tasks can be combined in various ways to yield informative insights into the data, such as that awesome noon PAR plot above, which incidentally shows that there is more sun at noon on Fridays than any other day implying that we should just take Fridays off to have more epic sunny weekends in winter!
+
+While this is all fine and dandy, the process here requires a lot of complexity such as:  
+- Overuse of logical statements to do boolean math on indices.  
+- Lots of using the $-operator to reference specific columns of data within the `data.frame` objects.
+- Overuse of reassignment for derivative data frames.  Above, we made `rice`, `rice_noon`, and `df` just to get that last figure above.  In each of these cases, we are reallocating a new `data.frame` variable each time.  We *could* reassign these back onto themselves (e.g., reuse variable names) but each time we do this, we actually have to allocate and reallocate large blocks of memory and for data sets larger that these (which are commonly used) it becomes a bit of a pain.
+- The overall syntax is hard to read.  
+
+For these reasons, `tidyverse` was made...
+
 
 [^1]: Remember that if you leave either the row or column index empty in the square brackets, it will include all observations (e.g., if you leave row empty all rows will be returned whereas if you leave column empty all columns will be returned).
+
+[^2]: If you get an error saying something like, "there is no package named lubridate" then use `install.packages("lubridate")` and install it.  You only need to do this once.
 
 

@@ -4,33 +4,56 @@ subtitle: "The Subtitle"
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: [envs543-styles.css, middlebury, middlebury-fonts]
+    css: ["default", "envs543-styles.css", "fonts.css"]
     seal: false
     nature:
       titleSlideClass: ["center","middle"]
-      highlightStyle: github
+      highlightStyle: default
       highlightLines: true
+      ratio: "16:9"
       countIncrementalSlides: false
 ---
-
-class: left, bottom
-background-image: url("images/contour.png")
-background-position: right
-background-size: auto
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50362989122_a8ee154fea_k_d.jpg")
+background-size: cover
 
 
-# Tidyverse Judo!
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE)
+library( knitr )
+options(knitr.table.format = "html")
+library( tidyverse )
+library( fontawesome )
+library(DiagrammeR)
+```
+
+
+
+# .orange[Tidyverse Judo!]
 
 
 
 ### Environmental Data Literacy
 
 
-<p>&nbsp;</p>
+```{r echo=FALSE}
+# Load in some dark theme stuff
 
-<p>&nbsp;</p>
+dark_theme <- theme_minimal(base_size=18) + 
+  theme(
+    panel.background = element_rect(fill = "transparent", colour = NA), 
+    plot.background = element_rect(fill = "transparent", colour = NA),
+    legend.background = element_rect(fill = "transparent", colour = NA),
+    legend.key = element_rect(fill = "transparent", colour = NA),
+    text = element_text(colour = "white"),
+    axis.text = element_text(colour = "white")
+  )
+```
 
-<img src="images/logo1.svg" width="400px">
+
+
 
 
 
@@ -51,6 +74,188 @@ class: sectionTitle
 
 
 
+
+
+---
+
+# Tidyverse
+
+.pull-left[ ![tidy](https://live.staticflickr.com/65535/50295284047_ebb5dec2e8_w_d.jpg) ]
+
+
+.pull-right[A constellation of Libraries:
+
+- `dplyr`   
+
+- `ggplot2`  
+
+- `purrr`  
+
+- `tibble` 
+]
+
+All of these libraries have been defined to help you be more effective at data analysis.
+
+---
+
+# Load in the Constilation of Libraries
+
+To get the libraries, first load them in<sup>1</sup>.
+```{r message=TRUE}
+library( tidyverse)
+```
+
+<div class="my-footer"><span><sup>1</sup>If you get an error here saying something like <font class="orangeinline">there is no package called ‘tidyverse’</font> then do <tt>install.packages("tidyverse")</tt> and that shoudl fix it</span></div>
+
+
+---
+
+# `r fa(name='r-project', fill='steelblue')` Some Example Data   
+### Rice Center Monitoring Data 
+
+So let's grab a data set from Google Docs.  In the following chunk, I had to break up the url into several lines just to make sure it does shoot off the side of the screen.  In a markdown document, that wouldn't be necessary.
+
+```{r}
+library( readr )
+url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
+rice <- read_csv( url )
+names(rice)
+```
+
+
+---
+
+# 🧹 Cleaning up the Data 
+
+```{r echo=FALSE}
+names(rice)
+```
+
+
+
+There are several *issues* with these data, including:
+
+- `AirTempF` vs `H2O_TempC` - Different measurement scales
+
+--
+
+- `Depth_ft` AND `Depth_m` AND `SurfaceWaterElev_m_levelNad83m` - Different Scales & Repetitive
+
+--
+
+- `DateTime` - Actually a string object so it is not 'usable' 
+
+--
+
+- `PH_mv`, `BGAPC_rfu`, etc. - Not relevant in the end
+
+
+
+---
+
+# The Old Way
+
+```{r}
+rice$AirTemp <- (rice$AirTempF - 32) * 5 / 9
+rice$AirTempF <- NULL
+```
+
+--
+
+```{r}
+
+```
+
+
+
+
+
+---
+
+class: sectionTitle
+
+# Piping
+
+
+
+---
+
+class: sectionTitle
+
+# Filtering Rows & Columns
+
+
+
+---
+
+class: sectionTitle
+
+# Grouping & Summarizing
+
+
+
+
+---
+
+```{r}
+get_rice_data <- function() { 
+  library( tidyverse )
+  library( lubridate )
+  url <- paste( "https://docs.google.com/spreadsheets/d",
+           "/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s",
+           "/pub?gid=0&single=true&output=csv"
+           , sep="")
+  
+  format <- "%m/%d/%Y %I:%M:%S %p"
+  
+  # read in and format  
+  read_csv( url ) %>%
+    mutate( Date = parse_date_time( DateTime, orders=format, tz="EST") ) %>%
+    mutate( AirTemp = (AirTempF - 32) * 5/9 ) %>%
+    mutate( Rain = Rain_in * 2.54 ) %>%
+    mutate( WindSpeed = WindSpeed_mph * 1.6034 ) %>%
+    select( Date, PAR, 
+            AirTemp, BP = BP_HG,
+            Rain, Humidty = RelHumidity, 
+            WindSpeed, WindDir,
+            H2O_Temp = H2O_TempC, SpCond = SpCond_mScm,
+            pH = PH, Turbidity = Turbidity_ntu,
+            Chla.ugl = Chla_ugl, ODO = ODO_sat,
+            H2O_Depth = Depth_m,
+            Salinity = Salinity_ppt,
+            ) -> df
+    
+  return( df )
+}
+```
+
+
+---
+class: inverse
+# Plotting 
+
+.pull-left[
+```{r first-plot, fig.show='hide'}
+df <- get_rice_data()
+ggplot( df[1:100,], aes( AirTemp, WindSpeed) ) + 
+  geom_point( color="salmon") + 
+  dark_theme
+```
+]
+
+.pull-right[
+```{r ref.label='first-plot', dev='svg', echo=FALSE, dev.args = list(bg = "transparent")}
+```
+
+]
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50351963133_dec381f1e5_k_d.jpg")
+background-size: contain
+background-color: black
 
 
 

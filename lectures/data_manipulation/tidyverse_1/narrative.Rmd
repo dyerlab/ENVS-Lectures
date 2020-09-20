@@ -1,22 +1,40 @@
 ---
-title: "The Tidyverse"
+title: "Data Workflows"
 output: html_notebook
 ---
 
-> The set of libraries contained within `tidyverse` allow us to easily and quickly manipulate and work with data.
+```{r setup, include=FALSE}
+library( tidyverse )
+library( lubridate )
+library( readr )
+library( knitr )
+knitr::opts_chunk$set( warning=FALSE, 
+                       message = FALSE, 
+                       fig.retina = 3)
+library( ggplot2 )
+ggplot2::theme_set( theme_classic() )
+```
+
+
+
+> The actual process of analysis can be constructed from a set of verb actions that we apply to raw data so that we can extract meaningful insights.
 
 # The Data
 
-For this section, we will use a moderate sized data set from the [Rice Rivers Center](https://ricerivers.vcu.edu) which contains water and atmospheric data from a stream of sensors in both the James River and on the bluff overlooking the river.
+For this topic, we will use a moderate sized data set from the [Rice Rivers Center](https://ricerivers.vcu.edu) which contains water and atmospheric data from a stream of sensors in both the James River and on the bluff overlooking the river.
 
-```{r}
+```{r message=FALSE, warnings=FALSE}
 library( readr )
 url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
 rice <- read_csv( url )
-names(rice)
 ```
 
-These data have `r nrow( rice ) ` records measured on the `r ncol( rice )` columns.
+These data have `r nrow( rice ) ` records measured on the `r ncol( rice )` columns and represent samples collected every 15-minutes starting on `r rice$DateTime[1]` and ending on `r rice$DateTime[8199]`.
+
+```{r}
+names( rice )
+```
+
 
 
 # Workflows for Data Analyses.

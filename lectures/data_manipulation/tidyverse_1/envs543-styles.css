@@ -29,6 +29,12 @@
   font-weight:700;
 }
 
+.darkgreen { 
+  color: var(--color-darkgreen);
+  font-size: 150%;
+  font-weight:700;
+}
+
 .red {
   color: var(--color-red);
   font-size: 200%;
@@ -252,15 +258,6 @@ img.lil {
 .remark-slide-number {
   font-size: 14px;
   opacity: 0.25;
-}
-
-.red { 
-  color: red; 
-}
-
-
-.large { 
-  font-size: 160%;
 }
 
 

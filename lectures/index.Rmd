@@ -68,6 +68,11 @@ makeTable <- function( files, caption = "" ) {
     narriative <- ifelse( file.exists(  paste(path,"narriative.Rmd", sep="/") ),
                           btn(path,"blue","narriative",as.nb = TRUE),
                           "")
+    if( narriative == "" ){
+      narriative <- ifelse( file.exists(  paste(path,"narrative.Rmd", sep="/") ),
+                          btn(path,"blue","narrative",as.nb = TRUE),
+                          "")
+    }
     
     ##  tutorial <- ifelse( file.exists(  paste(path,"tutorial/tutorial.Rmd", sep="/") ),
     #3                    btn(path,"blue","tutorial"),

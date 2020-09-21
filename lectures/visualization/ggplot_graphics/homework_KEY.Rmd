@@ -42,7 +42,7 @@ For this section, focus on histograms and density plots.  Create a historgram pl
 
 ```{r}
 # Built-in hist for HDI
-hist( data$HDI, probability = TRUE  )
+hist( df$HDI, probability = TRUE  )
 ```
 ```{r}
 # Density plot for HDI using built-in graphics
@@ -88,8 +88,8 @@ For standard bar plots, we will create a new `data.frame` that has average value
 
 ```{r}
 # Create new data.frame with averages for HDI by Region
-HDI <- as.numeric( by( data$HDI, data$Region, mean, simplify=TRUE) )
-df1 <- data.frame( HDI, Region = levels( data$Region) )
+HDI <- as.numeric( by( df$HDI, df$Region, mean, simplify=TRUE) )
+df1 <- data.frame( HDI, Region = levels( df$Region) )
 summary( df1 )
 ```
 
@@ -109,8 +109,8 @@ ggplot( df1, aes(x=Region,y=HDI) ) + geom_col()
 
 That plot looks great but the x-axis labels are all screwed up.  To fix this you can add some customization to the theme by changing the text elements on the x axis.  The code in the chunk below, when added to your plot code, will rotate the angle of the text by 45° and justified.  Add your code to this chunk and see how this changes the axis labels (feel free to play around with them).
 
-```{r}
-{YOUR PLOT CODE HERE}   + theme(axis.text.x = element_text(angle = 45, hjust=1))
+```{r eval=FALSE}
+{YOUR PLOT CODE HERE} + theme(axis.text.x = element_text(angle = 45, hjust=1))
 ```
 
 ## Box plots & others

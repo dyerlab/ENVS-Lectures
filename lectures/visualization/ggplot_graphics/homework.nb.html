@@ -1761,7 +1761,7 @@ summary {
 <p>The data are located on the <a href="https://github.com/dyerlab/ENVS-Lectures">class GitHub site</a> and can be accessed by the following URL, which is being presented as a CSV file.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBUaGUgVVJMIGZvciB0aGUgZGF0YSBvbiBHaXRIdWJcbnVybCA8LSBcImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9keWVybGFiL0VOVlMtTGVjdHVyZXMvbWFzdGVyL2RhdGEvRWNvbm9taXN0RGF0YS5jc3ZcIlxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgVGhlIFVSTCBmb3IgdGhlIGRhdGEgb24gR2l0SHViIiwidXJsIDwtIFwiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9tYXN0ZXIvZGF0YS9FY29ub21pc3REYXRhLmNzdlwiIl19 -->
 <pre class="r"><code># The URL for the data on GitHub
 url &lt;- &quot;https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/EconomistData.csv&quot;</code></pre>
 <!-- rnb-source-end -->
@@ -1770,13 +1770,13 @@ url &lt;- &quot;https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/d
 <p>Use the URL above and load the data into R and present a summary. Name this data frame <code>df</code> because some code below that I give assumes that name.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgTG9hZCB0aGUgZGF0YSBoZXJlLlxubGlicmFyeSggcmVhZHIgKVxuXG5kZiA8LSByZWFkX2NzdiggdXJsIClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMjIExvYWQgdGhlIGRhdGEgaGVyZS4iLCJsaWJyYXJ5KCByZWFkciApIiwiIiwiZGYgPC0gcmVhZF9jc3YoIHVybCApIl19 -->
 <pre class="r"><code>## Load the data here.
 library( readr )
 
 df &lt;- read_csv( url )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICBDb3VudHJ5ID0gY29sX2NoYXJhY3RlcigpLFxuICBIREkgPSBjb2xfZG91YmxlKCksXG4gIENQSSA9IGNvbF9kb3VibGUoKSxcbiAgUmVnaW9uID0gY29sX2NoYXJhY3RlcigpXG4pXG4ifQ== -->
+<!-- rnb-message-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICBDb3VudHJ5ID0gY29sX2NoYXJhY3RlcigpLFxuICBIREkgPSBjb2xfZG91YmxlKCksXG4gIENQSSA9IGNvbF9kb3VibGUoKSxcbiAgUmVnaW9uID0gY29sX2NoYXJhY3RlcigpXG4pXG4ifQ== -->
 <pre><code>Parsed with column specification:
 cols(
   Country = col_character(),
@@ -1784,106 +1784,17 @@ cols(
   CPI = col_double(),
   Region = col_character()
 )</code></pre>
-<!-- rnb-output-end -->
+<!-- rnb-message-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>As it stands, we are going to need to turn the <code>Region</code> column from a raw <code>character</code> type to a <code>factor</code> data type. To to this, we can use the function <code>as.factor()</code> and assign it back to the <code>data.frame</code>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueFxuXG5gYGAifQ== -->
-<pre class="r"><code>x
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgVHVybiBSZWdpb24gaW50byBmYWN0b3IiLCIiLCJkZiRSZWdpb24gPC0gYXMuZmFjdG9yKCBkZiRSZWdpb24gICkiXX0= -->
+<pre class="r"><code># Turn Region into factor
+
+df$Region &lt;- as.factor( df$Region  )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICBbMV0gQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICAgQ2VudHJhbCAmIEVhc3Rlcm4gRXVyb3BlICBcbiAgWzNdIE1pZGRsZSBFYXN0ICYgTm9ydGggQWZyaWNhIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgXG4gIFs1XSBBbWVyaWNhcyAgICAgICAgICAgICAgICAgICBDZW50cmFsICYgRWFzdGVybiBFdXJvcGUgIFxuICBbN10gQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICAgT0VDRCAgICAgICAgICAgICAgICAgICAgICBcbiAgWzldIENlbnRyYWwgJiBFYXN0ZXJuIEV1cm9wZSAgIEFtZXJpY2FzICAgICAgICAgICAgICAgICAgXG4gWzExXSBNaWRkbGUgRWFzdCAmIE5vcnRoIEFmcmljYSBBc2lhICYgT2NlYW5pYSAgICAgICAgICAgIFxuIFsxM10gQW1lcmljYXMgICAgICAgICAgICAgICAgICAgQ2VudHJhbCAmIEVhc3Rlcm4gRXVyb3BlICBcbiBbMTVdIE9FQ0QgICAgICAgICAgICAgICAgICAgICAgIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgXG4gWzE3XSBBc2lhICYgT2NlYW5pYSAgICAgICAgICAgICBBbWVyaWNhcyAgICAgICAgICAgICAgICAgIFxuIFsxOV0gQ2VudHJhbCAmIEVhc3Rlcm4gRXVyb3BlICAgU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICBcbiBbMjFdIEFtZXJpY2FzICAgICAgICAgICAgICAgICAgIE9FQ0QgICAgICAgICAgICAgICAgICAgICAgXG4gWzIzXSBPRUNEICAgICAgICAgICAgICAgICAgICAgICBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgIFxuIFsyNV0gU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICAgQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICBcbiBbMjddIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgIEFtZXJpY2FzICAgICAgICAgICAgICAgICAgXG4gWzI5XSBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgICBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgIFxuIFszMV0gU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICAgQW1lcmljYXMgICAgICAgICAgICAgICAgICBcbiBbMzNdIEFzaWEgJiBPY2VhbmlhICAgICAgICAgICAgIEFtZXJpY2FzICAgICAgICAgICAgICAgICAgXG4gWzM1XSBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgICBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgIFxuIFszN10gU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICAgQW1lcmljYXMgICAgICAgICAgICAgICAgICBcbiBbMzldIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgIENlbnRyYWwgJiBFYXN0ZXJuIEV1cm9wZSAgXG4gWzQxXSBBbWVyaWNhcyAgICAgICAgICAgICAgICAgICBPRUNEICAgICAgICAgICAgICAgICAgICAgIFxuIFs0M10gT0VDRCAgICAgICAgICAgICAgICAgICAgICAgT0VDRCAgICAgICAgICAgICAgICAgICAgICBcbiBbNDVdIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgIEFtZXJpY2FzICAgICAgICAgICAgICAgICAgXG4gWzQ3XSBBbWVyaWNhcyAgICAgICAgICAgICAgICAgICBBbWVyaWNhcyAgICAgICAgICAgICAgICAgIFxuIFs0OV0gTWlkZGxlIEVhc3QgJiBOb3J0aCBBZnJpY2EgQW1lcmljYXMgICAgICAgICAgICAgICAgICBcbiBbNTFdIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgXG4gWzUzXSBPRUNEICAgICAgICAgICAgICAgICAgICAgICBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgIFxuIFs1NV0gT0VDRCAgICAgICAgICAgICAgICAgICAgICAgT0VDRCAgICAgICAgICAgICAgICAgICAgICBcbiBbNTddIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgXG4gWzU5XSBDZW50cmFsICYgRWFzdGVybiBFdXJvcGUgICBPRUNEICAgICAgICAgICAgICAgICAgICAgIFxuIFs2MV0gU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICAgT0VDRCAgICAgICAgICAgICAgICAgICAgICBcbiBbNjNdIEFtZXJpY2FzICAgICAgICAgICAgICAgICAgIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgXG4gWzY1XSBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgICBBbWVyaWNhcyAgICAgICAgICAgICAgICAgIFxuIFs2N10gQW1lcmljYXMgICAgICAgICAgICAgICAgICAgQW1lcmljYXMgICAgICAgICAgICAgICAgICBcbiBbNjldIEFzaWEgJiBPY2VhbmlhICAgICAgICAgICAgIE9FQ0QgICAgICAgICAgICAgICAgICAgICAgXG4gWzcxXSBPRUNEICAgICAgICAgICAgICAgICAgICAgICBBc2lhICYgT2NlYW5pYSAgICAgICAgICAgIFxuIFs3M10gQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICAgTWlkZGxlIEVhc3QgJiBOb3J0aCBBZnJpY2FcbiBbNzVdIE1pZGRsZSBFYXN0ICYgTm9ydGggQWZyaWNhIE9FQ0QgICAgICAgICAgICAgICAgICAgICAgXG4gWzc3XSBNaWRkbGUgRWFzdCAmIE5vcnRoIEFmcmljYSBPRUNEICAgICAgICAgICAgICAgICAgICAgIFxuIFs3OV0gQW1lcmljYXMgICAgICAgICAgICAgICAgICAgQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICBcbiBbODFdIE1pZGRsZSBFYXN0ICYgTm9ydGggQWZyaWNhIENlbnRyYWwgJiBFYXN0ZXJuIEV1cm9wZSAgXG4gWzgzXSBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgICBBc2lhICYgT2NlYW5pYSAgICAgICAgICAgIFxuIFs4NV0gQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICAgTWlkZGxlIEVhc3QgJiBOb3J0aCBBZnJpY2FcbiBbODddIENlbnRyYWwgJiBFYXN0ZXJuIEV1cm9wZSAgIEFzaWEgJiBPY2VhbmlhICAgICAgICAgICAgXG4gWzg5XSBPRUNEICAgICAgICAgICAgICAgICAgICAgICBNaWRkbGUgRWFzdCAmIE5vcnRoIEFmcmljYVxuIFs5MV0gU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICAgU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICBcbiBbOTNdIE1pZGRsZSBFYXN0ICYgTm9ydGggQWZyaWNhIE9FQ0QgICAgICAgICAgICAgICAgICAgICAgXG4gWzk1XSBPRUNEICAgICAgICAgICAgICAgICAgICAgICBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgIFxuIFs5N10gU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICAgQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICBcbiBbOTldIEFzaWEgJiBPY2VhbmlhICAgICAgICAgICAgIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgXG5bMTAxXSBPRUNEICAgICAgICAgICAgICAgICAgICAgICBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgIFxuWzEwM10gU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICAgQW1lcmljYXMgICAgICAgICAgICAgICAgICBcblsxMDVdIENlbnRyYWwgJiBFYXN0ZXJuIEV1cm9wZSAgIEFzaWEgJiBPY2VhbmlhICAgICAgICAgICAgXG5bMTA3XSBDZW50cmFsICYgRWFzdGVybiBFdXJvcGUgICBNaWRkbGUgRWFzdCAmIE5vcnRoIEFmcmljYVxuWzEwOV0gU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICAgQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICBcblsxMTFdIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgIEFzaWEgJiBPY2VhbmlhICAgICAgICAgICAgXG5bMTEzXSBPRUNEICAgICAgICAgICAgICAgICAgICAgICBBc2lhICYgT2NlYW5pYSAgICAgICAgICAgIFxuWzExNV0gQW1lcmljYXMgICAgICAgICAgICAgICAgICAgU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICBcblsxMTddIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgIE9FQ0QgICAgICAgICAgICAgICAgICAgICAgXG5bMTE5XSBNaWRkbGUgRWFzdCAmIE5vcnRoIEFmcmljYSBBc2lhICYgT2NlYW5pYSAgICAgICAgICAgIFxuWzEyMV0gQW1lcmljYXMgICAgICAgICAgICAgICAgICAgQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICBcblsxMjNdIEFtZXJpY2FzICAgICAgICAgICAgICAgICAgIEFtZXJpY2FzICAgICAgICAgICAgICAgICAgXG5bMTI1XSBBc2lhICYgT2NlYW5pYSAgICAgICAgICAgICBPRUNEICAgICAgICAgICAgICAgICAgICAgIFxuWzEyN10gT0VDRCAgICAgICAgICAgICAgICAgICAgICAgTWlkZGxlIEVhc3QgJiBOb3J0aCBBZnJpY2FcblsxMjldIE9FQ0QgICAgICAgICAgICAgICAgICAgICAgIENlbnRyYWwgJiBFYXN0ZXJuIEV1cm9wZSAgXG5bMTMxXSBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgICBBbWVyaWNhcyAgICAgICAgICAgICAgICAgIFxuWzEzM10gQW1lcmljYXMgICAgICAgICAgICAgICAgICAgQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICBcblsxMzVdIE1pZGRsZSBFYXN0ICYgTm9ydGggQWZyaWNhIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgXG5bMTM3XSBDZW50cmFsICYgRWFzdGVybiBFdXJvcGUgICBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgIFxuWzEzOV0gU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICAgQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICBcblsxNDFdIE9FQ0QgICAgICAgICAgICAgICAgICAgICAgIE9FQ0QgICAgICAgICAgICAgICAgICAgICAgXG5bMTQzXSBBc2lhICYgT2NlYW5pYSAgICAgICAgICAgICBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgIFxuWzE0NV0gT0VDRCAgICAgICAgICAgICAgICAgICAgICAgQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICBcblsxNDddIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgIEFtZXJpY2FzICAgICAgICAgICAgICAgICAgXG5bMTQ5XSBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgICBPRUNEICAgICAgICAgICAgICAgICAgICAgIFxuWzE1MV0gT0VDRCAgICAgICAgICAgICAgICAgICAgICAgTWlkZGxlIEVhc3QgJiBOb3J0aCBBZnJpY2FcblsxNTNdIENlbnRyYWwgJiBFYXN0ZXJuIEV1cm9wZSAgIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgXG5bMTU1XSBBc2lhICYgT2NlYW5pYSAgICAgICAgICAgICBBc2lhICYgT2NlYW5pYSAgICAgICAgICAgIFxuWzE1N10gU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICAgQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICBcblsxNTldIEFtZXJpY2FzICAgICAgICAgICAgICAgICAgIE1pZGRsZSBFYXN0ICYgTm9ydGggQWZyaWNhXG5bMTYxXSBDZW50cmFsICYgRWFzdGVybiBFdXJvcGUgICBDZW50cmFsICYgRWFzdGVybiBFdXJvcGUgIFxuWzE2M10gU3ViLVNhaGFyYW4gQWZyaWNhICAgICAgICAgQ2VudHJhbCAmIEVhc3Rlcm4gRXVyb3BlICBcblsxNjVdIE1pZGRsZSBFYXN0ICYgTm9ydGggQWZyaWNhIEFtZXJpY2FzICAgICAgICAgICAgICAgICAgXG5bMTY3XSBBbWVyaWNhcyAgICAgICAgICAgICAgICAgICBDZW50cmFsICYgRWFzdGVybiBFdXJvcGUgIFxuWzE2OV0gQXNpYSAmIE9jZWFuaWEgICAgICAgICAgICAgQW1lcmljYXMgICAgICAgICAgICAgICAgICBcblsxNzFdIE1pZGRsZSBFYXN0ICYgTm9ydGggQWZyaWNhIFN1Yi1TYWhhcmFuIEFmcmljYSAgICAgICAgXG5bMTczXSBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgIFxuNiBMZXZlbHM6IEFtZXJpY2FzIC4uLiBTdWItU2FoYXJhbiBBZnJpY2FcbiJ9 -->
-<pre><code>  [1] Asia &amp; Oceania             Central &amp; Eastern Europe  
-  [3] Middle East &amp; North Africa Sub-Saharan Africa        
-  [5] Americas                   Central &amp; Eastern Europe  
-  [7] Asia &amp; Oceania             OECD                      
-  [9] Central &amp; Eastern Europe   Americas                  
- [11] Middle East &amp; North Africa Asia &amp; Oceania            
- [13] Americas                   Central &amp; Eastern Europe  
- [15] OECD                       Sub-Saharan Africa        
- [17] Asia &amp; Oceania             Americas                  
- [19] Central &amp; Eastern Europe   Sub-Saharan Africa        
- [21] Americas                   OECD                      
- [23] OECD                       Sub-Saharan Africa        
- [25] Sub-Saharan Africa         Asia &amp; Oceania            
- [27] Sub-Saharan Africa         Americas                  
- [29] Sub-Saharan Africa         Sub-Saharan Africa        
- [31] Sub-Saharan Africa         Americas                  
- [33] Asia &amp; Oceania             Americas                  
- [35] Sub-Saharan Africa         Sub-Saharan Africa        
- [37] Sub-Saharan Africa         Americas                  
- [39] Sub-Saharan Africa         Central &amp; Eastern Europe  
- [41] Americas                   OECD                      
- [43] OECD                       OECD                      
- [45] Sub-Saharan Africa         Americas                  
- [47] Americas                   Americas                  
- [49] Middle East &amp; North Africa Americas                  
- [51] Sub-Saharan Africa         Sub-Saharan Africa        
- [53] OECD                       Sub-Saharan Africa        
- [55] OECD                       OECD                      
- [57] Sub-Saharan Africa         Sub-Saharan Africa        
- [59] Central &amp; Eastern Europe   OECD                      
- [61] Sub-Saharan Africa         OECD                      
- [63] Americas                   Sub-Saharan Africa        
- [65] Sub-Saharan Africa         Americas                  
- [67] Americas                   Americas                  
- [69] Asia &amp; Oceania             OECD                      
- [71] OECD                       Asia &amp; Oceania            
- [73] Asia &amp; Oceania             Middle East &amp; North Africa
- [75] Middle East &amp; North Africa OECD                      
- [77] Middle East &amp; North Africa OECD                      
- [79] Americas                   Asia &amp; Oceania            
- [81] Middle East &amp; North Africa Central &amp; Eastern Europe  
- [83] Sub-Saharan Africa         Asia &amp; Oceania            
- [85] Asia &amp; Oceania             Middle East &amp; North Africa
- [87] Central &amp; Eastern Europe   Asia &amp; Oceania            
- [89] OECD                       Middle East &amp; North Africa
- [91] Sub-Saharan Africa         Sub-Saharan Africa        
- [93] Middle East &amp; North Africa OECD                      
- [95] OECD                       Sub-Saharan Africa        
- [97] Sub-Saharan Africa         Asia &amp; Oceania            
- [99] Asia &amp; Oceania             Sub-Saharan Africa        
-[101] OECD                       Sub-Saharan Africa        
-[103] Sub-Saharan Africa         Americas                  
-[105] Central &amp; Eastern Europe   Asia &amp; Oceania            
-[107] Central &amp; Eastern Europe   Middle East &amp; North Africa
-[109] Sub-Saharan Africa         Asia &amp; Oceania            
-[111] Sub-Saharan Africa         Asia &amp; Oceania            
-[113] OECD                       Asia &amp; Oceania            
-[115] Americas                   Sub-Saharan Africa        
-[117] Sub-Saharan Africa         OECD                      
-[119] Middle East &amp; North Africa Asia &amp; Oceania            
-[121] Americas                   Asia &amp; Oceania            
-[123] Americas                   Americas                  
-[125] Asia &amp; Oceania             OECD                      
-[127] OECD                       Middle East &amp; North Africa
-[129] OECD                       Central &amp; Eastern Europe  
-[131] Sub-Saharan Africa         Americas                  
-[133] Americas                   Asia &amp; Oceania            
-[135] Middle East &amp; North Africa Sub-Saharan Africa        
-[137] Central &amp; Eastern Europe   Sub-Saharan Africa        
-[139] Sub-Saharan Africa         Asia &amp; Oceania            
-[141] OECD                       OECD                      
-[143] Asia &amp; Oceania             Sub-Saharan Africa        
-[145] OECD                       Asia &amp; Oceania            
-[147] Sub-Saharan Africa         Americas                  
-[149] Sub-Saharan Africa         OECD                      
-[151] OECD                       Middle East &amp; North Africa
-[153] Central &amp; Eastern Europe   Sub-Saharan Africa        
-[155] Asia &amp; Oceania             Asia &amp; Oceania            
-[157] Sub-Saharan Africa         Asia &amp; Oceania            
-[159] Americas                   Middle East &amp; North Africa
-[161] Central &amp; Eastern Europe   Central &amp; Eastern Europe  
-[163] Sub-Saharan Africa         Central &amp; Eastern Europe  
-[165] Middle East &amp; North Africa Americas                  
-[167] Americas                   Central &amp; Eastern Europe  
-[169] Asia &amp; Oceania             Americas                  
-[171] Middle East &amp; North Africa Sub-Saharan Africa        
-[173] Sub-Saharan Africa        
-6 Levels: Americas ... Sub-Saharan Africa</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p><em>In all the plot on this homework, you must make an legend when appropriate and label the axes properly.</em></p>
@@ -1893,24 +1804,22 @@ cols(
 <p>For this section, focus on histograms and density plots. Create a historgram plot and a density plot, one for built-in graphics and the other using <code>ggplot</code>. Feel free to embellish them as you please but you <strong>must</strong> have properly labeled axes.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBCdWlsdC1pbiBoaXN0IGZvciBIRElcblxuYGBgIn0= -->
-<pre class="r"><code># Built-in hist for HDI
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiIyBCdWlsdC1pbiBoaXN0IGZvciBIREkifQ== -->
+<pre class="r"><code># Built-in hist for HDI</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBEZW5zaXR5IHBsb3QgZm9yIEhESSB1c2luZyBidWlsdC1pbiBncmFwaGljc1xuXG5gYGAifQ== -->
-<pre class="r"><code># Density plot for HDI using built-in graphics
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiIyBEZW5zaXR5IHBsb3QgZm9yIEhESSB1c2luZyBidWlsdC1pbiBncmFwaGljcyJ9 -->
+<pre class="r"><code># Density plot for HDI using built-in graphics</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Now for CPI, do the same things using <code>ggplot</code> graphics. You must first load in the <code>ggplot</code> library.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIGluIEdHUGxvdCBsaWJyYXJ5XG5saWJyYXJ5KCBnZ3Bsb3QyIClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgTG9hZCBpbiBHR1Bsb3QgbGlicmFyeSIsImxpYnJhcnkoIGdncGxvdDIgKSJdfQ== -->
 <pre class="r"><code># Load in GGPlot library
 library( ggplot2 )</code></pre>
 <!-- rnb-source-end -->
@@ -1919,21 +1828,21 @@ library( ggplot2 )</code></pre>
 <p>Then make the plots</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBHR1Bsb3QgaGlzdG9ncmFtXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBHR1Bsb3QgaGlzdG9ncmFtIn0= -->
 <pre class="r"><code># GGPlot histogram</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBHR1Bsb3QgZGVuc2l0eSBQbG90XG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBHR1Bsb3QgZGVuc2l0eSBQbG90In0= -->
 <pre class="r"><code># GGPlot density Plot</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBPdmVybGF5IGRlbnNpdHkgb24gdG9wIG9mIGhpc3RvZ3JhbSB1c2luZyBnZ3Bsb3RcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBPdmVybGF5IGRlbnNpdHkgb24gdG9wIG9mIGhpc3RvZ3JhbSB1c2luZyBnZ3Bsb3QifQ== -->
 <pre class="r"><code># Overlay density on top of histogram using ggplot</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -1947,7 +1856,7 @@ library( ggplot2 )</code></pre>
 <p>For standard bar plots, we will create a new <code>data.frame</code> that has average values for the continuous variable across each of the levels of the categorical variable. You can do this manually or by using the <code>by()</code> function. If you use <code>by()</code> you’ll need to coerce it into a numeric data vector via <code>as.numeric()</code>. If you need a reminder of this, check out <a href="https://dyerlab.github.io/ENVS-Lectures/visualization/basic_visualization/slides.html#51">this slide</a>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDcmVhdGUgbmV3IGRhdGEuZnJhbWUgd2l0aCBhdmVyYWdlcyBmb3IgSERJIGJ5IFJlZ2lvblxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBDcmVhdGUgbmV3IGRhdGEuZnJhbWUgd2l0aCBhdmVyYWdlcyBmb3IgSERJIGJ5IFJlZ2lvbiJ9 -->
 <pre class="r"><code># Create new data.frame with averages for HDI by Region</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -1955,7 +1864,7 @@ library( ggplot2 )</code></pre>
 <p>Create a barplot using built-in graphics.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBiYXJwbG90XG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBiYXJwbG90In0= -->
 <pre class="r"><code># barplot</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -1964,17 +1873,18 @@ library( ggplot2 )</code></pre>
 <p>To create a bar plot in <code>ggplot</code> one can use the <code>geom_col()</code> geometric layer.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBnZW9tX2NvbCBwbG90XG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBnZW9tX2NvbCBwbG90In0= -->
 <pre class="r"><code># geom_col plot</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>That plot looks great but the x-axis labels are all screwed up. To fix this you can add some customization to the theme by changing the text elements on the x axis. The code in the chunk below, when added to your plot code, will rotate the angle of the text by 45° and justified. Add your code to this chunk and see how this changes the axis labels (feel free to play around with them).</p>
+<p>Note: You <em>must</em> change <code>eval=FALSE</code> to <code>eval=TRUE</code> to get this chunck to work. I had to set it to not run because the text <code>{YOUR PLOT CODE HERE}</code> will not compile.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBGaXggdGhlIGF4ZXNcbntZT1VSIFBMT1QgQ09ERSBIRVJFfSAgICsgdGhlbWUoYXhpcy50ZXh0LnggPSBlbGVtZW50X3RleHQoYW5nbGUgPSA0NSwgaGp1c3Q9MSkpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgRml4IHRoZSBheGVzIiwie1lPVVIgUExPVCBDT0RFIEhFUkV9ICsgdGhlbWUoYXhpcy50ZXh0LnggPSBlbGVtZW50X3RleHQoYW5nbGUgPSA0NSwgaGp1c3Q9MSkpIl19 -->
 <pre class="r"><code># Fix the axes
-{YOUR PLOT CODE HERE}   + theme(axis.text.x = element_text(angle = 45, hjust=1))</code></pre>
+{YOUR PLOT CODE HERE} + theme(axis.text.x = element_text(angle = 45, hjust=1))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1984,7 +1894,7 @@ library( ggplot2 )</code></pre>
 <p>A Boxplot needs all the data to be able to display the distribution of values, so we’ll be using the whole data frame again.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBib3hwbG90IG9mIEhESSBieSBSZWdpb24gdXNpbmcgYnVpbHQtaW4gZ3JhcGhpY3MuXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBib3hwbG90IG9mIEhESSBieSBSZWdpb24gdXNpbmcgYnVpbHQtaW4gZ3JhcGhpY3MuIn0= -->
 <pre class="r"><code># boxplot of HDI by Region using built-in graphics.</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -1992,7 +1902,7 @@ library( ggplot2 )</code></pre>
 <p>Now the same using <code>ggplot</code>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBHR1Bsb3QgZ2VvbV9ib3hwbG90XG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBHR1Bsb3QgZ2VvbV9ib3hwbG90In0= -->
 <pre class="r"><code># GGPlot geom_boxplot</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -2000,7 +1910,7 @@ library( ggplot2 )</code></pre>
 <p>The <code>ggplot</code> library has additional ways to visualize these kinds of data. Look at the CheatSheet if you need assistance or the built-in help file for <code>geom_violin</code> to make this plot.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb29rIHVwIGdlb21fdmlvbGluIGFuZCB1c2UgdGhhdCBmb3IgcGxvdHRpbmdcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBMb29rIHVwIGdlb21fdmlvbGluIGFuZCB1c2UgdGhhdCBmb3IgcGxvdHRpbmcifQ== -->
 <pre class="r"><code># Look up geom_violin and use that for plotting</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -2010,7 +1920,7 @@ library( ggplot2 )</code></pre>
 <p>Take the violin plot above and color each region in a different color.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDb2xvcmVkIHZpb2xpbnNcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBDb2xvcmVkIHZpb2xpbnMifQ== -->
 <pre class="r"><code># Colored violins</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -2023,7 +1933,7 @@ library( ggplot2 )</code></pre>
 <p>Using the built-in <code>plot()</code> function create the following scatter plots. The plot characters and other customization are found on <a href="https://dyerlab.github.io/ENVS-Lectures/visualization/basic_visualization/slides.html#28">this slide</a> from the lecture on built-in graphics.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBIREkgYXMgYSBmdW5jdGlvbiBvZiBDUEkgd2l0aCBSZWdpb25zIGRlZmluZWQgYnkgcGxvdCBjaGFyYWN0ZXIgICsgbGVnZW5kXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBIREkgYXMgYSBmdW5jdGlvbiBvZiBDUEkgd2l0aCBSZWdpb25zIGRlZmluZWQgYnkgcGxvdCBjaGFyYWN0ZXIgICsgbGVnZW5kIn0= -->
 <pre class="r"><code># HDI as a function of CPI with Regions defined by plot character  + legend</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -2031,7 +1941,7 @@ library( ggplot2 )</code></pre>
 <p>Use whatever color scheme you like.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBIREkgYXMgYSBmdW5jdGlvbiBvZiBDUEkgd2l0aCBSZWdpb25zIGRlZmluZWQgYnkgY29sb3IgKyBsZWdlbmRcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBIREkgYXMgYSBmdW5jdGlvbiBvZiBDUEkgd2l0aCBSZWdpb25zIGRlZmluZWQgYnkgY29sb3IgKyBsZWdlbmQifQ== -->
 <pre class="r"><code># HDI as a function of CPI with Regions defined by color + legend</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -2039,7 +1949,7 @@ library( ggplot2 )</code></pre>
 <p>Now do the same with <code>ggplot</code> using regions as either plot character or color.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBIREkgYXMgZnVuY3Rpb24gb2YgQ1BJIHdpdGggUmVnaW9uIGRpZmZlcmVuY2VzLlxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBIREkgYXMgZnVuY3Rpb24gb2YgQ1BJIHdpdGggUmVnaW9uIGRpZmZlcmVuY2VzLiJ9 -->
 <pre class="r"><code># HDI as function of CPI with Region differences.</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -2050,7 +1960,7 @@ library( ggplot2 )</code></pre>
 <p>OK, so the last thing we are going to do is define a separate <code>data.frame</code> that has just the labels so we can make it look a bit like the original plot. To do this, I define a new data.frame with just the countries that I’m interested in plotting.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQ291bnRyeSA8LSBjKFwiUnVzc2lhXCIsIFwiVmVuZXp1ZWxhXCIsIFwiSXJhcVwiLCBcIk15YW5tYXJcIiwgXCJTdWRhblwiLFxuICAgICAgICAgICAgIFwiQWZnaGFuaXN0YW5cIiwgXCJDb25nb1wiLCBcIkdyZWVjZVwiLCBcIkFyZ2VudGluYVwiLCBcIkJyYXppbFwiLCBcbiAgICAgICAgICAgICBcIkluZGlhXCIsIFwiSXRhbHlcIiwgXCJDaGluYVwiLCBcIlNvdXRoIEFmcmljYVwiLCBcIlNwYW5lXCIsIFxuICAgICAgICAgICAgIFwiQm90c3dhbmFcIiwgXCJDYXBlIFZlcmRlXCIsIFwiQmh1dGFuXCIsIFwiUndhbmRhXCIsIFwiRnJhbmNlXCIsIFxuICAgICAgICAgICAgIFwiVW5pdGVkIFN0YXRlc1wiLCBcIkdlcm1hbnlcIiwgXCJCcml0YWluXCIsIFwiQmFyYmFkb3NcIiwgXCJOb3J3YXlcIiwgXG4gICAgICAgICAgICAgXCJKYXBhblwiLFwiTmV3IFplYWxhbmRcIiwgXCJTaW5nYXBvcmVcIilcbmRmLmxhYmVscyA8LSBkYXRhLmZyYW1lKCBDb3VudHJ5IClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjpbIkNvdW50cnkgPC0gYyhcIlJ1c3NpYVwiLCBcIlZlbmV6dWVsYVwiLCBcIklyYXFcIiwgXCJNeWFubWFyXCIsIFwiU3VkYW5cIixcbiAgICAgICAgICAgICBcIkFmZ2hhbmlzdGFuXCIsIFwiQ29uZ29cIiwgXCJHcmVlY2VcIiwgXCJBcmdlbnRpbmFcIiwgXCJCcmF6aWxcIiwgXG4gICAgICAgICAgICAgXCJJbmRpYVwiLCBcIkl0YWx5XCIsIFwiQ2hpbmFcIiwgXCJTb3V0aCBBZnJpY2FcIiwgXCJTcGFuZVwiLCBcbiAgICAgICAgICAgICBcIkJvdHN3YW5hXCIsIFwiQ2FwZSBWZXJkZVwiLCBcIkJodXRhblwiLCBcIlJ3YW5kYVwiLCBcIkZyYW5jZVwiLCBcbiAgICAgICAgICAgICBcIlVuaXRlZCBTdGF0ZXNcIiwgXCJHZXJtYW55XCIsIFwiQnJpdGFpblwiLCBcIkJhcmJhZG9zXCIsIFwiTm9yd2F5XCIsIFxuICAgICAgICAgICAgIFwiSmFwYW5cIixcIk5ldyBaZWFsYW5kXCIsIFwiU2luZ2Fwb3JlXCIpIiwiZGYubGFiZWxzIDwtIGRhdGEuZnJhbWUoIENvdW50cnkgKSJdfQ== -->
 <pre class="r"><code>Country &lt;- c(&quot;Russia&quot;, &quot;Venezuela&quot;, &quot;Iraq&quot;, &quot;Myanmar&quot;, &quot;Sudan&quot;,
              &quot;Afghanistan&quot;, &quot;Congo&quot;, &quot;Greece&quot;, &quot;Argentina&quot;, &quot;Brazil&quot;, 
              &quot;India&quot;, &quot;Italy&quot;, &quot;China&quot;, &quot;South Africa&quot;, &quot;Spane&quot;, 
@@ -2069,16 +1979,21 @@ df.labels &lt;- data.frame( Country )</code></pre>
 <p>What this function <em>requires</em> is that the two data.frames <strong>must</strong> have a colum with the same name. In this case, both the original data.frame had one named <code>Country</code> as did the new one. I’m assuming that the original data was loaded in as the variable <code>df</code> as requested above—if you named it something else, then replace your variable name with the <code>df</code> in the first line of the code below.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYubGFiZWxzIDwtIG1lcmdlKCBkZi5sYWJlbHMsIGRmKVxuZGYubGFiZWxzXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbImRmLmxhYmVscyA8LSBtZXJnZSggZGYubGFiZWxzLCBkZikiLCJkZi5sYWJlbHMiXX0= -->
 <pre class="r"><code>df.labels &lt;- merge( df.labels, df)
 df.labels</code></pre>
 <!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["HDI"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["CPI"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Region"],"name":[4],"type":["fctr"],"align":["left"]}],"data":[{"1":"Afghanistan","2":"0.398","3":"1.5","4":"Asia & Oceania"},{"1":"Argentina","2":"0.797","3":"3.0","4":"Americas"},{"1":"Barbados","2":"0.793","3":"7.8","4":"Americas"},{"1":"Bhutan","2":"0.522","3":"5.7","4":"Asia & Oceania"},{"1":"Botswana","2":"0.633","3":"6.1","4":"Sub-Saharan Africa"},{"1":"Brazil","2":"0.718","3":"3.8","4":"Americas"},{"1":"Britain","2":"0.863","3":"7.8","4":"OECD"},{"1":"Cape Verde","2":"0.568","3":"5.5","4":"Sub-Saharan Africa"},{"1":"China","2":"0.687","3":"3.6","4":"Asia & Oceania"},{"1":"Congo","2":"0.286","3":"2.0","4":"Sub-Saharan Africa"},{"1":"France","2":"0.884","3":"7.0","4":"OECD"},{"1":"Germany","2":"0.905","3":"8.0","4":"OECD"},{"1":"Greece","2":"0.861","3":"3.4","4":"OECD"},{"1":"India","2":"0.547","3":"3.1","4":"Asia & Oceania"},{"1":"Iraq","2":"0.573","3":"1.8","4":"Middle East & North Africa"},{"1":"Italy","2":"0.874","3":"3.9","4":"OECD"},{"1":"Japan","2":"0.901","3":"8.0","4":"Asia & Oceania"},{"1":"Myanmar","2":"0.483","3":"1.5","4":"Asia & Oceania"},{"1":"New Zealand","2":"0.908","3":"9.5","4":"Asia & Oceania"},{"1":"Norway","2":"0.943","3":"9.0","4":"OECD"},{"1":"Russia","2":"0.755","3":"2.4","4":"Central & Eastern Europe"},{"1":"Rwanda","2":"0.429","3":"5.0","4":"Sub-Saharan Africa"},{"1":"Singapore","2":"0.866","3":"9.2","4":"Asia & Oceania"},{"1":"South Africa","2":"0.619","3":"4.1","4":"Sub-Saharan Africa"},{"1":"Sudan","2":"0.408","3":"1.6","4":"Sub-Saharan Africa"},{"1":"United States","2":"0.910","3":"7.1","4":"Americas"},{"1":"Venezuela","2":"0.735","3":"1.9","4":"Americas"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Now, let’s load in the <code>ggrepel</code> library<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and use both of these data.frames to add labels to a scatter plot. To do this, you’ll have to use the full data frame to lay down a <code>geom_point()</code> layer and then add the <code>geom_text_repel()</code> layer using the other <code>df.labels</code> data.frame. To make it look right, you may need to futz around with the various data mappings in the <code>aes</code> functions. See <a href="https://dyerlab.github.io/ENVS-Lectures/visualization/ggplot_graphics/slides.html#62">this slide</a> for a refresher on what <code>ggrepel</code> needs to do its job.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBHR1JlcGVsIFxubGlicmFyeSggZ2dyZXBlbCApXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgR0dSZXBlbCAiLCJsaWJyYXJ5KCBnZ3JlcGVsICkiXX0= -->
 <pre class="r"><code># GGRepel 
 library( ggrepel )</code></pre>
 <!-- rnb-source-end -->
@@ -2093,7 +2008,7 @@ library( ggrepel )</code></pre>
 </ol>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiR3JhcGhpY3MgaW4gUiIKYXV0aG9yOiAiWW91ciBOYW1lIEhlcmUiCm91dHB1dDogCiAgaHRtbF9ub3RlYm9vazoKICAgIGZpZ19jYXB0aW9uOiB5ZXMKLS0tCgojIFRoZSBEYXRhCgpGb3IgdGhpcyBob21ld29yayB3ZSB3aWxsIGJlIHdvcmtpbmcgd2l0aCB0aGUgZGF0YSB0aGF0IHdlcmUgdXNlZCBpbiB0aGUgbGVjdHVyZSBvbiBgZ2dwbG90YCBmcm9tIHRoZSAyMDExICpUaGUgRWNvbm9taXN0KiBhcnRpY2xlIGxvb2tpbmcgYXQgdGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIGh1bWFuIGRldmVsb3BtZW50IGFuZCBwZXJjZWl2ZWQgY29ycnVwdGlvbi4KCiFbKkZpZ3VyZSAxOiogVGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIHRoZSBwZXJjZXB0aW9uIG9mIGNvcnJ1cHRpb24gYW5kIHRoZSBodW1hbiBkZXZlbG9wbWVudCBpbmRleCBmcm9tIDIwMTEgZm9yIDE3NCBuYXRpb25zIHN0YXRlcy5dKGh0dHBzOi8vbGl2ZS5zdGF0aWNmbGlja3IuY29tLzY1NTM1LzUwMjk0NDEyNzEzXzI1YmJkNTIyMzBfY19kLmpwZykKClRoZSBkYXRhIGFyZSBsb2NhdGVkIG9uIHRoZSBbY2xhc3MgR2l0SHViIHNpdGVdKGh0dHBzOi8vZ2l0aHViLmNvbS9keWVybGFiL0VOVlMtTGVjdHVyZXMpIGFuZCBjYW4gYmUgYWNjZXNzZWQgYnkgdGhlIGZvbGxvd2luZyBVUkwsIHdoaWNoIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIENTViBmaWxlLgoKYGBge3J9CiMgVGhlIFVSTCBmb3IgdGhlIGRhdGEgb24gR2l0SHViCnVybCA8LSAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9tYXN0ZXIvZGF0YS9FY29ub21pc3REYXRhLmNzdiIKYGBgCgpVc2UgdGhlIFVSTCBhYm92ZSBhbmQgbG9hZCB0aGUgZGF0YSBpbnRvIFIgYW5kIHByZXNlbnQgYSBzdW1tYXJ5LiAgTmFtZSB0aGlzIGRhdGEgZnJhbWUgYGRmYCBiZWNhdXNlIHNvbWUgY29kZSBiZWxvdyB0aGF0IEkgZ2l2ZSBhc3N1bWVzIHRoYXQgbmFtZS4KCmBgYHtyfQojIyBMb2FkIHRoZSBkYXRhIGhlcmUuCmxpYnJhcnkoIHJlYWRyICkKCmRmIDwtIHJlYWRfY3N2KCB1cmwgKQpgYGAKCkFzIGl0IHN0YW5kcywgd2UgYXJlIGdvaW5nIHRvIG5lZWQgdG8gdHVybiB0aGUgYFJlZ2lvbmAgY29sdW1uIGZyb20gYSByYXcgYGNoYXJhY3RlcmAgdHlwZSB0byBhIGBmYWN0b3JgIGRhdGEgdHlwZS4gIFRvIHRvIHRoaXMsIHdlIGNhbiB1c2UgdGhlIGZ1bmN0aW9uIGBhcy5mYWN0b3IoKWAgYW5kIGFzc2lnbiBpdCBiYWNrIHRvIHRoZSBgZGF0YS5mcmFtZWAuCgoKYGBge3J9CiMgVHVybiBSZWdpb24gaW50byBmYWN0b3IKCmRmJFJlZ2lvbiA8LSBhcy5mYWN0b3IoIGRmJFJlZ2lvbiAgKQpgYGAKCgoqSW4gYWxsIHRoZSBwbG90IG9uIHRoaXMgaG9tZXdvcmssIHlvdSBtdXN0IG1ha2UgYW4gbGVnZW5kIHdoZW4gYXBwcm9wcmlhdGUgYW5kIGxhYmVsIHRoZSBheGVzIHByb3Blcmx5LioKCgojIFVuaXZhcmlhdGUgRGF0YQoKRm9yIHRoaXMgc2VjdGlvbiwgZm9jdXMgb24gaGlzdG9ncmFtcyBhbmQgZGVuc2l0eSBwbG90cy4gIENyZWF0ZSBhIGhpc3RvcmdyYW0gcGxvdCBhbmQgYSBkZW5zaXR5IHBsb3QsIG9uZSBmb3IgYnVpbHQtaW4gZ3JhcGhpY3MgYW5kIHRoZSBvdGhlciB1c2luZyBgZ2dwbG90YC4gIEZlZWwgZnJlZSB0byBlbWJlbGxpc2ggdGhlbSBhcyB5b3UgcGxlYXNlIGJ1dCB5b3UgKiptdXN0KiogaGF2ZSBwcm9wZXJseSBsYWJlbGVkIGF4ZXMuCgpgYGB7cn0KIyBCdWlsdC1pbiBoaXN0IGZvciBIREkKCmBgYAoKYGBge3J9CiMgRGVuc2l0eSBwbG90IGZvciBIREkgdXNpbmcgYnVpbHQtaW4gZ3JhcGhpY3MKCmBgYAoKTm93IGZvciBDUEksIGRvIHRoZSBzYW1lIHRoaW5ncyB1c2luZyBgZ2dwbG90YCBncmFwaGljcy4gIFlvdSBtdXN0IGZpcnN0IGxvYWQgaW4gdGhlIGBnZ3Bsb3RgIGxpYnJhcnkuCgpgYGB7cn0KIyBMb2FkIGluIEdHUGxvdCBsaWJyYXJ5CmxpYnJhcnkoIGdncGxvdDIgKQpgYGAKClRoZW4gbWFrZSB0aGUgcGxvdHMKCmBgYHtyfQojIEdHUGxvdCBoaXN0b2dyYW0KYGBgCgpgYGB7cn0KIyBHR1Bsb3QgZGVuc2l0eSBQbG90CmBgYAoKYGBge3J9CiMgT3ZlcmxheSBkZW5zaXR5IG9uIHRvcCBvZiBoaXN0b2dyYW0gdXNpbmcgZ2dwbG90CmBgYAoKCiMgQ2F0ZWdvcmljYWwgRGF0YQoKRm9yIGRhdGEgdGhhdCBoYXMgYm90aCBjYXRlZ29yaWNhbCBkYXRhIGFuZCBjb250aW51b3VzIGRhdGEsIHdlIGNhbiBkaXNwbGF5IHRoZSBkYXRhIGluIHNldmVyYWwgZGlmZmVyZW50IHdheXMuICAKCiMjIEJhciBQbG90cyAKCkZvciBzdGFuZGFyZCBiYXIgcGxvdHMsIHdlIHdpbGwgY3JlYXRlIGEgbmV3IGBkYXRhLmZyYW1lYCB0aGF0IGhhcyBhdmVyYWdlIHZhbHVlcyBmb3IgdGhlIGNvbnRpbnVvdXMgdmFyaWFibGUgYWNyb3NzIGVhY2ggb2YgdGhlIGxldmVscyBvZiB0aGUgY2F0ZWdvcmljYWwgdmFyaWFibGUuICBZb3UgY2FuIGRvIHRoaXMgbWFudWFsbHkgb3IgYnkgdXNpbmcgdGhlIGBieSgpYCBmdW5jdGlvbi4gIElmIHlvdSB1c2UgYGJ5KClgIHlvdSdsbCBuZWVkIHRvIGNvZXJjZSBpdCBpbnRvIGEgbnVtZXJpYyBkYXRhIHZlY3RvciB2aWEgYGFzLm51bWVyaWMoKWAuICBJZiB5b3UgbmVlZCBhIHJlbWluZGVyIG9mIHRoaXMsIGNoZWNrIG91dCBbdGhpcyBzbGlkZV0oaHR0cHM6Ly9keWVybGFiLmdpdGh1Yi5pby9FTlZTLUxlY3R1cmVzL3Zpc3VhbGl6YXRpb24vYmFzaWNfdmlzdWFsaXphdGlvbi9zbGlkZXMuaHRtbCM1MSkuCgpgYGB7cn0KIyBDcmVhdGUgbmV3IGRhdGEuZnJhbWUgd2l0aCBhdmVyYWdlcyBmb3IgSERJIGJ5IFJlZ2lvbgpgYGAKCkNyZWF0ZSBhIGJhcnBsb3QgdXNpbmcgYnVpbHQtaW4gZ3JhcGhpY3MuCgpgYGB7cn0KIyBiYXJwbG90CmBgYAoKR0dQbG90IGhhcyBzZXZlcmFsIHdheXMgdG8gbG9vayBhdCB0aGVzZSBraW5kcyBvZiBkYXRhLiAgVGhlcmUgaXMgYSBbQ2hlYXQgU2hlZXRdKGh0dHBzOi8vZ2l0aHViLmNvbS9yc3R1ZGlvL2NoZWF0c2hlZXRzL2Jsb2IvbWFzdGVyL2RhdGEtdmlzdWFsaXphdGlvbi0yLjEucGRmKSBmb3IgYSBidW5jaCBvZiBgZ2dwbG90YCBmdW5jdGlvbnMgaW4gQ2FudmFzIChhcyB3ZWxsIGFzIEdpdEh1YiBmcm9tIHRoYXQgbGluaykuICAKClRvIGNyZWF0ZSBhIGJhciBwbG90IGluIGBnZ3Bsb3RgIG9uZSBjYW4gdXNlIHRoZSBgZ2VvbV9jb2woKWAgZ2VvbWV0cmljIGxheWVyLiAgCgpgYGB7cn0KIyBnZW9tX2NvbCBwbG90CmBgYAoKVGhhdCBwbG90IGxvb2tzIGdyZWF0IGJ1dCB0aGUgeC1heGlzIGxhYmVscyBhcmUgYWxsIHNjcmV3ZWQgdXAuICBUbyBmaXggdGhpcyB5b3UgY2FuIGFkZCBzb21lIGN1c3RvbWl6YXRpb24gdG8gdGhlIHRoZW1lIGJ5IGNoYW5naW5nIHRoZSB0ZXh0IGVsZW1lbnRzIG9uIHRoZSB4IGF4aXMuICBUaGUgY29kZSBpbiB0aGUgY2h1bmsgYmVsb3csIHdoZW4gYWRkZWQgdG8geW91ciBwbG90IGNvZGUsIHdpbGwgcm90YXRlIHRoZSBhbmdsZSBvZiB0aGUgdGV4dCBieSA0NcKwIGFuZCBqdXN0aWZpZWQuICBBZGQgeW91ciBjb2RlIHRvIHRoaXMgY2h1bmsgYW5kIHNlZSBob3cgdGhpcyBjaGFuZ2VzIHRoZSBheGlzIGxhYmVscyAoZmVlbCBmcmVlIHRvIHBsYXkgYXJvdW5kIHdpdGggdGhlbSkuCgpgYGB7cn0KIyBGaXggdGhlIGF4ZXMKe1lPVVIgUExPVCBDT0RFIEhFUkV9ICAgKyB0aGVtZShheGlzLnRleHQueCA9IGVsZW1lbnRfdGV4dChhbmdsZSA9IDQ1LCBoanVzdD0xKSkKYGBgCgojIyBCb3ggcGxvdHMgJiBvdGhlcnMKCkEgQm94cGxvdCBuZWVkcyBhbGwgdGhlIGRhdGEgdG8gYmUgYWJsZSB0byBkaXNwbGF5IHRoZSBkaXN0cmlidXRpb24gb2YgdmFsdWVzLCBzbyB3ZSdsbCBiZSB1c2luZyB0aGUgd2hvbGUgZGF0YSBmcmFtZSBhZ2Fpbi4KCmBgYHtyfQojIGJveHBsb3Qgb2YgSERJIGJ5IFJlZ2lvbiB1c2luZyBidWlsdC1pbiBncmFwaGljcy4KYGBgCgpOb3cgdGhlIHNhbWUgdXNpbmcgYGdncGxvdGAuCgpgYGB7cn0KIyBHR1Bsb3QgZ2VvbV9ib3hwbG90CmBgYAoKVGhlIGBnZ3Bsb3RgIGxpYnJhcnkgaGFzIGFkZGl0aW9uYWwgd2F5cyB0byB2aXN1YWxpemUgdGhlc2Uga2luZHMgb2YgZGF0YS4gTG9vayBhdCB0aGUgQ2hlYXRTaGVldCBpZiB5b3UgbmVlZCBhc3Npc3RhbmNlIG9yIHRoZSBidWlsdC1pbiBoZWxwIGZpbGUgZm9yIGBnZW9tX3Zpb2xpbmAgdG8gbWFrZSB0aGlzIHBsb3QuCgoKCmBgYHtyfQojIExvb2sgdXAgZ2VvbV92aW9saW4gYW5kIHVzZSB0aGF0IGZvciBwbG90dGluZwpgYGAKCiMjIyBBZGRpbmcgQ29sb3JzCgpUYWtlIHRoZSB2aW9saW4gcGxvdCBhYm92ZSBhbmQgY29sb3IgZWFjaCByZWdpb24gaW4gYSBkaWZmZXJlbnQgY29sb3IuICAKCmBgYHtyfQojIENvbG9yZWQgdmlvbGlucwpgYGAKCgojIENvbnRpbnVvdXMgQml2YXJpYXRlIERhdGEKClVzaW5nIHRoZSBidWlsdC1pbiBgcGxvdCgpYCBmdW5jdGlvbiBjcmVhdGUgdGhlIGZvbGxvd2luZyBzY2F0dGVyIHBsb3RzLiBUaGUgcGxvdCBjaGFyYWN0ZXJzIGFuZCBvdGhlciBjdXN0b21pemF0aW9uIGFyZSBmb3VuZCBvbiBbdGhpcyBzbGlkZV0oaHR0cHM6Ly9keWVybGFiLmdpdGh1Yi5pby9FTlZTLUxlY3R1cmVzL3Zpc3VhbGl6YXRpb24vYmFzaWNfdmlzdWFsaXphdGlvbi9zbGlkZXMuaHRtbCMyOCkgZnJvbSB0aGUgbGVjdHVyZSBvbiBidWlsdC1pbiBncmFwaGljcy4KCgpgYGB7cn0KIyBIREkgYXMgYSBmdW5jdGlvbiBvZiBDUEkgd2l0aCBSZWdpb25zIGRlZmluZWQgYnkgcGxvdCBjaGFyYWN0ZXIgICsgbGVnZW5kCmBgYAoKVXNlIHdoYXRldmVyIGNvbG9yIHNjaGVtZSB5b3UgbGlrZS4KCmBgYHtyfQojIEhESSBhcyBhIGZ1bmN0aW9uIG9mIENQSSB3aXRoIFJlZ2lvbnMgZGVmaW5lZCBieSBjb2xvciArIGxlZ2VuZApgYGAKCk5vdyBkbyB0aGUgc2FtZSB3aXRoIGBnZ3Bsb3RgIHVzaW5nIHJlZ2lvbnMgYXMgZWl0aGVyIHBsb3QgY2hhcmFjdGVyIG9yIGNvbG9yLgoKYGBge3J9CiMgSERJIGFzIGZ1bmN0aW9uIG9mIENQSSB3aXRoIFJlZ2lvbiBkaWZmZXJlbmNlcy4KYGBgCgoKCiMgTGFiZWxzCgpPSywgc28gdGhlIGxhc3QgdGhpbmcgd2UgYXJlIGdvaW5nIHRvIGRvIGlzIGRlZmluZSBhIHNlcGFyYXRlIGBkYXRhLmZyYW1lYCB0aGF0IGhhcyBqdXN0IHRoZSBsYWJlbHMgc28gd2UgY2FuIG1ha2UgaXQgbG9vayBhIGJpdCBsaWtlIHRoZSBvcmlnaW5hbCBwbG90LiAgVG8gZG8gdGhpcywgSSBkZWZpbmUgYSBuZXcgZGF0YS5mcmFtZSB3aXRoIGp1c3QgdGhlIGNvdW50cmllcyB0aGF0IEknbSBpbnRlcmVzdGVkIGluIHBsb3R0aW5nLgoKYGBge3J9CkNvdW50cnkgPC0gYygiUnVzc2lhIiwgIlZlbmV6dWVsYSIsICJJcmFxIiwgIk15YW5tYXIiLCAiU3VkYW4iLAogICAgICAgICAgICAgIkFmZ2hhbmlzdGFuIiwgIkNvbmdvIiwgIkdyZWVjZSIsICJBcmdlbnRpbmEiLCAiQnJhemlsIiwgCiAgICAgICAgICAgICAiSW5kaWEiLCAiSXRhbHkiLCAiQ2hpbmEiLCAiU291dGggQWZyaWNhIiwgIlNwYW5lIiwgCiAgICAgICAgICAgICAiQm90c3dhbmEiLCAiQ2FwZSBWZXJkZSIsICJCaHV0YW4iLCAiUndhbmRhIiwgIkZyYW5jZSIsIAogICAgICAgICAgICAgIlVuaXRlZCBTdGF0ZXMiLCAiR2VybWFueSIsICJCcml0YWluIiwgIkJhcmJhZG9zIiwgIk5vcndheSIsIAogICAgICAgICAgICAgIkphcGFuIiwiTmV3IFplYWxhbmQiLCAiU2luZ2Fwb3JlIikKZGYubGFiZWxzIDwtIGRhdGEuZnJhbWUoIENvdW50cnkgKQpgYGAKCk5leHQsIEkgdGFrZSB0aGlzIG5ldyBkYXRhLmZyYW1lIGFuZCB0aGUgb3JpZ2luYWwgb25lIGFuZCB1c2UgdGhlIGBtZXJnZSgpYCBmdW5jdGlvbi4KCiFbKkZpZ3VyZSAyOiogSGVscCBmaWxlIGZvciBgbWVyZ2UoKWAuXShodHRwczovL2xpdmUuc3RhdGljZmxpY2tyLmNvbS82NTUzNS81MDM0ODcwMDU4Nl9jOWVlNjgxNDk0X2NfZC5qcGcpCgpXaGF0IHRoaXMgZnVuY3Rpb24gKnJlcXVpcmVzKiBpcyB0aGF0IHRoZSB0d28gZGF0YS5mcmFtZXMgKiptdXN0KiogaGF2ZSBhIGNvbHVtIHdpdGggdGhlIHNhbWUgbmFtZS4gIEluIHRoaXMgY2FzZSwgYm90aCB0aGUgb3JpZ2luYWwgZGF0YS5mcmFtZSBoYWQgb25lIG5hbWVkIGBDb3VudHJ5YCBhcyBkaWQgdGhlIG5ldyBvbmUuICBJJ20gYXNzdW1pbmcgdGhhdCB0aGUgb3JpZ2luYWwgZGF0YSB3YXMgbG9hZGVkIGluIGFzIHRoZSB2YXJpYWJsZSBgZGZgIGFzIHJlcXVlc3RlZCBhYm92ZeKAlGlmIHlvdSBuYW1lZCBpdCBzb21ldGhpbmcgZWxzZSwgdGhlbiByZXBsYWNlIHlvdXIgdmFyaWFibGUgbmFtZSB3aXRoIHRoZSBgZGZgIGluIHRoZSBmaXJzdCBsaW5lIG9mIHRoZSBjb2RlIGJlbG93LgoKYGBge3J9CmRmLmxhYmVscyA8LSBtZXJnZSggZGYubGFiZWxzLCBkZikKZGYubGFiZWxzCmBgYAoKCk5vdywgbGV0J3MgbG9hZCBpbiB0aGUgYGdncmVwZWxgIGxpYnJhcnlbXjFdIGFuZCB1c2UgYm90aCBvZiB0aGVzZSBkYXRhLmZyYW1lcyB0byBhZGQgbGFiZWxzIHRvIGEgc2NhdHRlciBwbG90LiAgVG8gZG8gdGhpcywgeW91J2xsIGhhdmUgdG8gdXNlIHRoZSBmdWxsIGRhdGEgZnJhbWUgdG8gbGF5IGRvd24gYSBgZ2VvbV9wb2ludCgpYCBsYXllciBhbmQgdGhlbiBhZGQgdGhlIGBnZW9tX3RleHRfcmVwZWwoKWAgbGF5ZXIgdXNpbmcgdGhlIG90aGVyIGBkZi5sYWJlbHNgIGRhdGEuZnJhbWUuIFRvIG1ha2UgaXQgbG9vayByaWdodCwgeW91IG1heSBuZWVkIHRvIGZ1dHogYXJvdW5kIHdpdGggdGhlIHZhcmlvdXMgZGF0YSBtYXBwaW5ncyBpbiB0aGUgYGFlc2AgZnVuY3Rpb25zLiAgU2VlIFt0aGlzIHNsaWRlXShodHRwczovL2R5ZXJsYWIuZ2l0aHViLmlvL0VOVlMtTGVjdHVyZXMvdmlzdWFsaXphdGlvbi9nZ3Bsb3RfZ3JhcGhpY3Mvc2xpZGVzLmh0bWwjNjIpIGZvciBhIHJlZnJlc2hlciBvbiB3aGF0IGBnZ3JlcGVsYCBuZWVkcyB0byBkbyBpdHMgam9iLgoKYGBge3J9CiMgR0dSZXBlbCAKbGlicmFyeSggZ2dyZXBlbCApCmBgYAoKCgoKCgoKClteMV06IElmIHlvdSBnZXQgYW4gZXJyb3Igd2hlbiB0cnlpbmcgdG8gbG9hZCBpbiB0aGUgZ2dyZXBlbCBsaWJyYXJ5IHNheWluZyBpdCBjb3VsZCBub3QgZmluZCB0aGUgbGlicmFyeSwgdGhlbiBpbnN0YWxsIGl0IHVzaW5nIGBpbnN0YWxsLnBhY2thZ2VzKCJnZ3JlcGVsIilgLgoKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiR3JhcGhpY3MgaW4gUiIKYXV0aG9yOiAiWW91ciBOYW1lIEhlcmUiCm91dHB1dDogCiAgaHRtbF9ub3RlYm9vazoKICAgIGZpZ19jYXB0aW9uOiB5ZXMKLS0tCgojIFRoZSBEYXRhCgpGb3IgdGhpcyBob21ld29yayB3ZSB3aWxsIGJlIHdvcmtpbmcgd2l0aCB0aGUgZGF0YSB0aGF0IHdlcmUgdXNlZCBpbiB0aGUgbGVjdHVyZSBvbiBgZ2dwbG90YCBmcm9tIHRoZSAyMDExICpUaGUgRWNvbm9taXN0KiBhcnRpY2xlIGxvb2tpbmcgYXQgdGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIGh1bWFuIGRldmVsb3BtZW50IGFuZCBwZXJjZWl2ZWQgY29ycnVwdGlvbi4KCiFbKkZpZ3VyZSAxOiogVGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIHRoZSBwZXJjZXB0aW9uIG9mIGNvcnJ1cHRpb24gYW5kIHRoZSBodW1hbiBkZXZlbG9wbWVudCBpbmRleCBmcm9tIDIwMTEgZm9yIDE3NCBuYXRpb25zIHN0YXRlcy5dKGh0dHBzOi8vbGl2ZS5zdGF0aWNmbGlja3IuY29tLzY1NTM1LzUwMjk0NDEyNzEzXzI1YmJkNTIyMzBfY19kLmpwZykKClRoZSBkYXRhIGFyZSBsb2NhdGVkIG9uIHRoZSBbY2xhc3MgR2l0SHViIHNpdGVdKGh0dHBzOi8vZ2l0aHViLmNvbS9keWVybGFiL0VOVlMtTGVjdHVyZXMpIGFuZCBjYW4gYmUgYWNjZXNzZWQgYnkgdGhlIGZvbGxvd2luZyBVUkwsIHdoaWNoIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIENTViBmaWxlLgoKYGBge3J9CiMgVGhlIFVSTCBmb3IgdGhlIGRhdGEgb24gR2l0SHViCnVybCA8LSAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9tYXN0ZXIvZGF0YS9FY29ub21pc3REYXRhLmNzdiIKYGBgCgpVc2UgdGhlIFVSTCBhYm92ZSBhbmQgbG9hZCB0aGUgZGF0YSBpbnRvIFIgYW5kIHByZXNlbnQgYSBzdW1tYXJ5LiAgTmFtZSB0aGlzIGRhdGEgZnJhbWUgYGRmYCBiZWNhdXNlIHNvbWUgY29kZSBiZWxvdyB0aGF0IEkgZ2l2ZSBhc3N1bWVzIHRoYXQgbmFtZS4KCmBgYHtyfQojIyBMb2FkIHRoZSBkYXRhIGhlcmUuCmxpYnJhcnkoIHJlYWRyICkKCmRmIDwtIHJlYWRfY3N2KCB1cmwgKQpgYGAKCkFzIGl0IHN0YW5kcywgd2UgYXJlIGdvaW5nIHRvIG5lZWQgdG8gdHVybiB0aGUgYFJlZ2lvbmAgY29sdW1uIGZyb20gYSByYXcgYGNoYXJhY3RlcmAgdHlwZSB0byBhIGBmYWN0b3JgIGRhdGEgdHlwZS4gIFRvIHRvIHRoaXMsIHdlIGNhbiB1c2UgdGhlIGZ1bmN0aW9uIGBhcy5mYWN0b3IoKWAgYW5kIGFzc2lnbiBpdCBiYWNrIHRvIHRoZSBgZGF0YS5mcmFtZWAuCgoKYGBge3J9CiMgVHVybiBSZWdpb24gaW50byBmYWN0b3IKCmRmJFJlZ2lvbiA8LSBhcy5mYWN0b3IoIGRmJFJlZ2lvbiAgKQpgYGAKCgoqSW4gYWxsIHRoZSBwbG90IG9uIHRoaXMgaG9tZXdvcmssIHlvdSBtdXN0IG1ha2UgYW4gbGVnZW5kIHdoZW4gYXBwcm9wcmlhdGUgYW5kIGxhYmVsIHRoZSBheGVzIHByb3Blcmx5LioKCgojIFVuaXZhcmlhdGUgRGF0YQoKRm9yIHRoaXMgc2VjdGlvbiwgZm9jdXMgb24gaGlzdG9ncmFtcyBhbmQgZGVuc2l0eSBwbG90cy4gIENyZWF0ZSBhIGhpc3RvcmdyYW0gcGxvdCBhbmQgYSBkZW5zaXR5IHBsb3QsIG9uZSBmb3IgYnVpbHQtaW4gZ3JhcGhpY3MgYW5kIHRoZSBvdGhlciB1c2luZyBgZ2dwbG90YC4gIEZlZWwgZnJlZSB0byBlbWJlbGxpc2ggdGhlbSBhcyB5b3UgcGxlYXNlIGJ1dCB5b3UgKiptdXN0KiogaGF2ZSBwcm9wZXJseSBsYWJlbGVkIGF4ZXMuCgpgYGB7cn0KIyBCdWlsdC1pbiBoaXN0IGZvciBIREkKCmBgYAoKYGBge3J9CiMgRGVuc2l0eSBwbG90IGZvciBIREkgdXNpbmcgYnVpbHQtaW4gZ3JhcGhpY3MKCmBgYAoKTm93IGZvciBDUEksIGRvIHRoZSBzYW1lIHRoaW5ncyB1c2luZyBgZ2dwbG90YCBncmFwaGljcy4gIFlvdSBtdXN0IGZpcnN0IGxvYWQgaW4gdGhlIGBnZ3Bsb3RgIGxpYnJhcnkuCgpgYGB7cn0KIyBMb2FkIGluIEdHUGxvdCBsaWJyYXJ5CmxpYnJhcnkoIGdncGxvdDIgKQpgYGAKClRoZW4gbWFrZSB0aGUgcGxvdHMKCmBgYHtyfQojIEdHUGxvdCBoaXN0b2dyYW0KYGBgCgpgYGB7cn0KIyBHR1Bsb3QgZGVuc2l0eSBQbG90CmBgYAoKYGBge3J9CiMgT3ZlcmxheSBkZW5zaXR5IG9uIHRvcCBvZiBoaXN0b2dyYW0gdXNpbmcgZ2dwbG90CmBgYAoKCiMgQ2F0ZWdvcmljYWwgRGF0YQoKRm9yIGRhdGEgdGhhdCBoYXMgYm90aCBjYXRlZ29yaWNhbCBkYXRhIGFuZCBjb250aW51b3VzIGRhdGEsIHdlIGNhbiBkaXNwbGF5IHRoZSBkYXRhIGluIHNldmVyYWwgZGlmZmVyZW50IHdheXMuICAKCiMjIEJhciBQbG90cyAKCkZvciBzdGFuZGFyZCBiYXIgcGxvdHMsIHdlIHdpbGwgY3JlYXRlIGEgbmV3IGBkYXRhLmZyYW1lYCB0aGF0IGhhcyBhdmVyYWdlIHZhbHVlcyBmb3IgdGhlIGNvbnRpbnVvdXMgdmFyaWFibGUgYWNyb3NzIGVhY2ggb2YgdGhlIGxldmVscyBvZiB0aGUgY2F0ZWdvcmljYWwgdmFyaWFibGUuICBZb3UgY2FuIGRvIHRoaXMgbWFudWFsbHkgb3IgYnkgdXNpbmcgdGhlIGBieSgpYCBmdW5jdGlvbi4gIElmIHlvdSB1c2UgYGJ5KClgIHlvdSdsbCBuZWVkIHRvIGNvZXJjZSBpdCBpbnRvIGEgbnVtZXJpYyBkYXRhIHZlY3RvciB2aWEgYGFzLm51bWVyaWMoKWAuICBJZiB5b3UgbmVlZCBhIHJlbWluZGVyIG9mIHRoaXMsIGNoZWNrIG91dCBbdGhpcyBzbGlkZV0oaHR0cHM6Ly9keWVybGFiLmdpdGh1Yi5pby9FTlZTLUxlY3R1cmVzL3Zpc3VhbGl6YXRpb24vYmFzaWNfdmlzdWFsaXphdGlvbi9zbGlkZXMuaHRtbCM1MSkuCgpgYGB7cn0KIyBDcmVhdGUgbmV3IGRhdGEuZnJhbWUgd2l0aCBhdmVyYWdlcyBmb3IgSERJIGJ5IFJlZ2lvbgpgYGAKCkNyZWF0ZSBhIGJhcnBsb3QgdXNpbmcgYnVpbHQtaW4gZ3JhcGhpY3MuCgpgYGB7cn0KIyBiYXJwbG90CmBgYAoKR0dQbG90IGhhcyBzZXZlcmFsIHdheXMgdG8gbG9vayBhdCB0aGVzZSBraW5kcyBvZiBkYXRhLiAgVGhlcmUgaXMgYSBbQ2hlYXQgU2hlZXRdKGh0dHBzOi8vZ2l0aHViLmNvbS9yc3R1ZGlvL2NoZWF0c2hlZXRzL2Jsb2IvbWFzdGVyL2RhdGEtdmlzdWFsaXphdGlvbi0yLjEucGRmKSBmb3IgYSBidW5jaCBvZiBgZ2dwbG90YCBmdW5jdGlvbnMgaW4gQ2FudmFzIChhcyB3ZWxsIGFzIEdpdEh1YiBmcm9tIHRoYXQgbGluaykuICAKClRvIGNyZWF0ZSBhIGJhciBwbG90IGluIGBnZ3Bsb3RgIG9uZSBjYW4gdXNlIHRoZSBgZ2VvbV9jb2woKWAgZ2VvbWV0cmljIGxheWVyLiAgCgpgYGB7cn0KIyBnZW9tX2NvbCBwbG90CmBgYAoKVGhhdCBwbG90IGxvb2tzIGdyZWF0IGJ1dCB0aGUgeC1heGlzIGxhYmVscyBhcmUgYWxsIHNjcmV3ZWQgdXAuICBUbyBmaXggdGhpcyB5b3UgY2FuIGFkZCBzb21lIGN1c3RvbWl6YXRpb24gdG8gdGhlIHRoZW1lIGJ5IGNoYW5naW5nIHRoZSB0ZXh0IGVsZW1lbnRzIG9uIHRoZSB4IGF4aXMuICBUaGUgY29kZSBpbiB0aGUgY2h1bmsgYmVsb3csIHdoZW4gYWRkZWQgdG8geW91ciBwbG90IGNvZGUsIHdpbGwgcm90YXRlIHRoZSBhbmdsZSBvZiB0aGUgdGV4dCBieSA0NcKwIGFuZCBqdXN0aWZpZWQuICBBZGQgeW91ciBjb2RlIHRvIHRoaXMgY2h1bmsgYW5kIHNlZSBob3cgdGhpcyBjaGFuZ2VzIHRoZSBheGlzIGxhYmVscyAoZmVlbCBmcmVlIHRvIHBsYXkgYXJvdW5kIHdpdGggdGhlbSkuICAKCk5vdGU6IFlvdSAqbXVzdCogY2hhbmdlIGBldmFsPUZBTFNFYCB0byBgZXZhbD1UUlVFYCB0byBnZXQgdGhpcyBjaHVuY2sgdG8gd29yay4gIEkgaGFkIHRvIHNldCBpdCB0byBub3QgcnVuIGJlY2F1c2UgdGhlIHRleHQgYHtZT1VSIFBMT1QgQ09ERSBIRVJFfWAgd2lsbCBub3QgY29tcGlsZS4KCmBgYHtyIGV2YWw9RkFMU0V9CiMgRml4IHRoZSBheGVzCntZT1VSIFBMT1QgQ09ERSBIRVJFfSArIHRoZW1lKGF4aXMudGV4dC54ID0gZWxlbWVudF90ZXh0KGFuZ2xlID0gNDUsIGhqdXN0PTEpKQpgYGAKCiMjIEJveCBwbG90cyAmIG90aGVycwoKQSBCb3hwbG90IG5lZWRzIGFsbCB0aGUgZGF0YSB0byBiZSBhYmxlIHRvIGRpc3BsYXkgdGhlIGRpc3RyaWJ1dGlvbiBvZiB2YWx1ZXMsIHNvIHdlJ2xsIGJlIHVzaW5nIHRoZSB3aG9sZSBkYXRhIGZyYW1lIGFnYWluLgoKYGBge3J9CiMgYm94cGxvdCBvZiBIREkgYnkgUmVnaW9uIHVzaW5nIGJ1aWx0LWluIGdyYXBoaWNzLgpgYGAKCk5vdyB0aGUgc2FtZSB1c2luZyBgZ2dwbG90YC4KCmBgYHtyfQojIEdHUGxvdCBnZW9tX2JveHBsb3QKYGBgCgpUaGUgYGdncGxvdGAgbGlicmFyeSBoYXMgYWRkaXRpb25hbCB3YXlzIHRvIHZpc3VhbGl6ZSB0aGVzZSBraW5kcyBvZiBkYXRhLiBMb29rIGF0IHRoZSBDaGVhdFNoZWV0IGlmIHlvdSBuZWVkIGFzc2lzdGFuY2Ugb3IgdGhlIGJ1aWx0LWluIGhlbHAgZmlsZSBmb3IgYGdlb21fdmlvbGluYCB0byBtYWtlIHRoaXMgcGxvdC4KCgoKYGBge3J9CiMgTG9vayB1cCBnZW9tX3Zpb2xpbiBhbmQgdXNlIHRoYXQgZm9yIHBsb3R0aW5nCmBgYAoKIyMjIEFkZGluZyBDb2xvcnMKClRha2UgdGhlIHZpb2xpbiBwbG90IGFib3ZlIGFuZCBjb2xvciBlYWNoIHJlZ2lvbiBpbiBhIGRpZmZlcmVudCBjb2xvci4gIAoKYGBge3J9CiMgQ29sb3JlZCB2aW9saW5zCmBgYAoKCiMgQ29udGludW91cyBCaXZhcmlhdGUgRGF0YQoKVXNpbmcgdGhlIGJ1aWx0LWluIGBwbG90KClgIGZ1bmN0aW9uIGNyZWF0ZSB0aGUgZm9sbG93aW5nIHNjYXR0ZXIgcGxvdHMuIFRoZSBwbG90IGNoYXJhY3RlcnMgYW5kIG90aGVyIGN1c3RvbWl6YXRpb24gYXJlIGZvdW5kIG9uIFt0aGlzIHNsaWRlXShodHRwczovL2R5ZXJsYWIuZ2l0aHViLmlvL0VOVlMtTGVjdHVyZXMvdmlzdWFsaXphdGlvbi9iYXNpY192aXN1YWxpemF0aW9uL3NsaWRlcy5odG1sIzI4KSBmcm9tIHRoZSBsZWN0dXJlIG9uIGJ1aWx0LWluIGdyYXBoaWNzLgoKCmBgYHtyfQojIEhESSBhcyBhIGZ1bmN0aW9uIG9mIENQSSB3aXRoIFJlZ2lvbnMgZGVmaW5lZCBieSBwbG90IGNoYXJhY3RlciAgKyBsZWdlbmQKYGBgCgpVc2Ugd2hhdGV2ZXIgY29sb3Igc2NoZW1lIHlvdSBsaWtlLgoKYGBge3J9CiMgSERJIGFzIGEgZnVuY3Rpb24gb2YgQ1BJIHdpdGggUmVnaW9ucyBkZWZpbmVkIGJ5IGNvbG9yICsgbGVnZW5kCmBgYAoKTm93IGRvIHRoZSBzYW1lIHdpdGggYGdncGxvdGAgdXNpbmcgcmVnaW9ucyBhcyBlaXRoZXIgcGxvdCBjaGFyYWN0ZXIgb3IgY29sb3IuCgpgYGB7cn0KIyBIREkgYXMgZnVuY3Rpb24gb2YgQ1BJIHdpdGggUmVnaW9uIGRpZmZlcmVuY2VzLgpgYGAKCgoKIyBMYWJlbHMKCk9LLCBzbyB0aGUgbGFzdCB0aGluZyB3ZSBhcmUgZ29pbmcgdG8gZG8gaXMgZGVmaW5lIGEgc2VwYXJhdGUgYGRhdGEuZnJhbWVgIHRoYXQgaGFzIGp1c3QgdGhlIGxhYmVscyBzbyB3ZSBjYW4gbWFrZSBpdCBsb29rIGEgYml0IGxpa2UgdGhlIG9yaWdpbmFsIHBsb3QuICBUbyBkbyB0aGlzLCBJIGRlZmluZSBhIG5ldyBkYXRhLmZyYW1lIHdpdGgganVzdCB0aGUgY291bnRyaWVzIHRoYXQgSSdtIGludGVyZXN0ZWQgaW4gcGxvdHRpbmcuCgpgYGB7cn0KQ291bnRyeSA8LSBjKCJSdXNzaWEiLCAiVmVuZXp1ZWxhIiwgIklyYXEiLCAiTXlhbm1hciIsICJTdWRhbiIsCiAgICAgICAgICAgICAiQWZnaGFuaXN0YW4iLCAiQ29uZ28iLCAiR3JlZWNlIiwgIkFyZ2VudGluYSIsICJCcmF6aWwiLCAKICAgICAgICAgICAgICJJbmRpYSIsICJJdGFseSIsICJDaGluYSIsICJTb3V0aCBBZnJpY2EiLCAiU3BhbmUiLCAKICAgICAgICAgICAgICJCb3Rzd2FuYSIsICJDYXBlIFZlcmRlIiwgIkJodXRhbiIsICJSd2FuZGEiLCAiRnJhbmNlIiwgCiAgICAgICAgICAgICAiVW5pdGVkIFN0YXRlcyIsICJHZXJtYW55IiwgIkJyaXRhaW4iLCAiQmFyYmFkb3MiLCAiTm9yd2F5IiwgCiAgICAgICAgICAgICAiSmFwYW4iLCJOZXcgWmVhbGFuZCIsICJTaW5nYXBvcmUiKQpkZi5sYWJlbHMgPC0gZGF0YS5mcmFtZSggQ291bnRyeSApCmBgYAoKTmV4dCwgSSB0YWtlIHRoaXMgbmV3IGRhdGEuZnJhbWUgYW5kIHRoZSBvcmlnaW5hbCBvbmUgYW5kIHVzZSB0aGUgYG1lcmdlKClgIGZ1bmN0aW9uLgoKIVsqRmlndXJlIDI6KiBIZWxwIGZpbGUgZm9yIGBtZXJnZSgpYC5dKGh0dHBzOi8vbGl2ZS5zdGF0aWNmbGlja3IuY29tLzY1NTM1LzUwMzQ4NzAwNTg2X2M5ZWU2ODE0OTRfY19kLmpwZykKCldoYXQgdGhpcyBmdW5jdGlvbiAqcmVxdWlyZXMqIGlzIHRoYXQgdGhlIHR3byBkYXRhLmZyYW1lcyAqKm11c3QqKiBoYXZlIGEgY29sdW0gd2l0aCB0aGUgc2FtZSBuYW1lLiAgSW4gdGhpcyBjYXNlLCBib3RoIHRoZSBvcmlnaW5hbCBkYXRhLmZyYW1lIGhhZCBvbmUgbmFtZWQgYENvdW50cnlgIGFzIGRpZCB0aGUgbmV3IG9uZS4gIEknbSBhc3N1bWluZyB0aGF0IHRoZSBvcmlnaW5hbCBkYXRhIHdhcyBsb2FkZWQgaW4gYXMgdGhlIHZhcmlhYmxlIGBkZmAgYXMgcmVxdWVzdGVkIGFib3Zl4oCUaWYgeW91IG5hbWVkIGl0IHNvbWV0aGluZyBlbHNlLCB0aGVuIHJlcGxhY2UgeW91ciB2YXJpYWJsZSBuYW1lIHdpdGggdGhlIGBkZmAgaW4gdGhlIGZpcnN0IGxpbmUgb2YgdGhlIGNvZGUgYmVsb3cuCgpgYGB7cn0KZGYubGFiZWxzIDwtIG1lcmdlKCBkZi5sYWJlbHMsIGRmKQpkZi5sYWJlbHMKYGBgCgoKTm93LCBsZXQncyBsb2FkIGluIHRoZSBgZ2dyZXBlbGAgbGlicmFyeVteMV0gYW5kIHVzZSBib3RoIG9mIHRoZXNlIGRhdGEuZnJhbWVzIHRvIGFkZCBsYWJlbHMgdG8gYSBzY2F0dGVyIHBsb3QuICBUbyBkbyB0aGlzLCB5b3UnbGwgaGF2ZSB0byB1c2UgdGhlIGZ1bGwgZGF0YSBmcmFtZSB0byBsYXkgZG93biBhIGBnZW9tX3BvaW50KClgIGxheWVyIGFuZCB0aGVuIGFkZCB0aGUgYGdlb21fdGV4dF9yZXBlbCgpYCBsYXllciB1c2luZyB0aGUgb3RoZXIgYGRmLmxhYmVsc2AgZGF0YS5mcmFtZS4gVG8gbWFrZSBpdCBsb29rIHJpZ2h0LCB5b3UgbWF5IG5lZWQgdG8gZnV0eiBhcm91bmQgd2l0aCB0aGUgdmFyaW91cyBkYXRhIG1hcHBpbmdzIGluIHRoZSBgYWVzYCBmdW5jdGlvbnMuICBTZWUgW3RoaXMgc2xpZGVdKGh0dHBzOi8vZHllcmxhYi5naXRodWIuaW8vRU5WUy1MZWN0dXJlcy92aXN1YWxpemF0aW9uL2dncGxvdF9ncmFwaGljcy9zbGlkZXMuaHRtbCM2MikgZm9yIGEgcmVmcmVzaGVyIG9uIHdoYXQgYGdncmVwZWxgIG5lZWRzIHRvIGRvIGl0cyBqb2IuCgpgYGB7cn0KIyBHR1JlcGVsIApsaWJyYXJ5KCBnZ3JlcGVsICkKYGBgCgoKCgoKCgoKW14xXTogSWYgeW91IGdldCBhbiBlcnJvciB3aGVuIHRyeWluZyB0byBsb2FkIGluIHRoZSBnZ3JlcGVsIGxpYnJhcnkgc2F5aW5nIGl0IGNvdWxkIG5vdCBmaW5kIHRoZSBsaWJyYXJ5LCB0aGVuIGluc3RhbGwgaXQgdXNpbmcgYGluc3RhbGwucGFja2FnZXMoImdncmVwZWwiKWAuCgoK</div>
 
 
 

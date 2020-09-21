@@ -103,11 +103,13 @@ To create a bar plot in `ggplot` one can use the `geom_col()` geometric layer.
 # geom_col plot
 ```
 
-That plot looks great but the x-axis labels are all screwed up.  To fix this you can add some customization to the theme by changing the text elements on the x axis.  The code in the chunk below, when added to your plot code, will rotate the angle of the text by 45° and justified.  Add your code to this chunk and see how this changes the axis labels (feel free to play around with them).
+That plot looks great but the x-axis labels are all screwed up.  To fix this you can add some customization to the theme by changing the text elements on the x axis.  The code in the chunk below, when added to your plot code, will rotate the angle of the text by 45° and justified.  Add your code to this chunk and see how this changes the axis labels (feel free to play around with them).  
 
-```{r}
+Note: You *must* change `eval=FALSE` to `eval=TRUE` to get this chunck to work.  I had to set it to not run because the text `{YOUR PLOT CODE HERE}` will not compile.
+
+```{r eval=FALSE}
 # Fix the axes
-{YOUR PLOT CODE HERE}   + theme(axis.text.x = element_text(angle = 45, hjust=1))
+{YOUR PLOT CODE HERE} + theme(axis.text.x = element_text(angle = 45, hjust=1))
 ```
 
 ## Box plots & others

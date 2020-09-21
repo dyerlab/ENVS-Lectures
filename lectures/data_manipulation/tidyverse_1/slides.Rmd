@@ -1,10 +1,9 @@
 ---
-title: "The Title"
-subtitle: "The Subtitle"
+title: "Data Analysis Workflow"
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: ["default", "envs543-styles.css", "fonts.css"]
+    css: ["default", "css/envs543-styles.css", "css/fonts.css"]
     seal: false
     nature:
       titleSlideClass: ["center","middle"]
@@ -708,7 +707,7 @@ txt
 ---
 
 class: middle
-background-image: url("images/contour.png")
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
 background-position: right
 background-size: auto
 

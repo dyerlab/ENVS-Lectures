@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>The Title</title>
+    <title>Data Analysis Workflow</title>
     <meta charset="utf-8" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
     <script src="libs/viz-1.8.2/viz.js"></script>
     <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
     <script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
-    <link rel="stylesheet" href="envs543-styles.css" type="text/css" />
-    <link rel="stylesheet" href="fonts.css" type="text/css" />
+    <link rel="stylesheet" href="css/envs543-styles.css" type="text/css" />
+    <link rel="stylesheet" href="css/fonts.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -151,13 +151,13 @@ Combining these actions together is how we perform the analyses.
 
 
 
-<div id="htmlwidget-76726042bf225fa9bdf7" style="width:75%;height:30%;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-76726042bf225fa9bdf7">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\",\n       rankdir = \"LR\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Load\\nData\", shape = \"square\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#61acf0\"] \n  \"2\" [label = \"Select\\nColumns\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"3\" [label = \"Overlay\\nPoints\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"4\" [label = \"Overlay\\nTrend\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"5\" [label = \"Show Plot\", shape = \"rectangle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#cbd20a\"] \n\"1\"->\"2\" [color = \"#3C3C3C\"] \n\"2\"->\"3\" [color = \"#3C3C3C\"] \n\"3\"->\"4\" [color = \"#3C3C3C\"] \n\"4\"->\"5\" [color = \"#3C3C3C\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-a92060b95151ce2fd93e" style="width:75%;height:30%;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a92060b95151ce2fd93e">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\",\n       rankdir = \"LR\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Load\\nData\", shape = \"square\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#61acf0\"] \n  \"2\" [label = \"Select\\nColumns\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"3\" [label = \"Overlay\\nPoints\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"4\" [label = \"Overlay\\nTrend\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"5\" [label = \"Show Plot\", shape = \"rectangle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#cbd20a\"] \n\"1\"->\"2\" [color = \"#3C3C3C\"] \n\"2\"->\"3\" [color = \"#3C3C3C\"] \n\"3\"->\"4\" [color = \"#3C3C3C\"] \n\"4\"->\"5\" [color = \"#3C3C3C\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 --
 
-<div id="htmlwidget-890fc5f011ec232bafb8" style="width:100%;height:20%;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-890fc5f011ec232bafb8">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\",\n       rankdir = \"LR\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Load\\nData\", shape = \"square\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#61acf0\"] \n  \"2\" [label = \"Group\\nSpecies\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"3\" [label = \"Select\\nColumn\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"4\" [label = \"Estimate\\nMean\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"5\" [label = \"Estimate\\nVariance\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"6\" [label = \"Make Table\", shape = \"rectangle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"1\", fillcolor = \"#cbd20a\"] \n\"1\"->\"2\" [color = \"#3C3C3C\"] \n\"2\"->\"3\" [color = \"#3C3C3C\"] \n\"3\"->\"4\" [color = \"#3C3C3C\"] \n\"4\"->\"5\" [color = \"#3C3C3C\"] \n\"5\"->\"6\" [color = \"#3C3C3C\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-3d657f52c205250964e8" style="width:100%;height:20%;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3d657f52c205250964e8">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\",\n       rankdir = \"LR\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Load\\nData\", shape = \"square\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#61acf0\"] \n  \"2\" [label = \"Group\\nSpecies\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"3\" [label = \"Select\\nColumn\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"4\" [label = \"Estimate\\nMean\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"5\" [label = \"Estimate\\nVariance\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"6\" [label = \"Make Table\", shape = \"rectangle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"1\", fillcolor = \"#cbd20a\"] \n\"1\"->\"2\" [color = \"#3C3C3C\"] \n\"2\"->\"3\" [color = \"#3C3C3C\"] \n\"3\"->\"4\" [color = \"#3C3C3C\"] \n\"4\"->\"5\" [color = \"#3C3C3C\"] \n\"5\"->\"6\" [color = \"#3C3C3C\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 
 
@@ -444,7 +444,7 @@ idx
 ```
 
 ```
-##  [1] 7395 5559 2657 2303 1137 6932 7411 4338 3735 4190
+##  [1] 1893 4329 2690 5923 3640  371 5856  477 3756 6270
 ```
 ]
 
@@ -458,18 +458,18 @@ df[idx,]
 
 ```
 ## # A tibble: 10 x 4
-##    DateTime                PAR WindDir    PH
-##    &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
-##  1 3/19/2014 12:30:00 AM   0      46.8  7.44
-##  2 2/27/2014 9:30:00 PM    0      44.1  7.66
-##  3 1/28/2014 4:00:00 PM  126.     32.1  7.59
-##  4 1/24/2014 11:30:00 PM   0     190.   7.56
-##  5 1/12/2014 8:00:00 PM    0      64.7  7.7 
-##  6 3/14/2014 4:45:00 AM    0      56.5  7.8 
-##  7 3/19/2014 4:30:00 AM    0      12.7  7.78
-##  8 2/15/2014 4:15:00 AM    0     181    7.51
-##  9 2/8/2014 9:30:00 PM     0      44.7  7.53
-## 10 2/13/2014 3:15:00 PM   93.1   294.   7.53
+##    DateTime                  PAR WindDir    PH
+##    &lt;chr&gt;                   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 1/20/2014 5:00:00 PM  437.      268    7.55
+##  2 2/15/2014 2:00:00 AM    0.003   218.   7.48
+##  3 1/29/2014 12:15:00 AM   0       360.   7.6 
+##  4 3/3/2014 4:30:00 PM   165.       23.3  7.56
+##  5 2/7/2014 9:45:00 PM     0        51.2  7.42
+##  6 1/4/2014 8:30:00 PM     0       185.   7.67
+##  7 3/2/2014 11:45:00 PM    0.039    42.9  7.55
+##  8 1/5/2014 11:00:00 PM    0       195.   7.6 
+##  9 2/9/2014 2:45:00 AM     0        57.8  7.5 
+## 10 3/7/2014 7:15:00 AM     0.013    33.4  7.71
 ```
 ]
 
@@ -705,7 +705,7 @@ Sys.time()
 ```
 
 ```
-## [1] "2020-09-21 08:19:19 EDT"
+## [1] "2020-09-21 08:35:55 EDT"
 ```
 
 --
@@ -716,13 +716,13 @@ unclass( Sys.time() )
 ```
 
 ```
-## [1] 1600690759
+## [1] 1600691756
 ```
 
 
 ---
 
-# Making Time 🕗
+# Making Time 🕥
 
 To convert something like 1/1/2014 12:00:00 AM from `character` to a `time` object, we need to specify the layout of the elements within the string so the functions know what to operate on.
 
@@ -850,7 +850,7 @@ txt
 ---
 
 class: middle
-background-image: url("images/contour.png")
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
 background-position: right
 background-size: auto
 

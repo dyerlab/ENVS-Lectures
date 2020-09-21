@@ -390,7 +390,7 @@ df[ is.na(df$PH), ]
 
 ---
 
-# Mathematical Operaions
+# Mathematical Operations
 
 The *modulo* operator returns the remainder after simple division (e.g., 10 modulo 3 = 1).  It can be used to grab 'every x<sup>th</sup>' element.  Here is an example of every other value (the even ones).
 
@@ -550,7 +550,7 @@ Data is often derived from text.
 
 - `read_csv()` must make an estimate of a column data type should be.  
 
-- Estimates are often *least divisive*
+- Estimates are often *least divisive* data type (e.g., `character`).
 
 --
 
@@ -652,7 +652,7 @@ x
 
 ---
 
-# Making Lots of time
+# Making Lots of Time
 
 ```{r}
 rice$DateTime <- parse_date_time( rice$DateTime,
@@ -683,6 +683,57 @@ txt
 
 
 
+---
+class: sectionTitle
+
+# 😱 .blue[Grouping] 
+
+## Partitioning Data 
+
+---
+
+# Partitioning Data Into Groups
+
+
+```{r}
+rice$Month <- month(rice$DateTime)
+summary( rice$Month )
+```
+
+
+---
+
+# Partitioning Data Into Groups
+
+
+
+```{r}
+rice$Month <- month( rice$DateTime, label=TRUE, abbr=FALSE )
+summary( rice$Month )
+class( rice$Month )
+```
+
+---
+
+# Refactoring Factors
+
+```{r}
+rice$Month <- droplevels( rice$Month )
+summary( rice$Month )
+```
+
+
+
+---
+
+# Partitioning Data Into Groups
+
+
+
+```{r}
+airTemp <- by( rice$AirTempF, rice$Month, mean )
+airTemp
+```
 
 
 
@@ -693,11 +744,127 @@ txt
 
 
 
+---
+class: sectionTitle
+
+# .blue[Summary] 
+
+## Pulling it all together `r fa(name = "compress-arrows-alt", fill = "steelblue")`
+
+
+
+---
+
+# Summarizing Data
+
+All of these activities discussed lead towards some results such as:
+
+- Creating a tabular output of the results.  
+
+- Plotting some graphical display of the results.  
+
+- Serving as the input data for subsequent data analyses.  
+
+
+
+Each of these methodologies requires us to exit the work flow, after putting together all these parts, and make another `data.frame`.
+
+
+---
+
+# Graphical & Data Frame Output
+
+Since we already have a bit of practice working with making data frames and taking them to make graphical output, we will focus here on how to create tabular output.
+
+```{r}
+airTemp <- by( (rice$AirTempF-32) * 5/9, rice$Month, mean )
+humidity <- by( rice$RelHumidity, rice$Month, mean )
+waterTemp <- by( rice$H2O_TempC, rice$Month, mean, na.rm=TRUE )
+highTide <- by( rice$Depth_m, rice$Month, max )
+
+df <- data.frame( Month = names( airTemp ) )
+df$AirTemp <- as.numeric( airTemp )
+df$Humidity <- as.numeric( humidity )
+df$WaterTemp <- as.numeric( waterTemp )
+df$HighTide <- as.numeric( highTide )
+
+df
+```
 
 
 
 
 
+---
+
+# Tabular Summaries
+
+Tabular output can be done by hand, but there is a much easier way to make tables using `knitr::kable`, allowing a lot of customizations.  This approach makes tables for markdown, html, pdf, or docx outputs.  
+
+
+```{r}
+library( knitr )
+t <- kable( df, 
+            format = "html", 
+            caption = "Table 1: Air and water parameters measured at the Rice Rivers Center" )
+t
+```
+
+
+
+---
+
+# Styling Tables
+
+We can apply various styling to a table using functions from the `kableExtra` package.
+
+```{r}
+library( kableExtra )
+```
+
+
+.pull-left[
+```{r}
+kable_classic( t, html_font = '\"Times New Roman\"')
+```
+]
+
+--
+
+.pull-right[
+```{r}
+kable_paper( t, "hover" )
+```
+
+]
+
+
+---
+
+# Table Themes
+
+Customized headers.
+
+```{r}
+tbl1 <- kable_classic( t )
+add_header_above( tbl1, 
+                  c(" " = 1,
+                    "Atmospheric" = 2,
+                    "Water" = 2)
+                  )
+```
+
+---
+
+# Table Customization
+
+```{r}
+kable_styling(t, 
+              bootstrap_options = c("striped", 
+                                    "hover", 
+                                    "condensed", 
+                                    "responsive"))
+```
 
 
 

@@ -1,5 +1,45 @@
 ---
-title: "The Tidyverse"
+title: "Data Workflows"
 output: html_notebook
 ---
+
+## Impetus
+
+This homework will focus on pulling together all the components we've been working with thus far as a coherent set of building blocks for individual workflows.  The operative *verbs* include:
+
+- *Select*  
+- *Filter*  
+- *Mutating*  
+- *Arranging* 
+- *Grouping*  
+- *Summarizing*  
+
+These can be combined in various ways to gain inferences from the raw data.
+
+![Figure 1: Generalized processes of data workflow](https://live.staticflickr.com/65535/50367634341_454e5c0e80_c_d.jpg)
+## The Data
+
+For these questions, we will be using the data set from the [Rice Rivers Center](https://ricerivers.vcu.edu).  It can be
+
+```{r message=FALSE, warnings=FALSE}
+library( readr )
+url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
+rice <- read_csv( url )
+summary( rice )
+```
+
+
+## The Questions
+
+Using the data above, answer the following questions. To answer these questions, you should provide your answers as text (e.g., using complete sentences, etc.) and include visual output in tabular or graphical form to support your assertions.  The *key point here* is that **you** need to develop an *evidence-based* narrative to address these questions.
+
+1. On average, is there more rain on Mondays, at daytime, or at night?
+
+2. What is the overall trend in salinity and pH?  Does this pattern hold when considering each month individually?
+
+3. Turbidity is a measurement of the opaqueness of water.  In the rice data, we have a measure of Chlorophyll A in the water.  For estimates where there is more than 200 $µg*l^{-1}$, describe the relationship between these two variables.
+
+4. Show the pattern of tides during the work week that includes Valentines Day in 2004.
+
+5. Summarize estimates of Wind direction for February.  Pay close attention to what this variable is actually measuring and how you want to display its underlying patterns.
 

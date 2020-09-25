@@ -4,6 +4,12 @@
     <title>Workflow Judo🥋</title>
     <meta charset="utf-8" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+    <script src="libs/viz-1.8.2/viz.js"></script>
+    <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+    <script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
     <link rel="stylesheet" href="../../css/slide_styles.css" type="text/css" />
     <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
   </head>
@@ -28,6 +34,718 @@ background-size: cover
 
 
 
+---
+
+# R Data Workflow
+
+&gt; Describe the daytime air temperatures at the Rice Rivers Center for the first week of February, 2014.
+
+--
+
+&amp;nbsp;
+
+To do this, we need to perform the following sequence of general *verb* actions on the data.
+
+<div id="htmlwidget-d09b92a09407589381d1" style="width:90%;height:40%;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d09b92a09407589381d1">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\",\n       rankdir = \"LR\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Load\\nData\", shape = \"square\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#61acf0\"] \n  \"2\" [label = \"Make\\nDates\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"3\" [label = \"Select\\nColumns\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"4\" [label = \"Filter\\nRows\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"5\" [label = \"Summarize\\nSomehow\", shape = \"rectangle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#cbd20a\"] \n\"1\"->\"2\" [color = \"#3C3C3C\"] \n\"2\"->\"3\" [color = \"#3C3C3C\"] \n\"3\"->\"4\" [color = \"#3C3C3C\"] \n\"4\"->\"5\" [color = \"#3C3C3C\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+--
+
+&amp;nbsp;
+
+.blue[Use this as an example]
+
+
+---
+
+# Load Data
+
+
+```r
+library( readr )
+url &lt;- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&amp;single=true&amp;output=csv"
+rice &lt;- read_csv( url )
+names( rice )
+```
+
+```
+##  [1] "DateTime"                       "RecordID"                      
+##  [3] "PAR"                            "WindSpeed_mph"                 
+##  [5] "WindDir"                        "AirTempF"                      
+##  [7] "RelHumidity"                    "BP_HG"                         
+##  [9] "Rain_in"                        "H2O_TempC"                     
+## [11] "SpCond_mScm"                    "Salinity_ppt"                  
+## [13] "PH"                             "PH_mv"                         
+## [15] "Turbidity_ntu"                  "Chla_ugl"                      
+## [17] "BGAPC_CML"                      "BGAPC_rfu"                     
+## [19] "ODO_sat"                        "ODO_mgl"                       
+## [21] "Depth_ft"                       "Depth_m"                       
+## [23] "SurfaceWaterElev_m_levelNad83m"
+```
+
+
+---
+
+# Make Date Data Type 🗓
+
+.greeninline[Mutate] the data by adding a new column that is a `Date` object.
+
+
+```r
+library( lubridate )
+format &lt;- "%m/%d/%Y %I:%M:%S %p"
+rice$Date &lt;- parse_date_time( rice$DateTime, 
+                              orders=format,
+                              tz="EST")
+class( rice$Date )
+```
+
+```
+## [1] "POSIXct" "POSIXt"
+```
+
+```r
+summary( rice$Date )
+```
+
+```
+##                  Min.               1st Qu.                Median 
+## "2014-01-01 00:00:00" "2014-01-22 08:22:30" "2014-02-12 16:45:00" 
+##                  Mean               3rd Qu.                  Max. 
+## "2014-02-12 16:45:00" "2014-03-06 01:07:30" "2014-03-27 09:30:00"
+```
+
+---
+
+# Make Date Data Type 🗓
+
+Should make it a Factor so we know ordering.
+
+
+```r
+days &lt;- c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+rice$Weekday &lt;- weekdays( rice$Date )
+rice$Weekday &lt;- factor( rice$Weekday,
+                        ordered=TRUE,
+                        levels=days)
+summary( rice$Weekday )
+```
+
+```
+##    Monday   Tuesday Wednesday  Thursday    Friday  Saturday    Sunday 
+##      1152      1152      1248      1191      1152      1152      1152
+```
+
+```r
+class( rice$Weekday )
+```
+
+```
+## [1] "ordered" "factor"
+```
+
+
+
+---
+
+# 🌡 Fahrenheit to Celsius
+
+.pull-left[
+
+.greeninline[Mutate] the data in-line to create new column.
+
+
+```r
+library( ggplot2 )
+rice$AirTemp &lt;- (rice$AirTempF - 32 ) * 5 / 9
+
+# Examine the data.
+
+ggplot( rice, aes(x=AirTemp ) )  + 
+  geom_histogram( binwidth=1.0, colour = "#333333" ) +
+  xlab("Air Temperature (°C)") + ylab("Frequency")
+```
+]
+
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-5-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Grab Columns
+
+.orangeinline[Select] the columns of data we will be working with.  
+
+.redinline[And] let's not overwrite our old stuff in case we need to come back.
+
+
+```r
+df &lt;- rice[ , c("Date","Weekday","AirTemp", "PAR") ]
+
+# Look at the result
+
+head( df )
+```
+
+```
+## # A tibble: 6 x 4
+##   Date                Weekday   AirTemp   PAR
+##   &lt;dttm&gt;              &lt;ord&gt;       &lt;dbl&gt; &lt;dbl&gt;
+## 1 2014-01-01 00:00:00 Wednesday  -0.561     0
+## 2 2014-01-01 00:15:00 Wednesday  -0.711     0
+## 3 2014-01-01 00:30:00 Wednesday  -0.433     0
+## 4 2014-01-01 00:45:00 Wednesday  -0.811     0
+## 5 2014-01-01 01:00:00 Wednesday  -0.594     0
+## 6 2014-01-01 01:15:00 Wednesday  -0.772     0
+```
+
+
+---
+
+# Filtering Rows 
+
+Two temporal filters are in play here:  
+
+- First week in February  
+- Day time
+
+
+--
+
+
+```r
+rice$DateTime[ 25 ]
+```
+
+```
+## [1] "1/1/2014 6:00:00 AM"
+```
+
+--
+
+
+```r
+start_DateTime &lt;- "2/1/2014 12:00:00 AM"
+end_DateTime &lt;- "2/7/2014 11:45:00 PM"
+start &lt;- parse_date_time( start_DateTime, 
+                          orders=format,
+                          tz="EST")
+end &lt;- parse_date_time( end_DateTime, 
+                        orders=format,
+                        tz="EST")
+c( start, end )
+```
+
+```
+## [1] "2014-02-01 00:00:00 EST" "2014-02-07 23:45:00 EST"
+```
+
+
+---
+
+# Filtering on "First Week of February"
+
+
+```r
+df1 &lt;- df[ df$Date &gt;= start &amp; df$Date &lt;= end, ]
+
+# Check the Date Range
+
+summary( df1 )
+```
+
+```
+##       Date                          Weekday      AirTemp      
+##  Min.   :2014-02-01 00:00:00   Monday   :96   Min.   :-3.594  
+##  1st Qu.:2014-02-02 17:56:15   Tuesday  :96   1st Qu.: 1.106  
+##  Median :2014-02-04 11:52:30   Wednesday:96   Median : 3.778  
+##  Mean   :2014-02-04 11:52:30   Thursday :96   Mean   : 4.370  
+##  3rd Qu.:2014-02-06 05:48:45   Friday   :96   3rd Qu.: 6.639  
+##  Max.   :2014-02-07 23:45:00   Saturday :96   Max.   :16.550  
+##                                Sunday   :96                   
+##       PAR          
+##  Min.   :   0.000  
+##  1st Qu.:   0.000  
+##  Median :   0.044  
+##  Mean   : 198.283  
+##  3rd Qu.: 277.000  
+##  Max.   :1365.000  
+## 
+```
+
+---
+class: middle
+
+# Filtering on "Daytime"
+
+.pull-left[
+
+Maybe we can use PAR as a measure of "daytime-ness" here.
+
+&amp;nbsp;
+
+
+```r
+hist( df1$PAR,
+      xlab="Photosynthetically Active Radiation",
+      main="" )
+```
+
+]
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-10-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+---
+
+# First Pass: PAR &gt; 100 ?
+
+
+```r
+df2 &lt;- df1[ df1$PAR &gt; 100, ]
+summary( df2 )
+```
+
+```
+##       Date                          Weekday      AirTemp            PAR        
+##  Min.   :2014-02-01 09:00:00   Monday   :17   Min.   :-2.544   Min.   : 104.4  
+##  1st Qu.:2014-02-02 14:07:30   Tuesday  :34   1st Qu.: 2.500   1st Qu.: 272.9  
+##  Median :2014-02-04 14:45:00   Wednesday:30   Median : 5.356   Median : 486.2  
+##  Mean   :2014-02-04 15:01:43   Thursday :36   Mean   : 5.732   Mean   : 573.0  
+##  3rd Qu.:2014-02-06 12:52:30   Friday   :37   3rd Qu.: 7.900   3rd Qu.: 879.5  
+##  Max.   :2014-02-07 18:00:00   Saturday :36   Max.   :16.550   Max.   :1365.0  
+##                                Sunday   :37
+```
+
+--
+
+
+```r
+range( df2$Date[ df2$Weekday == "Monday"])
+```
+
+```
+## [1] "2014-02-03 11:15:00 EST" "2014-02-03 16:45:00 EST"
+```
+
+
+
+---
+
+# Second Pass: PAR &gt; 25
+
+
+```r
+df2 &lt;- df1[ df1$PAR &gt; 25, ]
+summary( df2 )
+```
+
+```
+##       Date                          Weekday      AirTemp      
+##  Min.   :2014-02-01 08:30:00   Monday   :36   Min.   :-3.228  
+##  1st Qu.:2014-02-02 15:37:30   Tuesday  :39   1st Qu.: 2.431  
+##  Median :2014-02-04 13:30:00   Wednesday:38   Median : 5.306  
+##  Mean   :2014-02-04 13:47:27   Thursday :40   Mean   : 5.470  
+##  3rd Qu.:2014-02-06 11:22:30   Friday   :41   3rd Qu.: 7.381  
+##  Max.   :2014-02-07 18:30:00   Saturday :40   Max.   :16.550  
+##                                Sunday   :41                   
+##       PAR         
+##  Min.   :  25.96  
+##  1st Qu.: 154.80  
+##  Median : 378.70  
+##  Mean   : 483.61  
+##  3rd Qu.: 775.35  
+##  Max.   :1365.00  
+## 
+```
+
+```r
+range( df2$Date[ df2$Weekday == "Monday"])
+```
+
+```
+## [1] "2014-02-03 09:30:00 EST" "2014-02-03 18:15:00 EST"
+```
+
+
+
+
+---
+
+# Sunrise🌅 and Sunset 🌆?
+
+&amp;nbsp;
+
+It is amazing how someone records these data and make them available for all of us by a simple search of the internet.
+
+&amp;nbsp;
+
+.pull-left[
+![Sunrise 2/1/2014](https://live.staticflickr.com/65535/50381378793_b6517b10fe_w_d.jpg)
+![Sunset 2/1/2014](https://live.staticflickr.com/65535/50382255642_a9399a736a_w_d.jpg)
+]
+
+.pull-right[
+![Sunrise 2/7/2014](https://live.staticflickr.com/65535/50382077786_e59560305e_w_d.jpg)
+![Sunset 2/7/2014](https://live.staticflickr.com/65535/50382077716_872bf519a5_w_d.jpg)
+]
+
+
+
+---
+
+# Hours &amp; Minutes
+
+
+```r
+test &lt;- df1[ df1$Weekday == "Monday",]
+test$hour &lt;- hour( test$Date ) 
+test$minute &lt;- minute( test$Date )
+test
+```
+
+```
+## # A tibble: 96 x 6
+##    Date                Weekday AirTemp   PAR  hour minute
+##    &lt;dttm&gt;              &lt;ord&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;int&gt;
+##  1 2014-02-03 00:00:00 Monday     9.24 0.007     0      0
+##  2 2014-02-03 00:15:00 Monday     8.04 0.01      0     15
+##  3 2014-02-03 00:30:00 Monday     6.78 0         0     30
+##  4 2014-02-03 00:45:00 Monday     7.05 0.007     0     45
+##  5 2014-02-03 01:00:00 Monday     7.4  0.029     1      0
+##  6 2014-02-03 01:15:00 Monday     7.74 0.013     1     15
+##  7 2014-02-03 01:30:00 Monday     7.84 0.003     1     30
+##  8 2014-02-03 01:45:00 Monday     9.15 0.01      1     45
+##  9 2014-02-03 02:00:00 Monday     9.93 0.052     2      0
+## 10 2014-02-03 02:15:00 Monday     9.63 0.01      2     15
+## # … with 86 more rows
+```
+
+
+OK!
+
+---
+
+# Add Hours &amp; Minutes to Filter
+
+
+
+```r
+df3 &lt;- df1
+df3$Hour &lt;- hour( df3$Date )
+df3$Minute &lt;- minute( df3$Date )
+head( df3 )
+```
+
+```
+## # A tibble: 6 x 6
+##   Date                Weekday  AirTemp   PAR  Hour Minute
+##   &lt;dttm&gt;              &lt;ord&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;int&gt;
+## 1 2014-02-01 00:00:00 Saturday -0.411      0     0      0
+## 2 2014-02-01 00:15:00 Saturday -0.967      0     0     15
+## 3 2014-02-01 00:30:00 Saturday -0.594      0     0     30
+## 4 2014-02-01 00:45:00 Saturday  0.0833     0     0     45
+## 5 2014-02-01 01:00:00 Saturday -0.211      0     1      0
+## 6 2014-02-01 01:15:00 Saturday -0.0278     0     1     15
+```
+
+
+
+---
+
+# Filter out Pre-Dawn
+
+
+```r
+df4 &lt;- df3[ df3$Hour &gt;= 7 &amp; df3$Minute &gt;= 15,]
+
+# Check 
+summary( df4 )
+```
+
+```
+##       Date                          Weekday      AirTemp      
+##  Min.   :2014-02-01 07:15:00   Monday   :51   Min.   :-3.594  
+##  1st Qu.:2014-02-02 19:45:00   Tuesday  :51   1st Qu.: 1.606  
+##  Median :2014-02-04 15:30:00   Wednesday:51   Median : 4.811  
+##  Mean   :2014-02-04 15:30:00   Thursday :51   Mean   : 5.026  
+##  3rd Qu.:2014-02-06 11:15:00   Friday   :51   3rd Qu.: 6.944  
+##  Max.   :2014-02-07 23:45:00   Saturday :51   Max.   :16.550  
+##                                Sunday   :51                   
+##       PAR                Hour        Minute  
+##  Min.   :   0.000   Min.   : 7   Min.   :15  
+##  1st Qu.:   0.007   1st Qu.:11   1st Qu.:15  
+##  Median :  82.400   Median :15   Median :30  
+##  Mean   : 279.134   Mean   :15   Mean   :30  
+##  3rd Qu.: 449.500   3rd Qu.:19   3rd Qu.:45  
+##  Max.   :1297.000   Max.   :23   Max.   :45  
+## 
+```
+
+
+
+---
+
+# Filter Out Post-Sundown
+
+Notice that the `hour()` function returns values from 0-23 so `5:30 PM` is denoted as `17:30`.
+
+
+```r
+df5 &lt;- df4[ df4$Hour &lt;= 17 &amp; df4$Minute &lt;=30,  ]
+
+# Check
+summary( df5 )
+```
+
+```
+##       Date                          Weekday      AirTemp            PAR        
+##  Min.   :2014-02-01 07:15:00   Monday   :22   Min.   :-3.211   Min.   :   0.0  
+##  1st Qu.:2014-02-02 15:18:45   Tuesday  :22   1st Qu.: 1.431   1st Qu.:  89.8  
+##  Median :2014-02-04 12:22:30   Wednesday:22   Median : 4.850   Median : 325.1  
+##  Mean   :2014-02-04 12:22:30   Thursday :22   Mean   : 4.775   Mean   : 427.3  
+##  3rd Qu.:2014-02-06 09:26:15   Friday   :22   3rd Qu.: 6.808   3rd Qu.: 731.9  
+##  Max.   :2014-02-07 17:30:00   Saturday :22   Max.   :16.550   Max.   :1297.0  
+##                                Sunday   :22                                    
+##       Hour        Minute    
+##  Min.   : 7   Min.   :15.0  
+##  1st Qu.: 9   1st Qu.:15.0  
+##  Median :12   Median :22.5  
+##  Mean   :12   Mean   :22.5  
+##  3rd Qu.:15   3rd Qu.:30.0  
+##  Max.   :17   Max.   :30.0  
+## 
+```
+
+
+---
+# Just to Make Sure
+
+
+```r
+# Check
+df5[21:30,]
+```
+
+```
+## # A tibble: 10 x 6
+##    Date                Weekday  AirTemp    PAR  Hour Minute
+##    &lt;dttm&gt;              &lt;ord&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;int&gt;
+##  1 2014-02-01 17:15:00 Saturday   10.7  124.      17     15
+##  2 2014-02-01 17:30:00 Saturday   10.4  133.      17     30
+##  3 2014-02-02 07:15:00 Sunday      6.62   0        7     15
+##  4 2014-02-02 07:30:00 Sunday      5.97   0        7     30
+##  5 2014-02-02 08:15:00 Sunday      6.87   4.97     8     15
+##  6 2014-02-02 08:30:00 Sunday      6.64  26.0      8     30
+##  7 2014-02-02 09:15:00 Sunday      6.94 186        9     15
+##  8 2014-02-02 09:30:00 Sunday      7.09 227.       9     30
+##  9 2014-02-02 10:15:00 Sunday      7.43 540.      10     15
+## 10 2014-02-02 10:30:00 Sunday      7.81 625.      10     30
+```
+
+&amp;nbsp; 
+
+.center[
+Perfectly between sunrise and sunset!  
+
+![Sunrise 2/1/2014](https://live.staticflickr.com/65535/50381378793_b6517b10fe_w_d.jpg)
+![Sunset 2/1/2014](https://live.staticflickr.com/65535/50382255642_a9399a736a_w_d.jpg)
+]
+
+---
+
+# Select To Remove Extraneous 
+
+
+
+```r
+df6 &lt;- df5[ , c("Date","Weekday", "AirTemp")]
+head( df6 )
+```
+
+```
+## # A tibble: 6 x 3
+##   Date                Weekday  AirTemp
+##   &lt;dttm&gt;              &lt;ord&gt;      &lt;dbl&gt;
+## 1 2014-02-01 07:15:00 Saturday -3.17  
+## 2 2014-02-01 07:30:00 Saturday -3.2   
+## 3 2014-02-01 08:15:00 Saturday -3.21  
+## 4 2014-02-01 08:30:00 Saturday -3.16  
+## 5 2014-02-01 09:15:00 Saturday -1.12  
+## 6 2014-02-01 09:30:00 Saturday -0.0444
+```
+
+
+---
+
+# Summarize In Tabular Form
+
+From these raw data, we can create another `data.frame` that has each day of the week as a row and the values for temperature, say as `Minimum`, `Mean`, and `Maximum`.
+
+
+
+```r
+minTemp &lt;- by( df6$AirTemp, day( df6$Date  ), min )
+meanTemp &lt;- by( df6$AirTemp, day( df6$Date  ), mean )
+maxTemp &lt;- by( df6$AirTemp, day( df6$Date  ), max )
+df.table &lt;- data.frame( Minimum = as.numeric( minTemp ), 
+                        Average = as.numeric( meanTemp), 
+                        Maximum = as.numeric( maxTemp ) )
+df.table
+```
+
+```
+##      Minimum   Average   Maximum
+## 1 -3.2111111  5.143182 11.383333
+## 2  5.9722222 11.197222 16.550000
+## 3  4.4833333  5.601010  7.244444
+## 4 -0.5055556  3.268939  5.550000
+## 5  0.7777778  3.425000  8.644444
+## 6 -0.6166667  1.162374  3.061111
+## 7 -0.8000000  3.629293  7.677778
+```
+
+
+
+
+---
+
+# Set Dates for Each Row
+
+This is kind of a shortcut here.
+
+
+```r
+raw_dates &lt;- mdy( paste( "2", 1:7, "2014", sep="/") )
+df.table$Weekday &lt;- weekdays( raw_dates  )
+df.table
+```
+
+```
+##      Minimum   Average   Maximum   Weekday
+## 1 -3.2111111  5.143182 11.383333  Saturday
+## 2  5.9722222 11.197222 16.550000    Sunday
+## 3  4.4833333  5.601010  7.244444    Monday
+## 4 -0.5055556  3.268939  5.550000   Tuesday
+## 5  0.7777778  3.425000  8.644444 Wednesday
+## 6 -0.6166667  1.162374  3.061111  Thursday
+## 7 -0.8000000  3.629293  7.677778    Friday
+```
+
+---
+
+# Select to Reorder Columns
+
+
+```r
+df.table1 &lt;- df.table[ , c(4,1,2,3)]
+df.table1
+```
+
+```
+##     Weekday    Minimum   Average   Maximum
+## 1  Saturday -3.2111111  5.143182 11.383333
+## 2    Sunday  5.9722222 11.197222 16.550000
+## 3    Monday  4.4833333  5.601010  7.244444
+## 4   Tuesday -0.5055556  3.268939  5.550000
+## 5 Wednesday  0.7777778  3.425000  8.644444
+## 6  Thursday -0.6166667  1.162374  3.061111
+## 7    Friday -0.8000000  3.629293  7.677778
+```
+
+
+---
+
+# Tabular Output
+
+
+```r
+library( knitr )
+library( kableExtra )
+t &lt;- kable( df.table1,
+            caption="Table 1: Temperature Ranges for daytime air temperature for the first week of February, 2014 at the Rice Rivers Center in Charles City County, Virginia.")
+kable_styling( t )
+```
+
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+&lt;caption&gt;Table 1: Temperature Ranges for daytime air temperature for the first week of February, 2014 at the Rice Rivers Center in Charles City County, Virginia.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Weekday &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Minimum &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Maximum &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Saturday &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.2111111 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.143182 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.383333 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Sunday &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.9722222 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.197222 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.550000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Monday &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.4833333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.601010 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.244444 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.5055556 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.268939 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.550000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Wednesday &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7777778 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.425000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.644444 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Thursday &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6166667 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.162374 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.061111 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Friday &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.8000000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.629293 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.677778 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+---
+
+# Summarize Graphically
+
+
+```r
+ggplot( df6, aes(x=Date, y=AirTemp, color=Weekday) ) + 
+  geom_line() + 
+  geom_point( size  = 3 ) + 
+  theme( legend.position = "none" ) 
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-24-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
 
 
 
@@ -35,21 +753,40 @@ background-size: cover
 
 ---
 
-class: sectionTitle
+# Challenges to Normal R Workflows
 
-# .blue[Reshaping]
+The data work flow using indices has several drawbacks including:
 
+- Lots of individual steps, each step divided into many chunks (21 chunks to get the data from Google Drive to the Tablular Output).  
+- Uses lots of data frames to hold intermediate options.  We created 10 data frames in the process of going from `rice` to `df.table`.
+
+
+-- 
+
+If you are working with moderately large data sets, this is not a good strategy.
 
 
 ---
+class: inverse
+background-image: url("https://live.staticflickr.com/65535/50351963133_cffc707725_c_d.jpg")
+background-size: contain
+background-position: right
 
-class: sectionTitle
+# .green[Tidyverse]
 
-# More Tidy data
-
-
-
-
+.left-column[
+.greeninline[ 
+GGPlot is to built-in  
+graphics as `\(\_\_\_\_\_\_\)`   
+is to build in R  
+data work-flows.
+ 
+A) Tidyverse  
+B) Tidyverse  
+C) Tidyverse, or   
+D) Tidyverse
+] 
+]
 
 
 ---
@@ -68,6 +805,8 @@ class: sectionTitle
 - `purrr`  
 
 - `tibble` 
+
+- several more.
 ]
 
 All of these libraries have been defined to help you be more effective at data analysis.
@@ -86,181 +825,626 @@ library( tidyverse)
 
 
 ---
+# Common Workflow
 
-# &lt;svg style="height:0.8em;top:.04em;position:relative;fill:steelblue;" viewBox="0 0 581 512"&gt;&lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"/&gt;&lt;/svg&gt; Some Example Data   
-### Rice Center Monitoring Data 
+.middle[
 
-So let's grab a data set from Google Docs.  In the following chunk, I had to break up the url into several lines just to make sure it does shoot off the side of the screen.  In a markdown document, that wouldn't be necessary.
+The following general pattern is .fancy[so] common, someone developed a whole package (called `magittr` and it is part of the `tidyverse`) just to make sure we never have to do it the hard way.
+
+&amp;nbsp;
+
+.large[ .fancy[👉 The output of one function becomes the input of another one] ]
+
+]
 
 
-```r
-library( readr )
-url &lt;- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&amp;single=true&amp;output=csv"
-rice &lt;- read_csv( url )
-names(rice)
-```
-
-```
-##  [1] "DateTime"                       "RecordID"                      
-##  [3] "PAR"                            "WindSpeed_mph"                 
-##  [5] "WindDir"                        "AirTempF"                      
-##  [7] "RelHumidity"                    "BP_HG"                         
-##  [9] "Rain_in"                        "H2O_TempC"                     
-## [11] "SpCond_mScm"                    "Salinity_ppt"                  
-## [13] "PH"                             "PH_mv"                         
-## [15] "Turbidity_ntu"                  "Chla_ugl"                      
-## [17] "BGAPC_CML"                      "BGAPC_rfu"                     
-## [19] "ODO_sat"                        "ODO_mgl"                       
-## [21] "Depth_ft"                       "Depth_m"                       
-## [23] "SurfaceWaterElev_m_levelNad83m"
-```
+---
+background-image: url("https://live.staticflickr.com/65535/50382456508_bbb16c248d_c_d.jpg")
+background-size: fit
 
 
 ---
 
-# 🧹 Cleaning up the Data 
+# Pipes In Action
 
-
-```
-##  [1] "DateTime"                       "RecordID"                      
-##  [3] "PAR"                            "WindSpeed_mph"                 
-##  [5] "WindDir"                        "AirTempF"                      
-##  [7] "RelHumidity"                    "BP_HG"                         
-##  [9] "Rain_in"                        "H2O_TempC"                     
-## [11] "SpCond_mScm"                    "Salinity_ppt"                  
-## [13] "PH"                             "PH_mv"                         
-## [15] "Turbidity_ntu"                  "Chla_ugl"                      
-## [17] "BGAPC_CML"                      "BGAPC_rfu"                     
-## [19] "ODO_sat"                        "ODO_mgl"                       
-## [21] "Depth_ft"                       "Depth_m"                       
-## [23] "SurfaceWaterElev_m_levelNad83m"
-```
-
-
-
-There are several *issues* with these data, including:
-
-- `AirTempF` vs `H2O_TempC` - Different measurement scales
-
---
-
-- `Depth_ft` AND `Depth_m` AND `SurfaceWaterElev_m_levelNad83m` - Different Scales &amp; Repetitive
-
---
-
-- `DateTime` - Actually a string object so it is not 'usable' 
-
---
-
-- `PH_mv`, `BGAPC_rfu`, etc. - Not relevant in the end
-
-
-
----
-
-# The Old Way
-
-
-```r
-rice$AirTemp &lt;- (rice$AirTempF - 32) * 5 / 9
-rice$AirTempF &lt;- NULL
-```
-
---
-
-
-
-
-
-
-
----
-
-class: sectionTitle
-
-# Piping
-
-
-
----
-
-class: sectionTitle
-
-# Filtering Rows &amp; Columns
-
-
-
----
-
-class: sectionTitle
-
-# Grouping &amp; Summarizing
-
-
-
-
----
-
-
-```r
-get_rice_data &lt;- function() { 
-  library( tidyverse )
-  library( lubridate )
-  url &lt;- paste( "https://docs.google.com/spreadsheets/d",
-           "/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s",
-           "/pub?gid=0&amp;single=true&amp;output=csv"
-           , sep="")
-  
-  format &lt;- "%m/%d/%Y %I:%M:%S %p"
-  
-  # read in and format  
-  read_csv( url ) %&gt;%
-    mutate( Date = parse_date_time( DateTime, orders=format, tz="EST") ) %&gt;%
-    mutate( AirTemp = (AirTempF - 32) * 5/9 ) %&gt;%
-    mutate( Rain = Rain_in * 2.54 ) %&gt;%
-    mutate( WindSpeed = WindSpeed_mph * 1.6034 ) %&gt;%
-    select( Date, PAR, 
-            AirTemp, BP = BP_HG,
-            Rain, Humidty = RelHumidity, 
-            WindSpeed, WindDir,
-            H2O_Temp = H2O_TempC, SpCond = SpCond_mScm,
-            pH = PH, Turbidity = Turbidity_ntu,
-            Chla.ugl = Chla_ugl, ODO = ODO_sat,
-            H2O_Depth = Depth_m,
-            Salinity = Salinity_ppt,
-            ) -&gt; df
-    
-  return( df )
-}
-```
-
-
----
-class: inverse
-# Plotting 
+Pipes remove the need a ton of code writing.
 
 .pull-left[
+Instead of doing something like this:
+
 
 ```r
-df &lt;- get_rice_data()
-ggplot( df[1:100,], aes( AirTemp, WindSpeed) ) + 
-  geom_point( color="salmon") + 
-  dark_theme
+df2 &lt;- SOME_OPERATION( df1 )
+df3 &lt;- SOME_OTHER_OPERATION( df2 )
+df4 &lt;- A_THIRD_OPERATION( df3 )
+ggplot( df4, aes(x=...,y=...) ) + geom_point()
+```
+
+]
+
+--
+
+
+.pull-right[
+We can instead replace it with the pipe operator (`%&gt;%`) and clean it up considerably.
+
+
+```r
+df1 %&gt;% 
+  SOME_OPERATION() %&gt;%
+  SOME_OTHER_OPERATION() %&gt;%
+  A_THIRD_OPERATION %&gt;%
+  ggplot( aes(x=...,y=...) ) + geom_point()
+```
+
+Notice:
+- .redinline[No] reassigning a bunch of intermediate `data.frame` objects, and
+- .redinline[No] need to pass a data.frame to the next function, it is by default the first thing passed in.
+]
+
+
+
+
+---
+
+# Example - Tabular Summary
+
+
+
+```r
+df.table1 %&gt;%
+  kable( format="html", digits = 2) %&gt;%
+  kable_paper( full_width = FALSE ) %&gt;%
+  column_spec( 2, color=ifelse( df.table1$Minimum &lt; 0, "blue", ""))
+```
+
+&lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Weekday &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Minimum &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Maximum &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Saturday &lt;/td&gt;
+   &lt;td style="text-align:right;color: blue !important;"&gt; -3.21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.38 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Sunday &lt;/td&gt;
+   &lt;td style="text-align:right;color:  !important;"&gt; 5.97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.55 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Monday &lt;/td&gt;
+   &lt;td style="text-align:right;color:  !important;"&gt; 4.48 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.60 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.24 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday &lt;/td&gt;
+   &lt;td style="text-align:right;color: blue !important;"&gt; -0.51 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.55 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Wednesday &lt;/td&gt;
+   &lt;td style="text-align:right;color:  !important;"&gt; 0.78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.43 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.64 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Thursday &lt;/td&gt;
+   &lt;td style="text-align:right;color: blue !important;"&gt; -0.62 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.06 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Friday &lt;/td&gt;
+   &lt;td style="text-align:right;color: blue !important;"&gt; -0.80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.63 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.68 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+---
+
+# Example - Graphical Output
+
+
+.pull-left[
+We can pipe right into a `ggplot()` chain (n.b., the plot elements are still added (+) together and not piped).
+
+&amp;nbsp;
+
+
+```r
+df.table1 %&gt;%
+  ggplot( aes(x=Weekday,y=Average) ) + 
+  geom_col() + 
+  ylab("Average Air Temperature (°C)")
 ```
 ]
 
 .pull-right[
-&lt;img src="slides_files/figure-html/unnamed-chunk-8-1.svg" width="504" /&gt;
-
+&lt;img src="slides_files/figure-html/unnamed-chunk-29-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
+
+
 
 
 ---
 
-class: middle
-background-image: url("https://live.staticflickr.com/65535/50351963133_dec381f1e5_k_d.jpg")
-background-size: contain
-background-color: black
+# The `dplyr` Library
+
+.pull-left[
+.center[
+![DPlyr](https://live.staticflickr.com/65535/50382551848_ee84ba4b78_o_d.png)  
+.fancy[The Grammar of Data Manipulation]
+]
+]
+
+.pull-right[
+The *verbs* are actually `functions` from in `dplyr`:
+
+- Select is done using function `select()`  
+
+- Filter is done using function `filter()`  
+
+- Mutate is done using function `mutate()`  
+
+- Arrange is done using function `arrange()`   
+
+- Group is done using function `group_by()`  
+
+- Summarize is done using function `summarize()`  
+]
+
+When combined with `%&gt;%` ...  data magic!
+
+---
+
+# &lt;svg style="height:0.8em;top:.04em;position:relative;fill:steelblue;" viewBox="0 0 581 512"&gt;&lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"/&gt;&lt;/svg&gt; Real Example  
+### Rice Center Monitoring Data 
+
+So let's grab the Rice Center Data and setp through the process of answering that question:
+
+&gt; Describe the daytime air temperatures at the Rice Rivers Center for the first week of February, 2014.
+
+
+```r
+rice &lt;- read_csv( url )
+names( rice )
+```
+
+```
+##  [1] "DateTime"                       "RecordID"                      
+##  [3] "PAR"                            "WindSpeed_mph"                 
+##  [5] "WindDir"                        "AirTempF"                      
+##  [7] "RelHumidity"                    "BP_HG"                         
+##  [9] "Rain_in"                        "H2O_TempC"                     
+## [11] "SpCond_mScm"                    "Salinity_ppt"                  
+## [13] "PH"                             "PH_mv"                         
+## [15] "Turbidity_ntu"                  "Chla_ugl"                      
+## [17] "BGAPC_CML"                      "BGAPC_rfu"                     
+## [19] "ODO_sat"                        "ODO_mgl"                       
+## [21] "Depth_ft"                       "Depth_m"                       
+## [23] "SurfaceWaterElev_m_levelNad83m"
+```
+
+
+
+---
+
+# Select
+
+Select allows us to grab the column by the name in the `data.frame`.
+
+
+```r
+rice %&gt;%
+  select( DateTime, AirTempF ) %&gt;%
+  head()
+```
+
+```
+## # A tibble: 6 x 2
+##   DateTime             AirTempF
+##   &lt;chr&gt;                   &lt;dbl&gt;
+## 1 1/1/2014 12:00:00 AM     31.0
+## 2 1/1/2014 12:15:00 AM     30.7
+## 3 1/1/2014 12:30:00 AM     31.2
+## 4 1/1/2014 12:45:00 AM     30.5
+## 5 1/1/2014 1:00:00 AM      30.9
+## 6 1/1/2014 1:15:00 AM      30.6
+```
+
+
+---
+
+# Selecting to Drop 
+
+To drop columns, you can use the name of the column with a negative sign prepended on it.
+
+
+```r
+rice %&gt;%
+  select( -RecordID, -SpCond_mScm, -PH_mv, -Depth_ft, -SurfaceWaterElev_m_levelNad83m ) %&gt;%
+  names() 
+```
+
+```
+##  [1] "DateTime"      "PAR"           "WindSpeed_mph" "WindDir"      
+##  [5] "AirTempF"      "RelHumidity"   "BP_HG"         "Rain_in"      
+##  [9] "H2O_TempC"     "Salinity_ppt"  "PH"            "Turbidity_ntu"
+## [13] "Chla_ugl"      "BGAPC_CML"     "BGAPC_rfu"     "ODO_sat"      
+## [17] "ODO_mgl"       "Depth_m"
+```
+
+---
+
+# Selecting to Rearrange
+
+You can also use it to re-arrange the column order (and because we are lazy, we have the `everything()` function to say 'well, everything else that I haven't already identified).
+
+
+```r
+rice %&gt;%
+  select( AirTempF, WindDir, Rain_in, everything() ) %&gt;%
+  names() 
+```
+
+```
+##  [1] "AirTempF"                       "WindDir"                       
+##  [3] "Rain_in"                        "DateTime"                      
+##  [5] "RecordID"                       "PAR"                           
+##  [7] "WindSpeed_mph"                  "RelHumidity"                   
+##  [9] "BP_HG"                          "H2O_TempC"                     
+## [11] "SpCond_mScm"                    "Salinity_ppt"                  
+## [13] "PH"                             "PH_mv"                         
+## [15] "Turbidity_ntu"                  "Chla_ugl"                      
+## [17] "BGAPC_CML"                      "BGAPC_rfu"                     
+## [19] "ODO_sat"                        "ODO_mgl"                       
+## [21] "Depth_ft"                       "Depth_m"                       
+## [23] "SurfaceWaterElev_m_levelNad83m"
+```
+
+
+---
+
+# Filter
+
+Filter allows us to select the rows in the data by attributes of the data *within* the table itself.
+
+
+```r
+rice %&gt;%
+  filter( AirTempF &lt; 32 ) %&gt;%
+  head()
+```
+
+```
+## # A tibble: 6 x 23
+##   DateTime RecordID   PAR WindSpeed_mph WindDir AirTempF RelHumidity BP_HG
+##   &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+## 1 1/1/201…    43816     0          3.87    14.6     31.0        80.5  30.3
+## 2 1/1/201…    43817     0          4.79    18.5     30.7        82.1  30.3
+## 3 1/1/201…    43818     0          3.61    16.2     31.2        81.9  30.3
+## 4 1/1/201…    43819     0          2.99    11.5     30.5        83    30.3
+## 5 1/1/201…    43820     0          3.52    11.3     30.9        81.8  30.3
+## 6 1/1/201…    43821     0          3.83    20.0     30.6        82.8  30.3
+## # … with 15 more variables: Rain_in &lt;dbl&gt;, H2O_TempC &lt;dbl&gt;, SpCond_mScm &lt;dbl&gt;,
+## #   Salinity_ppt &lt;dbl&gt;, PH &lt;dbl&gt;, PH_mv &lt;dbl&gt;, Turbidity_ntu &lt;dbl&gt;,
+## #   Chla_ugl &lt;dbl&gt;, BGAPC_CML &lt;dbl&gt;, BGAPC_rfu &lt;dbl&gt;, ODO_sat &lt;dbl&gt;,
+## #   ODO_mgl &lt;dbl&gt;, Depth_ft &lt;dbl&gt;, Depth_m &lt;dbl&gt;,
+## #   SurfaceWaterElev_m_levelNad83m &lt;dbl&gt;
+```
+
+---
+
+# Mutate
+
+Mutate allows us to change the columns of the data:
+
+
+```r
+rice %&gt;%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %&gt;%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels=days) ) %&gt;%
+  mutate( AirTemp = (AirTempF - 32) * 5/9 ) %&gt;%
+  select( Date, Weekday, AirTemp) %&gt;%
+  summary()
+```
+
+```
+##       Date                          Weekday        AirTemp        
+##  Min.   :2014-01-01 00:00:00   Monday   :1152   Min.   :-15.6950  
+##  1st Qu.:2014-01-22 08:22:30   Tuesday  :1152   1st Qu.: -0.2528  
+##  Median :2014-02-12 16:45:00   Wednesday:1248   Median :  3.0222  
+##  Mean   :2014-02-12 16:45:00   Thursday :1191   Mean   :  3.7751  
+##  3rd Qu.:2014-03-06 01:07:30   Friday   :1152   3rd Qu.:  8.0056  
+##  Max.   :2014-03-27 09:30:00   Saturday :1152   Max.   : 23.8167  
+##                                Sunday   :1152
+```
+
+
+
+---
+
+# Naming Columns Nicely
+
+.pull-left[
+It is also possible to use use this to make more readable column names ("Look ma! No `ylab` needed!").  You just have to use the back tick characters to surround the new data column name.
+
+
+```r
+rice %&gt;%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %&gt;%
+  mutate( `Air Temperature (°C)` = (AirTempF - 32) * 5/9 ) %&gt;%
+  select( Date, `Air Temperature (°C)`) %&gt;%
+  ggplot( aes( x = Date, y = `Air Temperature (°C)`) ) + 
+    geom_line() 
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-37-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+---
+
+# Arrange
+
+Arrange is used to sort the data.
+
+
+
+```r
+rice %&gt;%
+  arrange( AirTempF ) %&gt;%
+  select( DateTime, AirTempF ) %&gt;%
+  head()
+```
+
+```
+## # A tibble: 6 x 2
+##   DateTime             AirTempF
+##   &lt;chr&gt;                   &lt;dbl&gt;
+## 1 1/30/2014 8:45:00 AM     3.75
+## 2 1/30/2014 9:00:00 AM     3.82
+## 3 1/30/2014 6:45:00 AM     4.43
+## 4 1/30/2014 7:00:00 AM     4.66
+## 5 1/30/2014 8:30:00 AM     4.93
+## 6 1/30/2014 6:30:00 AM     5.02
+```
+
+---
+
+# Reverse Arranging (Deranged perhaps?)
+
+Reversing it (e.g., in descending order) is done by prepending a negative sign.
+
+
+```r
+rice %&gt;%
+  arrange( -AirTempF ) %&gt;%
+  select( DateTime, AirTempF ) %&gt;%
+  head()
+```
+
+```
+## # A tibble: 6 x 2
+##   DateTime             AirTempF
+##   &lt;chr&gt;                   &lt;dbl&gt;
+## 1 3/11/2014 5:45:00 PM     74.9
+## 2 3/11/2014 5:30:00 PM     74.6
+## 3 3/11/2014 3:45:00 PM     74.4
+## 4 3/11/2014 6:00:00 PM     74.1
+## 5 3/11/2014 4:00:00 PM     73.4
+## 6 3/11/2014 4:45:00 PM     73.0
+```
+
+
+
+---
+
+# Grouping By A Feature
+
+So here is where we start getting to have some fun.  The `group_by` function partitions the data and is used to create content for the subsequent steps.  Think about the various ways we have used `by()` thus far.  For these, we had to:
+
+1. Identify a column to use as a grouping.  
+2. Apply some function to those individual groups.  
+
+--
+
+
+```r
+class( rice )
+```
+
+```
+## [1] "spec_tbl_df" "tbl_df"      "tbl"         "data.frame"
+```
+
+
+---
+
+# Grouping By A Feature
+
+After we make a grouping column and then `group-by()` that column, it gains an additional class type (`grouped_df`).
+
+
+```r
+rice %&gt;%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %&gt;%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels=days) ) %&gt;%
+  group_by( Weekday ) %&gt;%
+  class() 
+```
+
+```
+## [1] "grouped_df" "tbl_df"     "tbl"        "data.frame"
+```
+
+The overall 'look' of `rice` does not change but it can do cool stuff with `summarize()`.
+
+
+---
+
+# Summarize 
+
+Summarize allows you to take a bit of the original data and then perform operations on it to create a new `data.frame`.
+
+
+```r
+rice %&gt;%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %&gt;%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels=days) ) %&gt;%
+  group_by( Weekday ) %&gt;%
+  summarize( Rain = sum( Rain_in ) )
+```
+
+```
+## # A tibble: 7 x 2
+##   Weekday    Rain
+##   &lt;ord&gt;     &lt;dbl&gt;
+## 1 Monday    1.96 
+## 2 Tuesday   1.31 
+## 3 Wednesday 0.327
+## 4 Thursday  1.21 
+## 5 Friday    0.80 
+## 6 Saturday  1.03 
+## 7 Sunday    0.256
+```
+
+The only columns in the `group_by` and `summarize` statements will be kept and provided as output.
+
+
+
+---
+
+# Workflow Judo!🥋
+.pull-left[
+
+```r
+rice %&gt;%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders="%m/%d/%Y %I:%M:%S %p",
+                                  tz="EST") ) %&gt;%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels = c("Monday",
+                                       "Tuesday",
+                                       "Wednesday",
+                                       "Thursday",
+                                       "Friday",
+                                       "Saturday",
+                                       "Sunday") ) ) %&gt;%
+  mutate( `Temperature (°C)` = (AirTempF - 32) * 5/9 ) %&gt;%
+  select( Date, Weekday, `Temperature (°C)`) %&gt;%
+  filter( hour( Date ) &gt;= 7 &amp; minute( Date ) &gt;= 15, 
+          hour( Date ) &lt;= 17 &amp; minute( Date ) &lt;= 30 ) %&gt;%
+  filter( Date &gt;= mdy("2/1/2014") &amp; Date &lt; mdy("2/8/2014") ) %&gt;%
+  group_by( Weekday ) %&gt;%
+  summarize( Minimum = min( `Temperature (°C)` ),
+             Average = mean( `Temperature (°C)`), 
+             Maximum = max( `Temperature (°C)` ) ) %&gt;%
+  kable( format="html", digits = 2 ) %&gt;%
+  kable_paper( full_width = FALSE ) %&gt;%
+  column_spec( 2, 
+               color=ifelse( df.table1$Minimum &lt; 0, 
+                             "blue", ""))
+```
+]
+
+--
+
+.pull-right[
+
+The output table is: 
+&lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Weekday &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Minimum &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Maximum &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Monday &lt;/td&gt;
+   &lt;td style="text-align:right;color: blue !important;"&gt; 4.48 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.60 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.24 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday &lt;/td&gt;
+   &lt;td style="text-align:right;color:  !important;"&gt; -0.51 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.55 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Wednesday &lt;/td&gt;
+   &lt;td style="text-align:right;color:  !important;"&gt; 0.78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.43 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.64 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Thursday &lt;/td&gt;
+   &lt;td style="text-align:right;color: blue !important;"&gt; -0.62 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.06 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Friday &lt;/td&gt;
+   &lt;td style="text-align:right;color:  !important;"&gt; -0.80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.63 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.68 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Saturday &lt;/td&gt;
+   &lt;td style="text-align:right;color: blue !important;"&gt; -3.21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.38 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Sunday &lt;/td&gt;
+   &lt;td style="text-align:right;color: blue !important;"&gt; 5.97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.55 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+
 
 
 
@@ -273,15 +1457,15 @@ background-size: auto
 
 .center[
 
-# Questions?
+# 🙋🏻‍♀️ Questions?
 
 
-![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif)
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
 ]
 
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
-.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

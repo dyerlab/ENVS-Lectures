@@ -20,12 +20,15 @@ background-size: cover
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set( fig.retina = 3, 
                        warning = FALSE, 
-                       message = FALSE)
+                       message = FALSE,
+                       fig.align="center")
 library( knitr )
 options(knitr.table.format = "html")
 library( tidyverse )
 library( fontawesome )
 library(DiagrammeR)
+library( ggplot2 )
+theme_set( theme_classic( base_size = 20) )
 ```
 
 
@@ -37,18 +40,421 @@ library(DiagrammeR)
 ### Environmental Data Literacy
 
 
-```{r echo=FALSE}
-# Load in some dark theme stuff
 
-dark_theme <- theme_minimal(base_size=18) + 
-  theme(
-    panel.background = element_rect(fill = "transparent", colour = NA), 
-    plot.background = element_rect(fill = "transparent", colour = NA),
-    legend.background = element_rect(fill = "transparent", colour = NA),
-    legend.key = element_rect(fill = "transparent", colour = NA),
-    text = element_text(colour = "white"),
-    axis.text = element_text(colour = "white")
-  )
+
+---
+
+# R Data Workflow
+
+> Describe the daytime air temperatures at the Rice Rivers Center for the first week of February, 2014.
+
+--
+
+&nbsp;
+
+To do this, we need to perform the following sequence of general *verb* actions on the data.
+
+```{r echo=FALSE, out.width='90%', out.height='40%', fig.align='center'}
+graph <-
+  create_graph() %>%
+  add_path(
+    n = 5,
+    type = "step",
+    label = c(
+      "Load\\nData",
+      "Make\\nDates",
+      "Select\\nColumns",
+      "Filter\\nRows",
+      "Summarize\\nSomehow"
+    ),
+    node_aes = node_aes(
+      shape = c("square", "circle", "circle", "circle", "rectangle"),
+      width = c(0.75, 0.75, 0.75, 0.75, 0.75),
+      color = "#3C3C3C",
+      fontcolor = "black",
+      fillcolor = c("#61acf0", "#f0a561", "#f0a561", "#f0a561", "#cbd20a"),
+      fontname = "Lato"
+    ),
+    edge_aes = edge_aes(# set edge aesthetics
+      color = "#3C3C3C")
+  ) %>%
+  add_global_graph_attrs(attr = "layout",
+                         value = "dot",
+                         attr_type = "graph") %>%
+  add_global_graph_attrs(attr = "rankdir",
+                         value = "LR",
+                         attr_type = "graph")
+
+# View the graph in the Viewer
+graph %>% render_graph()
+```
+
+--
+
+&nbsp;
+
+.blue[Use this as an example]
+
+
+---
+
+# Load Data
+
+```{r message=FALSE, warning=FALSE}
+library( readr )
+url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
+rice <- read_csv( url )
+names( rice )
+```
+
+
+---
+
+# Make Date Data Type 🗓
+
+.greeninline[Mutate] the data by adding a new column that is a `Date` object.
+
+```{r}
+library( lubridate )
+format <- "%m/%d/%Y %I:%M:%S %p"
+rice$Date <- parse_date_time( rice$DateTime, 
+                              orders=format,
+                              tz="EST")
+class( rice$Date )
+summary( rice$Date )
+```
+
+---
+
+# Make Date Data Type 🗓
+
+Should make it a Factor so we know ordering.
+
+```{r}
+days <- c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+rice$Weekday <- weekdays( rice$Date )
+rice$Weekday <- factor( rice$Weekday,
+                        ordered=TRUE,
+                        levels=days)
+summary( rice$Weekday )
+class( rice$Weekday )
+```
+
+
+
+---
+
+# 🌡 Fahrenheit to Celsius
+
+.pull-left[
+
+.greeninline[Mutate] the data in-line to create new column.
+
+```{r plot-last, fig.show = 'hide'}
+library( ggplot2 )
+rice$AirTemp <- (rice$AirTempF - 32 ) * 5 / 9
+
+# Examine the data.
+
+ggplot( rice, aes(x=AirTemp ) )  + 
+  geom_histogram( binwidth=1.0, colour = "#333333" ) +
+  xlab("Air Temperature (°C)") + ylab("Frequency")
+```
+]
+
+
+.pull-right[
+```{r ref.label = 'plot-last', echo = FALSE}
+```
+]
+
+
+---
+
+# Grab Columns
+
+.orangeinline[Select] the columns of data we will be working with.  
+
+.redinline[And] let's not overwrite our old stuff in case we need to come back.
+
+```{r}
+df <- rice[ , c("Date","Weekday","AirTemp", "PAR") ]
+
+# Look at the result
+
+head( df )
+```
+
+
+---
+
+# Filtering Rows 
+
+Two temporal filters are in play here:  
+
+- First week in February  
+- Day time
+
+
+--
+
+```{r}
+rice$DateTime[ 25 ]
+```
+
+--
+
+```{r}
+start_DateTime <- "2/1/2014 12:00:00 AM"
+end_DateTime <- "2/7/2014 11:45:00 PM"
+start <- parse_date_time( start_DateTime, 
+                          orders=format,
+                          tz="EST")
+end <- parse_date_time( end_DateTime, 
+                        orders=format,
+                        tz="EST")
+c( start, end )
+```
+
+
+---
+
+# Filtering on "First Week of February"
+
+```{r}
+df1 <- df[ df$Date >= start & df$Date <= end, ]
+
+# Check the Date Range
+
+summary( df1 )
+```
+
+---
+class: middle
+
+# Filtering on "Daytime"
+
+.pull-left[
+
+Maybe we can use PAR as a measure of "daytime-ness" here.
+
+&nbsp;
+
+```{r hist-par, fig.show = 'hide'}
+hist( df1$PAR,
+      xlab="Photosynthetically Active Radiation",
+      main="" )
+```
+
+]
+.pull-right[
+```{r ref.label = 'hist-par', echo = FALSE}
+```
+
+]
+
+
+
+---
+
+# First Pass: PAR > 100 ?
+
+```{r}
+df2 <- df1[ df1$PAR > 100, ]
+summary( df2 )
+```
+
+--
+
+```{r}
+range( df2$Date[ df2$Weekday == "Monday"])
+```
+
+
+
+---
+
+# Second Pass: PAR > 25
+
+```{r}
+df2 <- df1[ df1$PAR > 25, ]
+summary( df2 )
+range( df2$Date[ df2$Weekday == "Monday"])
+```
+
+
+
+
+---
+
+# Sunrise🌅 and Sunset 🌆?
+
+&nbsp;
+
+It is amazing how someone records these data and make them available for all of us by a simple search of the internet.
+
+&nbsp;
+
+.pull-left[
+![Sunrise 2/1/2014](https://live.staticflickr.com/65535/50381378793_b6517b10fe_w_d.jpg)
+![Sunset 2/1/2014](https://live.staticflickr.com/65535/50382255642_a9399a736a_w_d.jpg)
+]
+
+.pull-right[
+![Sunrise 2/7/2014](https://live.staticflickr.com/65535/50382077786_e59560305e_w_d.jpg)
+![Sunset 2/7/2014](https://live.staticflickr.com/65535/50382077716_872bf519a5_w_d.jpg)
+]
+
+
+
+---
+
+# Hours & Minutes
+
+```{r}
+test <- df1[ df1$Weekday == "Monday",]
+test$hour <- hour( test$Date ) 
+test$minute <- minute( test$Date )
+test
+```
+
+
+OK!
+
+---
+
+# Add Hours & Minutes to Filter
+
+
+```{r}
+df3 <- df1
+df3$Hour <- hour( df3$Date )
+df3$Minute <- minute( df3$Date )
+head( df3 )
+```
+
+
+
+---
+
+# Filter out Pre-Dawn
+
+```{r}
+df4 <- df3[ df3$Hour >= 7 & df3$Minute >= 15,]
+
+# Check 
+summary( df4 )
+```
+
+
+
+---
+
+# Filter Out Post-Sundown
+
+Notice that the `hour()` function returns values from 0-23 so `5:30 PM` is denoted as `17:30`.
+
+```{r}
+df5 <- df4[ df4$Hour <= 17 & df4$Minute <=30,  ]
+
+# Check
+summary( df5 )
+```
+
+
+---
+# Just to Make Sure
+
+```{r}
+# Check
+df5[21:30,]
+```
+
+&nbsp; 
+
+.center[
+Perfectly between sunrise and sunset!  
+
+![Sunrise 2/1/2014](https://live.staticflickr.com/65535/50381378793_b6517b10fe_w_d.jpg)
+![Sunset 2/1/2014](https://live.staticflickr.com/65535/50382255642_a9399a736a_w_d.jpg)
+]
+
+---
+
+# Select To Remove Extraneous 
+
+
+```{r}
+df6 <- df5[ , c("Date","Weekday", "AirTemp")]
+head( df6 )
+```
+
+
+---
+
+# Summarize In Tabular Form
+
+From these raw data, we can create another `data.frame` that has each day of the week as a row and the values for temperature, say as `Minimum`, `Mean`, and `Maximum`.
+
+
+```{r}
+minTemp <- by( df6$AirTemp, day( df6$Date  ), min )
+meanTemp <- by( df6$AirTemp, day( df6$Date  ), mean )
+maxTemp <- by( df6$AirTemp, day( df6$Date  ), max )
+df.table <- data.frame( Minimum = as.numeric( minTemp ), 
+                        Average = as.numeric( meanTemp), 
+                        Maximum = as.numeric( maxTemp ) )
+df.table
+```
+
+
+
+
+---
+
+# Set Dates for Each Row
+
+This is kind of a shortcut here.
+
+```{r}
+raw_dates <- mdy( paste( "2", 1:7, "2014", sep="/") )
+df.table$Weekday <- weekdays( raw_dates  )
+df.table
+```
+
+---
+
+# Select to Reorder Columns
+
+```{r}
+df.table1 <- df.table[ , c(4,1,2,3)]
+df.table1
+```
+
+
+---
+
+# Tabular Output
+
+```{r}
+library( knitr )
+library( kableExtra )
+t <- kable( df.table1,
+            caption="Table 1: Temperature Ranges for daytime air temperature for the first week of February, 2014 at the Rice Rivers Center in Charles City County, Virginia.")
+kable_styling( t )
+```
+
+
+
+---
+
+# Summarize Graphically
+
+```{r fig.height=3.5, fig.width=10, out.width="100%"}
+ggplot( df6, aes(x=Date, y=AirTemp, color=Weekday) ) + 
+  geom_line() + 
+  geom_point( size  = 3 ) + 
+  theme( legend.position = "none" ) 
 ```
 
 
@@ -56,23 +462,43 @@ dark_theme <- theme_minimal(base_size=18) +
 
 
 
----
-
-class: sectionTitle
-
-# .blue[Reshaping]
-
-
 
 ---
 
-class: sectionTitle
+# Challenges to Normal R Workflows
 
-# More Tidy data
+The data work flow using indices has several drawbacks including:
+
+- Lots of individual steps, each step divided into many chunks (21 chunks to get the data from Google Drive to the Tablular Output).  
+- Uses lots of data frames to hold intermediate options.  We created `r sum( grepl("df",ls())) + 1` data frames in the process of going from `rice` to `df.table`.
 
 
+-- 
+
+If you are working with moderately large data sets, this is not a good strategy.
 
 
+---
+class: inverse
+background-image: url("https://live.staticflickr.com/65535/50351963133_cffc707725_c_d.jpg")
+background-size: contain
+background-position: right
+
+# .green[Tidyverse]
+
+.left-column[
+.greeninline[ 
+GGPlot is to built-in  
+graphics as $\_\_\_\_\_\_$   
+is to build in R  
+data work-flows.
+ 
+A) Tidyverse  
+B) Tidyverse  
+C) Tidyverse, or   
+D) Tidyverse
+] 
+]
 
 
 ---
@@ -91,6 +517,8 @@ class: sectionTitle
 - `purrr`  
 
 - `tibble` 
+
+- several more.
 ]
 
 All of these libraries have been defined to help you be more effective at data analysis.
@@ -108,153 +536,408 @@ library( tidyverse)
 
 
 ---
+# Common Workflow
 
-# `r fa(name='r-project', fill='steelblue')` Some Example Data   
-### Rice Center Monitoring Data 
+.middle[
 
-So let's grab a data set from Google Docs.  In the following chunk, I had to break up the url into several lines just to make sure it does shoot off the side of the screen.  In a markdown document, that wouldn't be necessary.
+The following general pattern is .fancy[so] common, someone developed a whole package (called `magittr` and it is part of the `tidyverse`) just to make sure we never have to do it the hard way.
 
-```{r}
-library( readr )
-url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
-rice <- read_csv( url )
-names(rice)
-```
+&nbsp;
+
+.large[ .fancy[👉 The output of one function becomes the input of another one] ]
+
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50382456508_bbb16c248d_c_d.jpg")
+background-size: fit
 
 
 ---
 
-# 🧹 Cleaning up the Data 
+# Pipes In Action
 
-```{r echo=FALSE}
-names(rice)
-```
-
-
-
-There are several *issues* with these data, including:
-
-- `AirTempF` vs `H2O_TempC` - Different measurement scales
-
---
-
-- `Depth_ft` AND `Depth_m` AND `SurfaceWaterElev_m_levelNad83m` - Different Scales & Repetitive
-
---
-
-- `DateTime` - Actually a string object so it is not 'usable' 
-
---
-
-- `PH_mv`, `BGAPC_rfu`, etc. - Not relevant in the end
-
-
-
----
-
-# The Old Way
-
-```{r}
-rice$AirTemp <- (rice$AirTempF - 32) * 5 / 9
-rice$AirTempF <- NULL
-```
-
---
-
-```{r}
-
-```
-
-
-
-
-
----
-
-class: sectionTitle
-
-# Piping
-
-
-
----
-
-class: sectionTitle
-
-# Filtering Rows & Columns
-
-
-
----
-
-class: sectionTitle
-
-# Grouping & Summarizing
-
-
-
-
----
-
-```{r}
-get_rice_data <- function() { 
-  library( tidyverse )
-  library( lubridate )
-  url <- paste( "https://docs.google.com/spreadsheets/d",
-           "/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s",
-           "/pub?gid=0&single=true&output=csv"
-           , sep="")
-  
-  format <- "%m/%d/%Y %I:%M:%S %p"
-  
-  # read in and format  
-  read_csv( url ) %>%
-    mutate( Date = parse_date_time( DateTime, orders=format, tz="EST") ) %>%
-    mutate( AirTemp = (AirTempF - 32) * 5/9 ) %>%
-    mutate( Rain = Rain_in * 2.54 ) %>%
-    mutate( WindSpeed = WindSpeed_mph * 1.6034 ) %>%
-    select( Date, PAR, 
-            AirTemp, BP = BP_HG,
-            Rain, Humidty = RelHumidity, 
-            WindSpeed, WindDir,
-            H2O_Temp = H2O_TempC, SpCond = SpCond_mScm,
-            pH = PH, Turbidity = Turbidity_ntu,
-            Chla.ugl = Chla_ugl, ODO = ODO_sat,
-            H2O_Depth = Depth_m,
-            Salinity = Salinity_ppt,
-            ) -> df
-    
-  return( df )
-}
-```
-
-
----
-class: inverse
-# Plotting 
+Pipes remove the need a ton of code writing.
 
 .pull-left[
-```{r first-plot, fig.show='hide'}
-df <- get_rice_data()
-ggplot( df[1:100,], aes( AirTemp, WindSpeed) ) + 
-  geom_point( color="salmon") + 
-  dark_theme
+Instead of doing something like this:
+
+```{r eval=FALSE}
+df2 <- SOME_OPERATION( df1 )
+df3 <- SOME_OTHER_OPERATION( df2 )
+df4 <- A_THIRD_OPERATION( df3 )
+ggplot( df4, aes(x=...,y=...) ) + geom_point()
+```
+
+]
+
+--
+
+
+.pull-right[
+We can instead replace it with the pipe operator (`%>%`) and clean it up considerably.
+
+```{r eval=FALSE}
+df1 %>% 
+  SOME_OPERATION() %>%
+  SOME_OTHER_OPERATION() %>%
+  A_THIRD_OPERATION %>%
+  ggplot( aes(x=...,y=...) ) + geom_point()
+```
+
+Notice:
+- .redinline[No] reassigning a bunch of intermediate `data.frame` objects, and
+- .redinline[No] need to pass a data.frame to the next function, it is by default the first thing passed in.
+]
+
+
+
+
+---
+
+# Example - Tabular Summary
+
+
+```{r}
+df.table1 %>%
+  kable( format="html", digits = 2) %>%
+  kable_paper( full_width = FALSE ) %>%
+  column_spec( 2, color=ifelse( df.table1$Minimum < 0, "blue", ""))
+```
+
+
+
+---
+
+# Example - Graphical Output
+
+
+.pull-left[
+We can pipe right into a `ggplot()` chain (n.b., the plot elements are still added (+) together and not piped).
+
+&nbsp;
+
+```{r weekly-plot, fig.show='hide'}
+df.table1 %>%
+  ggplot( aes(x=Weekday,y=Average) ) + 
+  geom_col() + 
+  ylab("Average Air Temperature (°C)")
 ```
 ]
 
 .pull-right[
-```{r ref.label='first-plot', dev='svg', echo=FALSE, dev.args = list(bg = "transparent")}
+```{r ref.label='weekly-plot', echo=FALSE}
 ```
-
 ]
+
+
 
 
 ---
 
-class: middle
-background-image: url("https://live.staticflickr.com/65535/50351963133_dec381f1e5_k_d.jpg")
-background-size: contain
-background-color: black
+# The `dplyr` Library
+
+.pull-left[
+.center[
+![DPlyr](https://live.staticflickr.com/65535/50382551848_ee84ba4b78_o_d.png)  
+.fancy[The Grammar of Data Manipulation]
+]
+]
+
+.pull-right[
+The *verbs* are actually `functions` from in `dplyr`:
+
+- Select is done using function `select()`  
+
+- Filter is done using function `filter()`  
+
+- Mutate is done using function `mutate()`  
+
+- Arrange is done using function `arrange()`   
+
+- Group is done using function `group_by()`  
+
+- Summarize is done using function `summarize()`  
+]
+
+When combined with `%>%` ...  data magic!
+
+---
+
+# `r fa(name='r-project', fill='steelblue')` Real Example  
+### Rice Center Monitoring Data 
+
+So let's grab the Rice Center Data and setp through the process of answering that question:
+
+> Describe the daytime air temperatures at the Rice Rivers Center for the first week of February, 2014.
+
+```{r}
+rice <- read_csv( url )
+names( rice )
+```
+
+
+
+---
+
+# Select
+
+Select allows us to grab the column by the name in the `data.frame`.
+
+```{r}
+rice %>%
+  select( DateTime, AirTempF ) %>%
+  head()
+```
+
+
+---
+
+# Selecting to Drop 
+
+To drop columns, you can use the name of the column with a negative sign prepended on it.
+
+```{r}
+rice %>%
+  select( -RecordID, -SpCond_mScm, -PH_mv, -Depth_ft, -SurfaceWaterElev_m_levelNad83m ) %>%
+  names() 
+```
+
+---
+
+# Selecting to Rearrange
+
+You can also use it to re-arrange the column order (and because we are lazy, we have the `everything()` function to say 'well, everything else that I haven't already identified).
+
+```{r}
+rice %>%
+  select( AirTempF, WindDir, Rain_in, everything() ) %>%
+  names() 
+```
+
+
+---
+
+# Filter
+
+Filter allows us to select the rows in the data by attributes of the data *within* the table itself.
+
+```{r}
+rice %>%
+  filter( AirTempF < 32 ) %>%
+  head()
+```
+
+---
+
+# Mutate
+
+Mutate allows us to change the columns of the data:
+
+```{r}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels=days) ) %>%
+  mutate( AirTemp = (AirTempF - 32) * 5/9 ) %>%
+  select( Date, Weekday, AirTemp) %>%
+  summary()
+```
+
+
+
+---
+
+# Naming Columns Nicely
+
+.pull-left[
+It is also possible to use use this to make more readable column names ("Look ma! No `ylab` needed!").  You just have to use the back tick characters to surround the new data column name.
+
+```{r eval=FALSE}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( `Air Temperature (°C)` = (AirTempF - 32) * 5/9 ) %>%
+  select( Date, `Air Temperature (°C)`) %>%
+  ggplot( aes( x = Date, y = `Air Temperature (°C)`) ) + 
+    geom_line() 
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( `Air Temperature (°C)` = (AirTempF - 32) * 5/9 ) %>%
+  select( Date, `Air Temperature (°C)`) %>%
+  ggplot( aes( x = Date, y = `Air Temperature (°C)`) ) + 
+  geom_line() 
+```
+]
+
+
+
+
+---
+
+# Arrange
+
+Arrange is used to sort the data.
+
+
+```{r}
+rice %>%
+  arrange( AirTempF ) %>%
+  select( DateTime, AirTempF ) %>%
+  head()
+```
+
+---
+
+# Reverse Arranging (Deranged perhaps?)
+
+Reversing it (e.g., in descending order) is done by prepending a negative sign.
+
+```{r}
+rice %>%
+  arrange( -AirTempF ) %>%
+  select( DateTime, AirTempF ) %>%
+  head()
+```
+
+
+
+---
+
+# Grouping By A Feature
+
+So here is where we start getting to have some fun.  The `group_by` function partitions the data and is used to create content for the subsequent steps.  Think about the various ways we have used `by()` thus far.  For these, we had to:
+
+1. Identify a column to use as a grouping.  
+2. Apply some function to those individual groups.  
+
+--
+
+```{r}
+class( rice )
+```
+
+
+---
+
+# Grouping By A Feature
+
+After we make a grouping column and then `group-by()` that column, it gains an additional class type (`grouped_df`).
+
+```{r}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels=days) ) %>%
+  group_by( Weekday ) %>%
+  class() 
+```
+
+The overall 'look' of `rice` does not change but it can do cool stuff with `summarize()`.
+
+
+---
+
+# Summarize 
+
+Summarize allows you to take a bit of the original data and then perform operations on it to create a new `data.frame`.
+
+```{r warning=FALSE}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels=days) ) %>%
+  group_by( Weekday ) %>%
+  summarize( Rain = sum( Rain_in ) )
+```
+
+The only columns in the `group_by` and `summarize` statements will be kept and provided as output.
+
+
+
+---
+
+# Workflow Judo!🥋
+.pull-left[
+```{r eval=FALSE}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders="%m/%d/%Y %I:%M:%S %p",
+                                  tz="EST") ) %>%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels = c("Monday",
+                                       "Tuesday",
+                                       "Wednesday",
+                                       "Thursday",
+                                       "Friday",
+                                       "Saturday",
+                                       "Sunday") ) ) %>%
+  mutate( `Temperature (°C)` = (AirTempF - 32) * 5/9 ) %>%
+  select( Date, Weekday, `Temperature (°C)`) %>%
+  filter( hour( Date ) >= 7 & minute( Date ) >= 15, 
+          hour( Date ) <= 17 & minute( Date ) <= 30 ) %>%
+  filter( Date >= mdy("2/1/2014") & Date < mdy("2/8/2014") ) %>%
+  group_by( Weekday ) %>%
+  summarize( Minimum = min( `Temperature (°C)` ),
+             Average = mean( `Temperature (°C)`), 
+             Maximum = max( `Temperature (°C)` ) ) %>%
+  kable( format="html", digits = 2 ) %>%
+  kable_paper( full_width = FALSE ) %>%
+  column_spec( 2, 
+               color=ifelse( df.table1$Minimum < 0, 
+                             "blue", ""))
+```
+]
+
+--
+
+.pull-right[
+
+The output table is: 
+```{r echo=FALSE}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels=days) ) %>%
+  mutate( `Temperature (°C)` = (AirTempF - 32) * 5/9 ) %>%
+  select( Date, Weekday, `Temperature (°C)`) %>%
+  filter( hour( Date ) >= 7 & minute( Date ) >= 15, 
+          hour( Date ) <= 17 & minute( Date ) <= 30 ) %>%
+  filter( Date >= mdy("2/1/2014") & Date < mdy("2/8/2014") ) %>%
+  group_by( Weekday ) %>%
+  summarize( Minimum = min( `Temperature (°C)` ),
+             Average = mean( `Temperature (°C)`), 
+             Maximum = max( `Temperature (°C)` ) ) %>%
+  kable( format="html", digits = 2) %>%
+  kable_paper( full_width = FALSE ) %>%
+  column_spec( 2, color=ifelse( df.table1$Minimum < 0, "blue", ""))
+```
+]
+
+
+
 
 
 
@@ -267,14 +950,14 @@ background-size: auto
 
 .center[
 
-# Questions?
+# 🙋🏻‍♀️ Questions?
 
 
-![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif)
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
 ]
 
 <p>&nbsp;</p>
 
-.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
 
 

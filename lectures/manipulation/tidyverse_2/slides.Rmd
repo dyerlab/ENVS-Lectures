@@ -1,10 +1,9 @@
 ---
-title: "The Title"
-subtitle: "The Subtitle"
+title: "Workflow Judo🥋"
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: ["default", "css/envs543-styles.css", "css/fonts.css"]
+    css: ["default", "../../css/slide_styles.css", "../../css/slide_fonts.css"]
     seal: false
     nature:
       titleSlideClass: ["center","middle"]
@@ -31,7 +30,7 @@ library(DiagrammeR)
 
 
 
-#  .orange[🥋Tidyverse Judo!]
+#  .orange[Workflow Judo!🥋]
 
 
 
@@ -61,7 +60,7 @@ dark_theme <- theme_minimal(base_size=18) +
 
 class: sectionTitle
 
-# Reshaping
+# .blue[Reshaping]
 
 
 
@@ -271,7 +270,7 @@ background-size: auto
 # Questions?
 
 
-![Peter Sellers](images/peter_sellers.gif)
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif)
 ]
 
 <p>&nbsp;</p>

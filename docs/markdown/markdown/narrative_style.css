@@ -1,0 +1,78 @@
+h1 {
+  color: rgb(251,116,28);
+}
+
+.sectionTitle {
+  background-image: url("images/contour.png");
+  background-position: right;
+  background-size: auto;
+  vertical-align: middle;
+}
+
+.sectionTitle h1 {
+  font-size: 102px;
+}
+
+.remark-slide-number {
+  font-size: 14px;
+  opacity: 0.25;
+}
+
+.red { 
+  color: red; 
+}
+
+
+
+.inverse {
+  background-color: #000032;
+  color: #d6d6d6;
+}
+
+
+
+
+/* Colored Content Boxes */
+
+.box-blue,
+.box-gray,
+.box-green,
+.box-grey,
+.box-red,
+.box-yellow {
+	margin:0 0 25px;
+	overflow:hidden;
+	padding:20px;
+	-webkit-border-radius: 10px;
+        border-radius: 10px; 
+}
+
+.box-blue {
+	background-color:#d8ecf7;
+	border:1px solid #afcde3;
+}
+
+.box-gray {
+	background-color:#e2e2e2;
+	border:1px solid #bdbdbd;
+}
+
+.box-green {
+	background-color:#d9edc2;
+	border:1px solid #b2ce96;
+}
+
+.box-grey {
+	background-color:#F5F5F5;
+	border:1px solid #DDDDDD;
+}
+
+.box-red {
+	background-color:#f9dbdb;
+	border:1px solid #e9b3b3;
+}
+
+.box-yellow {
+	background-color:#fef5c4;
+	border:1px solid #fadf98;
+}

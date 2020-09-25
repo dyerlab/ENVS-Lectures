@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Data Analysis Workflow</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+    <script src="libs/viz-1.8.2/viz.js"></script>
+    <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+    <script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/envs543-styles.css" type="text/css" />
+    <link rel="stylesheet" href="css/fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50362989122_a8ee154fea_k_d.jpg")
+background-size: cover
+
+
+
+
+
+
+# .orange[The Workflow of &lt;br&gt;Data Analysis]
+
+
+
+### Environmental Data Literacy
+
+
+
+
+
+---
+class: sectionTitle
+
+# .green[Actions]
+
+## The *verbs* of data analysis
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362129663_0d640ad239_k_d.jpg")
+background-size: cover
+
+# Data Operators
+
+.pull-left[
+There are a finite number of actions (verbs) that we can use on the raw data we work with.  
+
+They can be combined to yield meaninful (or quimsical) inferences from our data:
+
+&amp;nbsp; 
+
+.redinline[ &amp;nbsp; Is there more sun on Fridays than on the weekend?]
+
+&amp;nbsp; 
+
+.orangeinline[ &amp;nbsp; What is the distribution of high-tide depths for each &lt;br&gt;&amp;nbsp; day in January?]
+
+&amp;nbsp; 
+
+.blueinline[ &amp;nbsp; Is there a visible relationship between water salinity &amp;&lt;br&gt;&amp;nbsp;  measured pH?]
+
+
+]
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362827791_a32934b310_k_d.jpg")
+background-size: cover
+
+# Select
+
+.pull-left[
+Identify only subset of data columns that you are interested in using.]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362989322_6aa00c8398_k_d.jpg")
+background-size: cover
+
+# Filter
+
+.pull-left[
+Use only some subset of rows in the data based upon qualities wihtin the columns themselves.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362827946_d8d5508dfd_k_d.jpg")
+background-size: cover
+
+# Mutate
+
+.pull-left[
+Convert one data type to another, scaling, combining, or making any other derivative component.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362129893_61851436c8_k_d.jpg")
+background-size: cover
+
+# Arrange
+
+
+.pull-left[
+Reorder the data using values in one or more collumns to sort.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362869456_c869b2a0a9_k_d.jpg")
+background-size: cover
+
+# Group
+
+
+.pull-left[
+Partition the data set into groups based upon some taxonomy of categorization.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362989492_d4e281b741_k_d.jpg")
+background-size: cover
+
+# Summarize
+
+.pull-left[
+
+Perform operations on the data to characterize trends in the raw data as summary statistics.
+
+]
+
+
+
+
+
+
+---
+
+# Combinations Yield Inference
+
+Combining these actions together is how we perform the analyses.
+
+
+
+<div id="htmlwidget-5d932b6de7216536f655" style="width:75%;height:30%;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5d932b6de7216536f655">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\",\n       rankdir = \"LR\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Load\\nData\", shape = \"square\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#61acf0\"] \n  \"2\" [label = \"Select\\nColumns\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"3\" [label = \"Overlay\\nPoints\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"4\" [label = \"Overlay\\nTrend\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"5\" [label = \"Show Plot\", shape = \"rectangle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#cbd20a\"] \n\"1\"->\"2\" [color = \"#3C3C3C\"] \n\"2\"->\"3\" [color = \"#3C3C3C\"] \n\"3\"->\"4\" [color = \"#3C3C3C\"] \n\"4\"->\"5\" [color = \"#3C3C3C\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+--
+
+<div id="htmlwidget-b06e9c29eb89a83e9c43" style="width:100%;height:20%;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b06e9c29eb89a83e9c43">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\",\n       rankdir = \"LR\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Load\\nData\", shape = \"square\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#61acf0\"] \n  \"2\" [label = \"Group\\nSpecies\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"3\" [label = \"Select\\nColumn\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"4\" [label = \"Estimate\\nMean\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"5\" [label = \"Estimate\\nVariance\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"6\" [label = \"Make Table\", shape = \"rectangle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"1\", fillcolor = \"#cbd20a\"] \n\"1\"->\"2\" [color = \"#3C3C3C\"] \n\"2\"->\"3\" [color = \"#3C3C3C\"] \n\"3\"->\"4\" [color = \"#3C3C3C\"] \n\"4\"->\"5\" [color = \"#3C3C3C\"] \n\"5\"->\"6\" [color = \"#3C3C3C\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+
+
+---
+
+# The Data
+
+The data we will be working with consist of data from the [Rice Rivers Center](https://ricerivers.vcu.edu) which contains water and atmospheric measurements from a stream of sensors in both the James River and on the bluff overlooking the river.
+
+
+```r
+library( readr )
+url &lt;- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&amp;single=true&amp;output=csv"
+rice &lt;- read_csv( url )
+names( rice )
+```
+
+```
+##  [1] "DateTime"                       "RecordID"                      
+##  [3] "PAR"                            "WindSpeed_mph"                 
+##  [5] "WindDir"                        "AirTempF"                      
+##  [7] "RelHumidity"                    "BP_HG"                         
+##  [9] "Rain_in"                        "H2O_TempC"                     
+## [11] "SpCond_mScm"                    "Salinity_ppt"                  
+## [13] "PH"                             "PH_mv"                         
+## [15] "Turbidity_ntu"                  "Chla_ugl"                      
+## [17] "BGAPC_CML"                      "BGAPC_rfu"                     
+## [19] "ODO_sat"                        "ODO_mgl"                       
+## [21] "Depth_ft"                       "Depth_m"                       
+## [23] "SurfaceWaterElev_m_levelNad83m"
+```
+
+
+
+---
+class: sectionTitle
+
+# .green[Selecting]
+
+## Grabbing *only* the variables you need
+
+
+---
+
+# Column Selection
+
+Using the column numbers instead of names.
+
+
+```r
+df &lt;- rice[ c(1,3,5,13)]
+summary( df )
+```
+
+```
+##    DateTime              PAR              WindDir             PH      
+##  Length:8199        Min.   :   0.000   Min.   :  0.00   Min.   :6.43  
+##  Class :character   1st Qu.:   0.000   1st Qu.: 37.31   1st Qu.:7.50  
+##  Mode  :character   Median :   0.046   Median :137.30   Median :7.58  
+##                     Mean   : 241.984   Mean   :146.20   Mean   :7.60  
+##                     3rd Qu.: 337.900   3rd Qu.:249.95   3rd Qu.:7.69  
+##                     Max.   :1957.000   Max.   :360.00   Max.   :9.00  
+##                                                         NA's   :1
+```
+
+
+---
+
+# Readability &amp; Code Maintenance
+
+.pull-left[
+- Column names are probably better than column numbers
+
+- Additional assistance from RStudio via *pop-ups*.
+
+- Longer term readability (like next Tuesday &amp; Beyond!)
+]
+
+.pull-right[![Figure 1: Popup help for column names in `RStudio` for a data frame in memory](https://live.staticflickr.com/65535/50359964467_03232a3716_w_d.jpg)]
+
+
+
+
+---
+class: sectionTitle
+
+# .green[Filtering]
+
+## Extract only the records (rows) needed
+
+
+---
+
+# Row Indices
+
+If you have some indication of which set of data you are interested in looking at, you can use the raw numerical values for the rows and extract subsets.
+
+.left-column[
+
+Values for 1/1/2014
+
+
+```r
+df1 &lt;- df[ 1:96, ]
+head( df1 )
+```
+]
+
+.right-column[
+
+```
+## # A tibble: 6 x 4
+##   DateTime               PAR WindDir    PH
+##   &lt;chr&gt;                &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+## 1 1/1/2014 12:00:00 AM     0    14.6  7.22
+## 2 1/1/2014 12:15:00 AM     0    18.5  7.52
+## 3 1/1/2014 12:30:00 AM     0    16.2  7.53
+## 4 1/1/2014 12:45:00 AM     0    11.5  7.53
+## 5 1/1/2014 1:00:00 AM      0    11.3  7.55
+## 6 1/1/2014 1:15:00 AM      0    20.0  7.56
+```
+]
+
+--
+
+.red[Requires us to have very intimate knowledge of how many records constitute a day and that **every** day is the same.]
+
+
+---
+
+# Logical Indices
+
+We can use logical operators to create `TRUE/FALSE` values to select rows of interest.
+
+.pull-left[
+
+&amp;nbsp;
+
+Operator | Definition 
+:-------:|------------------------
+`!=`     | Not equal to
+`==`     | Equal to
+`&gt;`      | Strictly greater than
+`&gt;=`     | Greater than OR equal to
+`&lt;`      | Strictly less than
+`&lt;=`     | Less than or equal to.
+]
+
+--
+
+.pull-right[
+]
+
+
+---
+
+# Logical Indices
+
+We can use logical operators to create `TRUE/FALSE` (and `NA`) values as a vector.
+
+
+```r
+idx &lt;- df$PAR &gt; 0
+idx[1:200]
+```
+
+```
+##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
+##  [37]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [49]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [61]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [73]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [85] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [97] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [109] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [121]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
+## [133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [145]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [157]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [169]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [181]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE
+## [193]  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE FALSE
+```
+
+
+
+
+---
+
+# Logical Indices
+
+Then use them to serve as indices on the original data.  Only the `TRUE` values will be returned.
+
+
+```r
+df1 &lt;- df[ idx, ]
+summary( df1 )
+```
+
+```
+##    DateTime              PAR              WindDir             PH      
+##  Length:4967        Min.   :   0.003   Min.   :  0.00   Min.   :6.48  
+##  Class :character   1st Qu.:   3.828   1st Qu.: 48.94   1st Qu.:7.51  
+##  Mode  :character   Median : 213.300   Median :182.80   Median :7.59  
+##                     Mean   : 399.442   Mean   :164.10   Mean   :7.61  
+##                     3rd Qu.: 679.250   3rd Qu.:258.90   3rd Qu.:7.71  
+##                     Max.   :1957.000   Max.   :359.90   Max.   :8.64  
+##                                                         NA's   :1
+```
+
+
+---
+
+# Function Indices
+
+We can also use various functions that return `TRUE/FALSE` values.
+
+
+```r
+df[ is.na(df$PH), ]
+```
+
+```
+## # A tibble: 1 x 4
+##   DateTime               PAR WindDir    PH
+##   &lt;chr&gt;                &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+## 1 1/17/2014 1:00:00 PM  1077    152.    NA
+```
+
+
+
+---
+
+# Mathematical Operations
+
+The *modulo* operator returns the remainder after simple division (e.g., 10 modulo 3 = 1).  It can be used to grab 'every x&lt;sup&gt;th&lt;/sup&gt;' element.  Here is an example of every other value (the even ones).
+
+
+```r
+(1:20 %% 2 ) == 0 
+```
+
+```
+##  [1] FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE
+## [13] FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE
+```
+
+--
+
+Or every third
+
+
+```r
+(1:20 %% 3 ) == 0 
+```
+
+```
+##  [1] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE
+## [13] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE
+```
+
+
+---
+
+# Random Samples
+
+There is often times that we will want to go grab a random subset of data (often when looking to see you have enough sample size).  We can use the `sample()` function.
+
+--
+
+Grab 10 random records from `df`.
+
+
+.pull-left[
+
+```r
+idx &lt;- sample( 1:nrow(df), size=10, replace=FALSE )
+idx
+```
+
+```
+##  [1] 4777 6557 1757  400 4083 6596 2046 7308 4417 3377
+```
+]
+
+--
+
+.pull-right[
+
+```r
+df[idx,]
+```
+
+```
+## # A tibble: 10 x 4
+##    DateTime                  PAR WindDir    PH
+##    &lt;chr&gt;                   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 2/19/2014 6:00:00 PM  198.      259    7.65
+##  2 3/10/2014 7:00:00 AM    0.016   264.   7.6 
+##  3 1/19/2014 7:00:00 AM    0       217.   7.51
+##  4 1/5/2014 3:45:00 AM     0.003    30.1  7.64
+##  5 2/12/2014 12:30:00 PM 606.       63.1  7.45
+##  6 3/10/2014 4:45:00 PM  760.      207    7.83
+##  7 1/22/2014 7:15:00 AM    0       337.   7.54
+##  8 3/18/2014 2:45:00 AM    0.016    11.9  7.74
+##  9 2/16/2014 12:00:00 AM   0       323.   7.38
+## 10 2/5/2014 4:00:00 AM     0.02     18.6  7.2
+```
+]
+
+
+
+---
+
+# Combinations of Indices
+
+Multiple criteria.  "Wind from particular direction *and* not night."
+
+
+```r
+par &lt;- df$PAR &gt; 0
+wind &lt;- df$WindDir &lt; 30
+cbind( par, wind )[30:35,]
+```
+
+```
+##        par  wind
+## [1,] FALSE  TRUE
+## [2,] FALSE  TRUE
+## [3,] FALSE  TRUE
+## [4,]  TRUE  TRUE
+## [5,]  TRUE FALSE
+## [6,]  TRUE FALSE
+```
+
+
+---
+
+# Logical Operators AND &amp; OR
+
+
+.pull-left[
+
+`&amp;`-operator must all be `TRUE`
+
+Condition      |  Result
+----------------|----------
+`FALSE &amp; FALSE` | `FALSE`
+`FALSE &amp; TRUE` | `FALSE`
+`TRUE &amp; FALSE` | `FALSE`
+`TRUE &amp; TRUE` | `TRUE`
+
+
+
+```r
+cbind( par, wind, AND = par &amp; wind )[30:35,]
+```
+
+```
+##        par  wind   AND
+## [1,] FALSE  TRUE FALSE
+## [2,] FALSE  TRUE FALSE
+## [3,] FALSE  TRUE FALSE
+## [4,]  TRUE  TRUE  TRUE
+## [5,]  TRUE FALSE FALSE
+## [6,]  TRUE FALSE FALSE
+```
+]
+
+--
+
+
+.pull-right[
+
+`|`-operator must have at least one `TRUE`
+
+Condition      |  Result
+----------------|----------
+`FALSE &amp; FALSE` | `FALSE`
+`FALSE &amp; TRUE` | `TRUE`
+`TRUE &amp; FALSE` | `TRUE`
+`TRUE &amp; TRUE` | `TRUE`
+
+
+
+
+```r
+cbind( par, wind, OR = par | wind)[30:35,]
+```
+
+```
+##        par  wind   OR
+## [1,] FALSE  TRUE TRUE
+## [2,] FALSE  TRUE TRUE
+## [3,] FALSE  TRUE TRUE
+## [4,]  TRUE  TRUE TRUE
+## [5,]  TRUE FALSE TRUE
+## [6,]  TRUE FALSE TRUE
+```
+]
+
+
+---
+
+# Logical Operators XOR &amp; NOT
+
+
+.pull-left[
+
+`xor`-operator *only* one `TRUE`
+
+Condition      |  Result
+----------------|----------
+`FALSE &amp; FALSE` | `FALSE`
+`FALSE &amp; TRUE` | `TRUE`
+`TRUE &amp; FALSE` | `TRUE`
+`TRUE &amp; TRUE` | `FALSE`
+
+
+
+```r
+cbind( par, wind, XOR = xor(par,wind) )[30:35,]
+```
+
+```
+##        par  wind   XOR
+## [1,] FALSE  TRUE  TRUE
+## [2,] FALSE  TRUE  TRUE
+## [3,] FALSE  TRUE  TRUE
+## [4,]  TRUE  TRUE FALSE
+## [5,]  TRUE FALSE  TRUE
+## [6,]  TRUE FALSE  TRUE
+```
+]
+
+--
+
+
+.pull-right[
+
+`!`-flips the logical result
+
+Condition      |  Result
+----------------|----------
+`!FALSE` | `TRUE`
+`!TRUE` | `FALSE`
+
+
+```r
+cbind( par, NOT_PAR = !par )[30:35,]
+```
+
+```
+##        par NOT_PAR
+## [1,] FALSE    TRUE
+## [2,] FALSE    TRUE
+## [3,] FALSE    TRUE
+## [4,]  TRUE   FALSE
+## [5,]  TRUE   FALSE
+## [6,]  TRUE   FALSE
+```
+]
+
+
+
+
+
+---
+class: sectionTitle
+
+# 😱 .blue[Mutation] 
+
+## Creating derivative data components
+
+---
+
+# Raw Data -&gt; Usable Data
+
+Data is often derived from text.
+
+- `read_csv()` must make an estimate of a column data type should be.  
+
+- Estimates are often *least divisive* data type (e.g., `character`).
+
+--
+
+Consider the `DateTime` column in the `rice` data.
+
+
+```r
+rice$DateTime[1]
+```
+
+```
+## [1] "1/1/2014 12:00:00 AM"
+```
+
+--
+
+
+```r
+class( rice$DateTime )
+```
+
+```
+## [1] "character"
+```
+
+
+---
+
+# Date &amp; Time Challenges
+
+We must consider the following when attempting to conduct *operations* on date and time units.
+
+1. Many different calendars.  
+
+2. Leap days, years, seconds.
+
+3. Time Zones (looking at you Arizona).
+
+4. Non-consistent base units (60 seconds, 60 minutes, 24 hours, 7 days, 28/29/30/31 days, 12 months, 100 years, 10 centuries)
+
+
+
+---
+
+# The Unix Epoch - Time Zero!
+
+.red[.center[.large[00:00:00 January 1, 1970]]]
+
+
+Time on computers is kept as the number of seconds since the *epoch*.  It is only .blueinline[displayed] in the Gregorian, Julian, Chinese, Jewish, and other calendars.
+
+
+
+
+```r
+Sys.time()
+```
+
+```
+## [1] "2020-09-25 10:18:08 EDT"
+```
+
+--
+
+
+```r
+unclass( Sys.time() )
+```
+
+```
+## [1] 1601043489
+```
+
+
+---
+
+# Making Time 🕡
+
+To convert something like 1/1/2014 12:00:00 AM from `character` to a `time` object, we need to specify the layout of the elements within the string so the functions know what to operate on.
+
+
+.pull-left[
+
+- Month as 1 or 2 digits  
+- Day as 1 or 2 digits  
+- Year as 4 digits  
+- a space to separate date from time  
+- hour (not 24-hour though)  
+- minutes in 2 digits  
+- seconds in 2 digits  
+- a space to separate time from timezone  
+- timezone  
+- / separating date objects  
+- : separating time objects  
+
+]
+
+--
+
+.pull-right[
+
+
+```r
+rice$DateTime[1]
+```
+
+```
+## [1] "1/1/2014 12:00:00 AM"
+```
+
+
+Look at the help file for `?strptime` to see these and other encodings.
+
+
+```r
+library( lubridate )
+format &lt;- "%m/%d/%Y %I:%M:%S %p"
+x &lt;- parse_date_time( rice$DateTime[1], orders=format, tz="EST")
+x
+```
+
+```
+## [1] "2014-01-01 EST"
+```
+
+
+]
+
+
+---
+
+# Making Lots of Time
+
+
+```r
+rice$DateTime &lt;- parse_date_time( rice$DateTime,
+                                  orders=format,
+                                  tz="EST")
+summary( rice$DateTime )
+```
+
+```
+##                  Min.               1st Qu.                Median 
+## "2014-01-01 00:00:00" "2014-01-22 08:22:30" "2014-02-12 16:45:00" 
+##                  Mean               3rd Qu.                  Max. 
+## "2014-02-12 16:45:00" "2014-03-06 01:07:30" "2014-03-27 09:30:00"
+```
+
+
+--
+
+
+```r
+rice$DateTime[8199] - rice$DateTime[1]
+```
+
+```
+## Time difference of 85.39583 days
+```
+
+
+--
+
+
+
+
+```r
+txt &lt;- paste( "Entry 5000 '", rice$DateTime[5000], "' is julian ordinal day ",yday( rice$DateTime[5000] ), sep="")
+txt
+```
+
+```
+## [1] "Entry 5000 '2014-02-22 01:45:00' is julian ordinal day 53"
+```
+
+
+
+
+
+
+---
+class: sectionTitle
+
+# 😱 .blue[Grouping] 
+
+## Partitioning Data 
+
+---
+
+# Partitioning Data Into Groups
+
+
+
+```r
+rice$Month &lt;- month(rice$DateTime)
+summary( rice$Month )
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   1.000   2.000   1.946   3.000   3.000
+```
+
+
+---
+
+# Partitioning Data Into Groups
+
+
+
+
+```r
+rice$Month &lt;- month( rice$DateTime, label=TRUE, abbr=FALSE )
+summary( rice$Month )
+```
+
+```
+##   January  February     March     April       May      June      July    August 
+##      2976      2688      2535         0         0         0         0         0 
+## September   October  November  December 
+##         0         0         0         0
+```
+
+```r
+class( rice$Month )
+```
+
+```
+## [1] "ordered" "factor"
+```
+
+---
+
+# Refactoring Factors
+
+
+```r
+rice$Month &lt;- droplevels( rice$Month )
+summary( rice$Month )
+```
+
+```
+##  January February    March 
+##     2976     2688     2535
+```
+
+
+
+---
+
+# Partitioning Data Into Groups
+
+
+
+
+```r
+airTemp &lt;- by( rice$AirTempF, rice$Month, mean )
+airTemp
+```
+
+```
+## rice$Month: January
+## [1] 34.69795
+## ------------------------------------------------------------ 
+## rice$Month: February
+## [1] 39.74403
+## ------------------------------------------------------------ 
+## rice$Month: March
+## [1] 42.59907
+```
+
+
+
+
+
+
+
+
+
+
+---
+class: sectionTitle
+
+# .blue[Summary] 
+
+## Pulling it all together &lt;svg style="height:0.8em;top:.04em;position:relative;fill:steelblue;" viewBox="0 0 512 512"&gt;&lt;path d="M200 288H88c-21.4 0-32.1 25.8-17 41l32.9 31-99.2 99.3c-6.2 6.2-6.2 16.4 0 22.6l25.4 25.4c6.2 6.2 16.4 6.2 22.6 0L152 408l31.1 33c15.1 15.1 40.9 4.4 40.9-17V312c0-13.3-10.7-24-24-24zm112-64h112c21.4 0 32.1-25.9 17-41l-33-31 99.3-99.3c6.2-6.2 6.2-16.4 0-22.6L481.9 4.7c-6.2-6.2-16.4-6.2-22.6 0L360 104l-31.1-33C313.8 55.9 288 66.6 288 88v112c0 13.3 10.7 24 24 24zm96 136l33-31.1c15.1-15.1 4.4-40.9-17-40.9H312c-13.3 0-24 10.7-24 24v112c0 21.4 25.9 32.1 41 17l31-32.9 99.3 99.3c6.2 6.2 16.4 6.2 22.6 0l25.4-25.4c6.2-6.2 6.2-16.4 0-22.6L408 360zM183 71.1L152 104 52.7 4.7c-6.2-6.2-16.4-6.2-22.6 0L4.7 30.1c-6.2 6.2-6.2 16.4 0 22.6L104 152l-33 31.1C55.9 198.2 66.6 224 88 224h112c13.3 0 24-10.7 24-24V88c0-21.3-25.9-32-41-16.9z"/&gt;&lt;/svg&gt;
+
+
+
+---
+
+# Summarizing Data
+
+All of these activities discussed lead towards some results such as:
+
+- Creating a tabular output of the results.  
+
+- Plotting some graphical display of the results.  
+
+- Serving as the input data for subsequent data analyses.  
+
+
+
+Each of these methodologies requires us to exit the work flow, after putting together all these parts, and make another `data.frame`.
+
+
+---
+
+# Graphical &amp; Data Frame Output
+
+Since we already have a bit of practice working with making data frames and taking them to make graphical output, we will focus here on how to create tabular output.
+
+
+```r
+airTemp &lt;- by( (rice$AirTempF-32) * 5/9, rice$Month, mean )
+humidity &lt;- by( rice$RelHumidity, rice$Month, mean )
+waterTemp &lt;- by( rice$H2O_TempC, rice$Month, mean, na.rm=TRUE )
+highTide &lt;- by( rice$Depth_m, rice$Month, max )
+
+df &lt;- data.frame( Month = names( airTemp ) )
+df$AirTemp &lt;- as.numeric( airTemp )
+df$Humidity &lt;- as.numeric( humidity )
+df$WaterTemp &lt;- as.numeric( waterTemp )
+df$HighTide &lt;- as.numeric( highTide )
+
+df
+```
+
+```
+##      Month  AirTemp Humidity WaterTemp HighTide
+## 1  January 1.498863 58.34487  3.676346 5.288280
+## 2 February 4.302240 60.38674  5.289107 5.388254
+## 3    March 5.888374 56.27460  7.959093 5.454091
+```
+
+
+
+
+
+---
+
+# Tabular Summaries
+
+Tabular output can be done by hand, but there is a much easier way to make tables using `knitr::kable`, allowing a lot of customizations.  This approach makes tables for markdown, html, pdf, or docx outputs.  
+
+
+
+```r
+library( knitr )
+t &lt;- kable( df, 
+            format = "html", 
+            caption = "Table 1: Air and water parameters measured at the Rice Rivers Center" )
+t
+```
+
+&lt;table&gt;
+&lt;caption&gt;Table 1: Air and water parameters measured at the Rice Rivers Center&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Month &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; AirTemp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Humidity &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; WaterTemp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; HighTide &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; January &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.498863 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.34487 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.676346 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.288280 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; February &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.302240 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60.38674 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.289107 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.388254 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; March &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.888374 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.27460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.959093 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.454091 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+---
+
+# Styling Tables
+
+We can apply various styling to a table using functions from the `kableExtra` package.
+
+
+```r
+library( kableExtra )
+```
+
+
+.pull-left[
+
+```r
+kable_classic( t, html_font = '\"Times New Roman\"')
+```
+
+&lt;table class=" lightable-classic" style='font-family: "Times New Roman"; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Table 1: Air and water parameters measured at the Rice Rivers Center&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Month &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; AirTemp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Humidity &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; WaterTemp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; HighTide &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; January &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.498863 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.34487 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.676346 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.288280 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; February &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.302240 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60.38674 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.289107 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.388254 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; March &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.888374 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.27460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.959093 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.454091 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+--
+
+.pull-right[
+
+```r
+kable_paper( t, "hover" )
+```
+
+&lt;table class=" lightable-paper lightable-hover" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Table 1: Air and water parameters measured at the Rice Rivers Center&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Month &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; AirTemp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Humidity &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; WaterTemp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; HighTide &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; January &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.498863 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.34487 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.676346 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.288280 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; February &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.302240 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60.38674 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.289107 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.388254 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; March &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.888374 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.27460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.959093 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.454091 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+
+
+---
+
+# Table Themes
+
+Customized headers.
+
+
+```r
+tbl1 &lt;- kable_classic( t )
+add_header_above( tbl1, 
+                  c(" " = 1,
+                    "Atmospheric" = 2,
+                    "Water" = 2)
+                  )
+```
+
+&lt;table class=" lightable-classic" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Table 1: Air and water parameters measured at the Rice Rivers Center&lt;/caption&gt;
+ &lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="empty-cells: hide;" colspan="1"&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Atmospheric&lt;/div&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Water&lt;/div&gt;&lt;/th&gt;
+&lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Month &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; AirTemp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Humidity &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; WaterTemp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; HighTide &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; January &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.498863 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.34487 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.676346 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.288280 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; February &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.302240 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60.38674 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.289107 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.388254 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; March &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.888374 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.27460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.959093 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.454091 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Table Customization
+
+
+```r
+kable_styling(t, 
+              bootstrap_options = c("striped", 
+                                    "hover", 
+                                    "condensed", 
+                                    "responsive"))
+```
+
+&lt;table class="table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;"&gt;
+&lt;caption&gt;Table 1: Air and water parameters measured at the Rice Rivers Center&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Month &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; AirTemp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Humidity &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; WaterTemp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; HighTide &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; January &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.498863 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.34487 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.676346 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.288280 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; February &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.302240 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60.38674 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.289107 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.388254 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; March &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.888374 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.27460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.959093 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.454091 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# Questions?
+
+
+![Peter Sellers](images/peter_sellers.gif)
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

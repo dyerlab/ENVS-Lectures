@@ -2,7 +2,7 @@
 title: "Markdown & Notebooks"
 output: 
   html_notebook:
-    css: "envs543-styles.css"
+    css: ["https://dyerlab.github.io/ENVS-Lectures/narrative_style.css"]
 ---
 
 > Markdown & Notebooks provide interactive documents for more effective data communication

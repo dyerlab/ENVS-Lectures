@@ -4,7 +4,7 @@ author: "RJ Dyer"
 date: "Center for Environmental Studies"
 output:
   html_document:
-    css: ["https://www.w3schools.com/w3css/4/w3.css", "index_style.css"]
+    css: ["https://www.w3schools.com/w3css/4/w3.css", "./css/index_style.css"]
     toc: true
     theme: flatly
     toc_float: true
@@ -154,7 +154,8 @@ makeTable( files, caption="Content lectures for working with geospatially refere
 This is where the rubber meets the road in data analysis.  By far, the vast amount of effort we expend in our daily work is getting data into a format that makes sense to us, that can surface various insights, and be inserted into our analysis workflows.  
 
 ```{r}
-files <- list.dirs( path="data_manipulation", recursive=FALSE )
+files <- list.dirs( path="manipulation", recursive=FALSE )
+
 makeTable( files, caption="These are methods based upon data manipulation, <i>sensu lato</i>.")
 ```
 

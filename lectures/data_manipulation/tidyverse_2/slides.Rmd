@@ -4,7 +4,7 @@ subtitle: "The Subtitle"
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: ["default", "envs543-styles.css", "fonts.css"]
+    css: ["default", "css/envs543-styles.css", "css/fonts.css"]
     seal: false
     nature:
       titleSlideClass: ["center","middle"]
@@ -31,7 +31,7 @@ library(DiagrammeR)
 
 
 
-# .orange[Tidyverse Judo!]
+#  .orange[🥋Tidyverse Judo!]
 
 
 

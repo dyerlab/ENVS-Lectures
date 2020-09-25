@@ -1,0 +1,510 @@
+---
+title: "Tidyverse Judo"
+output: html_notebook
+---
+
+```{r startup, include=FALSE}
+options(dplyr.summarise.inform=F) 
+```
+
+
+
+> It is the flexible reed that survives the storm.
+
+As we went over
+
+- Select  
+- Filter  
+- Mutate  
+- Arrange  
+- Group
+- Summarize
+
+
+
+
+```{r}
+library( readr )
+url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
+rice <- read_csv( url )
+```
+
+## Original Workflows
+
+> What was the daytime air tempertures profiles for the each day during the first week of February?
+
+
+### Mutate Operations
+
+```{r}
+library( lubridate )
+format <- "%m/%d/%Y %I:%M:%S %p"
+rice$Date <- parse_date_time( rice$DateTime, 
+                              orders=format,
+                              tz="EST")
+```
+
+*Make weekdays an ordered factor.*
+
+```{r}
+days <- c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+rice$Weekday <- weekdays( rice$Date )
+rice$Weekday <- factor( rice$Weekday,
+                        ordered=TRUE,
+                        levels=days)
+summary( rice$Weekday)
+```
+
+*Fix Air Temperature to be in Celsius*
+
+```{r fig.cap="Figure 1: Air temperature (°C) measured at the Rice Rivers Center in Charles City County, Virginia during the first three months of 2014."}
+rice$AirTemp <- (rice$AirTempF - 32) * 5/9
+hist( rice$AirTemp, 
+      xlab="Air Temperature (°C)", 
+      main="")
+```
+
+
+
+
+### Select Operations
+
+Which set of variables are we going to actually need?
+
+- "Date"
+- "Weekday"
+- "Air Temperature"
+- "Daytime"
+
+```{r}
+df <- rice[, c("Date", "Weekday", "AirTemp", "PAR")]
+summary( df )
+```
+
+### Filter Operations
+
+Which set of rows are we going to operate on?
+- "First Week of February"
+- "Daytime"
+
+*Day Range*
+```{r}
+rice$DateTime[25]
+```
+
+
+```{r}
+start_DateTime <- "2/1/2014 12:00:00 AM"
+end_DateTime <- "2/7/2014 11:45:00 PM"
+
+start <- parse_date_time( start_DateTime, 
+                          orders=format,
+                          tz="EST")
+end <- parse_date_time( end_DateTime, 
+                        orders=format,
+                        tz="EST")
+
+c( start, end )
+```
+
+
+
+```{r}
+df1 <- df[ df$Date >= start & df$Date <= end, ]
+summary( df1 )
+```
+
+
+
+
+*Daytime Filtering*
+
+```{r}
+hist( df1$PAR )
+```
+
+```{r}
+df2 <- df1[ df1$PAR > 100,]
+summary( df2 )
+```
+
+```{r}
+range( df2$Date[ df2$Weekday == "Monday"])
+```
+
+
+
+
+```{r}
+df2 <- df1[ df1$PAR > 25,]
+summary( df2 )
+```
+
+```{r}
+range( df2$Date[ df2$Weekday == "Monday"])
+```
+
+Maybe?  
+
+
+*Maybe As Sunrise/Sunset*
+
+![Sunrise 2/1/2014](https://live.staticflickr.com/65535/50381378793_b6517b10fe_w_d.jpg)
+![Sunset 2/1/2014](https://live.staticflickr.com/65535/50382255642_a9399a736a_w_d.jpg)
+![Sunrise 2/7/2014](https://live.staticflickr.com/65535/50382077786_e59560305e_w_d.jpg)
+![Sunset 2/7/2014](https://live.staticflickr.com/65535/50382077716_872bf519a5_w_d.jpg)
+
+
+Look at only hours and minutes
+
+```{r}
+test <- df1[ df1$Weekday == "Monday",]
+test$hour <- hour( test$Date ) 
+test$minute <- minute( test$Date )
+test
+```
+
+```{r}
+df3 <- df1
+df3$Hour <- hour( df3$Date )
+df3$Minute <- minute( df3$Date )
+summary( df3 )
+```
+
+
+```{r}
+df4 <- df3[ df3$Hour >= 7 & df3$Minute >= 15,]
+summary( df4 )
+```
+
+```{r}
+df5 <- df4[ df4$Hour <= 17 & df4$Minute <=30,  ]
+summary( df5 )
+```
+
+```{r eval=FALSE}
+df5[21:30,]
+```
+
+*Select - Again*
+
+```{r}
+df6 <- df5[ , c("Date","Weekday","AirTemp")]
+```
+
+
+### Summarize - Tabular
+
+Create a table that has:  
+- Date as row  
+- Minimum, Mean, & Maximum air temperature as columns  
+
+```{r}
+day( df6$Date )
+```
+
+
+```{r}
+minTemp <- by( df6$AirTemp, day( df6$Date  ), min )
+meanTemp <- by( df6$AirTemp, day( df6$Date  ), mean )
+maxTemp <- by( df6$AirTemp, day( df6$Date  ), max )
+df.table <- data.frame( Minimum = as.numeric( minTemp ), 
+                        Average = as.numeric( meanTemp), 
+                        Maximum = as.numeric( maxTemp ) )
+df.table
+```
+
+```{r}
+df.table$Date <- mdy( paste( "2",1:7,"2014", sep="/") )
+df.table$Weekday <- weekdays( df.table$Date )
+df.table
+```
+
+*Select to Rearrange*
+
+```{r}
+df.table1 <- df.table[ , c(5,1,2,3)]
+```
+
+
+*Table Output*
+
+```{r}
+library( knitr )
+library( kableExtra )
+t <- kable( df.table1,
+            caption="Table 1: Temperature Ranges for daytime air temperature for the first week of February, 2014 at the Rice Rivers Center in Charles City County, Virginia.")
+kable_styling( t )
+```
+
+
+### Summarize - Graphically
+
+```{r}
+library( ggplot2 ) 
+ggplot( df6, aes(x=Date, y=AirTemp, color=Weekday) ) + 
+  geom_line() +
+  geom_point() + 
+  theme_minimal()
+```
+
+
+
+
+Challenges associated with this approach
+
+- Lots of steps
+- Step divided into many chunks
+- Making of lots of data frames to hold intermediate options
+
+```{r}
+ls()
+```
+
+
+
+
+```{r fig.align="center", echo=FALSE}
+knitr::include_graphics("https://live.staticflickr.com/65535/50351963133_cffc707725_c_d.jpg")
+```
+
+
+# Tidyverse
+
+OK, so let's jump in.
+
+
+> GGPlot is to built-in graphics as ____________ is to data workflows.
+> 
+> A) Tidyverse
+> B) Tidyverse
+> C) Tidyverse, or 
+> D) Tidyverse
+
+
+Tidyverse is a collection of libraries.
+
+```{r}
+library( tidyverse )
+```
+
+
+![Tidyverse constellation](https://live.staticflickr.com/65535/50295284047_ebb5dec2e8_c_d.jpg)
+And one of the most important things that it includes is the notion of Pipes.
+
+
+```{r eval=FALSE}
+df2 <- SOME_OPERATION( df1 )
+df3 <- SOME_OTHER_OPERATION( df2 )
+df4 <- A_THIRD_OPERATION( df3 )
+ggplot( df4, aes(x=...,y=...) ) + geom_point()
+```
+
+This pattern of operations is very common. 
+
+*The output of one function becomes the input of another one*
+
+Insted of re-assigning all these variables, we can take a shortcut using the pipe function (it is defined in the `magrittr` library which is part of the `tidyverse`), denoted as `%>%`
+
+
+```{r eval=FALSE}
+df1 %>% 
+  SOME_OPERATION() %>%
+  SOME_OTHER_OPERATION() %>%
+  A_THIRD_OPERATION %>%
+  ggplot( aes(x=...,y=...) ) + geom_point()
+  
+```
+
+Here is a pipe of the `df.table` data.frame into the `kable` and `kableExtra` functions.
+
+```{r}
+df.table1 %>%
+  kable( format="html", digits = 2 ) %>%
+  kable_paper() %>%
+  column_spec( 2, color=ifelse( df.table1$Minimum < 0, "blue", ""))
+```
+
+**NOTE:** It is implicitly passing along the output of the previous item (on the left of the pipe) to serve as the input to the next item (on the right of the pipe).  So there is no need to redefine `data.frame` objects OR put the names of the data.frames into the function parentheses.
+
+
+
+Same for `ggplot()`
+
+```{r}
+df.table1 %>%
+  ggplot( aes(x=Weekday,y=Average) ) + 
+  geom_col() + 
+  ylab("Average Air Temperature (°C)") +
+  theme_classic()
+```
+
+
+
+OK, so now let's get back into the *verbs* of data analysis.  The reason I used these particular keywords is that hey are identical to the function names used in `dplyr` (the data pliars library in `tidyverse`).
+
+- Select is done using function `select()`  
+- Filter is done using function `filter()`  
+- Mutate is done using function `mutate()`  
+- Arrange is done using function `arrange()`   
+- Group is done using function `group_by()`  
+- Summarize is done using function `summarize()`  
+
+In what follows, I will redo the stuff from above showing how we can incorporate both the pipe function as well as these *verb* functions.  Let's first reload the data from scratch.
+
+```{r}
+rice <- read_csv( url )
+```
+
+
+
+
+### Tidy Select
+
+Select allows us to grab the column by the name in the `data.frame`.
+
+```{r}
+rice %>%
+  select( DateTime, AirTempF ) %>%
+  head()
+```
+To drop columns, you can use the name of the column with a negative sign prepended on it.
+
+```{r}
+rice %>%
+  select( -RecordID, -SpCond_mScm, -PH_mv, -Depth_ft, -SurfaceWaterElev_m_levelNad83m ) %>%
+  names() 
+```
+
+
+You can also use it to re-arrange the column order (and because we are lazy, we have the `everything()` function to say 'well, everything else that I haven't already identified).
+
+```{r}
+rice %>%
+  select( AirTempF, WindDir, Rain_in, everything() ) %>%
+  names() 
+```
+
+### Filter
+
+Filter allows us to select the rows by attributes of the data *withing* the table itself.
+
+```{r}
+rice %>%
+  filter( AirTempF < 32 ) %>%
+  head()
+```
+
+### Mutate
+
+Mutate allows us to change the columns of the data, either *in-place* (e.g., replacing the original column) or by adding columns to it.
+
+```{r}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels=days) ) %>%
+  mutate( AirTemp = (AirTempF - 32) * 5/9 ) %>%
+  select( Date, Weekday, AirTemp) %>%
+  summary()
+```
+
+Note:  I had to do separate `mutate()` events here to get the weekday, the first to make it a Date column and the second to use that to make another column for weekdays.
+
+
+It is also possible to use use this to make more readable column names ("Look ma! No `ylab` needed!").  You just have to use the back tick characters to surround the new data column name.
+
+```{r}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( `Air Temperature (°C)` = (AirTempF - 32) * 5/9 ) %>%
+  select( Date, `Air Temperature (°C)`) %>%
+  ggplot( aes( x = Date, y = `Air Temperature (°C)`) ) + 
+  geom_line() +
+  theme_classic()
+```
+
+
+
+
+### Arrange
+
+Arrange is used to sort the data.
+
+
+```{r}
+rice %>%
+  arrange( AirTempF ) %>%
+  select( DateTime, AirTempF ) %>%
+  head()
+```
+
+Reversing it (e.g., in descending order) is done by prepending a negative sign.
+
+```{r}
+rice %>%
+  arrange( -AirTempF ) %>%
+  select( DateTime, AirTempF ) %>%
+  head()
+```
+
+### Group
+
+
+So here is where we start getting to have some fun.  The `group_by` function partitions the data and is used to create content for the subsequent steps.  Think about the various ways we have used `by()` thus far.  For these, we had to:
+
+1. Identify a column to use as a grouping.  
+2. Apply some function to those individual groups.  
+
+Same things here.  It is just that being *grouped* gives the `data.frame` an extra added attribute.  Compare the `class` object for the rice `data.frame`.
+
+```{r}
+class( rice )
+```
+
+to what it is after I make weekdays and then `group-by()` that column.
+
+```{r}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels=days) ) %>%
+  group_by( Weekday ) %>%
+  class() 
+```
+
+
+It is the `grouped_df` that is used by things like `summarize()` when it does its operations.  It will make more sense in a minute.
+
+### Summarize
+
+Summarize allows you to take a bit of the original data and then perform operations on it to create a new `data.frame`.
+
+Here is how we could get total amount of rain for each weekday in the entire data set from the raw data as a single inquiry.
+
+```{r warning=FALSE}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( Weekday = factor( weekdays( Date ),
+                            ordered=TRUE,
+                            levels=days) ) %>%
+  group_by( Weekday ) %>%
+  summarize( Rain = sum( Rain_in ) , .groups = 'drop')
+```
+
+The only columns in the `group_by` and `summarize` statements will be kept and provided as output.
+
+
+
+
+

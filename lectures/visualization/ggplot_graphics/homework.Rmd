@@ -47,6 +47,10 @@ For this section, focus on histograms and density plots.  Create a historgram pl
 
 ```{r}
 # Built-in hist for HDI
+meanHDI <- by( df$HDI, df$Region, mean)
+barplot( meanHDI )
+
+
 
 ```
 

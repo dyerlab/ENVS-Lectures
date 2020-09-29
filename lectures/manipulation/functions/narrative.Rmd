@@ -1,0 +1,225 @@
+---
+title: "Functions"
+author: "How to make code work for you"
+output: 
+  html_notebook:
+    css: ["https://dyerlab.github.io/ENVS-Lectures/css/narrative_style.css"]
+---
+
+```{r startup, include=FALSE}
+library( knitr )
+library( tidyverse )
+knitr::opts_chunk$set( warning = FALSE, 
+                       message = FALSE,
+                       error = FALSE )
+options(dplyr.summarise.inform=F) 
+ggplot2::theme_set( theme_classic( base_size=18 ) )
+```
+
+> Functions allow you to compartmentalize your code, so you can use it again.
+
+One of the most fundamentally valuable things with `R` is that it is totally extensible by the user community.  This is why there are literally thousands of packages available for 
+
+
+## A Basic Function
+
+A function is just a chunck of code, which is wrapped up in a *block* and given a variable name.
+
+```{r}
+foo <- function() { 
+  cat("bar")
+}
+
+foo()
+```
+
+The amount of code within a function can be simple like the one above or quite complex.  The boundaries of the code are defined by the curly brackets. 
+
+
+## Variable Scope
+
+When we make a function, there is a notion of a *scope* for variables, which defines where variables are visible from.  By default, when you start `R` you are given a Global Environment Scope that has all the variables and functions you've defined thus far.  The image below is the one for this document at this stage of development.
+
+![Figure 1: Main Environment in RStudio](https://live.staticflickr.com/65535/50395012691_8844158fe9_c_d.jpg) 
+
+When we work with functions, we encapsulate code within curly-brackets.  This protects their scope. Her is an example.  In this function, we:
+
+1. Print out the value of a variable `x`  
+2. Assign values to the variables `x` and `z`
+3. Print out the value of the variables `x` and `z`.
+
+```{r}
+foo <- function( ) {
+  x <- 12
+  z <- "bob"
+  cat("x =", x, "& z =", z ,"inside function.\n")
+}
+```
+
+OK, so now let's call this function.
+
+```{r}
+foo()
+```
+
+
+
+```{r}
+x <- 42
+cat("x =", x, "before function.\n")
+foo()
+cat("x =", x, "after running function.\n")
+```
+
+**NOTE:** The value of `x` was changed within the function but those changes were not reflected OUTSIDE of that function.  The *scope* of the variable `x` inside `foo()` is local to that function and anything that follows its declaration within the curly brackets of the function.  However, it is *invisible* outside the scope of that function.  This is a 'good thing<sup>&copy;</sup>' because if we had visibility of all the variables in all the functions then we would either a) quickly run out of variable names to keep them unique, or b) clobber all of our existing variables by writing over them and changing their values.
+
+Also, notice that the variable `z` that is assigned `bob` in the function is also not visible in the global environment.  *What happens in the function, stays <u>in</u> <u>the</u> <u>function</u>*.
+
+```{r}
+ls()
+```
+
+
+
+## Passing Variables.
+
+While some functions do not take any input, most require some kind of data to work with or values to start using. These variables can are passed into the function code by including them within the function parentheses.
+
+Any required variables are added within the function definition parentheses.  These translate into the names of the variables used within the chunk.  
+
+Here is an example with one required variable, `x`.
+
+
+```{r}
+foo <- function( x ) {
+  print(x)
+}
+```
+
+And it can be called by either naming the variable explicity or not.
+
+```{r}
+foo( x = 23 )
+foo( 42 )
+```
+
+However, if you require a variable to be passed and it is not given, it will result in an error.
+
+```{r error=TRUE}
+foo()
+```
+
+
+You can get around this by making a `default` value for the variable, which is specified in the function definition as follows:
+
+```{r}
+foo <- function( x = "Dr Dyer is my favorite professor" ) {
+  print(x)
+}
+```
+
+Then if the individual does not fill in
+
+```{r}
+foo()
+```
+
+## Retrieving Results from Functions
+
+Similarly, many functions we write will return something to the user who is calling it.  By default, a function that just does something like print some message or make some plot will return `NULL`
+
+```{r}
+foo <- function( name = "Alice") {
+  cat(name, "is in the house.")
+}
+foo()
+```
+
+But if I try to assign a variable the results of the function, I get `NULL` as the value returned.
+
+```{r}
+x <- foo()
+class(x)
+x
+```
+
+If you want to return something to the user, you need to be explicit and use the `return()` function to pass back the variable.
+
+
+```{r}
+foo <- function( name = "Alice") {
+  response <- paste( name, "is in the house.")
+  return( response )
+}
+```
+
+
+```{r}
+who_is_in_the_house <- foo()
+who_is_in_the_house
+```
+
+You can only return *one* item but it can be a `list` a `data.frame` or any other `R` object.
+
+
+# Creating Functions
+
+You can create functions for small things to be used in a single document or they can be larger more general functions that can be used all the time.  
+
+If you are going to be using a function in a single markdown document, define it in its own code chunk and then from that point down the document, it will be available to use (like we've done in this document).
+
+However, if you are going to be calling a function from more than one sole Markdown document, it is probably good practice to put it in its own file.  R script files contain ONLY code and this is where you should put it.
+
+Make a new R Script file by selecting *File -> New File -> R Script*.  
+
+As an example, I made entered the code shown below into this script file and then saved it as `summarize_levels.R` **in the same directory as my project** (this last part is important).
+
+![Figure 2: Simple code to ake summaries from a data frame as an example function in its own file.](https://live.staticflickr.com/65535/50398439551_f549a80586_c_d.jpg)
+
+This code has a few sections to it.  The top 9 rows are comments.  These kinds of comments are denoted by a hashtag and a single quote.  You do not *need* to have these comments in the file but when you start making a lot of function, each in their file, if you follow these instructions you can autogenerate the R help files so you (and others who may be using your code) can look at the help file.
+
+1. The first line has a brief description of what the script does.
+2. The next set of lines indicate *Sections* that can be put into the help file.  These sections are denoted by an @-sign followed by a name (there are many more than the three used here).  
+    - @description - A more robust description of what the function does.  
+    - @param A listing of each parameter sent to the function and its description.  
+    - @return What the function returns to the user.
+3. The function body where it is actually defined.  Notice, I name the function and the script file the exact same so it is easy for you to know what is in each file.
+
+
+Since the function is located in another file, we need to ask `R` to load in the source of the code.  This is done using the `source()` function.  
+
+```{r}
+source("summarize_levels.R")
+```
+
+Do this once and it will load the function in the current Global Environment.
+
+![](https://live.staticflickr.com/65535/50397831453_b83377def0_c_d.jpg)
+
+Once you a few functions together, you can put them together into a library (left as an advanced topic).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

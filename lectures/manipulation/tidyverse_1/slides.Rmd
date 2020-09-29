@@ -686,7 +686,7 @@ txt
 ---
 class: sectionTitle
 
-# 😱 .blue[Grouping] 
+# .green[Grouping] 
 
 ## Partitioning Data 
 
@@ -883,7 +883,7 @@ background-size: auto
 # Questions?
 
 
-![Peter Sellers](images/peter_sellers.gif)
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
 ]
 
 <p>&nbsp;</p>

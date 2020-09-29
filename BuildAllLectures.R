@@ -24,7 +24,7 @@ if( FALSE ) {
 # Build all the folders in the lecture tree
 for( folder in list.dirs("lectures",full.names = TRUE,recursive = FALSE) ) {
   print( paste("Building",folder) )
-  blogdown::build_dir( folder )
+  blogdown::build_dir( folder, force=FALSE )
 }
 rmarkdown::render("lectures/index.Rmd")
 

@@ -1,0 +1,47 @@
+---
+title: "Functions"
+author: YOUR_NAME_HERE
+output: html_notebook
+---
+
+> Functions are a way to compartmentalize chuncks of code so you can use them over and over.
+
+For this homework, I would like you to create a function called `get_rice()` and it will do the following:
+
+- Load in the csv file from google docs.  
+- Make columns for Date, Month, & Weekday.  
+- Convert Temperature & Length units to metric version.  
+- Drop all duplicate data.  
+- Make column names readable and usable.  
+- Return the data frame to the user.  
+
+
+I'll get you started with the URL and the stub for the function.  If you want to look at the raw data
+
+```{r}
+# Put your code here for the function.
+
+get_rice <- function() {
+  url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
+  
+  # Put all your code here
+  
+  
+}
+```
+
+
+
+When done, you should be able to call the function as: 
+
+```{r}
+rice <- get_rice() 
+summary( rice )
+```
+
+
+
+## Put it into a script file.
+
+Copy the code for the function above and put it into a *.R script file and save it in the root directory of your project for this class.  Now you can use it whenever we need to load in that particular data file.
+

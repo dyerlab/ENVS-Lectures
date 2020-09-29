@@ -39,7 +39,7 @@ Using the data above, answer the following questions. To answer these questions,
 
 3. Turbidity is a measurement of the opaqueness of water.  In the rice data, we have a measure of Chlorophyll A in the water.  For estimates where there is more than 200 $µg*l^{-1}$, describe the relationship between these two variables.
 
-4. Show the pattern of tides during the work week that includes Valentines Day in 2004.
+4. Show the pattern of tides during the work week that includes Valentines Day in 2014.
 
 5. Summarize estimates of Wind direction for February.  Pay close attention to what this variable is actually measuring and how you want to display its underlying patterns.
 

@@ -1,0 +1,386 @@
+---
+title: "Functions in R 📜"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "../../css/slide_styles.css", "../../css/slide_fonts.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50362989122_a8ee154fea_k_d.jpg")
+background-size: cover
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+library( knitr )
+options(knitr.table.format = "html")
+library( kableExtra )
+library( tidyverse )
+library( fontawesome )
+library(DiagrammeR)
+library( ggplot2 )
+theme_set( theme_classic( base_size = 20) )
+```
+
+
+
+#  .green[Functions: Code Compartmentalization]
+
+
+### Environmental Data Literacy
+
+
+---
+class: inverse, middle
+
+background-image: url("https://live.staticflickr.com/65535/50398542246_3971b73b4b_c_d.jpg")
+background-position: right
+background-size: fit
+
+.pull-left[.red[.fancy[Functions allow you to 
+
+compartmentalize your
+
+code, so you can use it 
+
+again and again.]]]
+
+
+---
+
+# ⚙️ Making Functions
+
+A function is just a *chunk* of code, wrapped within curly brakets, and given a name.
+
+
+```{r eval=FALSE}
+
+foo <- function() {
+  
+  # R CODE GOES HERE
+  
+}
+
+```
+
+
+--
+
+The contents of a function may be:  
+
+- A few lines of code or hundreds,  
+
+- Calls to other functions,  
+
+- Accepting variables as argument *input* (or not), and 
+
+- Returning some object (or not).
+
+
+---
+
+# Variable Scope
+
+Variables within a function are 'localized' to within that variable *alone*.  This allows us to:
+
+1. Not run out of variable names (`df` and `x` are common ones we've used thus far).  
+
+2. Not have the variables we are working with being clobbered every time we call another function.
+
+
+---
+
+Define a function with a variable `x` inside the function.
+
+```{r}
+foo <- function() {
+  x <- 42
+  cat("x = ", x, "within function.\n")
+}
+```
+
+
+--
+
+Then examine a similarly named variable with a different assigned value before and after calling that function.
+
+```{r}
+x <- 23
+cat("x = ", x, "before function call.")
+```
+
+--
+
+Within the function, the variable represents the value inside the function.
+
+```{r}
+foo()
+```
+
+--
+
+And after the function is called, examine the value of the variable.
+
+```{r}
+cat("x = ", x, "after function call")
+```
+
+
+
+.blueinline[NOTICE: before and after function are in "global variable scope, whereas inside the function, the variable is localized within the boundaries of the function itself."]
+
+
+---
+
+# Variable Scope
+
+The global scope is shown in RStudio on the *Environment* tab.
+
+.center[![](https://live.staticflickr.com/65535/50398760012_a53e2ea83d_c_d.jpg)]
+
+--
+
+You can also see what is in the environment by asking to list all variables and functions using the `ls()` function.
+
+```{r}
+ls()
+```
+
+
+
+---
+
+# Passing Varibles to A Function
+
+While some functions do not take input variables, many require it.  To pass variables into the function scope, we identify them in the 
+
+
+```{r}
+foo <- function( x ) {
+  cat("x =", x, "in the function.")
+}
+foo( 23 )
+```
+
+--
+
+If you do not provide a value for a required variable, it will give you an error.
+
+```{r error=TRUE}
+foo()
+```
+
+
+---
+
+# Default Function Variables
+
+We can put in *default* values for arguments by assigning values in the function parentheses.
+
+```{r}
+favorite <- function( professor = "Dyer" ) {
+  cat("My favorite professor is:", professor, "\n")
+}
+
+favorite()
+```
+
+---
+
+# Getting Results from Functions
+
+In addition to sending data *to* a function, we often want to get something *back from* a function.  We **must** be explicit about wanting to send something back to the caller using the `return()` function.
+
+```{r}
+foo <- function( name = "Alice") {
+  response <- paste( name, "is in the house.")
+  return( response )
+}
+```
+
+--
+
+Then we can assign the results of that function to a variable.
+
+```{r}
+who_is_in_the_house <- foo()
+who_is_in_the_house
+```
+
+
+---
+
+# Saving Functions - Within Markdown
+
+.pull-left[
+Local Functions:  
+
+- Used in a single file.  
+
+- Place in its own *chunk*.  
+
+- Available in that file *only*.
+]
+
+--
+
+.pull-right[
+
+````
+```{r echo=FALSE}`r ''`
+best_class <- function( name = "ENVS543") {
+  if( name == "ENVS543" ){
+    return( paste( name, "is my favorite class") )
+  }
+  else {
+    return( "Really?")
+  }
+}
+```
+````
+
+]
+
+
+---
+
+# Saving Functions - Script Files
+
+.pull-left[
+
+Broadly Applicable Functions:
+
+- Used in several files.
+
+- Place in its own *.R script file.
+
+- Save in a location you can access.
+]
+
+--
+
+.pull-right[
+
+Here is an example function that summarizes levels from a `data.frame`
+
+```{r echo=FALSE}
+source("summarize_levels.R")
+```
+
+
+```{r}
+summarize_levels
+```
+
+```{r echo=FALSE}
+rm( "summarize_levels" )
+```
+
+
+
+]
+
+
+
+---
+
+# Accessing Functions From Scripts 📜
+
+
+To load in a function from an `*.R` file, you use the `source()` command and give it the path to the file **relative to your markdown* file.
+
+```{r}
+ls()
+```
+
+--
+
+After pulling it in, it is now available.
+
+```{r}
+source("summarize_levels.R")
+ls()
+```
+
+
+
+
+---
+
+# Using a Function
+
+Just call it as a normal function.
+
+```{r}
+summarize_levels( iris, 
+                  dataCol = "Sepal.Length",
+                  groupCol = "Species",
+                  fun = mean ) %>%
+  kable( caption="Table 1: Mean sepal length for three species of Iris." ) %>%
+  kable_paper( bootstrap_options = "striped", 
+               full_width = FALSE )
+
+```
+
+
+
+
+
+---
+
+# Helpful Tips for Functions
+
+![](https://live.staticflickr.com/65535/50398439551_f549a80586_c_d.jpg)
+
+
+---
+
+# Storing Functions
+
+If you begin to create a lot of functions that you use all the time, you can put them together into a package and call them with `library()`, just like the other packages we've been using this whole semester.
+
+This is left as an advanced topic.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# 🙋🏻‍♀️ Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+<p>&nbsp;</p>
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+
+

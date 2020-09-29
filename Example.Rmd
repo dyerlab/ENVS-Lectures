@@ -1,0 +1,243 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r setup, include=FALSE }
+library( tidyverse )
+```
+
+
+
+
+Question: What is the daytime rain for the first week of February?
+
+
+
+
+- Weekday  
+  - Date 
+- Select Date, Weekday, Rain
+
+- Filter 1st week of Feb
+- Filter daytime is?
+
+- Mean rain  
+- Summarize it -> data.frame, table or graphic
+
+
+
+```{r}
+url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
+library( readr )
+rice <- read_csv( url )
+names( rice )
+```
+
+
+# Select 
+
+```{r}
+df1 <- rice[ , c("DateTime", "Rain_in", "PAR")]
+summary( df1 )
+```
+
+
+
+
+# Mutation - Make date objects
+
+
+```{r}
+library( lubridate )
+format <- "%m/%d/%Y %I:%M:%S %p"
+df1$Date <- parse_date_time( df1$DateTime, 
+                             orders = format, 
+                             tz = "EST" )
+summary( df1 )
+
+df2 <- df1[ , c("Date","Rain_in", "PAR")]
+summary( df2 )
+```
+
+
+
+```{r}
+df2$Rain <- df2$Rain_in * 2.54
+df2$Rain_in <- NULL
+hist( df2$Rain )
+```
+
+
+*Date -> Weekday*
+
+```{r}
+
+day <- c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday", "Sunday")
+df2$Weekday <- factor( weekdays( df2$Date ),
+                       ordered = TRUE,
+                       levels = day )
+
+
+head(df2)
+summary( df2 )
+```
+
+
+
+
+
+# Filter
+
+```{r}
+start <- mdy( "2/1/2014")
+end_time <- mdy( "2/8/2014")
+
+
+df3 <- df2[ df2$Date >= start , ] 
+summary( df3 )
+df4 <- df3[ df3$Date < end_time , ]
+summary( df4 )
+```
+
+
+
+
+```{r}
+hist( df4$PAR )
+
+
+df4$Hour <- hour( df4$Date )
+summary( df4 )
+```
+
+
+```{r}
+df4$Minutes <- minute(df4$Date )
+head( df4 )
+
+df5 <- df4[ df4$Hour >= 7 & df4$Minutes >= 15, ]
+summary( df5 )
+
+df6 <- df5[ df5$Hour <= 17 & df5$Minutes < 31, ]
+summary( df6 )
+
+
+df6$PAR <- NULL
+
+
+```
+
+
+
+
+```{r}
+mean.Rain <- by( df6$Rain, df6$Weekday, mean )
+min.Rain <- by( df6$Rain, df6$Weekday, min )
+max.Rain <- by( df6$Rain, df6$Weekday, max )
+
+df.table <- data.frame( Minimum = as.numeric( min.Rain),
+                        Mean = as.numeric( mean.Rain),
+                        Maximum = as.numeric( max.Rain) )
+
+
+library( knitr ) 
+
+kable( df.table , digit=2 )
+
+
+library( tidyverse )
+
+
+df.table %>%
+  kable() 
+
+df.table %>%
+  ggplot(aes(x=Maximum,y=Minimum )) + geom_point( )
+
+
+df.table
+```
+
+
+
+```{r}
+library( ggplot2 )
+ggplot( df6, aes(x=Date, y=Rain, color=Weekday) ) + geom_point() 
+```
+
+
+## Select
+
+
+
+
+```{r}
+
+rice %>% 
+  select( DateTime, AirTempF ) %>%
+  head()
+
+```
+
+
+```{r}
+
+rice %>% 
+  select( -PH_mv, -BP_HG  ) %>%
+  names() 
+
+
+```
+
+
+```{r}
+rice %>%
+  select( RecordID, Depth_m, PH, everything() ) %>%
+  names( )
+```
+
+
+## Filter
+
+
+```{r}
+rice %>%
+  filter( AirTempF < 32 ) %>%
+  head()
+
+```
+
+
+```{r}
+rice %>%
+  filter( AirTempF < 32,
+          Rain_in > 0 ) %>%
+  head()
+```
+
+
+## Mutate
+
+
+```{r}
+rice %>%
+  mutate( Date = parse_date_time( DateTime,
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( Weekday = factor( weekdays(Date),
+                            ordered=TRUE,
+                            levels=day)) %>%
+  mutate( `Air Temperature (°C)` = (AirTempF -32) * 5/9 ) %>%
+  select( Date, Weekday, `Air Temperature (°C)`) %>%
+  ggplot( aes( Date, `Air Temperature (°C)`) ) + geom_point() 
+
+
+```
+
+
+
+
+
+
+

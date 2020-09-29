@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Functions in R 📜</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/slide_styles.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50362989122_a8ee154fea_k_d.jpg")
+background-size: cover
+
+
+
+
+
+
+#  .green[Functions: Code Compartmentalization]
+
+
+### Environmental Data Literacy
+
+
+---
+class: inverse, middle
+
+background-image: url("https://live.staticflickr.com/65535/50398542246_3971b73b4b_c_d.jpg")
+background-position: right
+background-size: fit
+
+.pull-left[.red[.fancy[Functions allow you to 
+
+compartmentalize your
+
+code, so you can use it 
+
+again and again.]]]
+
+
+---
+
+# ⚙️ Making Functions
+
+A function is just a *chunk* of code, wrapped within curly brakets, and given a name.
+
+
+
+```r
+foo &lt;- function() {
+  
+  # R CODE GOES HERE
+  
+}
+```
+
+
+--
+
+The contents of a function may be:  
+
+- A few lines of code or hundreds,  
+
+- Calls to other functions,  
+
+- Accepting variables as argument *input* (or not), and 
+
+- Returning some object (or not).
+
+
+---
+
+# Variable Scope
+
+Variables within a function are 'localized' to within that variable *alone*.  This allows us to:
+
+1. Not run out of variable names (`df` and `x` are common ones we've used thus far).  
+
+2. Not have the variables we are working with being clobbered every time we call another function.
+
+
+---
+
+Define a function with a variable `x` inside the function.
+
+
+```r
+foo &lt;- function() {
+  x &lt;- 42
+  cat("x = ", x, "within function.\n")
+}
+```
+
+
+--
+
+Then examine a similarly named variable with a different assigned value before and after calling that function.
+
+
+```r
+x &lt;- 23
+cat("x = ", x, "before function call.")
+```
+
+```
+## x =  23 before function call.
+```
+
+--
+
+Within the function, the variable represents the value inside the function.
+
+
+```r
+foo()
+```
+
+```
+## x =  42 within function.
+```
+
+--
+
+And after the function is called, examine the value of the variable.
+
+
+```r
+cat("x = ", x, "after function call")
+```
+
+```
+## x =  23 after function call
+```
+
+
+
+.blueinline[NOTICE: before and after function are in "global variable scope, whereas inside the function, the variable is localized within the boundaries of the function itself."]
+
+
+---
+
+# Variable Scope
+
+The global scope is shown in RStudio on the *Environment* tab.
+
+.center[![](https://live.staticflickr.com/65535/50398760012_a53e2ea83d_c_d.jpg)]
+
+--
+
+You can also see what is in the environment by asking to list all variables and functions using the `ls()` function.
+
+
+```r
+ls()
+```
+
+```
+## [1] "foo" "x"
+```
+
+
+
+---
+
+# Passing Varibles to A Function
+
+While some functions do not take input variables, many require it.  To pass variables into the function scope, we identify them in the 
+
+
+
+```r
+foo &lt;- function( x ) {
+  cat("x =", x, "in the function.")
+}
+foo( 23 )
+```
+
+```
+## x = 23 in the function.
+```
+
+--
+
+If you do not provide a value for a required variable, it will give you an error.
+
+
+```r
+foo()
+```
+
+```
+## Error in cat("x =", x, "in the function."): argument "x" is missing, with no default
+```
+
+
+---
+
+# Default Function Variables
+
+We can put in *default* values for arguments by assigning values in the function parentheses.
+
+
+```r
+favorite &lt;- function( professor = "Dyer" ) {
+  cat("My favorite professor is:", professor, "\n")
+}
+
+favorite()
+```
+
+```
+## My favorite professor is: Dyer
+```
+
+---
+
+# Getting Results from Functions
+
+In addition to sending data *to* a function, we often want to get something *back from* a function.  We **must** be explicit about wanting to send something back to the caller using the `return()` function.
+
+
+```r
+foo &lt;- function( name = "Alice") {
+  response &lt;- paste( name, "is in the house.")
+  return( response )
+}
+```
+
+--
+
+Then we can assign the results of that function to a variable.
+
+
+```r
+who_is_in_the_house &lt;- foo()
+who_is_in_the_house
+```
+
+```
+## [1] "Alice is in the house."
+```
+
+
+---
+
+# Saving Functions - Within Markdown
+
+.pull-left[
+Local Functions:  
+
+- Used in a single file.  
+
+- Place in its own *chunk*.  
+
+- Available in that file *only*.
+]
+
+--
+
+.pull-right[
+
+````
+```{r echo=FALSE}
+best_class &lt;- function( name = "ENVS543") {
+  if( name == "ENVS543" ){
+    return( paste( name, "is my favorite class") )
+  }
+  else {
+    return( "Really?")
+  }
+}
+```
+````
+
+]
+
+
+---
+
+# Saving Functions - Script Files
+
+.pull-left[
+
+Broadly Applicable Functions:
+
+- Used in several files.
+
+- Place in its own *.R script file.
+
+- Save in a location you can access.
+]
+
+--
+
+.pull-right[
+
+Here is an example function that summarizes levels from a `data.frame`
+
+
+
+
+
+```r
+summarize_levels
+```
+
+```
+## function (x, dataCol, groupCol, fun) 
+## {
+##     vals &lt;- by(x[[dataCol]], x[[groupCol]], fun)
+##     ret &lt;- data.frame(names(vals))
+##     names(ret)[1] &lt;- groupCol
+##     ret[[dataCol]] &lt;- as.numeric(vals)
+##     return(ret)
+## }
+```
+
+
+
+
+
+]
+
+
+
+---
+
+# Accessing Functions From Scripts 📜
+
+
+To load in a function from an `*.R` file, you use the `source()` command and give it the path to the file **relative to your markdown* file.
+
+
+```r
+ls()
+```
+
+```
+## [1] "favorite"            "foo"                 "who_is_in_the_house"
+## [4] "x"
+```
+
+--
+
+After pulling it in, it is now available.
+
+
+```r
+source("summarize_levels.R")
+ls()
+```
+
+```
+## [1] "favorite"            "foo"                 "summarize_levels"   
+## [4] "who_is_in_the_house" "x"
+```
+
+
+
+
+---
+
+# Using a Function
+
+Just call it as a normal function.
+
+
+```r
+summarize_levels( iris, 
+                  dataCol = "Sepal.Length",
+                  groupCol = "Species",
+                  fun = mean ) %&gt;%
+  kable( caption="Table 1: Mean sepal length for three species of Iris." ) %&gt;%
+  kable_paper( bootstrap_options = "striped", 
+               full_width = FALSE )
+```
+
+&lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Table 1: Mean sepal length for three species of Iris.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Sepal.Length &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+---
+
+# Helpful Tips for Functions
+
+![](https://live.staticflickr.com/65535/50398439551_f549a80586_c_d.jpg)
+
+
+---
+
+# Storing Functions
+
+If you begin to create a lot of functions that you use all the time, you can put them together into a package and call them with `library()`, just like the other packages we've been using this whole semester.
+
+This is left as an advanced topic.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# 🙋🏻‍♀️ Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

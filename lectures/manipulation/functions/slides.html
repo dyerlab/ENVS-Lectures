@@ -247,6 +247,179 @@ who_is_in_the_house
 
 
 ---
+class: sectionTitle, inverse
+
+# .orange[Conditional Execution]
+
+### .fancy[IF this ELSE that]
+
+---
+
+# Is it Cold Outside 🌡
+
+It is very convenient to be able to execute come code under certain conditions and another set of code under other conditions.  
+
+
+```r
+freezing &lt;- function( temperature ) {
+  if( temperature &lt;= 0 ) {
+    print("Brrr")
+  } 
+  else {
+    print("Warm!")
+  }
+}
+```
+
+--
+
+
+```r
+freezing( -2 )
+```
+
+```
+## [1] "Brrr"
+```
+
+```r
+freezing( 18 )
+```
+
+```
+## [1] "Warm!"
+```
+
+
+
+---
+
+# Multipart Conditionals
+
+Many times we may have to 
+
+
+```r
+grade &lt;- function( percentage ) {
+  if( percentage &gt;= 90 ) {
+    return( "A" )
+  } 
+  else if( percentage &gt;= 80 ) {
+    return( "B" )
+  }
+  else if( percentage &gt;= 70 ) {
+    return( "C" )
+  }
+  else if( percentage &gt;= 60 ) {
+    return( "D" )
+  }
+  else {
+    return( "F" )
+  }
+}
+```
+
+---
+
+# Mutipart Conditional (cont.)
+
+
+```r
+grade( 80 )
+```
+
+```
+## [1] "B"
+```
+
+```r
+grade( 93 )
+```
+
+```
+## [1] "A"
+```
+
+```r
+grade( 54 )
+```
+
+```
+## [1] "F"
+```
+
+---
+
+# A Shortcut
+
+There are so many cases where we use the dichotomous `if/else` workflow, that we can simplify this code
+
+
+```r
+if( condition ) {
+  TRUE_CONDITION
+} 
+else {
+  FALSE_CONDITION
+}
+```
+
+--
+
+Can be simplifed into 
+
+
+```r
+ifelse( CONDITION, TRUE_CONDITION, FALSE_CONDITION )
+```
+
+
+---
+
+# An Example
+
+Here is a relevant exmaple from the most recent homework.
+
+
+```r
+hour &lt;- sample(0:23, 
+               size = 18,
+               replace = TRUE)
+hour
+```
+
+```
+##  [1] 12 10  1 14 15  2  5 14 21 16 14 19 12  2 16 17 14 14
+```
+
+--
+
+
+```r
+Day_Or_Night &lt;- ifelse( hour &gt;= 7 &amp; hour &lt;=19, "Day", "Night")
+Day_Or_Night
+```
+
+```
+##  [1] "Day"   "Day"   "Night" "Day"   "Day"   "Night" "Night" "Day"   "Night"
+## [10] "Day"   "Day"   "Day"   "Day"   "Night" "Day"   "Day"   "Day"   "Day"
+```
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Saving Functions]
+
+
+
+
+
+
+---
 
 # Saving Functions - Within Markdown
 
@@ -333,7 +506,7 @@ summarize_levels
 # Accessing Functions From Scripts 📜
 
 
-To load in a function from an `*.R` file, you use the `source()` command and give it the path to the file **relative to your markdown* file.
+To load in a function from an `*.R` file, you use the `source()` command and give it the path to the file .blueinline[*relative to your markdown*] file.
 
 
 ```r
@@ -341,8 +514,9 @@ ls()
 ```
 
 ```
-## [1] "favorite"            "foo"                 "who_is_in_the_house"
-## [4] "x"
+## [1] "Day_Or_Night"        "favorite"            "foo"                
+## [4] "freezing"            "grade"               "hour"               
+## [7] "who_is_in_the_house" "x"
 ```
 
 --
@@ -356,8 +530,9 @@ ls()
 ```
 
 ```
-## [1] "favorite"            "foo"                 "summarize_levels"   
-## [4] "who_is_in_the_house" "x"
+## [1] "Day_Or_Night"        "favorite"            "foo"                
+## [4] "freezing"            "grade"               "hour"               
+## [7] "summarize_levels"    "who_is_in_the_house" "x"
 ```
 
 

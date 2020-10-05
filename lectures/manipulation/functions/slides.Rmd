@@ -219,6 +219,133 @@ who_is_in_the_house
 
 
 ---
+class: sectionTitle, inverse
+
+# .orange[Conditional Execution]
+
+### .fancy[IF this ELSE that]
+
+---
+
+# Is it Cold Outside 🌡
+
+It is very convenient to be able to execute come code under certain conditions and another set of code under other conditions.  
+
+```{r}
+freezing <- function( temperature ) {
+  if( temperature <= 0 ) {
+    print("Brrr")
+  } 
+  else {
+    print("Warm!")
+  }
+}
+```
+
+--
+
+```{r}
+freezing( -2 )
+freezing( 18 )
+```
+
+
+
+---
+
+# Multipart Conditionals
+
+Many times we may have to 
+
+```{r}
+grade <- function( percentage ) {
+  if( percentage >= 90 ) {
+    return( "A" )
+  } 
+  else if( percentage >= 80 ) {
+    return( "B" )
+  }
+  else if( percentage >= 70 ) {
+    return( "C" )
+  }
+  else if( percentage >= 60 ) {
+    return( "D" )
+  }
+  else {
+    return( "F" )
+  }
+}
+```
+
+---
+
+# Mutipart Conditional (cont.)
+
+```{r}
+grade( 80 )
+grade( 93 )
+grade( 54 )
+```
+
+---
+
+# A Shortcut
+
+There are so many cases where we use the dichotomous `if/else` workflow, that we can simplify this code
+
+```{r eval=FALSE }
+if( condition ) {
+  TRUE_CONDITION
+} 
+else {
+  FALSE_CONDITION
+}
+```
+
+--
+
+Can be simplifed into 
+
+```{r eval=FALSE}
+ifelse( CONDITION, TRUE_CONDITION, FALSE_CONDITION )
+```
+
+
+---
+
+# An Example
+
+Here is a relevant exmaple from the most recent homework.
+
+```{r}
+hour <- sample(0:23, 
+               size = 18,
+               replace = TRUE)
+hour
+```
+
+--
+
+```{r}
+Day_Or_Night <- ifelse( hour >= 7 & hour <=19, "Day", "Night")
+Day_Or_Night
+```
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Saving Functions]
+
+
+
+
+
+
+---
 
 # Saving Functions - Within Markdown
 
@@ -297,7 +424,7 @@ rm( "summarize_levels" )
 # Accessing Functions From Scripts 📜
 
 
-To load in a function from an `*.R` file, you use the `source()` command and give it the path to the file **relative to your markdown* file.
+To load in a function from an `*.R` file, you use the `source()` command and give it the path to the file .blueinline[*relative to your markdown*] file.
 
 ```{r}
 ls()

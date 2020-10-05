@@ -255,7 +255,7 @@ freezing( 18 )
 
 # Multipart Conditionals
 
-Many times we may have to 
+Many times we may have to make decisions that have several alternative and exclusive conditions.  We can extend the `IF/ELSE` pattern into an `IF/ELSE IF/ELSE IF/ELSE` pattern of arbitrary length.
 
 ```{r}
 grade <- function( percentage ) {

@@ -1,0 +1,209 @@
+---
+title: "Date Data Types 📅"
+author: "The `lubridate` library"
+output: 
+  html_notebook:
+    css: ["https://dyerlab.github.io/ENVS-Lectures/css/narrative_style.css"]
+---
+
+```{r startup, include=FALSE}
+options( dplyr.summarise.inform = FALSE )  
+library( tidyverse )
+library( lubridate )
+library( knitr )
+opts_chunk$set( warning = FALSE,
+                message = FALSE,
+                fig.align = 'center' )
+ggplot2::theme_set( theme_bw( base_size=16) )
+```
+
+
+
+
+> Time is the next dimension.
+
+This topic covers the basics of how we put together data based upone date and time objects.  For this, we will use the following data frame with a single column of data representing dates as they are written in the US.
+
+These are several challenges associated with working with date and time objects.  To those of us who are reading this with a background of how US time and date formats are read, we can easily interpret data objects as Month/Day/Year formats (e.g., "2/14/2018"), and is commonly represented in the kind of input data we work in `R` with as with a string of characters.  Dates and times are sticky things in data analysis because they do not work the way we think they should.  Here are some wrinkles:
+
+1. There are many types of calendars, we use the Julian calendar.  However, there are many other calendars that are in use that we may run into.  Each of these calendars has a different starting year (e.g., in the Assyrian calendar it is year 6770, it is 4718 in the Chinese calendar, 2020 in the Gregorian, and 1442 in the Islamic calendar).
+2. Western calendar has leap years (+1 day in February) as well as leap seconds because it is based on the rotation around the sun, others are based upon the lunar cycle and have other corrections. 
+3. On this planet, we have 24 different time zones. Some states (looking at you Arizona) don't feel it necessary to follow the other states around so they may be the same as PST some of the year and the same as MST the rest of the year.  The provence of Newfoundland decided to be half-way between time zones so they are GMT-2:30. Some states have more than one time zone even if they are not large in size (hello Indiana).
+4. Dates and time are made up of odd units, 60-seconds a minute, 60-minutes an hour, 24-hours a day, 7-days a week, 2-weeks a fortnight, 28,29,30,or 31-days in a month, 365 or 366 days in a year, 100 years in a century, etc.
+
+Fortunately, some smart programmers have figured this out for us already.  What they did is made the second as the base unit of time and designated 00:00:00 on 1 January 1970 as the *unix epoch*.  Time on most modern computers is measured from that starting point.  It is much easier to measure the difference between two points in time using the seconds since unix epich *and then* translate it into one or more of these calendars than to deal with all the different calendars each time. So under the hood, much of the date and time issues are kept in terms of epoch seconds.  
+
+```{r}
+unclass( Sys.time() )
+```
+
+## Basic Date Objects
+
+`R` has some basic date functionality built into it.  One of the easiest says to get a date object created is to specify the a date as a character string and then coerce it into a data object.  By default, this requires us to represent the date objects as "YEAR-MONTH-DAY" with padding `0` values for any integer of month or date below 9 (e.g., must be two-digits).
+
+So for example, we can specify a date object as:
+
+```{r}
+class_start <- as.Date("2021-01-15")
+class_start
+```
+
+And it is of type: 
+
+```{r}
+class( class_start )
+```
+
+If you want to make a the date from a different format, you need to specify what elements within the string representation using format codes.  These codes (and many more) can be found by looking at `?strptime`.
+
+```{r}
+class_end <- as.Date( "5/10/21", format = "%m/%d/%y")
+class_end
+```
+
+Date objects can be put into vectors and sequences just like other objects.
+
+```{r}
+semester <- seq( class_start, class_end, by = "1 day")
+semester
+```
+
+Some helpful functions include the Julian Ordinal Day (e.g., number of days since the start of the year).
+
+```{r}
+ordinal_day <- yday( semester[102] )
+ordinal_day
+```
+
+The weekday as an integer (0-6 starting on Sunday), which I use to index the named values.
+
+```{r}
+days_of_week <- c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+x <- wday( semester[32] )
+days_of_week[ x ]
+```
+
+Since we did not specify a time, things like `hour()` and `minute()` do not provide any usable information.
+
+
+
+## Dates & Times
+
+To add time to the date objects, we need to specify both date and time specifically.  Here are some example data: 
+
+```{r}
+df <- data.frame( Date = c("8/21/2004 7:33:51 AM",
+                           "7/12/2008 9:23:08 PM",
+                           "2/14/2010 8:18:30 AM",
+                           "12/23/2018 11:11:45 PM",
+                           "2/1/2019 4:42:00 PM",
+                           "5/17/2012 1:23:23 AM",
+                           "12/11/2020 9:48:02 PM") )
+summary( df )
+```
+
+Just like above, if we want to turn these into date and time objects we must be able to tell the parsing algorithm what elements are represented in each entry. There are many ways to make dates and time, 10/14 or 14 Oct or October 14 or Julian day 287, etc.  These are designated by a format string were we indicate what element represents a *day* or *month* or *year* or *hour* or *minute* or *second*, etc.  These are found by looking at the documentation for`?strptime`.
+
+In our case, we have:  
+- Month as 1 or 2 digits  
+- Day as 1 or 2 digits  
+- Year as 4 digits  
+- a space to separate date from time   
+- hour (not 24-hour though)  
+- minutes in 2 digits  
+- seconds in 2 digits  
+- a space to separate time from timezone   
+- timezone  
+- `/` separating date objects  
+- `:` separating time objects  
+
+To make the format string, we need to look up how to encode these items.  The items in `df` for a date & time object such as `r df$Date[5]` have the format string:
+
+```{r}
+format <- "%m/%d/%Y %I:%M:%S %p"
+```
+
+Now, we can convert the character string in the data frame to a date and time object.  Instead of using the built-in `as.Date()` functionality, I like the `lubridate` library[^1] as it has a lot of additional functionality that we'll play with a bit later.
+
+```{r}
+library( lubridate )
+df$Date <- parse_date_time( df$Date, 
+                            orders=format, 
+                            tz = "EST" )
+summary( df )
+class( df$Date )
+```
+
+Now, we can ask *Date-like* questions about the data such as what day of the week was the first sample taken?
+
+```{r warning=FALSE }
+weekdays( df$Date[1] )
+```
+
+What is the range of dates?
+
+```{r}
+range( df$Date )
+```
+
+What is the median of samples
+
+```{r}
+median( df$Date )
+```
+
+and what julian ordinal day (e.g., how many days since start of the year) is the last record.
+
+```{r}
+yday( df$Date[4] )
+```
+
+Just for fun, I'll add a column to the data that has weekday.
+
+```{r}
+df$Weekday <- weekdays( df$Date )
+df
+```
+
+However, we should probably turn it into a factor (e.g., a data type with pre-defined levels—and for us here—an intrinsic order of the levels).
+
+```{r}
+df$Weekday <- factor( df$Weekday, 
+                        ordered = TRUE, 
+                        levels = days_of_week
+                        )
+summary( df$Weekday )
+```
+
+
+
+## Filtering on Date Objects
+
+We can easily filter the content within a `data.frame` using some helper functions such as `hour()`, `minute()`, `weekday()`, etc.  Here are some examples including pulling out the weekends.
+
+```{r}
+weekends <- df[ df$Weekday %in% c("Saturday","Sunday"), ]
+weekends
+```
+finding items that are in the past (paste being defined as the last time this document was knit).
+
+```{r}
+past <- df$Date[ df$Date < Sys.time() ]
+past
+```
+
+Items that are during working hours
+
+```{r}
+work <- df$Date[ hour(df$Date) >= 9 & hour(df$Date) <= 17 ]
+work
+```
+
+And total range of values in days using normal arithmatic operations such as the minus operator.
+
+```{r}
+max(df$Date) - min(df$Date)
+```
+
+
+[^1]: If you get an error saying something like, "there is no package named lubridate" then use `install.packages("lubridate")` and install it.  You only need to do this once.

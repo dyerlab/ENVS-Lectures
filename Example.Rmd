@@ -239,5 +239,70 @@ rice %>%
 
 
 
+```{r}
+summary( rice )
+
+
+names( df4 )
+
+# Option 1 - make 2 data.frames 
+
+#   df6 is the day one
+#   df7 as the night one
+
+df.carter.night <- df4$Rain[ (df4$Hour < 7 & df4$Minutes < 15) | 
+                              (df4$Hour > 17 & df4$Minutes > 30) ]
+
+df.carter.day <- df4$Rain[ (df4$Hour >= 7 & df4$Minutes >= 15) & 
+                            (df4$Hour <= 17 & df4$Minutes <= 30) ]
+
+
+df.carter.summary <- data.frame( Time = c("Day","Night"),
+                                 Rain = c( sum(df.carter.day), 
+                                           sum(df.carter.night) ) )
+
+df.carter.summary
+
+
+# Option 2 - Add Auxillary Columns
+
+
+df.dyer <- df4
+df.dyer$DayNight <- "Night"
+df.dyer$DayNight[  (df4$Hour >= 7 & df4$Minutes >= 15) & 
+                            (df4$Hour <= 17 & df4$Minutes <= 30) ] <- "Day"
+
+df.dyer$DayNight <- factor( df.dyer$DayNight )
+
+summary( df.dyer)
+
+
+by( df.dyer$Rain, df.dyer$DayNight, max )
+```
+
+
+
+```{r}
+
+summary( df4 )
+
+
+start_o_week <- mdy( "02/03/2014")
+end_o_week <- mdy( "02/05/2014")
+
+
+
+df4[ df4$Date >= start_o_week & df4$Date <= end_o_week,  ] -> df5
+summary( df5 )
+```
+
+
+
+```{r}
+ggplot( df4, aes(Hour, Rain, color=Weekday)) + 
+  geom_point()  + 
+  geom_line() 
+```
+
 
 

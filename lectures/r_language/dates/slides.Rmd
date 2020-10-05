@@ -1,0 +1,251 @@
+---
+title: "Workflow Judo🥋"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "../../css/slide_styles.css", "../../css/slide_fonts.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50362989122_a8ee154fea_k_d.jpg")
+background-size: cover
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+library( knitr )
+options(knitr.table.format = "html")
+library( tidyverse )
+library( fontawesome )
+library(DiagrammeR)
+library( ggplot2 )
+theme_set( theme_classic( base_size = 20) )
+```
+
+
+
+#  .blue[Dates 📅]
+
+
+
+### Environmental Data Literacy
+
+
+
+
+---
+
+# Date Objects
+
+When we read a date and/or time object, it is typically given in a textual form:
+
+- February 14, 2021
+- Tomorrow @ noon.
+- Next Wednesday morning.
+
+But in `R` we need to be able to specify these these textual representations (which mean a lot to us when we read them) into objects that we can perform actual operations on.
+
+
+---
+
+# 
+
+
+---
+
+# A Larger Data 
+
+The data we will be working with consist of data from the [Rice Rivers Center](https://ricerivers.vcu.edu) which contains water and atmospheric measurements from a stream of sensors in both the James River and on the bluff overlooking the river.
+
+```{r}
+library( readr )
+url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
+rice <- read_csv( url )
+names( rice )
+```
+
+We are going to focus on the `DateTime` column specifically as these measurements are taken every 15 minutes.
+
+
+
+
+
+---
+class: sectionTitle
+
+# .green[`lubridate`] 
+
+## A more refined set of time operations.
+
+---
+
+# Raw Data -> Usable Data
+
+Data is often derived from text.
+
+- `read_csv()` must make an estimate of a column data type should be.  
+
+- Estimates are often *least divisive* data type (e.g., `character`).
+
+--
+
+Consider the `DateTime` column in the `rice` data.
+
+```{r}
+rice$DateTime[1]
+```
+
+--
+
+```{r}
+class( rice$DateTime )
+```
+
+
+---
+
+# Date & Time Challenges
+
+We must consider the following when attempting to conduct *operations* on date and time units.
+
+1. Many different calendars.  
+
+2. Leap days, years, seconds.
+
+3. Time Zones (looking at you Arizona).
+
+4. Non-consistent base units (60 seconds, 60 minutes, 24 hours, 7 days, 28/29/30/31 days, 12 months, 100 years, 10 centuries)
+
+
+
+---
+
+# The Unix Epoch - Time Zero!
+
+.red[.center[.large[00:00:00 January 1, 1970]]]
+
+
+Time on computers is kept as the number of seconds since the *epoch*.  It is only .blueinline[displayed] in the Gregorian, Julian, Chinese, Jewish, and other calendars.
+
+
+
+```{r}
+Sys.time()
+```
+
+--
+
+```{r}
+unclass( Sys.time() )
+```
+
+
+---
+
+# Making Time `r emo::ji("clock")`
+
+To convert something like `r rice$DateTime[1]` from `character` to a `time` object, we need to specify the layout of the elements within the string so the functions know what to operate on.
+
+
+.pull-left[
+
+- Month as 1 or 2 digits  
+- Day as 1 or 2 digits  
+- Year as 4 digits  
+- a space to separate date from time  
+- hour (not 24-hour though)  
+- minutes in 2 digits  
+- seconds in 2 digits  
+- a space to separate time from timezone  
+- timezone  
+- / separating date objects  
+- : separating time objects  
+
+]
+
+--
+
+.pull-right[
+
+```{r}
+rice$DateTime[1]
+```
+
+
+Look at the help file for `?strptime` to see these and other encodings.
+
+```{r}
+library( lubridate )
+format <- "%m/%d/%Y %I:%M:%S %p"
+x <- parse_date_time( rice$DateTime[1], orders=format, tz="EST")
+x
+```
+
+
+]
+
+
+---
+
+# Making Lots of Time
+
+```{r}
+rice$DateTime <- parse_date_time( rice$DateTime,
+                                  orders=format,
+                                  tz="EST")
+summary( rice$DateTime )
+```
+
+
+--
+
+```{r}
+rice$DateTime[8199] - rice$DateTime[1]
+```
+
+
+--
+
+
+
+```{r}
+txt <- paste( "Entry 5000 '", rice$DateTime[5000], "' is julian ordinal day ",yday( rice$DateTime[5000] ), sep="")
+txt
+```
+
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# 🙋🏻‍♀️ Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+<p>&nbsp;</p>
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+
+

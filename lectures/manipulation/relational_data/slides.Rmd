@@ -169,6 +169,12 @@ people %>%
 
 # Left Join
 
+![left join](https://live.staticflickr.com/65535/50427817371_678f0f64c7_c_d.jpg)
+
+```{r}
+
+```
+
 
 ---
 

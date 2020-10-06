@@ -1779,61 +1779,67 @@ summary {
 <p>For these questions, we will be using the data set from the <a href="https://ricerivers.vcu.edu">Rice Rivers Center</a> and is loaded in as raw data from the code below.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbImxpYnJhcnkoIHJlYWRyICkiLCJ1cmwgPC0gXCJodHRwczovL2RvY3MuZ29vZ2xlLmNvbS9zcHJlYWRzaGVldHMvZC8xTWsxWUdIOUxxakY3ZHJKRS10ZDFHX0prZEFET1UwZU1sclAwMVdGQlQ4cy9wdWI/Z2lkPTAmc2luZ2xlPXRydWUmb3V0cHV0PWNzdlwiIiwicmljZSA8LSByZWFkX2NzdiggdXJsICkiLCJzdW1tYXJ5KCByaWNlICkiXX0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSggcmVhZHIgKVxubGlicmFyeSggbHVicmlkYXRlIClcblxuXG51cmwgPC0gXCJodHRwczovL2RvY3MuZ29vZ2xlLmNvbS9zcHJlYWRzaGVldHMvZC8xTWsxWUdIOUxxakY3ZHJKRS10ZDFHX0prZEFET1UwZU1sclAwMVdGQlQ4cy9wdWI/Z2lkPTAmc2luZ2xlPXRydWUmb3V0cHV0PWNzdlwiXG5yaWNlIDwtIHJlYWRfY3N2KCB1cmwgKVxuZm9ybWF0IDwtIFwiJW0vJWQvJVkgJUk6JU06JVMgJXBcIlxuXG5kYXlzIDwtIGMoXCJTdW5kYXlcIixcIk1vbmRheVwiLFwiVHVlc2RheVwiLFwiV2VkbmVzZGF5XCIsXCJUaHVyc2RheVwiLFwiRnJpZGF5XCIsXCJTYXR1cmRheVwiKVxuXG5cbnJpY2UgJT4lXG4gIG11dGF0ZSggRGF0ZSA9IHBhcnNlX2RhdGVfdGltZSggRGF0ZVRpbWUsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9yZGVycz1mb3JtYXQsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHo9XCJFU1RcIikgKSAlPiVcbiAgbXV0YXRlKCBXZWVrZGF5ID0gZmFjdG9yKCB3ZWVrZGF5cyhEYXRlKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBvcmRlcmVkID0gVFJVRSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBsZXZlbHMgPSBkYXlzICkpICU+JVxuICBtdXRhdGUoIE1vbnRoID0gbW9udGgoIERhdGUsXG4gICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWwgPSBUUlVFLFxuICAgICAgICAgICAgICAgICAgICAgICAgIGFiYnIgPSBGQUxTRSkpICU+JVxuICBtdXRhdGUoIEhvdXIgPSBob3VyKCBEYXRlICkgKSAtPiByaWNlIFxuXG5cblxuc3VtbWFyeSggcmljZSApXG5gYGAifQ== -->
 <pre class="r"><code>library( readr )
+library( lubridate )
+
+
 url &lt;- &quot;https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&amp;single=true&amp;output=csv&quot;
 rice &lt;- read_csv( url )
+format &lt;- &quot;%m/%d/%Y %I:%M:%S %p&quot;
+
+days &lt;- c(&quot;Sunday&quot;,&quot;Monday&quot;,&quot;Tuesday&quot;,&quot;Wednesday&quot;,&quot;Thursday&quot;,&quot;Friday&quot;,&quot;Saturday&quot;)
+
+
+rice %&gt;%
+  mutate( Date = parse_date_time( DateTime, 
+                                  orders=format,
+                                  tz=&quot;EST&quot;) ) %&gt;%
+  mutate( Weekday = factor( weekdays(Date),
+                            ordered = TRUE,
+                            levels = days )) %&gt;%
+  mutate( Month = month( Date,
+                         label = TRUE,
+                         abbr = FALSE)) %&gt;%
+  mutate( Hour = hour( Date ) ) -&gt; rice 
+
+
+
 summary( rice )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgRGF0ZVRpbWUgICAgICAgICAgICBSZWNvcmRJRCAgICAgICAgICBQQVIgICAgICAgICAgIFdpbmRTcGVlZF9tcGggICBcbiBMZW5ndGg6ODE5OSAgICAgICAgTWluLiAgIDo0MzgxNiAgIE1pbi4gICA6ICAgMC4wMDAgICBNaW4uICAgOiAwLjAwMCAgXG4gQ2xhc3MgOmNoYXJhY3RlciAgIDFzdCBRdS46NDU4NjYgICAxc3QgUXUuOiAgIDAuMDAwICAgMXN0IFF1LjogMi40NjcgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOjQ3OTE1ICAgTWVkaWFuIDogICAwLjA0NiAgIE1lZGlhbiA6IDQuMDkwICBcbiAgICAgICAgICAgICAgICAgICAgTWVhbiAgIDo0NzkxNSAgIE1lYW4gICA6IDI0MS45ODQgICBNZWFuICAgOiA1LjQ0NiAgXG4gICAgICAgICAgICAgICAgICAgIDNyZCBRdS46NDk5NjQgICAzcmQgUXUuOiAzMzcuOTAwICAgM3JkIFF1LjogNy4yOTIgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOjUyMDE0ICAgTWF4LiAgIDoxOTU3LjAwMCAgIE1heC4gICA6MzAuNjUwICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgV2luZERpciAgICAgICAgICBBaXJUZW1wRiAgICAgICBSZWxIdW1pZGl0eSAgICAgICAgQlBfSEcgICAgICBcbiBNaW4uICAgOiAgMC4wMCAgIE1pbi4gICA6IDMuNzQ5ICAgTWluLiAgIDoxNS4zNyAgIE1pbi4gICA6MjkuMTEgIFxuIDFzdCBRdS46IDM3LjMxICAgMXN0IFF1LjozMS41NDUgICAxc3QgUXUuOjQyLjI1ICAgMXN0IFF1LjoyOS44NyAgXG4gTWVkaWFuIDoxMzcuMzAgICBNZWRpYW4gOjM3LjQ0MCAgIE1lZGlhbiA6NTYuNDAgICBNZWRpYW4gOjMwLjAxICBcbiBNZWFuICAgOjE0Ni4yMCAgIE1lYW4gICA6MzguNzk1ICAgTWVhbiAgIDo1OC4zNyAgIE1lYW4gICA6MzAuMDIgIFxuIDNyZCBRdS46MjQ5Ljk1ICAgM3JkIFF1Ljo0Ni40MTAgICAzcmQgUXUuOjc2LjU5ICAgM3JkIFF1LjozMC4yMSAgXG4gTWF4LiAgIDozNjAuMDAgICBNYXguICAgOjc0Ljg3MCAgIE1heC4gICA6OTMuMDAgICBNYXguICAgOjMwLjU4ICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgIFJhaW5faW4gICAgICAgICAgICBIMk9fVGVtcEMgICAgICAgU3BDb25kX21TY20gICAgICBTYWxpbml0eV9wcHQgICBcbiBNaW4uICAgOjAuMDAwMDAwMCAgIE1pbi4gICA6LTAuMTQwICAgTWluLiAgIDowLjAxMTAgICBNaW4uICAgOjAuMDAwMCAgXG4gMXN0IFF1LjowLjAwMDAwMDAgICAxc3QgUXUuOiAzLjkzMCAgIDFzdCBRdS46MC4xNDMwICAgMXN0IFF1LjowLjA3MDAgIFxuIE1lZGlhbiA6MC4wMDAwMDAwICAgTWVkaWFuIDogNS40NTAgICBNZWRpYW4gOjAuMTY1MCAgIE1lZGlhbiA6MC4wODAwICBcbiBNZWFuICAgOjAuMDAwODQxMiAgIE1lYW4gICA6IDUuNTI5ICAgTWVhbiAgIDowLjE2MTEgICBNZWFuICAgOjAuMDc1OSAgXG4gM3JkIFF1LjowLjAwMDAwMDAgICAzcmQgUXUuOiA3LjQxMCAgIDNyZCBRdS46MC4xNzYwICAgM3JkIFF1LjowLjA4MDAgIFxuIE1heC4gICA6MC4zNDcwMDAwICAgTWF4LiAgIDoxMy4zMDAgICBNYXguICAgOjAuMjExMCAgIE1heC4gICA6MC4xMDAwICBcbiAgICAgICAgICAgICAgICAgICAgIE5BJ3MgICA6MSAgICAgICAgTkEncyAgIDoxICAgICAgICBOQSdzICAgOjEgICAgICAgXG4gICAgICAgUEggICAgICAgICAgIFBIX212ICAgICAgICBUdXJiaWRpdHlfbnR1ICAgICAgIENobGFfdWdsICAgIFxuIE1pbi4gICA6Ni40MyAgIE1pbi4gICA6LTExMy44ICAgTWluLiAgIDogIDYuMjAgICBNaW4uICAgOiAgMS4zICBcbiAxc3QgUXUuOjcuNTAgICAxc3QgUXUuOiAtNDcuOCAgIDFzdCBRdS46IDE1LjUwICAgMXN0IFF1LjogIDMuNyAgXG4gTWVkaWFuIDo3LjU4ICAgTWVkaWFuIDogLTQzLjggICBNZWRpYW4gOiAyMS44MCAgIE1lZGlhbiA6ICA2LjcgIFxuIE1lYW4gICA6Ny42MCAgIE1lYW4gICA6IC00NC41ICAgTWVhbiAgIDogMjQuNTQgICBNZWFuICAgOjEzNy4zICBcbiAzcmQgUXUuOjcuNjkgICAzcmQgUXUuOiAtMzguOSAgIDNyZCBRdS46IDMwLjMwICAgM3JkIFF1LjozMDIuNiAgXG4gTWF4LiAgIDo5LjAwICAgTWF4LiAgIDogIDI4LjUgICBNYXguICAgOjE4Ny43MCAgIE1heC4gICA6MzMwLjEgIFxuIE5BJ3MgICA6MSAgICAgIE5BJ3MgICA6MSAgICAgICAgTkEncyAgIDoxICAgICAgICBOQSdzICAgOjEgICAgICBcbiAgIEJHQVBDX0NNTCAgICAgICAgQkdBUENfcmZ1ICAgICAgICAgT0RPX3NhdCAgICAgICAgIE9ET19tZ2wgICAgIFxuIE1pbi4gICA6ICAgMTg4ICAgTWluLiAgIDogIDAuMTAgICBNaW4uICAgOiA4Ny41ICAgTWluLiAgIDoxMC4zNCAgXG4gMXN0IFF1LjogICA5NzEgICAxc3QgUXUuOiAgMC41MCAgIDFzdCBRdS46IDk5LjIgICAxc3QgUXUuOjEyLjM0ICBcbiBNZWRpYW4gOiAgMTM2OSAgIE1lZGlhbiA6ICAwLjcwICAgTWVkaWFuIDoxMDEuOCAgIE1lZGlhbiA6MTIuODggIFxuIE1lYW4gICA6MTUzNTcxICAgTWVhbiAgIDogNzIuOTEgICBNZWFuICAgOjEwMi4wICAgTWVhbiAgIDoxMi44OCAgXG4gM3JkIFF1LjozNDUyMTEgICAzcmQgUXUuOjE2My42MCAgIDNyZCBRdS46MTA0LjEgICAzcmQgUXUuOjEzLjM0ICBcbiBNYXguICAgOjM0NTQ3MSAgIE1heC4gICA6MTYzLjcwICAgTWF4LiAgIDoxMjAuOCAgIE1heC4gICA6MTQuOTkgIFxuIE5BJ3MgICA6MSAgICAgICAgTkEncyAgIDoxICAgICAgICBOQSdzICAgOjEgICAgICAgTkEncyAgIDoxICAgICAgXG4gICAgRGVwdGhfZnQgICAgICAgIERlcHRoX20gICAgICBTdXJmYWNlV2F0ZXJFbGV2X21fbGV2ZWxOYWQ4M21cbiBNaW4uICAgOjEyLjE1ICAgTWluLiAgIDozLjcwNSAgIE1pbi4gICA6LTMyLjUzICAgICAgICAgICAgICAgIFxuIDFzdCBRdS46MTQuNjAgICAxc3QgUXUuOjQuNDUxICAgMXN0IFF1LjotMzEuNzggICAgICAgICAgICAgICAgXG4gTWVkaWFuIDoxNS4zNyAgIE1lZGlhbiA6NC42ODQgICBNZWRpYW4gOi0zMS41NSAgICAgICAgICAgICAgICBcbiBNZWFuICAgOjE1LjM0ICAgTWVhbiAgIDo0LjY3NyAgIE1lYW4gICA6LTMxLjU1ICAgICAgICAgICAgICAgIFxuIDNyZCBRdS46MTYuMTIgICAzcmQgUXUuOjQuOTEzICAgM3JkIFF1LjotMzEuMzIgICAgICAgICAgICAgICAgXG4gTWF4LiAgIDoxNy44OSAgIE1heC4gICA6NS40NTQgICBNYXguICAgOi0zMC43OCAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
-<pre><code>   DateTime            RecordID          PAR           WindSpeed_mph   
- Length:8199        Min.   :43816   Min.   :   0.000   Min.   : 0.000  
- Class :character   1st Qu.:45866   1st Qu.:   0.000   1st Qu.: 2.467  
- Mode  :character   Median :47915   Median :   0.046   Median : 4.090  
-                    Mean   :47915   Mean   : 241.984   Mean   : 5.446  
-                    3rd Qu.:49964   3rd Qu.: 337.900   3rd Qu.: 7.292  
-                    Max.   :52014   Max.   :1957.000   Max.   :30.650  
-                                                                       
-    WindDir          AirTempF       RelHumidity        BP_HG      
- Min.   :  0.00   Min.   : 3.749   Min.   :15.37   Min.   :29.11  
- 1st Qu.: 37.31   1st Qu.:31.545   1st Qu.:42.25   1st Qu.:29.87  
- Median :137.30   Median :37.440   Median :56.40   Median :30.01  
- Mean   :146.20   Mean   :38.795   Mean   :58.37   Mean   :30.02  
- 3rd Qu.:249.95   3rd Qu.:46.410   3rd Qu.:76.59   3rd Qu.:30.21  
- Max.   :360.00   Max.   :74.870   Max.   :93.00   Max.   :30.58  
-                                                                  
-    Rain_in            H2O_TempC       SpCond_mScm      Salinity_ppt   
- Min.   :0.0000000   Min.   :-0.140   Min.   :0.0110   Min.   :0.0000  
- 1st Qu.:0.0000000   1st Qu.: 3.930   1st Qu.:0.1430   1st Qu.:0.0700  
- Median :0.0000000   Median : 5.450   Median :0.1650   Median :0.0800  
- Mean   :0.0008412   Mean   : 5.529   Mean   :0.1611   Mean   :0.0759  
- 3rd Qu.:0.0000000   3rd Qu.: 7.410   3rd Qu.:0.1760   3rd Qu.:0.0800  
- Max.   :0.3470000   Max.   :13.300   Max.   :0.2110   Max.   :0.1000  
-                     NA&#39;s   :1        NA&#39;s   :1        NA&#39;s   :1       
-       PH           PH_mv        Turbidity_ntu       Chla_ugl    
- Min.   :6.43   Min.   :-113.8   Min.   :  6.20   Min.   :  1.3  
- 1st Qu.:7.50   1st Qu.: -47.8   1st Qu.: 15.50   1st Qu.:  3.7  
- Median :7.58   Median : -43.8   Median : 21.80   Median :  6.7  
- Mean   :7.60   Mean   : -44.5   Mean   : 24.54   Mean   :137.3  
- 3rd Qu.:7.69   3rd Qu.: -38.9   3rd Qu.: 30.30   3rd Qu.:302.6  
- Max.   :9.00   Max.   :  28.5   Max.   :187.70   Max.   :330.1  
- NA&#39;s   :1      NA&#39;s   :1        NA&#39;s   :1        NA&#39;s   :1      
-   BGAPC_CML        BGAPC_rfu         ODO_sat         ODO_mgl     
- Min.   :   188   Min.   :  0.10   Min.   : 87.5   Min.   :10.34  
- 1st Qu.:   971   1st Qu.:  0.50   1st Qu.: 99.2   1st Qu.:12.34  
- Median :  1369   Median :  0.70   Median :101.8   Median :12.88  
- Mean   :153571   Mean   : 72.91   Mean   :102.0   Mean   :12.88  
- 3rd Qu.:345211   3rd Qu.:163.60   3rd Qu.:104.1   3rd Qu.:13.34  
- Max.   :345471   Max.   :163.70   Max.   :120.8   Max.   :14.99  
- NA&#39;s   :1        NA&#39;s   :1        NA&#39;s   :1       NA&#39;s   :1      
-    Depth_ft        Depth_m      SurfaceWaterElev_m_levelNad83m
- Min.   :12.15   Min.   :3.705   Min.   :-32.53                
- 1st Qu.:14.60   1st Qu.:4.451   1st Qu.:-31.78                
- Median :15.37   Median :4.684   Median :-31.55                
- Mean   :15.34   Mean   :4.677   Mean   :-31.55                
- 3rd Qu.:16.12   3rd Qu.:4.913   3rd Qu.:-31.32                
- Max.   :17.89   Max.   :5.454   Max.   :-30.78                
-                                                               </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiICAgRGF0ZVRpbWUgICAgICAgICAgICBSZWNvcmRJRCAgICAgICAgICBQQVIgICAgICAgICAgIFdpbmRTcGVlZF9tcGggICAgICAgV2luZERpciAgICAgICAgICBBaXJUZW1wRiAgICAgICBSZWxIdW1pZGl0eSAgIFxuIExlbmd0aDo4MTk5ICAgICAgICBNaW4uICAgOjQzODE2ICAgTWluLiAgIDogICAwLjAwMCAgIE1pbi4gICA6IDAuMDAwICAgTWluLiAgIDogIDAuMDAgICBNaW4uICAgOiAzLjc0OSAgIE1pbi4gICA6MTUuMzcgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOjQ1ODY2ICAgMXN0IFF1LjogICAwLjAwMCAgIDFzdCBRdS46IDIuNDY3ICAgMXN0IFF1LjogMzcuMzEgICAxc3QgUXUuOjMxLjU0NSAgIDFzdCBRdS46NDIuMjUgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOjQ3OTE1ICAgTWVkaWFuIDogICAwLjA0NiAgIE1lZGlhbiA6IDQuMDkwICAgTWVkaWFuIDoxMzcuMzAgICBNZWRpYW4gOjM3LjQ0MCAgIE1lZGlhbiA6NTYuNDAgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOjQ3OTE1ICAgTWVhbiAgIDogMjQxLjk4NCAgIE1lYW4gICA6IDUuNDQ2ICAgTWVhbiAgIDoxNDYuMjAgICBNZWFuICAgOjM4Ljc5NSAgIE1lYW4gICA6NTguMzcgIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOjQ5OTY0ICAgM3JkIFF1LjogMzM3LjkwMCAgIDNyZCBRdS46IDcuMjkyICAgM3JkIFF1LjoyNDkuOTUgICAzcmQgUXUuOjQ2LjQxMCAgIDNyZCBRdS46NzYuNTkgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOjUyMDE0ICAgTWF4LiAgIDoxOTU3LjAwMCAgIE1heC4gICA6MzAuNjUwICAgTWF4LiAgIDozNjAuMDAgICBNYXguICAgOjc0Ljg3MCAgIE1heC4gICA6OTMuMDAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgICBCUF9IRyAgICAgICAgICBSYWluX2luICAgICAgICAgICAgSDJPX1RlbXBDICAgICAgIFNwQ29uZF9tU2NtICAgICAgU2FsaW5pdHlfcHB0ICAgICAgICAgIFBIICAgICAgICAgICBQSF9tdiAgICAgICAgVHVyYmlkaXR5X250dSAgIFxuIE1pbi4gICA6MjkuMTEgICBNaW4uICAgOjAuMDAwMDAwMCAgIE1pbi4gICA6LTAuMTQwICAgTWluLiAgIDowLjAxMTAgICBNaW4uICAgOjAuMDAwMCAgIE1pbi4gICA6Ni40MyAgIE1pbi4gICA6LTExMy44ICAgTWluLiAgIDogIDYuMjAgIFxuIDFzdCBRdS46MjkuODcgICAxc3QgUXUuOjAuMDAwMDAwMCAgIDFzdCBRdS46IDMuOTMwICAgMXN0IFF1LjowLjE0MzAgICAxc3QgUXUuOjAuMDcwMCAgIDFzdCBRdS46Ny41MCAgIDFzdCBRdS46IC00Ny44ICAgMXN0IFF1LjogMTUuNTAgIFxuIE1lZGlhbiA6MzAuMDEgICBNZWRpYW4gOjAuMDAwMDAwMCAgIE1lZGlhbiA6IDUuNDUwICAgTWVkaWFuIDowLjE2NTAgICBNZWRpYW4gOjAuMDgwMCAgIE1lZGlhbiA6Ny41OCAgIE1lZGlhbiA6IC00My44ICAgTWVkaWFuIDogMjEuODAgIFxuIE1lYW4gICA6MzAuMDIgICBNZWFuICAgOjAuMDAwODQxMiAgIE1lYW4gICA6IDUuNTI5ICAgTWVhbiAgIDowLjE2MTEgICBNZWFuICAgOjAuMDc1OSAgIE1lYW4gICA6Ny42MCAgIE1lYW4gICA6IC00NC41ICAgTWVhbiAgIDogMjQuNTQgIFxuIDNyZCBRdS46MzAuMjEgICAzcmQgUXUuOjAuMDAwMDAwMCAgIDNyZCBRdS46IDcuNDEwICAgM3JkIFF1LjowLjE3NjAgICAzcmQgUXUuOjAuMDgwMCAgIDNyZCBRdS46Ny42OSAgIDNyZCBRdS46IC0zOC45ICAgM3JkIFF1LjogMzAuMzAgIFxuIE1heC4gICA6MzAuNTggICBNYXguICAgOjAuMzQ3MDAwMCAgIE1heC4gICA6MTMuMzAwICAgTWF4LiAgIDowLjIxMTAgICBNYXguICAgOjAuMTAwMCAgIE1heC4gICA6OS4wMCAgIE1heC4gICA6ICAyOC41ICAgTWF4LiAgIDoxODcuNzAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5BJ3MgICA6MSAgICAgICAgTkEncyAgIDoxICAgICAgICBOQSdzICAgOjEgICAgICAgIE5BJ3MgICA6MSAgICAgIE5BJ3MgICA6MSAgICAgICAgTkEncyAgIDoxICAgICAgIFxuICAgIENobGFfdWdsICAgICAgIEJHQVBDX0NNTCAgICAgICAgQkdBUENfcmZ1ICAgICAgICAgT0RPX3NhdCAgICAgICAgIE9ET19tZ2wgICAgICAgICBEZXB0aF9mdCAgICAgICAgRGVwdGhfbSAgICAgXG4gTWluLiAgIDogIDEuMyAgIE1pbi4gICA6ICAgMTg4ICAgTWluLiAgIDogIDAuMTAgICBNaW4uICAgOiA4Ny41ICAgTWluLiAgIDoxMC4zNCAgIE1pbi4gICA6MTIuMTUgICBNaW4uICAgOjMuNzA1ICBcbiAxc3QgUXUuOiAgMy43ICAgMXN0IFF1LjogICA5NzEgICAxc3QgUXUuOiAgMC41MCAgIDFzdCBRdS46IDk5LjIgICAxc3QgUXUuOjEyLjM0ICAgMXN0IFF1LjoxNC42MCAgIDFzdCBRdS46NC40NTEgIFxuIE1lZGlhbiA6ICA2LjcgICBNZWRpYW4gOiAgMTM2OSAgIE1lZGlhbiA6ICAwLjcwICAgTWVkaWFuIDoxMDEuOCAgIE1lZGlhbiA6MTIuODggICBNZWRpYW4gOjE1LjM3ICAgTWVkaWFuIDo0LjY4NCAgXG4gTWVhbiAgIDoxMzcuMyAgIE1lYW4gICA6MTUzNTcxICAgTWVhbiAgIDogNzIuOTEgICBNZWFuICAgOjEwMi4wICAgTWVhbiAgIDoxMi44OCAgIE1lYW4gICA6MTUuMzQgICBNZWFuICAgOjQuNjc3ICBcbiAzcmQgUXUuOjMwMi42ICAgM3JkIFF1LjozNDUyMTEgICAzcmQgUXUuOjE2My42MCAgIDNyZCBRdS46MTA0LjEgICAzcmQgUXUuOjEzLjM0ICAgM3JkIFF1LjoxNi4xMiAgIDNyZCBRdS46NC45MTMgIFxuIE1heC4gICA6MzMwLjEgICBNYXguICAgOjM0NTQ3MSAgIE1heC4gICA6MTYzLjcwICAgTWF4LiAgIDoxMjAuOCAgIE1heC4gICA6MTQuOTkgICBNYXguICAgOjE3Ljg5ICAgTWF4LiAgIDo1LjQ1NCAgXG4gTkEncyAgIDoxICAgICAgIE5BJ3MgICA6MSAgICAgICAgTkEncyAgIDoxICAgICAgICBOQSdzICAgOjEgICAgICAgTkEncyAgIDoxICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBTdXJmYWNlV2F0ZXJFbGV2X21fbGV2ZWxOYWQ4M20gICAgICBEYXRlICAgICAgICAgICAgICAgICAgICAgICAgICBXZWVrZGF5ICAgICAgICAgIE1vbnRoICAgICAgICAgICBIb3VyICAgICAgXG4gTWluLiAgIDotMzIuNTMgICAgICAgICAgICAgICAgIE1pbi4gICA6MjAxNC0wMS0wMSAwMDowMDowMCAgIFN1bmRheSAgIDoxMTUyICAgSmFudWFyeSA6Mjk3NiAgIE1pbi4gICA6IDAuMDAgIFxuIDFzdCBRdS46LTMxLjc4ICAgICAgICAgICAgICAgICAxc3QgUXUuOjIwMTQtMDEtMjIgMDg6MjI6MzAgICBNb25kYXkgICA6MTE1MiAgIEZlYnJ1YXJ5OjI2ODggICAxc3QgUXUuOiA1LjAwICBcbiBNZWRpYW4gOi0zMS41NSAgICAgICAgICAgICAgICAgTWVkaWFuIDoyMDE0LTAyLTEyIDE2OjQ1OjAwICAgVHVlc2RheSAgOjExNTIgICBNYXJjaCAgIDoyNTM1ICAgTWVkaWFuIDoxMS4wMCAgXG4gTWVhbiAgIDotMzEuNTUgICAgICAgICAgICAgICAgIE1lYW4gICA6MjAxNC0wMi0xMiAxNjo0NTowMCAgIFdlZG5lc2RheToxMjQ4ICAgQXByaWwgICA6ICAgMCAgIE1lYW4gICA6MTEuNDcgIFxuIDNyZCBRdS46LTMxLjMyICAgICAgICAgICAgICAgICAzcmQgUXUuOjIwMTQtMDMtMDYgMDE6MDc6MzAgICBUaHVyc2RheSA6MTE5MSAgIE1heSAgICAgOiAgIDAgICAzcmQgUXUuOjE3LjAwICBcbiBNYXguICAgOi0zMC43OCAgICAgICAgICAgICAgICAgTWF4LiAgIDoyMDE0LTAzLTI3IDA5OjMwOjAwICAgRnJpZGF5ICAgOjExNTIgICBKdW5lICAgIDogICAwICAgTWF4LiAgIDoyMy4wMCAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFNhdHVyZGF5IDoxMTUyICAgKE90aGVyKSA6ICAgMCAgICAgICAgICAgICAgICAgIFxuIn0= -->
+<pre><code>   DateTime            RecordID          PAR           WindSpeed_mph       WindDir          AirTempF       RelHumidity   
+ Length:8199        Min.   :43816   Min.   :   0.000   Min.   : 0.000   Min.   :  0.00   Min.   : 3.749   Min.   :15.37  
+ Class :character   1st Qu.:45866   1st Qu.:   0.000   1st Qu.: 2.467   1st Qu.: 37.31   1st Qu.:31.545   1st Qu.:42.25  
+ Mode  :character   Median :47915   Median :   0.046   Median : 4.090   Median :137.30   Median :37.440   Median :56.40  
+                    Mean   :47915   Mean   : 241.984   Mean   : 5.446   Mean   :146.20   Mean   :38.795   Mean   :58.37  
+                    3rd Qu.:49964   3rd Qu.: 337.900   3rd Qu.: 7.292   3rd Qu.:249.95   3rd Qu.:46.410   3rd Qu.:76.59  
+                    Max.   :52014   Max.   :1957.000   Max.   :30.650   Max.   :360.00   Max.   :74.870   Max.   :93.00  
+                                                                                                                         
+     BP_HG          Rain_in            H2O_TempC       SpCond_mScm      Salinity_ppt          PH           PH_mv        Turbidity_ntu   
+ Min.   :29.11   Min.   :0.0000000   Min.   :-0.140   Min.   :0.0110   Min.   :0.0000   Min.   :6.43   Min.   :-113.8   Min.   :  6.20  
+ 1st Qu.:29.87   1st Qu.:0.0000000   1st Qu.: 3.930   1st Qu.:0.1430   1st Qu.:0.0700   1st Qu.:7.50   1st Qu.: -47.8   1st Qu.: 15.50  
+ Median :30.01   Median :0.0000000   Median : 5.450   Median :0.1650   Median :0.0800   Median :7.58   Median : -43.8   Median : 21.80  
+ Mean   :30.02   Mean   :0.0008412   Mean   : 5.529   Mean   :0.1611   Mean   :0.0759   Mean   :7.60   Mean   : -44.5   Mean   : 24.54  
+ 3rd Qu.:30.21   3rd Qu.:0.0000000   3rd Qu.: 7.410   3rd Qu.:0.1760   3rd Qu.:0.0800   3rd Qu.:7.69   3rd Qu.: -38.9   3rd Qu.: 30.30  
+ Max.   :30.58   Max.   :0.3470000   Max.   :13.300   Max.   :0.2110   Max.   :0.1000   Max.   :9.00   Max.   :  28.5   Max.   :187.70  
+                                     NA&#39;s   :1        NA&#39;s   :1        NA&#39;s   :1        NA&#39;s   :1      NA&#39;s   :1        NA&#39;s   :1       
+    Chla_ugl       BGAPC_CML        BGAPC_rfu         ODO_sat         ODO_mgl         Depth_ft        Depth_m     
+ Min.   :  1.3   Min.   :   188   Min.   :  0.10   Min.   : 87.5   Min.   :10.34   Min.   :12.15   Min.   :3.705  
+ 1st Qu.:  3.7   1st Qu.:   971   1st Qu.:  0.50   1st Qu.: 99.2   1st Qu.:12.34   1st Qu.:14.60   1st Qu.:4.451  
+ Median :  6.7   Median :  1369   Median :  0.70   Median :101.8   Median :12.88   Median :15.37   Median :4.684  
+ Mean   :137.3   Mean   :153571   Mean   : 72.91   Mean   :102.0   Mean   :12.88   Mean   :15.34   Mean   :4.677  
+ 3rd Qu.:302.6   3rd Qu.:345211   3rd Qu.:163.60   3rd Qu.:104.1   3rd Qu.:13.34   3rd Qu.:16.12   3rd Qu.:4.913  
+ Max.   :330.1   Max.   :345471   Max.   :163.70   Max.   :120.8   Max.   :14.99   Max.   :17.89   Max.   :5.454  
+ NA&#39;s   :1       NA&#39;s   :1        NA&#39;s   :1        NA&#39;s   :1       NA&#39;s   :1                                      
+ SurfaceWaterElev_m_levelNad83m      Date                          Weekday          Month           Hour      
+ Min.   :-32.53                 Min.   :2014-01-01 00:00:00   Sunday   :1152   January :2976   Min.   : 0.00  
+ 1st Qu.:-31.78                 1st Qu.:2014-01-22 08:22:30   Monday   :1152   February:2688   1st Qu.: 5.00  
+ Median :-31.55                 Median :2014-02-12 16:45:00   Tuesday  :1152   March   :2535   Median :11.00  
+ Mean   :-31.55                 Mean   :2014-02-12 16:45:00   Wednesday:1248   April   :   0   Mean   :11.47  
+ 3rd Qu.:-31.32                 3rd Qu.:2014-03-06 01:07:30   Thursday :1191   May     :   0   3rd Qu.:17.00  
+ Max.   :-30.78                 Max.   :2014-03-27 09:30:00   Friday   :1152   June    :   0   Max.   :23.00  
+                                                              Saturday :1152   (Other) :   0                  </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1842,16 +1848,44 @@ summary( rice )</code></pre>
 <h2>The Questions</h2>
 <p>Just like before, we will be answering the same set of questions as before. However, you should be using tidyverse approaches (pipes and such) to find the answers. Just like before, you should provide your answers as text (e.g., using complete sentences, etc.) and include visual output in tabular or graphical form to support your assertions. The <em>key point here</em> is that <strong>you</strong> need to develop an <em>evidence-based</em> narrative to address these questions.</p>
 <ol style="list-style-type: decimal">
-<li><p>On average, is there more rain on Mondays, at daytime, or at night?</p></li>
-<li><p>What is the overall trend in salinity and pH? Does this pattern hold when considering each month individually?</p></li>
-<li><p>Turbidity is a measurement of the opaqueness of water. In the rice data, we have a measure of Chlorophyll A in the water. For estimates where there is more than 200 <span class="math inline">\(µg*l^{-1}\)</span>, describe the relationship between these two variables.</p></li>
-<li><p>Show the pattern of tides during the work week that includes Valentines Day in 2004.</p></li>
-<li><p>Summarize estimates of Wind direction for February. Pay close attention to what this variable is actually measuring and how you want to display its underlying patterns.</p></li>
+<li>On average, is there more rain on Mondays, at daytime, or at night?</li>
 </ol>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ol start="2" style="list-style-type: decimal">
+<li>What is the overall trend in salinity and pH? Does this pattern hold when considering each month individually?</li>
+</ol>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ol start="3" style="list-style-type: decimal">
+<li>Turbidity is a measurement of the opaqueness of water. In the rice data, we have a measure of Chlorophyll A in the water. For estimates where there is more than 200 <span class="math inline">\(µg*l^{-1}\)</span>, describe the relationship between these two variables.</li>
+</ol>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ol start="4" style="list-style-type: decimal">
+<li>Show the pattern of tides during the work week that includes Valentines Day in 2004.</li>
+</ol>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ol start="5" style="list-style-type: decimal">
+<li>Summarize estimates of Wind direction for February. Pay close attention to what this variable is actually measuring and how you want to display its underlying patterns.</li>
+</ol>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRGF0YSBXb3JrZmxvd3MgSUkgLSBUaWR5dmVyc2UiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCgoKPGNlbnRlcj4KIVtdKGh0dHBzOi8vbGl2ZS5zdGF0aWNmbGlja3IuY29tLzY1NTM1LzUwMzgyNTUxODQ4X2UxNzBkMTdiNDZfbV9kLmpwZykrCgokKyQKCiFbXShodHRwczovL2xpdmUuc3RhdGljZmxpY2tyLmNvbS82NTUzNS81MDM4MzMzNDQyMl81MGJkMTk4NTlkX3dfZC5qcGcpCgokPSQKCiFbXShodHRwczovL21lZGlhLmdpcGh5LmNvbS9tZWRpYS9TVTNTRUNzV3h1SDNBc2ZHcGovZ2lwaHkuZ2lmKQo8L2NlbnRlcj4KCiMjIEltcGV0dXMKClRoaXMgaG9tZXdvcmsgZm9jdXNlcyBvbiBob3cgd2UgY2FuIHVzZSA8dHQ+dGlkeXZlcnNlPC90dD4gcm91dGluZXMgdG8gYW5zd2VyIHRoZSBleGFjdCBzYW1lIHNldCBvZiBxdWVzdGlvbnMgd2UgYWRkcmVzc2VkIGluIHRoZSBwcmV2aW91cyBob21ld29yay4gIFRoZSBvcGVyYXRpdmUgKnZlcmJzKiBpbmNsdWRlOgoKLSAqU2VsZWN0KiAgCi0gKkZpbHRlciogIAotICpNdXRhdGluZyogIAotICpBcnJhbmdpbmcqIAotICpHcm91cGluZyogIAotICpTdW1tYXJpemluZyogIAoKVGhlc2UgY2FuIGJlIGNvbWJpbmVkIGluIHZhcmlvdXMgd2F5cyB0byBnYWluIGluZmVyZW5jZXMgZnJvbSB0aGUgcmF3IGRhdGEuICAKCiFbRmlndXJlIDE6IEdlbmVyYWxpemVkIHByb2Nlc3NlcyBvZiBkYXRhIHdvcmtmbG93XShodHRwczovL2xpdmUuc3RhdGljZmxpY2tyLmNvbS82NTUzNS81MDM2NzYzNDM0MV80NTRlNWMwZTgwX2NfZC5qcGcpClVzaW5nIGJ1aWx0LWluIHJvdXRpbmVzLCB0aGlzIGFtb3VudHMgdG8gdXNpbmcgYSBsb3Qgb2YgbG9naWNhbCBpbmRpY2VzIGFuZCBtYWtpbmcgaW50ZXJtZWRpYXRlIGBkYXRhLmZyYW1lYCBvYmplY3RzLiAgSG93ZXZlciwgdXNpbmcgPHR0PnRpZHl2ZXJzZTwvdHQ+IGZvdW5kYXRpb25zLCBpdCBiZWNvbWVzIGEgbXVjaCBlYXNpZXIgcHJvY2Vzcy4KCgojIyBUaGUgRGF0YQoKRm9yIHRoZXNlIHF1ZXN0aW9ucywgd2Ugd2lsbCBiZSB1c2luZyB0aGUgZGF0YSBzZXQgZnJvbSB0aGUgW1JpY2UgUml2ZXJzIENlbnRlcl0oaHR0cHM6Ly9yaWNlcml2ZXJzLnZjdS5lZHUpIGFuZCBpcyBsb2FkZWQgaW4gYXMgcmF3IGRhdGEgZnJvbSB0aGUgY29kZSBiZWxvdy4KCmBgYHtyIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmdzPUZBTFNFfQpsaWJyYXJ5KCByZWFkciApCnVybCA8LSAiaHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvMU1rMVlHSDlMcWpGN2RySkUtdGQxR19Ka2RBRE9VMGVNbHJQMDFXRkJUOHMvcHViP2dpZD0wJnNpbmdsZT10cnVlJm91dHB1dD1jc3YiCnJpY2UgPC0gcmVhZF9jc3YoIHVybCApCnN1bW1hcnkoIHJpY2UgKQpgYGAKCgojIyBUaGUgUXVlc3Rpb25zCgpKdXN0IGxpa2UgYmVmb3JlLCB3ZSB3aWxsIGJlIGFuc3dlcmluZyB0aGUgc2FtZSBzZXQgb2YgcXVlc3Rpb25zIGFzIGJlZm9yZS4gIEhvd2V2ZXIsIHlvdSBzaG91bGQgYmUgdXNpbmcgdGlkeXZlcnNlIGFwcHJvYWNoZXMgKHBpcGVzIGFuZCBzdWNoKSB0byBmaW5kIHRoZSBhbnN3ZXJzLiAgSnVzdCBsaWtlIGJlZm9yZSwgeW91IHNob3VsZCBwcm92aWRlIHlvdXIgYW5zd2VycyBhcyB0ZXh0IChlLmcuLCB1c2luZyBjb21wbGV0ZSBzZW50ZW5jZXMsIGV0Yy4pIGFuZCBpbmNsdWRlIHZpc3VhbCBvdXRwdXQgaW4gdGFidWxhciBvciBncmFwaGljYWwgZm9ybSB0byBzdXBwb3J0IHlvdXIgYXNzZXJ0aW9ucy4gIFRoZSAqa2V5IHBvaW50IGhlcmUqIGlzIHRoYXQgKip5b3UqKiBuZWVkIHRvIGRldmVsb3AgYW4gKmV2aWRlbmNlLWJhc2VkKiBuYXJyYXRpdmUgdG8gYWRkcmVzcyB0aGVzZSBxdWVzdGlvbnMuCgoxLiBPbiBhdmVyYWdlLCBpcyB0aGVyZSBtb3JlIHJhaW4gb24gTW9uZGF5cywgYXQgZGF5dGltZSwgb3IgYXQgbmlnaHQ/CgoyLiBXaGF0IGlzIHRoZSBvdmVyYWxsIHRyZW5kIGluIHNhbGluaXR5IGFuZCBwSD8gIERvZXMgdGhpcyBwYXR0ZXJuIGhvbGQgd2hlbiBjb25zaWRlcmluZyBlYWNoIG1vbnRoIGluZGl2aWR1YWxseT8KCjMuIFR1cmJpZGl0eSBpcyBhIG1lYXN1cmVtZW50IG9mIHRoZSBvcGFxdWVuZXNzIG9mIHdhdGVyLiAgSW4gdGhlIHJpY2UgZGF0YSwgd2UgaGF2ZSBhIG1lYXN1cmUgb2YgQ2hsb3JvcGh5bGwgQSBpbiB0aGUgd2F0ZXIuICBGb3IgZXN0aW1hdGVzIHdoZXJlIHRoZXJlIGlzIG1vcmUgdGhhbiAyMDAgJMK1ZypsXnstMX0kLCBkZXNjcmliZSB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gdGhlc2UgdHdvIHZhcmlhYmxlcy4KCjQuIFNob3cgdGhlIHBhdHRlcm4gb2YgdGlkZXMgZHVyaW5nIHRoZSB3b3JrIHdlZWsgdGhhdCBpbmNsdWRlcyBWYWxlbnRpbmVzIERheSBpbiAyMDA0LgoKNS4gU3VtbWFyaXplIGVzdGltYXRlcyBvZiBXaW5kIGRpcmVjdGlvbiBmb3IgRmVicnVhcnkuICBQYXkgY2xvc2UgYXR0ZW50aW9uIHRvIHdoYXQgdGhpcyB2YXJpYWJsZSBpcyBhY3R1YWxseSBtZWFzdXJpbmcgYW5kIGhvdyB5b3Ugd2FudCB0byBkaXNwbGF5IGl0cyB1bmRlcmx5aW5nIHBhdHRlcm5zLgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRGF0YSBXb3JrZmxvd3MgSUkgLSBUaWR5dmVyc2UiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCgoKPGNlbnRlcj4KIVtdKGh0dHBzOi8vbGl2ZS5zdGF0aWNmbGlja3IuY29tLzY1NTM1LzUwMzgyNTUxODQ4X2UxNzBkMTdiNDZfbV9kLmpwZykrCgokKyQKCiFbXShodHRwczovL2xpdmUuc3RhdGljZmxpY2tyLmNvbS82NTUzNS81MDM4MzMzNDQyMl81MGJkMTk4NTlkX3dfZC5qcGcpCgokPSQKCiFbXShodHRwczovL21lZGlhLmdpcGh5LmNvbS9tZWRpYS9TVTNTRUNzV3h1SDNBc2ZHcGovZ2lwaHkuZ2lmKQo8L2NlbnRlcj4KCiMjIEltcGV0dXMKClRoaXMgaG9tZXdvcmsgZm9jdXNlcyBvbiBob3cgd2UgY2FuIHVzZSA8dHQ+dGlkeXZlcnNlPC90dD4gcm91dGluZXMgdG8gYW5zd2VyIHRoZSBleGFjdCBzYW1lIHNldCBvZiBxdWVzdGlvbnMgd2UgYWRkcmVzc2VkIGluIHRoZSBwcmV2aW91cyBob21ld29yay4gIFRoZSBvcGVyYXRpdmUgKnZlcmJzKiBpbmNsdWRlOgoKLSAqU2VsZWN0KiAgCi0gKkZpbHRlciogIAotICpNdXRhdGluZyogIAotICpBcnJhbmdpbmcqIAotICpHcm91cGluZyogIAotICpTdW1tYXJpemluZyogIAoKVGhlc2UgY2FuIGJlIGNvbWJpbmVkIGluIHZhcmlvdXMgd2F5cyB0byBnYWluIGluZmVyZW5jZXMgZnJvbSB0aGUgcmF3IGRhdGEuICAKCiFbRmlndXJlIDE6IEdlbmVyYWxpemVkIHByb2Nlc3NlcyBvZiBkYXRhIHdvcmtmbG93XShodHRwczovL2xpdmUuc3RhdGljZmxpY2tyLmNvbS82NTUzNS81MDM2NzYzNDM0MV80NTRlNWMwZTgwX2NfZC5qcGcpClVzaW5nIGJ1aWx0LWluIHJvdXRpbmVzLCB0aGlzIGFtb3VudHMgdG8gdXNpbmcgYSBsb3Qgb2YgbG9naWNhbCBpbmRpY2VzIGFuZCBtYWtpbmcgaW50ZXJtZWRpYXRlIGBkYXRhLmZyYW1lYCBvYmplY3RzLiAgSG93ZXZlciwgdXNpbmcgPHR0PnRpZHl2ZXJzZTwvdHQ+IGZvdW5kYXRpb25zLCBpdCBiZWNvbWVzIGEgbXVjaCBlYXNpZXIgcHJvY2Vzcy4KCgojIyBUaGUgRGF0YQoKRm9yIHRoZXNlIHF1ZXN0aW9ucywgd2Ugd2lsbCBiZSB1c2luZyB0aGUgZGF0YSBzZXQgZnJvbSB0aGUgW1JpY2UgUml2ZXJzIENlbnRlcl0oaHR0cHM6Ly9yaWNlcml2ZXJzLnZjdS5lZHUpIGFuZCBpcyBsb2FkZWQgaW4gYXMgcmF3IGRhdGEgZnJvbSB0aGUgY29kZSBiZWxvdy4KCmBgYHtyIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmdzPUZBTFNFfQpsaWJyYXJ5KCByZWFkciApCmxpYnJhcnkoIGx1YnJpZGF0ZSApCgoKdXJsIDwtICJodHRwczovL2RvY3MuZ29vZ2xlLmNvbS9zcHJlYWRzaGVldHMvZC8xTWsxWUdIOUxxakY3ZHJKRS10ZDFHX0prZEFET1UwZU1sclAwMVdGQlQ4cy9wdWI/Z2lkPTAmc2luZ2xlPXRydWUmb3V0cHV0PWNzdiIKcmljZSA8LSByZWFkX2NzdiggdXJsICkKZm9ybWF0IDwtICIlbS8lZC8lWSAlSTolTTolUyAlcCIKCmRheXMgPC0gYygiU3VuZGF5IiwiTW9uZGF5IiwiVHVlc2RheSIsIldlZG5lc2RheSIsIlRodXJzZGF5IiwiRnJpZGF5IiwiU2F0dXJkYXkiKQoKCgoKCnN1bW1hcnkoIHJpY2UgKQpgYGAKCgojIyBUaGUgUXVlc3Rpb25zCgpKdXN0IGxpa2UgYmVmb3JlLCB3ZSB3aWxsIGJlIGFuc3dlcmluZyB0aGUgc2FtZSBzZXQgb2YgcXVlc3Rpb25zIGFzIGJlZm9yZS4gIEhvd2V2ZXIsIHlvdSBzaG91bGQgYmUgdXNpbmcgdGlkeXZlcnNlIGFwcHJvYWNoZXMgKHBpcGVzIGFuZCBzdWNoKSB0byBmaW5kIHRoZSBhbnN3ZXJzLiAgSnVzdCBsaWtlIGJlZm9yZSwgeW91IHNob3VsZCBwcm92aWRlIHlvdXIgYW5zd2VycyBhcyB0ZXh0IChlLmcuLCB1c2luZyBjb21wbGV0ZSBzZW50ZW5jZXMsIGV0Yy4pIGFuZCBpbmNsdWRlIHZpc3VhbCBvdXRwdXQgaW4gdGFidWxhciBvciBncmFwaGljYWwgZm9ybSB0byBzdXBwb3J0IHlvdXIgYXNzZXJ0aW9ucy4gIFRoZSAqa2V5IHBvaW50IGhlcmUqIGlzIHRoYXQgKip5b3UqKiBuZWVkIHRvIGRldmVsb3AgYW4gKmV2aWRlbmNlLWJhc2VkKiBuYXJyYXRpdmUgdG8gYWRkcmVzcyB0aGVzZSBxdWVzdGlvbnMuCgoxLiBPbiBhdmVyYWdlLCBpcyB0aGVyZSBtb3JlIHJhaW4gb24gTW9uZGF5cywgYXQgZGF5dGltZSwgb3IgYXQgbmlnaHQ/CgoKYGBge3J9CgoKCmBgYAoKCgoKCjIuIFdoYXQgaXMgdGhlIG92ZXJhbGwgdHJlbmQgaW4gc2FsaW5pdHkgYW5kIHBIPyAgRG9lcyB0aGlzIHBhdHRlcm4gaG9sZCB3aGVuIGNvbnNpZGVyaW5nIGVhY2ggbW9udGggaW5kaXZpZHVhbGx5PwoKCmBgYHtyfQoKCgpgYGAKCgoKCgozLiBUdXJiaWRpdHkgaXMgYSBtZWFzdXJlbWVudCBvZiB0aGUgb3BhcXVlbmVzcyBvZiB3YXRlci4gIEluIHRoZSByaWNlIGRhdGEsIHdlIGhhdmUgYSBtZWFzdXJlIG9mIENobG9yb3BoeWxsIEEgaW4gdGhlIHdhdGVyLiAgRm9yIGVzdGltYXRlcyB3aGVyZSB0aGVyZSBpcyBtb3JlIHRoYW4gMjAwICTCtWcqbF57LTF9JCwgZGVzY3JpYmUgdGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIHRoZXNlIHR3byB2YXJpYWJsZXMuCgoKYGBge3J9CgoKYGBgCgoKCgo0LiBTaG93IHRoZSBwYXR0ZXJuIG9mIHRpZGVzIGR1cmluZyB0aGUgd29yayB3ZWVrIHRoYXQgaW5jbHVkZXMgVmFsZW50aW5lcyBEYXkgaW4gMjAwNC4KCgoKYGBge3J9CgpgYGAKCgoKCjUuIFN1bW1hcml6ZSBlc3RpbWF0ZXMgb2YgV2luZCBkaXJlY3Rpb24gZm9yIEZlYnJ1YXJ5LiAgUGF5IGNsb3NlIGF0dGVudGlvbiB0byB3aGF0IHRoaXMgdmFyaWFibGUgaXMgYWN0dWFsbHkgbWVhc3VyaW5nIGFuZCBob3cgeW91IHdhbnQgdG8gZGlzcGxheSBpdHMgdW5kZXJseWluZyBwYXR0ZXJucy4KCgoKYGBge3J9CgpgYGAKCg==</div>
 
 
 

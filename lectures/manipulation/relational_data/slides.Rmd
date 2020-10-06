@@ -1,0 +1,192 @@
+---
+title: "Relational Data🥋"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "../../css/slide_styles.css", "../../css/slide_fonts.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50362989122_a8ee154fea_k_d.jpg")
+background-size: cover
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+library( knitr )
+options(knitr.table.format = "html")
+library( tidyverse )
+library( fontawesome )
+library( ggplot2 )
+theme_set( theme_classic( base_size = 20) )
+```
+
+
+
+#  .orange[Relational Data!]
+
+
+
+
+---
+class: sectionTitle
+
+# Distributed Data
+
+## .orange[.fancy[Data Within Many Tables]]
+
+
+
+
+---
+
+# Multi-Table Data
+
+Rarely do we keep our data within a single data table.  
+
+.pull-left[ #### Table Structure
+
+Consider the two tables to the right.
+
+- Common column labeled *Key*  
+
+- Other data columns (only 1 in each for brevity)
+
+]
+
+.pull-right[![Example data table structure](https://live.staticflickr.com/65535/50427672632_24e45139a8_c_d.jpg)]
+
+
+
+---
+
+# Varieties of Keys 🗝
+
+.pull-left[### Primary Key
+
+A *primary key* is a column in a table that uniquely identifies a single row.  There MUST be a unique identifier to be a *Primary Key*.
+
+```{r}
+people <- data.frame( Key = c("A","B","C"),
+                      Name = c("Bob","Alice","Mary"),
+                      Major = c("ENVS", "ENVS", "BIOL") )
+people %>%
+  count( Key ) 
+```
+
+]
+
+--
+
+.pull-right[ ### Foreign Key
+
+A foreign key is one that references a primary key in *another* table.
+
+```{r}
+homework <- data.frame( Key = c("A","B","A","A","B"), 
+                        Grade = rpois(5,lambda = 100) )
+homework
+```
+
+Here the `Key` column is referencing a unique row 
+
+
+
+]
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Joins]
+
+### .fancy[Merging data tables]
+
+
+
+---
+
+# Taxonomy of Joins
+
+We can combine the data in these tables in several different ways based upon what we are looking for.  When thinking of joins, we must think about the how we want to select the overlapping sets of keys in both data.frames.
+
+- *Full Join* (aka *outer join*)
+
+- *Left Join*  
+
+- *Right Join*  
+
+- *Inner Join*
+
+&nbsp;
+
+The .redinline[*position*] adjective relates to which of the rows are selected for the join and end up in the resutling data table.
+
+
+---
+
+# 'Left' & 'Right' Tables
+
+.center[
+![Example data table structure](https://live.staticflickr.com/65535/50427672632_24e45139a8_c_d.jpg)
+]
+
+
+---
+
+# Full ( sometimes called Outer) Join
+
+The outer join has .redinline[all the data from both left & right tables].  All keys are present in the result.
+
+![Outer Join](https://live.staticflickr.com/65535/50427993992_4ccede1574_c_d.jpg)
+
+
+
+
+---
+
+# Outer Join
+
+All homework and people data.
+
+```{r}
+people %>%
+  full_join( homework, by="Key" )
+```
+
+
+
+---
+
+# Left Join
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# 🙋🏻‍♀️ Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+<p>&nbsp;</p>
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+
+

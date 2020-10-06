@@ -1,0 +1,133 @@
+---
+title: "Relational Data Homework"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+library( tidyverse )
+```
+
+
+This homework is going to play around with relational joins.  We will use some flight data from 2013 in New York City[^1].
+
+```{r}
+library( nycflights13 )
+```
+
+This library has five different data frames.  Here is an overview of the raw data.
+
+
+## Airlines 
+
+A table of airline carrier abbreviations (N = `r nrow(airlines)` different carriers).
+
+```{r}
+head( airlines )
+```
+
+Information on the airports (N = `r nrow(airports)` airports).
+
+```{r}
+head( airports )
+```
+Mostly in the US.
+
+```{r echo=FALSE, fig.cap="Airportts in continental United States."}
+if(!require(leaflet)){
+  install.packages("leaflet")
+}
+
+library( leaflet )
+airports %>%
+  filter( lon < 0,
+          lon > -130,
+          lat < 54) %>%
+  leaflet( ) %>%
+  addMarkers( lat = ~lat,
+              lng = ~lon,
+              popup = ~faa) %>%
+  addProviderTiles( provider="OpenTopoMap")
+```
+
+Weather conditions at each airport (a total of `r nrow(weather)` of them!)
+
+```{r}
+head(weather)
+```
+And a list of airplanes (N = `r nrow( planes )`).
+
+```{r}
+head( planes )
+```
+
+From all of these auxiliary data, we can construct a series of flights which has the following variables in it.
+
+```{r}
+names( flights )
+```
+
+If you look at the flight table, you will see that several columns of data here are *connected* to the other data frames described above.
+
+`flights` column | Data From 
+-----------------|----------------
+carrier          | airlines
+dest             | airports
+origin           | airport
+tailnum          | planes 
+time_hour        | weather
+
+
+The reason that these tables are *refactored* into separate tables with *keys* connecting one to the other is that there is an economy of scale for very large data sets if we partition it into realtional components such as this.
+
+
+```{r}
+flights %>%
+  count( tailnum ) %>%
+  filter( n > 1,
+          !is.na(tailnum)) %>%
+  arrange( -n )
+```
+
+
+
+
+
+
+
+I'll start by just grabbing a subset of columns from the `flights` data frame.
+
+```{r}
+df <- flights %>%
+  select( carrier, tailnum, origin, dest, month, day, hour ) 
+head( df )
+```
+
+
+We can *join* the airlines table to this one to give the whole name of the carrier rather than the abbreviated version.  This join will take two data frames, one on the left and one on the right such as `join( LEFT_ONE, RIGHT_ONE )`.  To do this, it will:
+
+- Use a key common to both the left and right tables.
+- Add the additional columns from the right table to the left table.
+- Return the result.
+
+```{r}
+df %>%
+  left_join( airlines, by="carrier") %>%
+  head()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[^1]: If you get an error when attempting to load this library in, install it with `install.packages("nycflights13")` and then load it in again.

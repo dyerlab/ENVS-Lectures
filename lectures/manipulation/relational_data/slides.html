@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Relational Data🥋</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/slide_styles.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50362989122_a8ee154fea_k_d.jpg")
+background-size: cover
+
+
+
+
+
+
+#  .orange[Relational Data!]
+
+
+
+
+---
+class: sectionTitle
+
+# Distributed Data
+
+## .orange[.fancy[Data Within Many Tables]]
+
+
+
+
+---
+
+# Multi-Table Data
+
+Rarely do we keep our data within a single data table.  
+
+.pull-left[ #### Table Structure
+
+Consider the two tables to the right.
+
+- Common column labeled *Key*  
+
+- Other data columns (only 1 in each for brevity)
+
+]
+
+.pull-right[![Example data table structure](https://live.staticflickr.com/65535/50427672632_24e45139a8_c_d.jpg)]
+
+
+
+---
+
+# Varieties of Keys 🗝
+
+.pull-left[### Primary Key
+
+A *primary key* is a column in a table that uniquely identifies a single row.  There MUST be a unique identifier to be a *Primary Key*.
+
+
+```r
+people &lt;- data.frame( Key = c("A","B","C"),
+                      Name = c("Bob","Alice","Mary"),
+                      Major = c("ENVS", "ENVS", "BIOL") )
+people %&gt;%
+  count( Key ) 
+```
+
+```
+##   Key n
+## 1   A 1
+## 2   B 1
+## 3   C 1
+```
+
+]
+
+--
+
+.pull-right[ ### Foreign Key
+
+A foreign key is one that references a primary key in *another* table.
+
+
+```r
+homework &lt;- data.frame( Key = c("A","B","A","A","B"), 
+                        Grade = rpois(5,lambda = 100) )
+homework
+```
+
+```
+##   Key Grade
+## 1   A   102
+## 2   B    94
+## 3   A    96
+## 4   A    82
+## 5   B    82
+```
+
+Here the `Key` column is referencing a unique row 
+
+
+
+]
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Joins]
+
+### .fancy[Merging data tables]
+
+
+
+---
+
+# Taxonomy of Joins
+
+We can combine the data in these tables in several different ways based upon what we are looking for.  When thinking of joins, we must think about the how we want to select the overlapping sets of keys in both data.frames.
+
+- *Full Join* (aka *outer join*)
+
+- *Left Join*  
+
+- *Right Join*  
+
+- *Inner Join*
+
+&amp;nbsp;
+
+The .redinline[*position*] adjective relates to which of the rows are selected for the join and end up in the resutling data table.
+
+
+---
+
+# 'Left' &amp; 'Right' Tables
+
+.center[
+![Example data table structure](https://live.staticflickr.com/65535/50427672632_24e45139a8_c_d.jpg)
+]
+
+
+---
+
+# Full ( sometimes called Outer) Join
+
+The outer join has .redinline[all the data from both left &amp; right tables].  All keys are present in the result.
+
+![Outer Join](https://live.staticflickr.com/65535/50427993992_4ccede1574_c_d.jpg)
+
+
+
+
+---
+
+# Outer Join
+
+All homework and people data.
+
+
+```r
+people %&gt;%
+  full_join( homework, by="Key" )
+```
+
+```
+##   Key  Name Major Grade
+## 1   A   Bob  ENVS   102
+## 2   A   Bob  ENVS    96
+## 3   A   Bob  ENVS    82
+## 4   B Alice  ENVS    94
+## 5   B Alice  ENVS    82
+## 6   C  Mary  BIOL    NA
+```
+
+
+
+---
+
+# Left Join
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# 🙋🏻‍♀️ Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

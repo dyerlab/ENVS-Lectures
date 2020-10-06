@@ -40,8 +40,19 @@ For these questions, we will be using the data set from the [Rice Rivers Center]
 
 ```{r message=FALSE, warnings=FALSE}
 library( readr )
+library( lubridate )
+
+
 url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
 rice <- read_csv( url )
+format <- "%m/%d/%Y %I:%M:%S %p"
+
+days <- c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+
+
+
+
+
 summary( rice )
 ```
 
@@ -52,11 +63,57 @@ Just like before, we will be answering the same set of questions as before.  How
 
 1. On average, is there more rain on Mondays, at daytime, or at night?
 
+
+```{r}
+
+
+
+```
+
+
+
+
+
 2. What is the overall trend in salinity and pH?  Does this pattern hold when considering each month individually?
+
+
+```{r}
+
+
+
+```
+
+
+
+
 
 3. Turbidity is a measurement of the opaqueness of water.  In the rice data, we have a measure of Chlorophyll A in the water.  For estimates where there is more than 200 $µg*l^{-1}$, describe the relationship between these two variables.
 
+
+```{r}
+
+
+```
+
+
+
+
 4. Show the pattern of tides during the work week that includes Valentines Day in 2004.
 
+
+
+```{r}
+
+```
+
+
+
+
 5. Summarize estimates of Wind direction for February.  Pay close attention to what this variable is actually measuring and how you want to display its underlying patterns.
+
+
+
+```{r}
+
+```
 

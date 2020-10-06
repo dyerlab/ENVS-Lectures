@@ -1,0 +1,154 @@
+---
+title: "Relational Data"
+output: html_notebook
+---
+
+
+```{r setup, include=FALSE}
+library( tidyverse )
+opts_chunk$set( message = FALSE,
+                warning = FALSE,
+                fig.retina = 3,
+                echo=TRUE)
+```
+
+
+Rarely do we work on only one `data.frame`, particularly when we start working with complex data and data contained within relational databases.  In these cases, data are factored into several tables (akin to `data.frame` objects) with entries that connect the information from one table to another.   Consider the following example tables
+
+<center>
+![Example data table structure](https://live.staticflickr.com/65535/50427672632_24e45139a8_c_d.jpg)
+</center>
+
+Each has a column I named *Key* and another with some data in it.  In `R` they could be defined as:
+
+```{r echo=TRUE}
+df.X <- data.frame( Key = c("A","B","C"),
+                    X = c(1,2,3) )
+df.X
+```
+and 
+
+```{r echo=TRUE}
+df.Y <- data.frame( Key = c("B","C","D"),
+                    Y = c(10,11,12) )
+df.Y
+```
+
+
+## Keys
+
+An important component of relational data are the *keys*.  These are unique identifiers for a particular datum from a table.  In each of these examples the varible (obviously named) `Key` is what is called a *Primary Key* because it uniquely identifies each row.  You can verify this by counting the number of entries then filtering only for ones with 2 or more instances.
+
+```{r}
+df.X %>%
+  count( Key ) %>%
+  filter( n > 1 )
+```
+
+Notice there is nothing here as each is unique.
+
+> The column `Key` is a Primary Key for the `df.X` data because it identifies a unique row *in that table*.
+
+In addition to a *Primary Key* we can have a *Foreign Key* when it is used to indicate data within a separate table.  For example, if I am interested to see if the smallest value in `df.X$X` corresponds with the smallest value in `df.Y$Y`, then I will be using the `Key` form `df.X` representing `max(X)` to find the value of `Y` in `df.Y` and evaluate if it is `max(Y)`.  This means that `df.X$Key` is a *Foreign Key* as it points to a row in the `df.Y` data frame.
+
+The keys are used to link together different tables.
+
+
+
+# Joins
+
+> A *join* is where we combine information contained within two data frames.  The resulting data depends upon how the join is accomplished.
+
+Joins are ways to merge together data and come in four flavors.  
+
+## Left Join
+
+A *left join* is one where all the data from the left data frame is in the result and the data whose keys in the right data frame are present in the left one are also included.  Graphically, this leads to:
+
+
+![left join](https://live.staticflickr.com/65535/50427817371_678f0f64c7_c_d.jpg)
+
+Where in `R` we do this using the `left_join()` function. 
+
+```{r}
+df.X %>%
+  left_join( df.Y, by="Key")
+```
+
+
+
+## Right Join
+
+The right join does the same thing but keeps all the keys in the right data table and has missing data where the key in the left one is not in the right one.
+
+![Right Join](https://live.staticflickr.com/65535/50427125528_0de6281475_c_d.jpg)
+
+This is accomplished using the `right_join()` function.
+
+```{r echo=TRUE}
+df.X %>%
+  right_join( df.Y, by="Key")
+```
+
+
+
+## Full (or Outer) Join
+
+This join is one where all the keys are retained adding missing data as necessary.
+
+
+![Outer Join](https://live.staticflickr.com/65535/50427993992_4ccede1574_c_d.jpg)
+
+```{r}
+df.X %>%
+  full_join( df.Y, by="Key")
+```
+
+
+## Inner Join
+
+The last one retains *only* those keys that are common in both.
+
+![Inner Join](https://live.staticflickr.com/65535/50427125683_ac44eb1500_c_d.jpg)
+
+```{r}
+df.X %>%
+  inner_join( df.Y, by="Key")
+```
+
+
+
+
+
+
+## A Mutating Join
+
+A mutating join is where the values values in the second data table are merged into the first table.  In this case, we refer to the data frames as the *left* and *right* ones.  For this join, we are going to mutate the left one by adding a column and for each row that has a key from the *left* within the *right* table, we will add the corresponding data. This is called a `left_join()`.
+
+```{r}
+df.X %>%
+  left_join( df.Y, by="Key")
+```
+
+Notice, there is no `A` key in `df.Y` and as such, the value after the `left_join` is `NA`.
+
+
+
+# Filtering Joins
+
+We can also use joins to filter values within one `data.frame`.  Here the `semi_join()` keeps everything in the left data that has a key in the right one, but **importantly** it does not import the right data columns into the result.
+
+
+```{r}
+df.X %>%
+  semi_join( df.Y )
+```
+
+The opposite of this is the `anti_join()` which drops everything in the left table that has a key in the right one, leaving only the ones that are unique.
+
+```{r}
+df.X %>%
+  anti_join( df.Y )
+```
+
+

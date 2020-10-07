@@ -92,12 +92,12 @@ people %>%
 A foreign key is one that references a primary key in *another* table.
 
 ```{r}
-homework <- data.frame( Key = c("A","B","A","A","B"), 
+homework <- data.frame( Key = c("A","B","A","D","B"), 
                         Grade = rpois(5,lambda = 100) )
 homework
 ```
 
-Here the `Key` column is referencing a unique row 
+Here the `Key` column is referencing a unique row of data in the `people` data table.
 
 
 
@@ -169,11 +169,186 @@ people %>%
 
 # Left Join
 
+The left join is one where the result has all the keys from the left but only those in the right one that are in the left.  
+
 ![left join](https://live.staticflickr.com/65535/50427817371_678f0f64c7_c_d.jpg)
+--
 
 ```{r}
-
+people %>% left_join( homework, by="Key")
 ```
+
+
+
+---
+
+# Right Join
+
+The Right join results in all the keys from the right data table and the matching ones from the left.
+
+.center[
+![Right Join](https://live.staticflickr.com/65535/50427125528_0de6281475_c_d.jpg)
+]
+
+--
+
+```{r}
+people %>% right_join( homework, by="Key")
+```
+
+
+---
+
+# Inner Joins
+
+Inner joins result in the intersection of keys.
+
+![Inner Join](https://live.staticflickr.com/65535/50427125683_ac44eb1500_c_d.jpg)
+
+--
+
+```{r}
+people %>% inner_join( homework, by="Key")
+```
+
+
+
+---
+class: sectionTitle, inverse
+
+# .blue[Filtering Joins]
+
+## .fancy[Not combining but refining...]
+
+
+
+---
+
+# The Semi Join
+
+We can also use joins to filter values within one `data.frame`.  Here the `semi_join()` keeps everything in the left data that has a key in the right one, but **importantly** it does not import the right data columns into the result.
+
+--
+
+```{r}
+people %>% 
+  semi_join( homework, by="Key")
+```
+
+---
+
+# The Anti Join
+
+The opposite of the `seim_join()` is the `anti_join()` which drops everything in the left table that has a key in the right one, leaving only the ones that are unique.
+
+
+```{r}
+people %>%
+  anti_join( homework, by = "Key")
+```
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[The NYC Airport Data]
+
+### .fancy[Let's dial up the complexity]
+
+---
+
+# The Library
+
+.pull-left[
+Four `data.frames` are contained within the library representing all the flights from NYC airports in 2013.
+
+```{r}
+library( nycflights13 )
+```
+
+- `airlines`  
+
+- `airports`
+
+- `planes`  
+ 
+- `weather`  
+
+- `flights`
+
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+library( leaflet )
+airports %>%
+  filter( lon < 0,
+          lon > -130,
+          lat < 54) %>%
+  leaflet( ) %>%
+  addMarkers( lat = ~lat,
+              lng = ~lon,
+              popup = ~faa) %>%
+  addProviderTiles( provider="OpenTopoMap")
+```
+
+]
+
+
+---
+
+# Airlines
+
+```{r}
+head(airlines)
+```
+
+
+---
+
+# Airports
+
+```{r}
+head( airports )
+```
+
+
+---
+
+# Planes
+
+```{r}
+head( planes )
+```
+
+
+---
+
+# Weather
+
+
+```{r}
+head(weather)
+```
+
+
+
+
+---
+
+# Flights
+
+This is the main `data.frame`.
+
+```{r}
+names( flights )
+```
+
+
+
+
 
 
 ---
@@ -185,7 +360,7 @@ background-size: auto
 
 .center[
 
-# 🙋🏻‍♀️ Questions?
+# ️ Questions?
 
 
 ![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)

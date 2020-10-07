@@ -5,6 +5,7 @@ output: html_notebook
 
 
 ```{r setup, include=FALSE}
+library( knitr )
 library( tidyverse )
 opts_chunk$set( message = FALSE,
                 warning = FALSE,

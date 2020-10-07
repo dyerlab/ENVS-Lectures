@@ -1,16 +1,13 @@
 ---
 title: "Relational Data Homework"
+author: YOUR_NAME_HERE
 output: html_notebook
 ---
-
-```{r setup, include=FALSE}
-library( tidyverse )
-```
-
 
 This homework is going to play around with relational joins.  We will use some flight data from 2013 in New York City[^1].
 
 ```{r}
+library( tidyverse )
 library( nycflights13 )
 ```
 

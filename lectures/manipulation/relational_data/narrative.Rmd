@@ -58,7 +58,7 @@ The keys are used to link together different tables.
 
 # Joins
 
-> A *join* is where we combine information contained within two data frames.  The resulting data depends upon how the join is accomplished.
+> A *join* is where we combine information contained within two data frames.  
 
 Joins are ways to merge together data and come in four flavors.  
 
@@ -119,19 +119,6 @@ df.X %>%
 
 
 
-
-
-
-## A Mutating Join
-
-A mutating join is where the values values in the second data table are merged into the first table.  In this case, we refer to the data frames as the *left* and *right* ones.  For this join, we are going to mutate the left one by adding a column and for each row that has a key from the *left* within the *right* table, we will add the corresponding data. This is called a `left_join()`.
-
-```{r}
-df.X %>%
-  left_join( df.Y, by="Key")
-```
-
-Notice, there is no `A` key in `df.Y` and as such, the value after the `left_join` is `NA`.
 
 
 

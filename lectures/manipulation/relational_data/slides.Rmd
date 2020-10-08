@@ -35,14 +35,7 @@ theme_set( theme_classic( base_size = 20) )
 #  .orange[Relational Data!]
 
 
-
-
----
-class: sectionTitle
-
-# Distributed Data
-
-## .orange[.fancy[Data Within Many Tables]]
+## .fancy[Data Within Many Tables]
 
 
 
@@ -143,7 +136,7 @@ The .redinline[*position*] adjective relates to which of the rows are selected f
 
 ---
 
-# Full ( sometimes called Outer) Join
+# Full/Outer Join
 
 The outer join has .redinline[all the data from both left & right tables].  All keys are present in the result.
 
@@ -241,6 +234,7 @@ people %>%
 
 The opposite of the `seim_join()` is the `anti_join()` which drops everything in the left table that has a key in the right one, leaving only the ones that are unique.
 
+--
 
 ```{r}
 people %>%

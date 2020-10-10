@@ -40,16 +40,33 @@ For these questions, we will be using the data set from the [Rice Rivers Center]
 
 ```{r message=FALSE, warnings=FALSE}
 library( readr )
+library( tidyverse )
 library( lubridate )
 
 
 url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
 rice <- read_csv( url )
-format <- "%m/%d/%Y %I:%M:%S %p"
-
-days <- c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
 
 
+if(FALSE){
+  
+  format <- "%m/%d/%Y %I:%M:%S %p"
+  days <- c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+  
+  rice %>% 
+    mutate( Date = parse_date_time( DateTime,
+                                    orders=format,
+                                    tz="EST")) %>%
+    mutate( Weekday = factor( weekdays(Date),
+                              ordered=TRUE,
+                              levels = days)) %>%
+    mutate( Month = month( Date,
+                           label=TRUE,
+                           abbr = FALSE) ) %>% 
+    mutate( Hour = hour( Date ),
+            Minute = minute( Date )  ) -> rice 
+  
+}
 
 
 
@@ -65,8 +82,6 @@ Just like before, we will be answering the same set of questions as before.  How
 
 
 ```{r}
-
-
 
 ```
 

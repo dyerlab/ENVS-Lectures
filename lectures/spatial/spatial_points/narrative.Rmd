@@ -1,22 +1,27 @@
 ---
-title: "Spatial Data"
-author: "Points, Lines, and Polygons"
+title: "Spatial Point Data"
 output: html_notebook
 ---
 
 ```{r startup, include=FALSE}
+if( !require( sf ) ) {
+  install.packages("sf")
+}
 
+
+library( sf ) 
+library( tidyverse )
 ```
 
 
 
 
-# Requirements
+# `R` Library Requirements
+
+For geospatial data analyses, we must install specific packages that have been designed to 
 
 ```{r}
-libraries <- c("sf","sp","rgdal","raster","rgeos","dplyr")
-toInstall <- setdiff( libraries, installed.packages() )
-install.packages( toInstall)
+
 ```
 
 

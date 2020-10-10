@@ -18,15 +18,13 @@ For this homework, I would like you to create a function called `get_rice()` and
 
 I'll get you started with the URL and the stub for the function.  If you want to look at the raw data
 
+
+
 ```{r}
 # Put your code here for the function.
-
 get_rice <- function() {
   url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
-  
-  # Put all your code here
-  
-  
+
 }
 ```
 

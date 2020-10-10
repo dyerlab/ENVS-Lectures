@@ -1771,15 +1771,39 @@ summary {
 <p>I’ll get you started with the URL and the stub for the function. If you want to look at the raw data</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIiMgUHV0IHlvdXIgY29kZSBoZXJlIGZvciB0aGUgZnVuY3Rpb24uIiwiIiwiZ2V0X3JpY2UgPC0gZnVuY3Rpb24oKSB7XG4gIHVybCA8LSBcImh0dHBzOi8vZG9jcy5nb29nbGUuY29tL3NwcmVhZHNoZWV0cy9kLzFNazFZR0g5THFqRjdkckpFLXRkMUdfSmtkQURPVTBlTWxyUDAxV0ZCVDhzL3B1Yj9naWQ9MCZzaW5nbGU9dHJ1ZSZvdXRwdXQ9Y3N2XCJcbiAgXG4gICMgUHV0IGFsbCB5b3VyIGNvZGUgaGVyZVxuICBcbiAgXG59Il19 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBQdXQgeW91ciBjb2RlIGhlcmUgZm9yIHRoZSBmdW5jdGlvbi5cbmdldF9yaWNlIDwtIGZ1bmN0aW9uKCkge1xuICBcbiAgbGlicmFyeSggdGlkeXZlcnNlIClcbiAgbGlicmFyeSggcmVhZHIgKVxuICBsaWJyYXJ5KCBsdWJyaWRhdGUgKVxuICBcbiAgdXJsIDwtIFwiaHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvMU1rMVlHSDlMcWpGN2RySkUtdGQxR19Ka2RBRE9VMGVNbHJQMDFXRkJUOHMvcHViP2dpZD0wJnNpbmdsZT10cnVlJm91dHB1dD1jc3ZcIlxuICBcbiAgZm9ybWF0IDwtIFwiJW0vJWQvJVkgJUk6JU06JVMgJXBcIlxuICBkYXlzIDwtIGMoXCJNb25kYXlcIixcIlR1ZXNkYXlcIixcIldlZG5lc2RheVwiLFwiVGh1cnNkYXlcIixcIkZyaWRheVwiLFwiU2F0dXJkYXlcIixcIlN1bmRheVwiKVxuICBcbiAgcmVhZF9jc3YoIHVybCApICU+JSBcbiAgICBtdXRhdGUoIERhdGUgPSBwYXJzZV9kYXRlX3RpbWUoIERhdGVUaW1lLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb3JkZXJzPWZvcm1hdCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR6PVwiRVNUXCIpKSAlPiVcbiAgICBtdXRhdGUoIFdlZWtkYXkgPSBmYWN0b3IoIHdlZWtkYXlzKERhdGUpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb3JkZXJlZD1UUlVFLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gZGF5cykpICU+JVxuICAgIG11dGF0ZSggTW9udGggPSBtb250aCggRGF0ZSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVsPVRSVUUsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICBhYmJyID0gRkFMU0UpICkgJT4lIFxuICAgIG11dGF0ZSggSG91ciA9IGhvdXIoIERhdGUgKSxcbiAgICAgICAgICAgIE1pbnV0ZSA9IG1pbnV0ZSggRGF0ZSApICApICAlPiVcbiAgICBcbiAgICBzZWxlY3QoIC1EYXRlVGltZSwgLVBIX212LCAtQkdBUENfcmZ1LCBcbiAgICAgICAgICAgIC1PRE9fc2F0LCAtRGVwdGhfZnQsIFxuICAgICAgICAgICAgLVN1cmZhY2VXYXRlckVsZXZfbV9sZXZlbE5hZDgzbSApICU+JVxuICAgIHNlbGVjdCggRGF0ZSwgTW9udGgsIFdlZWtkYXksIEhvdXIsIE1pbnV0ZSwgZXZlcnl0aGluZygpICkgJT4lXG4gICAgbXV0YXRlKCBgQWlyIFRlbXAgKMKwQylgID0gKEFpclRlbXBGIC0gMzIpKjUvOSApICAtPiByaWNlIFxuICBcbiAgcmV0dXJuKCByaWNlIClcbn1cbmBgYCJ9 -->
 <pre class="r"><code># Put your code here for the function.
-
 get_rice &lt;- function() {
+  
+  library( tidyverse )
+  library( readr )
+  library( lubridate )
+  
   url &lt;- &quot;https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&amp;single=true&amp;output=csv&quot;
   
-  # Put all your code here
+  format &lt;- &quot;%m/%d/%Y %I:%M:%S %p&quot;
+  days &lt;- c(&quot;Monday&quot;,&quot;Tuesday&quot;,&quot;Wednesday&quot;,&quot;Thursday&quot;,&quot;Friday&quot;,&quot;Saturday&quot;,&quot;Sunday&quot;)
   
+  read_csv( url ) %&gt;% 
+    mutate( Date = parse_date_time( DateTime,
+                                    orders=format,
+                                    tz=&quot;EST&quot;)) %&gt;%
+    mutate( Weekday = factor( weekdays(Date),
+                              ordered=TRUE,
+                              levels = days)) %&gt;%
+    mutate( Month = month( Date,
+                           label=TRUE,
+                           abbr = FALSE) ) %&gt;% 
+    mutate( Hour = hour( Date ),
+            Minute = minute( Date )  )  %&gt;%
+    
+    select( -DateTime, -PH_mv, -BGAPC_rfu, 
+            -ODO_sat, -Depth_ft, 
+            -SurfaceWaterElev_m_levelNad83m ) %&gt;%
+    select( Date, Month, Weekday, Hour, Minute, everything() ) %&gt;%
+    mutate( `Air Temp (°C)` = (AirTempF - 32)*5/9 )  -&gt; rice 
   
+  return( rice )
 }</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -1787,14 +1811,10 @@ get_rice &lt;- function() {
 <p>When done, you should be able to call the function as:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInJpY2UgPC0gZ2V0X3JpY2UoKSAiLCJzdW1tYXJ5KCByaWNlICkiXX0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmljZSA8LSBnZXRfcmljZSgpIFxuc3VtbWFyeSggcmljZSApXG5gYGAifQ== -->
 <pre class="r"><code>rice &lt;- get_rice() 
 summary( rice )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgTGVuZ3RoICAgICBDbGFzcyAgICAgIE1vZGUgXG4gICAgICAgIDEgY2hhcmFjdGVyIGNoYXJhY3RlciBcbiJ9 -->
-<pre><code>   Length     Class      Mode 
-        1 character character </code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="put-it-into-a-script-file." class="section level2">
@@ -1803,7 +1823,7 @@ summary( rice )</code></pre>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRnVuY3Rpb25zIgphdXRob3I6IFlPVVJfTkFNRV9IRVJFCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCj4gRnVuY3Rpb25zIGFyZSBhIHdheSB0byBjb21wYXJ0bWVudGFsaXplIGNodW5ja3Mgb2YgY29kZSBzbyB5b3UgY2FuIHVzZSB0aGVtIG92ZXIgYW5kIG92ZXIuCgpGb3IgdGhpcyBob21ld29yaywgSSB3b3VsZCBsaWtlIHlvdSB0byBjcmVhdGUgYSBmdW5jdGlvbiBjYWxsZWQgYGdldF9yaWNlKClgIGFuZCBpdCB3aWxsIGRvIHRoZSBmb2xsb3dpbmc6CgotIExvYWQgaW4gdGhlIGNzdiBmaWxlIGZyb20gZ29vZ2xlIGRvY3MuICAKLSBNYWtlIGNvbHVtbnMgZm9yIERhdGUsIE1vbnRoLCAmIFdlZWtkYXkuICAKLSBDb252ZXJ0IFRlbXBlcmF0dXJlICYgTGVuZ3RoIHVuaXRzIHRvIG1ldHJpYyB2ZXJzaW9uLiAgCi0gRHJvcCBhbGwgZHVwbGljYXRlIGRhdGEuICAKLSBNYWtlIGNvbHVtbiBuYW1lcyByZWFkYWJsZSBhbmQgdXNhYmxlLiAgCi0gUmV0dXJuIHRoZSBkYXRhIGZyYW1lIHRvIHRoZSB1c2VyLiAgCgoKSSdsbCBnZXQgeW91IHN0YXJ0ZWQgd2l0aCB0aGUgVVJMIGFuZCB0aGUgc3R1YiBmb3IgdGhlIGZ1bmN0aW9uLiAgSWYgeW91IHdhbnQgdG8gbG9vayBhdCB0aGUgcmF3IGRhdGEKCmBgYHtyfQojIFB1dCB5b3VyIGNvZGUgaGVyZSBmb3IgdGhlIGZ1bmN0aW9uLgoKZ2V0X3JpY2UgPC0gZnVuY3Rpb24oKSB7CiAgdXJsIDwtICJodHRwczovL2RvY3MuZ29vZ2xlLmNvbS9zcHJlYWRzaGVldHMvZC8xTWsxWUdIOUxxakY3ZHJKRS10ZDFHX0prZEFET1UwZU1sclAwMVdGQlQ4cy9wdWI/Z2lkPTAmc2luZ2xlPXRydWUmb3V0cHV0PWNzdiIKICAKICAjIFB1dCBhbGwgeW91ciBjb2RlIGhlcmUKICAKICAKfQpgYGAKCgoKV2hlbiBkb25lLCB5b3Ugc2hvdWxkIGJlIGFibGUgdG8gY2FsbCB0aGUgZnVuY3Rpb24gYXM6IAoKYGBge3J9CnJpY2UgPC0gZ2V0X3JpY2UoKSAKc3VtbWFyeSggcmljZSApCmBgYAoKCgojIyBQdXQgaXQgaW50byBhIHNjcmlwdCBmaWxlLgoKQ29weSB0aGUgY29kZSBmb3IgdGhlIGZ1bmN0aW9uIGFib3ZlIGFuZCBwdXQgaXQgaW50byBhICouUiBzY3JpcHQgZmlsZSBhbmQgc2F2ZSBpdCBpbiB0aGUgcm9vdCBkaXJlY3Rvcnkgb2YgeW91ciBwcm9qZWN0IGZvciB0aGlzIGNsYXNzLiAgTm93IHlvdSBjYW4gdXNlIGl0IHdoZW5ldmVyIHdlIG5lZWQgdG8gbG9hZCBpbiB0aGF0IHBhcnRpY3VsYXIgZGF0YSBmaWxlLgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRnVuY3Rpb25zIgphdXRob3I6IFlPVVJfTkFNRV9IRVJFCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCj4gRnVuY3Rpb25zIGFyZSBhIHdheSB0byBjb21wYXJ0bWVudGFsaXplIGNodW5ja3Mgb2YgY29kZSBzbyB5b3UgY2FuIHVzZSB0aGVtIG92ZXIgYW5kIG92ZXIuCgpGb3IgdGhpcyBob21ld29yaywgSSB3b3VsZCBsaWtlIHlvdSB0byBjcmVhdGUgYSBmdW5jdGlvbiBjYWxsZWQgYGdldF9yaWNlKClgIGFuZCBpdCB3aWxsIGRvIHRoZSBmb2xsb3dpbmc6CgotIExvYWQgaW4gdGhlIGNzdiBmaWxlIGZyb20gZ29vZ2xlIGRvY3MuICAKLSBNYWtlIGNvbHVtbnMgZm9yIERhdGUsIE1vbnRoLCAmIFdlZWtkYXkuICAKLSBDb252ZXJ0IFRlbXBlcmF0dXJlICYgTGVuZ3RoIHVuaXRzIHRvIG1ldHJpYyB2ZXJzaW9uLiAgCi0gRHJvcCBhbGwgZHVwbGljYXRlIGRhdGEuICAKLSBNYWtlIGNvbHVtbiBuYW1lcyByZWFkYWJsZSBhbmQgdXNhYmxlLiAgCi0gUmV0dXJuIHRoZSBkYXRhIGZyYW1lIHRvIHRoZSB1c2VyLiAgCgoKSSdsbCBnZXQgeW91IHN0YXJ0ZWQgd2l0aCB0aGUgVVJMIGFuZCB0aGUgc3R1YiBmb3IgdGhlIGZ1bmN0aW9uLiAgSWYgeW91IHdhbnQgdG8gbG9vayBhdCB0aGUgcmF3IGRhdGEKCgoKYGBge3J9CiMgUHV0IHlvdXIgY29kZSBoZXJlIGZvciB0aGUgZnVuY3Rpb24uCmdldF9yaWNlIDwtIGZ1bmN0aW9uKCkgewogIHVybCA8LSAiaHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvMU1rMVlHSDlMcWpGN2RySkUtdGQxR19Ka2RBRE9VMGVNbHJQMDFXRkJUOHMvcHViP2dpZD0wJnNpbmdsZT10cnVlJm91dHB1dD1jc3YiCgp9CmBgYAoKCgpXaGVuIGRvbmUsIHlvdSBzaG91bGQgYmUgYWJsZSB0byBjYWxsIHRoZSBmdW5jdGlvbiBhczogCgpgYGB7cn0KcmljZSA8LSBnZXRfcmljZSgpIApzdW1tYXJ5KCByaWNlICkKYGBgCgoKCiMjIFB1dCBpdCBpbnRvIGEgc2NyaXB0IGZpbGUuCgpDb3B5IHRoZSBjb2RlIGZvciB0aGUgZnVuY3Rpb24gYWJvdmUgYW5kIHB1dCBpdCBpbnRvIGEgKi5SIHNjcmlwdCBmaWxlIGFuZCBzYXZlIGl0IGluIHRoZSByb290IGRpcmVjdG9yeSBvZiB5b3VyIHByb2plY3QgZm9yIHRoaXMgY2xhc3MuICBOb3cgeW91IGNhbiB1c2UgaXQgd2hlbmV2ZXIgd2UgbmVlZCB0byBsb2FkIGluIHRoYXQgcGFydGljdWxhciBkYXRhIGZpbGUuCgo=</div>
 
 
 

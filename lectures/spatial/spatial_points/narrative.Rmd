@@ -4,11 +4,6 @@ output: html_notebook
 ---
 
 ```{r startup, include=FALSE}
-if( !require( sf ) ) {
-  install.packages("sf")
-}
-
-
 library( sf ) 
 library( tidyverse )
 ```
@@ -35,12 +30,6 @@ url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arap
 arapat <- read_csv( url )
 summary( arapat )
 ```
-
-
-
-
-### The `sp` Library
-
 
 
 

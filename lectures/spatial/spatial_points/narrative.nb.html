@@ -1764,33 +1764,35 @@ summary {
 <p>Points are coordinates in 2- or 3-dimensional space. They are represented as numeric vectors in <code>data.frame</code> objects or as stand-alone vectors.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSggcmVhZHIgKVxudXJsIDwtIFxcaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9tYXN0ZXIvZGF0YS9hcmFwYXQuY3N2XFxcbmFyYXBhdCA8LSByZWFkX2NzdiggdXJsIClcbnN1bW1hcnkoIGFyYXBhdCApXG5gYGAifQ== -->
-<pre class="r"><code>library( readr )
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGlicmFyeSggcmVhZHIgKVxudXJsIDwtIFxcaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9tYXN0ZXIvZGF0YS9hcmFwYXQuY3N2XFxcbmFyYXBhdCA8LSByZWFkX2NzdiggdXJsIClcbnN1bW1hcnkoIGFyYXBhdCApXG5gYGBcbmBgYCJ9 -->
+<pre class="r"><code>```r
+library( readr )
 url &lt;- \https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv\
 arapat &lt;- read_csv( url )
 summary( arapat )</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgU3RyYXR1bSAgICAgICAgICAgIExvbmdpdHVkZSAgICAgICAgIExhdGl0dWRlICAgIFxuIExlbmd0aDozOSAgICAgICAgICBNaW4uICAgOi0xMTQuMyAgIE1pbi4gICA6MjMuMDggIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOi0xMTIuOSAgIDFzdCBRdS46MjQuNTIgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOi0xMTEuNSAgIE1lZGlhbiA6MjYuMjEgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOi0xMTEuNyAgIE1lYW4gICA6MjYuMTQgIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOi0xMTAuNCAgIDNyZCBRdS46MjcuNDcgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOi0xMDkuMSAgIE1heC4gICA6MjkuMzMgIFxuIn0= -->
-<pre><code>   Stratum            Longitude         Latitude    
- Length:39          Min.   :-114.3   Min.   :23.08  
- Class :character   1st Qu.:-112.9   1st Qu.:24.52  
- Mode  :character   Median :-111.5   Median :26.21  
-                    Mean   :-111.7   Mean   :26.14  
-                    3rd Qu.:-110.4   3rd Qu.:27.47  
-                    Max.   :-109.1   Max.   :29.33  </code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiICAgU3RyYXR1bSAgICAgICAgICAgIExvbmdpdHVkZSAgICAgICAgIExhdGl0dWRlICAgIFxuIExlbmd0aDozOSAgICAgICAgICBNaW4uICAgOi0xMTQuMyAgIE1pbi4gICA6MjMuMDggIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOi0xMTIuOSAgIDFzdCBRdS46MjQuNTIgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOi0xMTEuNSAgIE1lZGlhbiA6MjYuMjEgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOi0xMTEuNyAgIE1lYW4gICA6MjYuMTQgIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOi0xMTAuNCAgIDNyZCBRdS46MjcuNDcgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOi0xMDkuMSAgIE1heC4gICA6MjkuMzMgIFxuIn0= --&gt;
+</code></pre>
+<p>Stratum Longitude Latitude<br />
+Length:39 Min. :-114.3 Min. :23.08<br />
+Class :character 1st Qu.:-112.9 1st Qu.:24.52<br />
+Mode :character Median :-111.5 Median :26.21<br />
+Mean :-111.7 Mean :26.14<br />
+3rd Qu.:-110.4 3rd Qu.:27.47<br />
+Max. :-109.1 Max. :29.33<br />
+```</p>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<div id="the-sp-library" class="section level3">
-<h3>The <code>sp</code> Library</h3>
-</div>
 <div id="the-sf-library---simple-features" class="section level3">
 <h3>The <code>sf</code> Library - Simple Features</h3>
 <!-- rnb-text-end -->
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiU3BhdGlhbCBQb2ludCBEYXRhIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgpgYGB7ciBzdGFydHVwLCBpbmNsdWRlPUZBTFNFfQppZiggIXJlcXVpcmUoIHNmICkgKSB7CiAgaW5zdGFsbC5wYWNrYWdlcygic2YiKQp9CgoKbGlicmFyeSggc2YgKSAKbGlicmFyeSggdGlkeXZlcnNlICkKYGBgCgoKCgojIGBSYCBMaWJyYXJ5IFJlcXVpcmVtZW50cwoKRm9yIGdlb3NwYXRpYWwgZGF0YSBhbmFseXNlcywgd2UgbXVzdCBpbnN0YWxsIHNwZWNpZmljIHBhY2thZ2VzIHRoYXQgaGF2ZSBiZWVuIGRlc2lnbmVkIHRvIAoKYGBge3J9CgpgYGAKCgojIFBvaW50cwoKUG9pbnRzIGFyZSBjb29yZGluYXRlcyBpbiAyLSBvciAzLWRpbWVuc2lvbmFsIHNwYWNlLiAgVGhleSBhcmUgcmVwcmVzZW50ZWQgYXMgbnVtZXJpYyB2ZWN0b3JzIGluIGBkYXRhLmZyYW1lYCBvYmplY3RzIG9yIGFzIHN0YW5kLWFsb25lIHZlY3RvcnMuCgpgYGB7ciBtZXNzYWdlPUZBTFNFfQpsaWJyYXJ5KCByZWFkciApCnVybCA8LSAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9tYXN0ZXIvZGF0YS9hcmFwYXQuY3N2IgphcmFwYXQgPC0gcmVhZF9jc3YoIHVybCApCnN1bW1hcnkoIGFyYXBhdCApCmBgYAoKCgoKIyMjIFRoZSBgc3BgIExpYnJhcnkKCgoKCiMjIyBUaGUgYHNmYCBMaWJyYXJ5IC0gU2ltcGxlIEZlYXR1cmVzCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiU3BhdGlhbCBQb2ludCBEYXRhIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgpgYGB7ciBzdGFydHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KCBzZiApIApsaWJyYXJ5KCB0aWR5dmVyc2UgKQpgYGAKCgoKCiMgYFJgIExpYnJhcnkgUmVxdWlyZW1lbnRzCgpGb3IgZ2Vvc3BhdGlhbCBkYXRhIGFuYWx5c2VzLCB3ZSBtdXN0IGluc3RhbGwgc3BlY2lmaWMgcGFja2FnZXMgdGhhdCBoYXZlIGJlZW4gZGVzaWduZWQgdG8gCgpgYGB7cn0KCmBgYAoKCiMgUG9pbnRzCgpQb2ludHMgYXJlIGNvb3JkaW5hdGVzIGluIDItIG9yIDMtZGltZW5zaW9uYWwgc3BhY2UuICBUaGV5IGFyZSByZXByZXNlbnRlZCBhcyBudW1lcmljIHZlY3RvcnMgaW4gYGRhdGEuZnJhbWVgIG9iamVjdHMgb3IgYXMgc3RhbmQtYWxvbmUgdmVjdG9ycy4KCmBgYHtyIG1lc3NhZ2U9RkFMU0V9CmxpYnJhcnkoIHJlYWRyICkKdXJsIDwtICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vZHllcmxhYi9FTlZTLUxlY3R1cmVzL21hc3Rlci9kYXRhL2FyYXBhdC5jc3YiCmFyYXBhdCA8LSByZWFkX2NzdiggdXJsICkKc3VtbWFyeSggYXJhcGF0ICkKYGBgCgoKCiMjIyBUaGUgYHNmYCBMaWJyYXJ5IC0gU2ltcGxlIEZlYXR1cmVzCgo=</div>
 
 
 

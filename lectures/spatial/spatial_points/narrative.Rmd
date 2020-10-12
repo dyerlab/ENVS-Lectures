@@ -1,37 +1,248 @@
 ---
 title: "Spatial Point Data"
-output: html_notebook
+output: 
+  html_notebook:
+      css: "envs543-styles.css"
 ---
 
-```{r startup, include=FALSE}
-library( sf ) 
+
+> Everything is related to everything else, but near things are more related to each other.  Tobler's First Law of Geography[^1]
+
+
+Let's start by loading in some of the libraries we'll be using for this exercise.
+
+```{r}
+library( sf )
+library( maps )
+library( ggplot2 )
 library( tidyverse )
 ```
 
 
 
+## Learning Objectives
 
-# `R` Library Requirements
+This topics is the first 
 
-For geospatial data analyses, we must install specific packages that have been designed to 
+- Describe the importance of Ellipsoids & Datum in spatial data.  
+
+- Use both `sf` & `ggplot` in visualizing point data.
+
+- Be able to transform point data from one projection to another.
+
+
+## Ellipsoids
+
+Unless you are in PHYS 101, the earth is not a perfect sphere (😉).  It is an irregularly shaped object that we need to be able to characterize if we are going to develop a system of placing points onto it and doing things such as measuring distance, finding watersheds, or defining boundaries.
+
+There has been a long history of ellipsoid research, all of which has been sought to increase our ability to map and move across the earth.  The following table gives some historical and contemporary ellipsoids.
+
+Ellipsoid      | Equatorial Radius (m) | Polar Radius (m) | Used
+---------------|:---------------------:|:----------------:|--------------------
+Maupertuis (1738) | 6,397,300 | 6,363,806.283 | France
+Plessis (1817) | 6,376,523.0 | 6,355,862.9333 |  France
+Everest (1830) | 6,377,299.365 | 6,356,098.359 | India
+Everest 1830 Modified (1967) | 6,377,304.063 | 6,356,103.0390 |  West Malaysia & Singapore
+Everest 1830 (1967 Definition) | 6,377,298.556 | 6,356,097.550 |  Brunei & East Malaysia
+Airy (1830) | 6,377,563.396 | 6,356,256.909 | Britain
+Bessel (1841) | 6,377,397.155 | 6,356,078.963 |  Europe, Japan
+Clarke (1866) | 6,378,206.4 | 6,356,583.8 |  North America
+Clarke (1878) | 6,378,190 | 6,356,456 |  North America
+Clarke (1880) | 6,378,249.145 | 6,356,514.870 |  France, Africa
+Helmert (1906) | 6,378,200 | 6,356,818.17 |  Egypt
+Hayford (1910) | 6,378,388 | 6,356,911.946 | USA
+International (1924) | 6,378,388 | 6,356,911.946 | Europe
+Krassovsky (1940) | 6,378,245 | 6,356,863.019 | USSR, Russia, Romania
+WGS66 (1966) | 6,378,145 | 6,356,759.769 |  USA/DoD
+Australian National (1966) | 6,378,160 | 6,356,774.719 | Australia
+New International (1967) | 6,378,157.5 | 6,356,772.2 | 
+GRS-67 (1967) | 6,378,160 | 6,356,774.516 |  
+South American (1969) | 6,378,160 | 6,356,774.719 | South America
+WGS-72 (1972) | 6,378,135 | 6,356,750.52 |  USA/DoD
+GRS-80 (1979) | 6,378,137 | 6,356,752.3141 | Global ITRS
+WGS-84 (1984) | 6,378,137 | 6,356,752.3142 |  Global GPS
+IERS (1989) | 6,378,136 | 6,356,751.302 |  
+IERS (2003) | 6,378,136.6 | 6,356,751.9 | 
+
+The most common ones you will probably run across include `GRS80`/`NAD83` (derived from satellite measurements of the distance of the surface to the core of the planet ) and `WGS-84` (an ellipsoid based upon GPS).
+
+### Example Data
+
+To examine the differences between ellipsoids, let's load in some data first.  Here are some point data that can be interpreted as polygons and represent the lower 48 states of the US.
 
 ```{r}
+states <- map_data("state")
+head( states )
+```
+Each row is a point that is associated with a group (in this case the state) and is plot in a specific order (to make the outline of the state).  There are `r format(nrow(states), big.mark=",")` points required to make the plot, with the following `r length( unique( states$region) )` regions.
 
+```{r}
+unique( states$region )
 ```
 
 
-# Points
+Fortunately for us, our old friend `ggplot` has a bit of magic that can do this kind of plotting for us.
 
-Points are coordinates in 2- or 3-dimensional space.  They are represented as numeric vectors in `data.frame` objects or as stand-alone vectors.
-
-```{r message=FALSE}
-library( readr )
-url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv"
-arapat <- read_csv( url )
-summary( arapat )
+```{r}
+library( ggplot2 )
+ggplot( states, aes( x = long, 
+                     y = lat,
+                     group = group ) ) + 
+  geom_polygon( fill = "lightgray", 
+                color = "black", 
+                lwd = 0.25) + 
+  theme_void() -> p
 ```
 
 
 
-### The `sf` Library - Simple Features
+### Azimuth Projections
 
+An Azimuth Projection is one that is formed by a 2-dimensional plane that is tangential to the surface of the earth at example one point.  This point may be polar (north or south pole) or oblique (e.g., over Richmond, Virginia).
+
+<center>
+![Azequidistant](https://live.staticflickr.com/65535/50437120363_d8e0686d38_w_d.jpg)
+</center>
+
+We can apply different ellipsoids to the map *when we plot it* by adjusting the coordinate space it is plot within using the `coord_map()` modification.  For a whole list of available projections, see `?mapproject`.
+
+
+```{r}
+p + coord_map( "azequalarea")
+```
+
+### Cylindrical Projection
+
+A cylindrical projection is one where a cylinder is wrapped around the earth creating straight lines for all parallel away from the equator.
+
+
+<center>![Cylindrical Projection](https://live.staticflickr.com/65535/50437120498_8dd67df3f1_w_d.jpg)</center>
+
+
+```{r}
+p + coord_map("cylindrical")
+```
+
+
+### Conic Projections
+
+Conic projections are symmetric around the prime meridian and all parallels are segments of conecntric circles.
+
+<center>![Conic Projection](https://live.staticflickr.com/65535/50437120428_6da48bed81_w_d.jpg)</center>
+
+
+```{r}
+p + coord_map( "conic", lat0 = 30)
+```
+
+## Datum
+
+Once we have an ellipsoid model to work with we must define a *DATUM* type that will represent the coordiante system used.  Two common DATUM types include:  
+
+
+- *Longitude & Latitude* - The East/West & North/South position on the surface of the earth.
+  - Prime Meridian (0° Longitude) passes thorugh the [Royal Observatory](https://en.wikipedia.org/wiki/Royal_Observatory,_Greenwich) in Greenwich England, with positive values of longitude to the east and negative to the west.
+  - Equator (0° Latitude) and is defined as the point on the planet where both northern and southern hemisphers have equal amounts of day and night at the [equinox](https://en.wikipedia.org/wiki/Equinox) (Sept. 21 & March 21).
+  - Richmond, Virginia: 37.533333 Latitude, -77.466667 Longitude
+
+- *Universal Trans Mercator* - A division of the earth into 60 zones (~6°longitude each, labeled 01 - 60) and 20 bands each of which is ~8° latitude (labeled C-X excluding I & O with A & B dividing up Antartica).  See image [here](https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system#/media/File:Universal_Transverse_Mercator_zones.svg).
+  - Coordinates include Zone & band designation as well as coordinates in Easting and Northing (planar coordinates within the zone) measured in meters.
+  - Richmond, Virginia: 18S 282051 4156899
+
+
+<div class="box-red"><table><tr><td><font style="font-size: 350%">⚠️</font></td><td>&nbsp;</td><td>You **must** set both the ellipsoid and datum to be **EXACTLY THE SAME** for all of your data before you can do any work with it.  If they are not on the same lumpy bumpy planet or in the same coordinate system, you will be screwed (that is a technical term).</td></tr></table></div>
+
+
+# Point Data
+
+
+To start off, we will load in some data from the bark beetle, *Araptus attenuatus*, a Sonoran Desert endemic parasite that lives within the plant *Euphorbia lomelii*.
+
+<table>
+<tr>
+<td>![Araptus attenuatus](https://live.staticflickr.com/65535/50441339417_74e04216fa_w_d.jpg)</td>
+<td>![Euphorbia lomelii](https://live.staticflickr.com/65535/50441175211_ba3b9df2ea_w_d.jpg)</td>
+</tr>
+</table>
+
+As part of some work that we have done on these species, we have looked at the relationship between habitat suitability and sex ratio bias.  The life history for this beetle is such that males will establish home by burrowing in the senescing tissues of the host plant.  Once established, feamles are attracted via phermones.  
+
+```{r}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+read_csv( url ) %>%
+  select( Site, Longitude, Latitude, everything() ) %>%
+  arrange( Latitude ) -> data 
+summary( data )
+```
+
+
+We can plot these locations and fill in some interpretive data using the `leaflet` library as follows:
+
+```{r message=FALSE, warning=FALSE}
+library( leaflet )
+data %>%
+  mutate( Label = paste( "<b>Site:", Site, 
+                         "</b><hr>\nFemales:", Females, 
+                         "<br>Males: ", Males,
+                         "<br>Suitability:", Suitability) ) %>%
+  leaflet() %>%
+  addMarkers( ~Longitude, ~Latitude, popup = ~Label ) %>%
+  addProviderTiles( "OpenTopoMap" )
+```
+Make sure to click on one of the markers and see the popup information that we added *en route* via that mutate and some HTML code.
+
+
+
+In this case, we are using the latitude and longitude as numerical values of which the `leaflet` library is able to intrepret properly.  Howver, just like we did for [data-like data](https://dyerlab.github.io/ENVS-Lectures/r_language/dates/slides.html#1), we can convert these into a geographically relevant data type that knows a lot about geospatial processes rather than keeping it as a numeric value that we "assume" will work properly.
+
+
+For this we will use the `sf` library.
+
+## `sf` Objects
+
+*Simple Features* (hereafter abbreviated as `sf`) are an open standard developed by the Open Geospatial Consortium ([OGC](https://ogc.org)).  They define the following basic types:
+
+- POINT  
+- LINESTRING
+- POLYGON  
+- MULTIPOINT
+- MULTILINESTRING
+- MULTIPOLYGON
+- GEOMETRYCOLLECTION
+
+Each of these basic types can be represented within a single column of a `data.frame`.  So just like when we converted the textual `character` representation of date and time into a single `POSIXct`  object, we can do the same for these kinds of geospatial objects.
+
+To do this, we need to tell the conversion function `st_as_sf()` which columns to consider as the datum and which ellipsoid to use.
+
+```{r}
+library( sf )
+data %>%
+  st_as_sf( coords=c("Longitude","Latitude"),
+            crs = 4326 ) -> data
+head( data )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[^1]: [Tobler, W. R. 1970. *Economic Geography*, **46**, 234–240.](https://doi.org/10.1002/9781118786352.wbieg1011)

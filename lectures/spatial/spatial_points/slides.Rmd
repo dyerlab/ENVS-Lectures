@@ -1,5 +1,5 @@
 ---
-title: "Points, Lines, & Polygons"
+title: "Projections & Point Data"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -32,12 +32,9 @@ theme_set( theme_classic( base_size = 20) )
 ```
 
 
+# .orange[Spatial Data]
 
-#  .orange[Spatial Data]
-
-
-
-### .fancy[Points, Lines, & Polygons]
+### .fancy[Projections & Points `r fa("map-marker-alt", fill='orange'  )`]
 
 
 
@@ -147,14 +144,27 @@ Models of the physical structure of the surface of the planet.
 - WGS84 - Model built on global GPS system.
 
 
---
 
-For these examples, I'm going to be using the `maps` library<sup>1</sup>. .footnote[<sup>1</sup>If you do not have it, install it by `install.packages("maps")`.]
+
+---
+
+# Example Data - Maps
+
+For these examples, I'm going to be using the `maps` library<sup>1</sup>. .footnote[<sup>1</sup>If you do not have it, install it by `install.packages("maps")`.]For
 
 ```{r}
 library( ggplot2 )
 library( maps )
 states <- map_data( "state" )
+head(states, n=3)
+```
+
+
+--
+
+A basic map, notice the use of `group`.
+
+```{r}
 ggplot( states, aes(x=long, y=lat, group=group) ) + 
   geom_polygon( fill="lightgray", color="black", lwd=0.25) + 
   theme_void() -> p
@@ -331,8 +341,12 @@ The `leaflet` library allows you to make quick, interactive maps.
 library( tidyverse )
 library( leaflet )
 data %>%
+  mutate( Label = paste( "Site:", Site, 
+                         "<hr>\nFemales:", Females, 
+                         "<br>Males: ", Males,
+                         "<br>Suitability:", Suitability) ) %>%
   leaflet() %>%
-  addMarkers( ~Longitude, ~Latitude ) %>%
+  addMarkers( ~Longitude, ~Latitude, popup = ~Label ) %>%
   addProviderTiles( "OpenTopoMap" )
 ```
 
@@ -343,8 +357,12 @@ data %>%
 library( tidyverse )
 library( leaflet )
 data %>%
+  mutate( Label = paste( "Site:", Site, 
+                         "<hr>\nFemales:", Females, 
+                         "<br>Males: ", Males,
+                         "<br>Suitability:", Suitability) ) %>%
   leaflet() %>%
-  addMarkers( ~Longitude, ~Latitude ) %>%
+  addMarkers( ~Longitude, ~Latitude, popup = ~Label ) %>%
   addProviderTiles( "OpenTopoMap" )
 ```
 ]
@@ -410,9 +428,33 @@ head( data )
 
 
 
+
+
+
 ---
 background-image: url("https://live.staticflickr.com/65535/50445538736_bc1c3456e5_k_d.jpg)
 background-size: cover
+
+
+
+
+---
+
+# Reprojecting Points
+
+We can reproject data (that **already** has a coordinate reference system) into any other projection.
+
+```{r}
+data %>%
+  st_transform( 6372 ) %>%
+  st_bbox()
+```
+
+
+
+
+
+
 
 
 ---
@@ -527,14 +569,16 @@ ggplot( ) +
            size=2) +
   xlab("Longitude") + 
   ylab("Latitude") + 
-  theme_bw( base_size = 12 )
+  theme_bw( base_size = 12 ) +
+  coord_sf( xlim = c(-115, -105),
+            ylim = c(20, 30) )
 ```
 
 
 ]
 
 .pull-right[ 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=6, fig.height=6}
 bbox <- st_bbox( data )
 map_data("world") %>%
   filter( region == "Mexico") -> map
@@ -547,7 +591,9 @@ ggplot( ) +
            size=2) +
   xlab("Longitude") + 
   ylab("Latitude") + 
-  theme_bw( base_size = 12 )
+  theme_bw( base_size = 12 ) +
+  coord_sf( xlim = c(-115, -105),
+            ylim = c(20, 30) )
 ```
 ]
 
@@ -598,9 +644,6 @@ ggplot() +
   ylab("Latitude")
 ```
 ]
-
-
-
 
 
 

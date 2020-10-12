@@ -184,7 +184,7 @@ x
 
 ## Concatenating Vectors
 
-WE can concatinate vectors together (as well as vectors and individual elements)
+WE can concatenate vectors together (as well as vectors and individual elements)
 
 ```{r}
 x <- 1:5

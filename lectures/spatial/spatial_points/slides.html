@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Points, Lines, &amp; Polygons</title>
+    <title>Projections &amp; Point Data</title>
     <meta charset="utf-8" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
@@ -29,12 +29,9 @@ background-size: cover
 
 
 
+# .orange[Spatial Data]
 
-#  .orange[Spatial Data]
-
-
-
-### .fancy[Points, Lines, &amp; Polygons]
+### .fancy[Projections &amp; Points &lt;svg style="height:0.8em;top:.04em;position:relative;fill:orange;" viewBox="0 0 384 512"&gt;&lt;path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/&gt;&lt;/svg&gt;]
 
 
 
@@ -144,15 +141,36 @@ Models of the physical structure of the surface of the planet.
 - WGS84 - Model built on global GPS system.
 
 
---
 
-For these examples, I'm going to be using the `maps` library&lt;sup&gt;1&lt;/sup&gt;. .footnote[&lt;sup&gt;1&lt;/sup&gt;If you do not have it, install it by `install.packages("maps")`.]
+
+---
+
+# Example Data - Maps
+
+For these examples, I'm going to be using the `maps` library&lt;sup&gt;1&lt;/sup&gt;. .footnote[&lt;sup&gt;1&lt;/sup&gt;If you do not have it, install it by `install.packages("maps")`.]For
 
 
 ```r
 library( ggplot2 )
 library( maps )
 states &lt;- map_data( "state" )
+head(states, n=3)
+```
+
+```
+##        long      lat group order  region subregion
+## 1 -87.46201 30.38968     1     1 alabama      &lt;NA&gt;
+## 2 -87.48493 30.37249     1     2 alabama      &lt;NA&gt;
+## 3 -87.52503 30.37249     1     3 alabama      &lt;NA&gt;
+```
+
+
+--
+
+A basic map, notice the use of `group`.
+
+
+```r
 ggplot( states, aes(x=long, y=lat, group=group) ) + 
   geom_polygon( fill="lightgray", color="black", lwd=0.25) + 
   theme_void() -&gt; p
@@ -176,7 +194,7 @@ Projected onto a 2-dimensional plane that is tangential to a single point on the
 p + coord_map( "azequalarea")
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-2-1.png" width="504" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-3-1.png" width="504" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -190,7 +208,7 @@ p + coord_map( "azequalarea")
 p + coord_map( "cylindrical" )
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-3-1.png" width="504" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-4-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 .pull-right[
 Parallels are straight lines and horizontal up and down the plot from latitude = 0
@@ -219,7 +237,7 @@ Symmetric around the Prime Meridian and parallels are segments of concentric cir
 p + coord_map( "conic", lat0 = 30)
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-4-1.png" width="504" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-5-1.png" width="504" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -364,16 +382,20 @@ The `leaflet` library allows you to make quick, interactive maps.
 library( tidyverse )
 library( leaflet )
 data %&gt;%
+  mutate( Label = paste( "Site:", Site, 
+                         "&lt;hr&gt;\nFemales:", Females, 
+                         "&lt;br&gt;Males: ", Males,
+                         "&lt;br&gt;Suitability:", Suitability) ) %&gt;%
   leaflet() %&gt;%
-  addMarkers( ~Longitude, ~Latitude ) %&gt;%
+  addMarkers( ~Longitude, ~Latitude, popup = ~Label ) %&gt;%
   addProviderTiles( "OpenTopoMap" )
 ```
 
 ]
 
 .pull-right[
-<div id="htmlwidget-f0cad14101e777802832" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f0cad14101e777802832">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addMarkers","args":[[23.2855,24.00789,24.0195,24.13389,24.2115,24.21441,24.58843,24.87611,25.0247,25.34819,25.55757,25.60521,25.91409,26.0155,26.20876,26.63783,26.94589,27.0367,27.18232,27.2028,27.3632,27.40498,27.52944,28.03661,28.22308,28.40846,28.66056,28.72796,28.96651,29.01457,29.32541],[-110.10429,-109.85071,-110.096,-110.46236,-110.951,-110.27252,-110.74599,-110.69175,-111.675,-111.60056,-111.21563,-111.32638,-112.08062,-111.35475,-111.37833,-109.327,-112.04613,-112.986,-112.66552,-112.408,-112.964,-112.52959,-113.31609,-113.39991,-113.18263,-112.86985,-113.99141,-113.48973,-113.66787,-113.94486,-114.29353],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addProviderTiles","args":["OpenTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ef9c4ff42a72a34de4c2" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ef9c4ff42a72a34de4c2">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addMarkers","args":[[23.2855,24.00789,24.0195,24.13389,24.2115,24.21441,24.58843,24.87611,25.0247,25.34819,25.55757,25.60521,25.91409,26.0155,26.20876,26.63783,26.94589,27.0367,27.18232,27.2028,27.3632,27.40498,27.52944,28.03661,28.22308,28.40846,28.66056,28.72796,28.96651,29.01457,29.32541],[-110.10429,-109.85071,-110.096,-110.46236,-110.951,-110.27252,-110.74599,-110.69175,-111.675,-111.60056,-111.21563,-111.32638,-112.08062,-111.35475,-111.37833,-109.327,-112.04613,-112.986,-112.66552,-112.408,-112.964,-112.52959,-113.31609,-113.39991,-113.18263,-112.86985,-113.99141,-113.48973,-113.66787,-113.94486,-114.29353],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Site: Aqu <hr>\nFemales: 9 <br>Males:  12 <br>Suitability: 0.7217","Site: 73 <hr>\nFemales: 5 <br>Males:  11 <br>Suitability: 0.1455","Site: 157 <hr>\nFemales: 30 <br>Males:  26 <br>Suitability: 0.881","Site: 153 <hr>\nFemales: 41 <br>Males:  35 <br>Suitability: 0.7325","Site: 163 <hr>\nFemales: 21 <br>Males:  21 <br>Suitability: 0.4329","Site: 48 <hr>\nFemales: 27 <br>Males:  18 <br>Suitability: 0.6195","Site: 75 <hr>\nFemales: 18 <br>Males:  16 <br>Suitability: 0.8656","Site: 77 <hr>\nFemales: 16 <br>Males:  19 <br>Suitability: 0.4226","Site: const <hr>\nFemales: 11 <br>Males:  18 <br>Suitability: 0.1744","Site: 51 <hr>\nFemales: 11 <br>Males:  9 <br>Suitability: 0.4125","Site: 168 <hr>\nFemales: 25 <br>Males:  28 <br>Suitability: 0.4965","Site: 64 <hr>\nFemales: 19 <br>Males:  16 <br>Suitability: 0.2876","Site: 166 <hr>\nFemales: 26 <br>Males:  19 <br>Suitability: 0.2673","Site: 58 <hr>\nFemales: 9 <br>Males:  11 <br>Suitability: 0.9019","Site: 169 <hr>\nFemales: 28 <br>Males:  47 <br>Suitability: 0.3132","Site: 32 <hr>\nFemales: 27 <br>Males:  40 <br>Suitability: 0.0563","Site: 93 <hr>\nFemales: 21 <br>Males:  25 <br>Suitability: 0.1627","Site: 161 <hr>\nFemales: 63 <br>Males:  64 <br>Suitability: 0.2791","Site: 12 <hr>\nFemales: 21 <br>Males:  24 <br>Suitability: 0.3519","Site: 162 <hr>\nFemales: 41 <br>Males:  57 <br>Suitability: 0.6136","Site: sfran <hr>\nFemales: 16 <br>Males:  26 <br>Suitability: 0.3211","Site: 160 <hr>\nFemales: 36 <br>Males:  48 <br>Suitability: 0.3652","Site: 159 <hr>\nFemales: 15 <br>Males:  22 <br>Suitability: 0.188","Site: 89 <hr>\nFemales: 19 <br>Males:  18 <br>Suitability: 0.3975","Site: 171 <hr>\nFemales: 39 <br>Males:  38 <br>Suitability: 0.4614","Site: 173 <hr>\nFemales: 32 <br>Males:  19 <br>Suitability: 0.5243","Site: 177 <hr>\nFemales: 50 <br>Males:  49 <br>Suitability: 0.2618","Site: 175 <hr>\nFemales: 8 <br>Males:  13 <br>Suitability: 0.4214","Site: 84 <hr>\nFemales: 17 <br>Males:  13 <br>Suitability: 0.3953","Site: 9 <hr>\nFemales: 10 <br>Males:  11 <br>Suitability: 0.5641","Site: 88 <hr>\nFemales: 18 <br>Males:  23 <br>Suitability: 0.2186"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addProviderTiles","args":["OpenTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
 ]
 
 
@@ -456,9 +478,39 @@ head( data )
 
 
 
+
+
+
 ---
 background-image: url("https://live.staticflickr.com/65535/50445538736_bc1c3456e5_k_d.jpg)
 background-size: cover
+
+
+
+
+---
+
+# Reprojecting Points
+
+We can reproject data (that **already** has a coordinate reference system) into any other projection.
+
+
+```r
+data %&gt;%
+  st_transform( 6372 ) %&gt;%
+  st_bbox()
+```
+
+```
+##    xmin    ymin    xmax    ymax 
+## 1307745 1274010 1773676 1968473
+```
+
+
+
+
+
+
 
 
 ---
@@ -488,7 +540,7 @@ Eash of the data columns are associated with the `geometry` column we made.  If 
 plot( data , pch=16, cex=2)
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-9-1.png" width="504" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-11-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -501,7 +553,7 @@ plot( data , pch=16, cex=2)
 plot( data$Suitability, pch=16, cex=2, bty="n" )
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-10-1.png" width="432" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-12-1.png" width="432" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
@@ -510,7 +562,7 @@ plot( data$Suitability, pch=16, cex=2, bty="n" )
 plot( data["Suitability"], pch=16, cex=2)
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-11-1.png" width="432" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-13-1.png" width="432" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -525,7 +577,7 @@ plot( data["Suitability"], pch=16, cex=2)
 ggplot( data ) + geom_sf( aes(size=Suitability) ) 
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-12-1.png" width="432" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="432" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -543,7 +595,7 @@ ggplot( data ) +
 ]
 
 .pull-right[
-&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="504" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-16-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -582,14 +634,16 @@ ggplot( ) +
            size=2) +
   xlab("Longitude") + 
   ylab("Latitude") + 
-  theme_bw( base_size = 12 )
+  theme_bw( base_size = 12 ) +
+  coord_sf( xlim = c(-115, -105),
+            ylim = c(20, 30) )
 ```
 
 
 ]
 
 .pull-right[ 
-&lt;img src="slides_files/figure-html/unnamed-chunk-16-1.png" width="504" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-18-1.png" width="432" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -603,7 +657,7 @@ ggplot( ) +
 # Natural Earth
 
 .pull-left[
-&lt;img src="slides_files/figure-html/unnamed-chunk-17-1.png" width="504" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-19-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
@@ -627,9 +681,6 @@ ggplot() +
   ylab("Latitude")
 ```
 ]
-
-
-
 
 
 

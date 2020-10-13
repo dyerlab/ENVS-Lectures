@@ -153,6 +153,52 @@ Once we have an ellipsoid model to work with we must define a *DATUM* type that 
 <div class="box-red"><table><tr><td><font style="font-size: 350%">⚠️</font></td><td>&nbsp;</td><td>You **must** set both the ellipsoid and datum to be **EXACTLY THE SAME** for all of your data before you can do any work with it.  If they are not on the same lumpy bumpy planet or in the same coordinate system, you will be screwed (that is a technical term).</td></tr></table></div>
 
 
+
+# Defining Projections
+
+Projections are a combination of the underlying elipse as well as the definition of the datum.  There are literally thousands of recognized projections, each of which has to be able to be sufficiently defined such that we can convert from one recognized projection to another[^2].  
+
+One of the repositories for these projections can be found at [epsg.io](https://epsg.io).
+
+[![epsg.io](https://live.staticflickr.com/65535/50445538736_bc1c3456e5_k_d.jpg)](https://epsg.io)
+
+The EPSG Geodetic Parameter Dataset (also known as the EPGS[^3] registry) is a publc registry of datums, spatial reference systems, and earth elipsoids.  Each item is assigned a specific EPSG code
+
+
+The precise definitions of projections come in several different formats, some of which include:
+
+<tt>Well Known Text (WKT)</tt>
+```
+GEOGCS["WGS 84",
+    DATUM["WGS_1984",
+        SPHEROID["WGS 84",6378137,298.257223563,
+            AUTHORITY["EPSG","7030"]],
+        AUTHORITY["EPSG","6326"]],
+    PRIMEM["Greenwich",0,
+        AUTHORITY["EPSG","8901"]],
+    UNIT["degree",0.0174532925199433,
+        AUTHORITY["EPSG","9122"]],
+    AUTHORITY["EPSG","4326"]]
+```
+
+<tt>PROJ.4</tt>
+```
++proj=longlat +datum=WGS84 +no_defs 
+```
+
+If you work with ESRI software, when you have a projected shapefile, one of the several files that go with that shapefile is the `.prj` file which will contain the <tt>ESRI WKT</tt> below.
+
+```
+GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]
+```
+
+
+<div class="box-green"><table><tr><td>Always let the underlying software make any changes to projection information.  There is a lot of difficult conversions that need to happen to reproject from one CRS to another.</td><td>&nbsp;</td><td><font style="font-size: 350%">🌎</font></td></tr></table></div>
+
+
+
+
+
 # Point Data
 
 
@@ -175,8 +221,17 @@ read_csv( url ) %>%
 summary( data )
 ```
 
+We can plot these points using the normal `ggplot` functions (map overlays below).
 
-We can plot these locations and fill in some interpretive data using the `leaflet` library as follows:
+```{r}
+library(ggrepel)
+data %>%
+  ggplot( aes( Longitude, Latitude ) ) + 
+  geom_label_repel( aes(label=Site) ) + 
+  coord_map()
+```
+
+We can also plot these locations and fill in some interpretive data using the `leaflet` library to create an interactive map as follows:
 
 ```{r message=FALSE, warning=FALSE}
 library( leaflet )
@@ -191,12 +246,7 @@ data %>%
 ```
 Make sure to click on one of the markers and see the popup information that we added *en route* via that mutate and some HTML code.
 
-
-
-In this case, we are using the latitude and longitude as numerical values of which the `leaflet` library is able to intrepret properly.  Howver, just like we did for [data-like data](https://dyerlab.github.io/ENVS-Lectures/r_language/dates/slides.html#1), we can convert these into a geographically relevant data type that knows a lot about geospatial processes rather than keeping it as a numeric value that we "assume" will work properly.
-
-
-For this we will use the `sf` library.
+In this case, we are using the latitude and longitude as numerical values of which the `leaflet` library is able to intrepret properly.  However, just like we did for [date-like data](https://dyerlab.github.io/ENVS-Lectures/r_language/dates/slides.html#1), we can convert these into a geographically relevant data type that knows a lot about geospatial processes rather than keeping it as a numeric value that we "assume" will work properly.  For this we will use the `sf` library.
 
 ## `sf` Objects
 
@@ -210,9 +260,7 @@ For this we will use the `sf` library.
 - MULTIPOLYGON
 - GEOMETRYCOLLECTION
 
-Each of these basic types can be represented within a single column of a `data.frame`.  So just like when we converted the textual `character` representation of date and time into a single `POSIXct`  object, we can do the same for these kinds of geospatial objects.
-
-To do this, we need to tell the conversion function `st_as_sf()` which columns to consider as the datum and which ellipsoid to use.
+Each of these basic types can be represented within a single column of a `data.frame`.  To do this, we need to tell the conversion function `st_as_sf()` which columns to consider as the datum and which ellipsoid to use.
 
 ```{r}
 library( sf )
@@ -222,21 +270,158 @@ data %>%
 head( data )
 ```
 
+This conversion to an `sf` object adds attributes to the `data.frame` and `tibble` object.
+
+```{r}
+class( data )
+```
+
+This additional `sf` attributes gives it more qualities such as a bounding box (e.g., the area within which all the poitns exist)
+
+```{r}
+st_bbox( data )
+```
+
+Distances between objects.
+
+```{r}
+st_distance( data[1,], data[2,])
+```
+
+As well as complex geospatial operations such as finding the convex hull (the minimal area containing all poitns).
+
+```{r}
+data %>%
+  st_union() %>%
+  st_convex_hull() -> hull
+hull
+```
+
+the center of the all the points.
+
+```{r}
+hull %>%
+  st_centroid()
+```
+
+and the area enclosed by all the points (for various units).
+
+```{r}
+library( units )
+hull %>%
+  st_area() %>%
+  set_units( km^2 )
+```
+
+
+### Reprojecting
+
+In addition to the operations above, properly created `sf` objects can easily be projected from one CRS into another (epsg 6372 is a common projection covering  Mexico based upon the GRS80 elipsoid and the latest ITRF2008 datum standard based on the meter)[^4].
+
+```{r}
+data %>%
+  st_transform( 6372 ) %>%
+  st_bbox()
+```
+
+Again, do this **first** to all your data to make sure it is put into a proper projection (and most of your headaches will disappear).
+
+
+### Plotting `sf` Objects
+
+Analogous to the duality between built-in `R` plotting and `ggplot` approaches, we can use either of these frameworks to plot `sf` objects.
+
+As built-in objects, a `sf` data set that has a geometry coordinate is intrinsically linked to all the other data columns.  If we plot the entire data frame, we see that for each non-geometry data column, we create an individual plot.
+
+```{r}
+plot( data )
+```
+
+The data with the `data.frame` can be accessed as normal.
+
+```{r}
+plot( data$Suitability )
+```
+
+But if we plot it using the square brackets and names of dat columns, we can link the `geometry` column to it and plot it as a spatial representation of those data (and adorn it with the normal `plot()` upgrades accordingly).
+
+```{r}
+plot( data["Suitability"], pch=16, cex=2)
+```
+
+Perhaps not surprisingly, `ggplot()` also works the same way, however, the geospatial coordiantes for the plot aare taken care of using `geom_sf()` and you are left with definining which of the data columns you want to put into the plot as a component of the `aes()` definition.
+
+```{r}
+ggplot( data, aes(color=Suitability) ) + 
+  geom_sf( )
+```
+
+It works the same ways for lables.
+
+```{r}
+ggplot( data ) + 
+  geom_sf_text( aes(label=Site) ) + 
+  theme_void() + 
+  coord_map()
+```
 
 
 
+# Map Overlays
+
+We can go out and grab a map background to overlay these plots onto, giving more context (similiarly to how we did this above using leaflet). 
+
+The `map_data()` function is part of `ggplot()` and produces a `data.frame` object where each row is a coordinate used to draw polygons (see [narrative](https://dyerlab.github.io/ENVS-Lectures/spatial/spatial_polygons/narrative.nb.html) on polygons for more information).
+
+```{r}
+map_data("world") %>%
+  filter( region == "Mexico") -> map
+head( map )
+```
+In `ggplot` there is a `geom_polygon()` function that takes these series of coordiantes and draws them properly over which we can lay down the `sf` object.  
+
+However, notice that the boundary boxes for the data and the map are vastly different (the underlying map is much bigger).
+
+```{r}
+cbind( Data = st_bbox( data ), Map = c(min(map$long), min(map$lat), max(map$long), max(map$lat) ) )
+```
+
+So if we plot it as is, we have points only in a small area of the plot.
+
+```{r}
+ggplot( ) + 
+  geom_polygon( aes( x=long, 
+                     y=lat, 
+                     group=group ), 
+                data=map, 
+                fill="grey" ) + 
+  geom_sf( data=data, 
+           aes(color=Suitability), 
+           size=2) +
+  xlab("Longitude") + 
+  ylab("Latitude") + 
+  theme_bw( base_size = 12 ) 
+```
+
+In a normal `ggplot()` display we could use `+ xlim() + ylim()` but since we are combining both `geom_polygon` and `geom_sf`, we are required to do this in the `coord_sf()` function to make it work correctly[^5].
 
 
-
-
-
-
-
-
-
-
-
-
+```{r}
+ggplot( ) + 
+  geom_polygon( aes( x=long, 
+                     y=lat, 
+                     group=group ), 
+                data=map, 
+                fill="grey" ) + 
+  geom_sf( data=data, 
+           aes(color=Suitability), 
+           size=2) +
+  xlab("Longitude") + 
+  ylab("Latitude") + 
+  theme_bw( base_size = 12 ) +
+  coord_sf( xlim = c(-115, -105),
+            ylim = c(20, 30) )
+```
 
 
 
@@ -246,3 +431,11 @@ head( data )
 
 
 [^1]: [Tobler, W. R. 1970. *Economic Geography*, **46**, 234–240.](https://doi.org/10.1002/9781118786352.wbieg1011)
+
+[^2]: Translation from one CRS to another in *all GIS software* is handled by the open source [proj.org](https://prog.org) library.
+
+[^3]: The EPSG standard was originally created in 1985 by the [https://en.wikipedia.org/wiki/European_Petroleum_Survey_Group](European Petroleum Survey Group) and made public in 1993.
+
+[^4]: This standard is defined by [Sistema Nacional de Información Estadística y Geográfica](https://www.inegi.org.mx).
+
+[^5]: This is because if we use the normal procedures, we mess up the order in which everything is plot in `geom_polygon()`, try it and see.

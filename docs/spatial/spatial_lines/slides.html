@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Points, Lines, &amp; Polygons</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+    <script src="libs/jquery-1.12.4/jquery.min.js"></script>
+    <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-1.3.1/leaflet.js"></script>
+    <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+    <script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+    <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
+    <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+    <script src="libs/leaflet-providers-plugin-2.0.3/leaflet-providers-plugin.js"></script>
+    <link rel="stylesheet" href="../../css/slide_styles.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50362989122_a8ee154fea_k_d.jpg")
+background-size: cover
+
+
+
+
+
+
+#  .orange[Spatial Data]
+
+
+
+### .fancy[Points, Lines, &amp; Polygons]
+
+
+
+
+---
+class: bottom
+background-image: url("https://live.staticflickr.com/65535/50437121667_ac9c3e7f84_c_d.jpg")
+background-size: 55%
+
+
+.footnote[ [Knight *et al.* (2005) *Nature*.  **437**, 880-883.](https://www.researchgate.net/deref/http%3A%2F%2Fdx.doi.org%2F10.1038%2Fnature03962)]
+
+
+
+---
+
+# Toblers First Law of Geography
+
+.blue[
+&gt; Everything is related to everything else, but near things are more related to each other.
+]
+
+--
+
+.pull-left[
+### Physical Measurements
+- Location  
+
+- Distance  
+
+- Network  
+
+- Neighborhoods &amp; Regions
+]
+
+.pull-right[
+### Emerging Properties 
+
+- Spatial Heterogeneity
+
+- Spatial Dependence  
+
+- Objects &amp; Fields
+
+]
+
+.footnote[[Tobler, W. R. 1970. *Economic Geography*, **46**, 234–240.](https://doi.org/10.1002/9781118786352.wbieg1011)]
+
+
+
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .orange[Projections]
+
+## .fancy[Representing Location On .redinline[*This*] Planet.]
+
+
+
+---
+
+# A Projection
+
+A projection is a mathematical mapping of points measured on this surface of this earth that can be represented on things like computer screens.
+
+.center[![Example](https://live.staticflickr.com/65535/50437002623_e8df5b3c9f_c_d.jpg) ]
+
+
+
+
+
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50437046573_20efc64bdb_o_d.png")
+background-position: right
+background-size: auto
+background-color: #00013B
+
+# .blueinline[Earth == Lumpy &lt;br&gt;Bumpy Potato?]
+
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+## .redinline[Yes!    
+&amp;nbsp; &amp;nbsp; &amp;nbsp; - J. Ciminelli]
+
+
+
+---
+
+# Ellipsoids
+
+Models of the physical structure of the surface of the planet.  
+
+- NAD83/GRS80 - Satellite measurements of distance from core to surface of earth.  
+
+- WGS84 - Model built on global GPS system.
+
+
+--
+
+For these examples, I'm going to be using the `maps` library&lt;sup&gt;1&lt;/sup&gt;. .footnote[&lt;sup&gt;1&lt;/sup&gt;If you do not have it, install it by `install.packages("maps")`.]
+
+
+```r
+library( ggplot2 )
+library( maps )
+states &lt;- map_data( "state" )
+ggplot( states, aes(x=long, y=lat, group=group) ) + 
+  geom_polygon( fill="lightgray", color="black", lwd=0.25) + 
+  theme_void() -&gt; p
+```
+
+
+---
+
+# Azimuth Projections
+
+
+.pull-left[
+
+Projected onto a 2-dimensional plane that is tangential to a single point on the surface of the earth (commonly  a pole, though not a necessity).
+
+![Azequidistant](https://live.staticflickr.com/65535/50437120363_d8e0686d38_w_d.jpg)
+]
+.pull-right[
+
+```r
+p + coord_map( "azequalarea")
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-2-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+# Cylindrical Projections
+
+.pull-left[
+
+```r
+p + coord_map( "cylindrical" )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-3-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+.pull-right[
+Parallels are straight lines and horizontal up and down the plot from latitude = 0
+
+.center[
+![](https://live.staticflickr.com/65535/50437120498_8dd67df3f1_w_d.jpg)
+]
+]
+
+
+---
+
+# Conic Projections
+
+
+.pull-left[
+
+Symmetric around the Prime Meridian and parallels are segments of concentric circles.
+
+![](https://live.staticflickr.com/65535/50437120428_6da48bed81_w_d.jpg)
+
+]
+.pull-right[
+
+```r
+p + coord_map( "conic", lat0 = 30)
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-4-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Datum]
+
+
+---
+
+# Coordinate Systems
+
+The *Datum* are the coordinate system used on the ellipsoid.  Common types include:
+
+- Longitude &amp; Latitude - The East/West &amp; North/South position on the surface of the earth.
+
+  - Prime Meridian (0° Longitude) passes thorugh the [Royal Observatory](https://en.wikipedia.org/wiki/Royal_Observatory,_Greenwich) in Greenwich England, with positive values of longitude to the east and negative to the west.
+  
+  - Equator (0° Latitude) and is defined as the point on the planet where both northern and southern hemisphers have equal amounts of day and night at the [equinox](https://en.wikipedia.org/wiki/Equinox) (Sept. 21 &amp; March 21).
+  
+  - Richmond, Virginia: 37.533333 Latitude, -77.466667 Longitude
+  
+--
+
+
+- Universal Trans Mercator - A division of the earth into 60 zones (~6°longitude each, labeled 01 - 60) and 20 bands each of which is ~8° latitude (labeled C-X excluding I &amp; O with A &amp; B dividing up Antartica).  See image [here](https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system#/media/File:Universal_Transverse_Mercator_zones.svg).
+
+  - Coordinates include Zone &amp; band designation as well as coordinates in Easting and Northing (planar coordinates within the zone) measured in meters.
+  
+  - Richmond, Virginia: 18S 282051 4156899
+
+
+
+
+
+
+---
+
+# Functional Consequences
+
+
+&amp;nbsp;
+
+--
+
+&amp;nbsp;
+
+.center[ 
+.red[DATA NEED TO BE IN THE SAME ELLIPSOID &amp; DATUM 
+
+.red[FROM the BEGINNING]]
+]
+
+
+
+
+---
+class: sectionTitle, inverse
+
+
+# .blue[Points]
+
+
+
+
+
+---
+
+# Beetle Data
+
+The Bark Beetle, *Araptus attenuatus*, is a Sonoran Desert endemic parasite that lives on within the plant *Euphorbia lomelii*.
+
+
+
+.pull-left[
+
+&amp;nbsp;
+
+![Araptus attenuatus](https://live.staticflickr.com/65535/50441339417_74e04216fa_w_d.jpg)
+]
+
+.pull-right[
+.center[![Euphorbia lomelii](https://live.staticflickr.com/65535/50441175211_ba3b9df2ea_w_d.jpg)]
+]
+
+---
+
+# Sampling Sites
+
+
+
+```r
+library( readr )
+url &lt;- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+read_csv( url ) %&gt;%
+  select( Site, Longitude, Latitude, everything() ) %&gt;%
+  arrange( Latitude ) -&gt; data 
+summary( data )
+```
+
+```
+##      Site             Longitude         Latitude         Males      
+##  Length:31          Min.   :-114.3   Min.   :23.29   Min.   : 9.00  
+##  Class :character   1st Qu.:-113.1   1st Qu.:24.95   1st Qu.:16.00  
+##  Mode  :character   Median :-112.0   Median :26.64   Median :21.00  
+##                     Mean   :-112.0   Mean   :26.44   Mean   :25.68  
+##                     3rd Qu.:-110.8   3rd Qu.:27.78   3rd Qu.:31.50  
+##                     Max.   :-109.3   Max.   :29.33   Max.   :64.00  
+##     Females       Suitability        MFRatio        GenVarArapat   
+##  Min.   : 5.00   Min.   :0.0563   Min.   :0.5938   Min.   :0.0500  
+##  1st Qu.:15.50   1st Qu.:0.2732   1st Qu.:0.8778   1st Qu.:0.1392  
+##  Median :21.00   Median :0.3975   Median :1.1200   Median :0.2002  
+##  Mean   :23.52   Mean   :0.4276   Mean   :1.1598   Mean   :0.2006  
+##  3rd Qu.:29.00   3rd Qu.:0.5442   3rd Qu.:1.3618   3rd Qu.:0.2592  
+##  Max.   :63.00   Max.   :0.9019   Max.   :2.2000   Max.   :0.3379  
+##   GenVarEuphli   
+##  Min.   :0.0500  
+##  1st Qu.:0.1777  
+##  Median :0.2171  
+##  Mean   :0.2203  
+##  3rd Qu.:0.2517  
+##  Max.   :0.5122
+```
+
+
+---
+
+# A Simple Map - Leaflet
+
+
+.pull-left[
+The `leaflet` library allows you to make quick, interactive maps.
+
+
+```r
+library( tidyverse )
+library( leaflet )
+data %&gt;%
+  leaflet() %&gt;%
+  addMarkers( ~Longitude, ~Latitude ) %&gt;%
+  addProviderTiles( "OpenTopoMap" )
+```
+
+]
+
+.pull-right[
+<div id="htmlwidget-663b44c3abf457fa5feb" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-663b44c3abf457fa5feb">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addMarkers","args":[[23.2855,24.00789,24.0195,24.13389,24.2115,24.21441,24.58843,24.87611,25.0247,25.34819,25.55757,25.60521,25.91409,26.0155,26.20876,26.63783,26.94589,27.0367,27.18232,27.2028,27.3632,27.40498,27.52944,28.03661,28.22308,28.40846,28.66056,28.72796,28.96651,29.01457,29.32541],[-110.10429,-109.85071,-110.096,-110.46236,-110.951,-110.27252,-110.74599,-110.69175,-111.675,-111.60056,-111.21563,-111.32638,-112.08062,-111.35475,-111.37833,-109.327,-112.04613,-112.986,-112.66552,-112.408,-112.964,-112.52959,-113.31609,-113.39991,-113.18263,-112.86985,-113.99141,-113.48973,-113.66787,-113.94486,-114.29353],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addProviderTiles","args":["OpenTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+]
+
+
+
+
+
+
+---
+
+# The Simple Features (`sf`) library.
+
+
+.orangeinline[Simple Features] are an open standard developed by the Open Geospatial Consortium ([OGC](https://ogc.org)).  They define the following basic types:
+
+.pull-left[
+
+### Basic Geometry Types
+
+- POINT  
+
+- LINESTRING
+
+- POLYGON  
+]
+
+
+--
+
+.pull-right[
+### Corresponding 'multi' versions
+
+-  MULTIPOINT
+
+- MULTILINESTRING
+
+- MULTIPOLYGON
+
+- GEOMETRYCOLLECTION
+
+]
+
+
+Each of these basic types can be represented within a column of a `data.frame`.
+
+
+
+
+---
+
+# Setting `sf` objects
+
+To convert from a normal `data.frame` with columns of numerical values to an `sf` object, you .redinline[**must**] indicate:  
+- Names of the `x` and `y` coordinates, and   
+- A reference to the Coordinate Reference System
+
+
+```r
+data %&gt;% 
+  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) -&gt; data
+head( data )
+```
+
+```
+## Simple feature collection with 6 features and 7 fields
+## geometry type:  POINT
+## dimension:      XY
+## bbox:           xmin: -110.951 ymin: 23.2855 xmax: -109.8507 ymax: 24.21441
+## geographic CRS: WGS 84
+## # A tibble: 6 x 8
+##   Site  Males Females Suitability MFRatio GenVarArapat GenVarEuphli
+##   &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+## 1 Aqu      12       9       0.722   1.33         0.120       0.0968
+## 2 73       11       5       0.146   2.2          0.137       0.253 
+## 3 157      26      30       0.881   0.867        0.150       0.191 
+## 4 153      35      41       0.732   0.854        0.333       0.276 
+## 5 163      21      21       0.433   1            0.298       0.338 
+## 6 48       18      27       0.620   0.667        0.115       0.213 
+## # … with 1 more variable: geometry &lt;POINT [°]&gt;
+```
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50445538736_bc1c3456e5_k_d.jpg)
+background-size: cover
+
+
+---
+class: sectionTitle, inverse
+
+# .red[Plotting `sf` Objects]
+
+
+
+---
+
+.pull-left[
+# Plotting `sf` Objects
+
+Eash of the data columns are associated with the `geometry` column we made.  If we plot the whole `data.frame`, it makes replicate plots of each data column displayed in the coordinate space of the `geometry`.
+
+- Color will represent gradient in values for each plot.
+
+- Normal `plot()` parameters can be used to customize.
+]
+
+--
+
+.pull-right[
+
+```r
+plot( data , pch=16, cex=2)
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-9-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Linked data and `geometry`
+
+.pull-left[
+
+```r
+plot( data$Suitability, pch=16, cex=2, bty="n" )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-10-1.png" width="432" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+```r
+plot( data["Suitability"], pch=16, cex=2)
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-11-1.png" width="432" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+---
+
+# Hello `ggplot` My Old Friend
+
+
+```r
+ggplot( data, aes(size=Suitability) ) + geom_sf()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-12-1.png" width="432" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Map Overlays
+
+
+```r
+library( ggmap )
+bounds &lt;- st_bbox( data )
+```
+
+
+
+
+
+
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+
+# .red[Lines]
+
+## .fancy[A collection of points]
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Polygons]
+
+## .fancy[Lines that close upon themselves.]
+
+
+---
+
+# Larger Example Data
+
+
+```r
+library( spData )
+class( world )
+```
+
+```
+## [1] "sf"         "tbl_df"     "tbl"        "data.frame"
+```
+
+```r
+world
+```
+
+```
+## Simple feature collection with 177 features and 10 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -180 ymin: -90 xmax: 180 ymax: 83.64513
+## geographic CRS: WGS 84
+## # A tibble: 177 x 11
+##    iso_a2 name_long continent region_un subregion type  area_km2     pop lifeExp
+##    &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+##  1 FJ     Fiji      Oceania   Oceania   Melanesia Sove…   1.93e4  8.86e5    70.0
+##  2 TZ     Tanzania  Africa    Africa    Eastern … Sove…   9.33e5  5.22e7    64.2
+##  3 EH     Western … Africa    Africa    Northern… Inde…   9.63e4 NA         NA  
+##  4 CA     Canada    North Am… Americas  Northern… Sove…   1.00e7  3.55e7    82.0
+##  5 US     United S… North Am… Americas  Northern… Coun…   9.51e6  3.19e8    78.8
+##  6 KZ     Kazakhst… Asia      Asia      Central … Sove…   2.73e6  1.73e7    71.6
+##  7 UZ     Uzbekist… Asia      Asia      Central … Sove…   4.61e5  3.08e7    71.0
+##  8 PG     Papua Ne… Oceania   Oceania   Melanesia Sove…   4.65e5  7.76e6    65.2
+##  9 ID     Indonesia Asia      Asia      South-Ea… Sove…   1.82e6  2.55e8    68.9
+## 10 AR     Argentina South Am… Americas  South Am… Sove…   2.78e6  4.30e7    76.3
+## # … with 167 more rows, and 2 more variables: gdpPercap &lt;dbl&gt;,
+## #   geom &lt;MULTIPOLYGON [°]&gt;
+```
+
+
+
+
+
+---
+
+# Large Example Data
+
+
+```r
+summary( world$geom )
+```
+
+```
+##  MULTIPOLYGON     epsg:4326 +proj=long... 
+##           177             0             0
+```
+
+
+```r
+world$geom[5]
+```
+
+```
+## Geometry set for 1 feature 
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -171.7911 ymin: 18.91619 xmax: -66.96466 ymax: 71.35776
+## geographic CRS: WGS 84
+```
+
+---
+
+# Large Example Data
+
+
+```r
+plot( world$geom[5] )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-17-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Large Example Data
+
+
+```r
+plot( world , max.plot = 9 )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-18-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Large Example Data
+
+
+```r
+names(world)
+```
+
+```
+##  [1] "iso_a2"    "name_long" "continent" "region_un" "subregion" "type"     
+##  [7] "area_km2"  "pop"       "lifeExp"   "gdpPercap" "geom"
+```
+
+--
+
+.pull-left[
+
+```r
+world %&gt;% 
+  select( lifeExp ) %&gt;% 
+  summary()
+```
+
+```
+##     lifeExp                 geom    
+##  Min.   :50.62   MULTIPOLYGON :177  
+##  1st Qu.:64.96   epsg:4326    :  0  
+##  Median :72.87   +proj=long...:  0  
+##  Mean   :70.85                      
+##  3rd Qu.:76.78                      
+##  Max.   :83.59                      
+##  NA's   :10
+```
+]
+
+.pull-right[
+For `sf` objects (e.g., `data.frame`s with a *Simple Feature* column), the summary of any column includes the corresponding `geom` associated with it.  
+
+- Can be thought of as a **s**patial data **f**rame.
+]
+
+
+---
+
+# Subsetting `sf`
+
+
+```r
+sites &lt;- world[ 1:2, 1:3 ]
+sites
+```
+
+```
+## Simple feature collection with 2 features and 3 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -180 ymin: -18.28799 xmax: 180 ymax: -0.95
+## geographic CRS: WGS 84
+## # A tibble: 2 x 4
+##   iso_a2 name_long continent                                                geom
+##   &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;                                      &lt;MULTIPOLYGON [°]&gt;
+## 1 FJ     Fiji      Oceania   (((180 -16.06713, 180 -16.55522, 179.3641 -16.8013…
+## 2 TZ     Tanzania  Africa    (((33.90371 -0.95, 34.07262 -1.05982, 37.69869 -3.…
+```
+
+
+*Always* includes extra information such as:
+
+- geometry type  
+
+- dimension  
+
+- bbox  
+
+- geographic CRS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# 🙋🏻‍♀️ Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

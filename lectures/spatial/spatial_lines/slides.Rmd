@@ -477,7 +477,6 @@ ggplot( data, aes(size=Suitability) ) + geom_sf()
 library( ggmap )
 bounds <- st_bbox( data )
 
-map <- get_openstreetmap( st_bbox( data ))
 ```
 
 

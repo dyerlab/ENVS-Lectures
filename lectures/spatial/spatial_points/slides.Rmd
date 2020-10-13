@@ -338,7 +338,6 @@ summary( data )
 The `leaflet` library allows you to make quick, interactive maps.
 
 ```{r eval=FALSE}
-library( tidyverse )
 library( leaflet )
 data %>%
   mutate( Label = paste( "Site:", Site, 

@@ -651,13 +651,61 @@ ggplot() +
 
 
 
+---
+class: sectionTitle, inverse
+
+# .green[Spatial Operations]
+
+## .fancy[What can we do with this now?]
 
 
 
 
+---
+
+# Geospatial Operations 
+
+### aka the `Spatial Toolbox`
+
+Once the data are in `sf` features, there are a lot of different spatial operations that we can use, including:
+
+.pull-left[
+- Finding the bounding box 
+
+```{r}
+data %>% 
+  st_bbox()
+```
+
+- Finding the convex hull
+
+```{r}
+data %>% 
+  st_union() %>% 
+  st_convex_hull() -> hull
+```
+
+]
+
+--
+
+.pull-right[
+- Estimating its centroid & and area.
+
+```{r}
+hull %>%
+  st_centroid()
+```
+
+```{r}
+library( units )
+hull %>%
+  st_area() %>%
+  set_units( km^2 )
+```
 
 
-
+]
 
 
 

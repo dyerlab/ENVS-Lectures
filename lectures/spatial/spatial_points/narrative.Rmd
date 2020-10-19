@@ -19,6 +19,9 @@ library( tidyverse )
 ```
 
 
+<center>
+![Baja California](https://live.staticflickr.com/65535/50504854173_2080b28f87_c_d.jpg)
+</center>
 
 ## Learning Objectives
 

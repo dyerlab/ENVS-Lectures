@@ -1,0 +1,41 @@
+---
+title: "Spatial Points Activity"
+output: html_notebook
+---
+
+This *in-class activity* has two purposes:
+
+1. To make sure everyone can get their computer up-to-date with the proper set of libraries so that we can work with geospatial data, and
+2. Give you some practice turning normal numerical data into geospatial coordiantes and performing basic opertions.
+
+## Spatial Libraries
+
+The following code goes through the necessary libraries and checks to see if they are installed.  The `require()` function is just like `library()` except that it returns `TRUE/FALSE` if your computer does or does not have the library already installed.  I use the `if(){}` conditional to default install the library if it is not installed (e.g., `!require()` evaluates to `TRUE`).
+
+```{r}
+
+needed_libraries <- c("sf",
+                      "maps",
+                      "units",
+                      "rgdal",
+                      "rgeos",
+                      "GGally",
+                      "mapproj",
+                      "leaflet",
+                      "rnaturalearth",
+                      "rnaturalearthdata"
+                      )
+
+for( lib in needed_libraries ) {
+  if( !require( lib, ) ) {
+    install.packages( lib )
+  }
+}
+
+
+
+
+```
+
+
+

@@ -18,6 +18,10 @@ background-size: cover
 
 
 ```{r setup, include=FALSE}
+library( sf )
+library( ggplot2 )
+library( tidyverse )
+library( fontawesome )
 knitr::opts_chunk$set( fig.retina = 3, 
                        warning = FALSE, 
                        message = FALSE,

@@ -3,6 +3,11 @@ title: "Spatial Points Activity"
 output: html_notebook
 ---
 
+<center>
+![*Araptus attenuatus* the enigmatic Sonoran Desert Bark Beetle.](https://live.staticflickr.com/65535/50441339417_74e04216fa_w_d.jpg)
+</center>
+
+
 This *in-class activity* has two purposes:
 
 1. To make sure everyone can get their computer up-to-date with the proper set of libraries so that we can work with geospatial data, and
@@ -10,32 +15,86 @@ This *in-class activity* has two purposes:
 
 ## Spatial Libraries
 
-The following code goes through the necessary libraries and checks to see if they are installed.  The `require()` function is just like `library()` except that it returns `TRUE/FALSE` if your computer does or does not have the library already installed.  I use the `if(){}` conditional to default install the library if it is not installed (e.g., `!require()` evaluates to `TRUE`).
+The following code defines the set of necessary libraries for the next few weeks and then figures out which (potential) subset you need to install. It then installs them all in one call.  It will not load them into your session, you'll have to do that later in your code chunks.
 
 ```{r}
-
 needed_libraries <- c("sf",
                       "maps",
                       "units",
                       "rgdal",
                       "rgeos",
                       "GGally",
+                      "raster",
                       "mapproj",
                       "leaflet",
                       "rnaturalearth",
                       "rnaturalearthdata"
                       )
 
-for( lib in needed_libraries ) {
-  if( !require( lib, ) ) {
-    install.packages( lib )
-  }
+# Determines which libraries you do not have
+#   already installed.
+need_inst <- setdiff( needed_libraries, 
+                      rownames( installed.packages()) )
+
+if( length( need_inst ) ) {
+  install.packages( need_inst, dependencies = TRUE )
 }
-
-
-
-
 ```
+
+
+
+## In Class Activities
+
+
+The data for this is some site-level data from the Sonoran Desert bark beetle.  In the next chunck, add the appropriate code to load the data from the [Github repository](https://github.com/dyerlab/ENVS-Lectures).  
+
+```{r}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+```
+
+
+
+### Interactive Map
+
+Use the `leaflet` library and make an interactive map.  If you can, add a label to each marker with the ID of the site.  You can look at the provider tiles [here](https://leaflet-extras.github.io/leaflet-providers/preview/) and use on in the `addProviderTiles()` function. 
+
+There is a great tutorial [here](https://rstudio.github.io/leaflet/map_widget.html) on how to customize the leaflet display.  You may want to go look at it and see what you can use to make a better display.
+
+```{r}
+# make leaflet map here
+```
+
+
+
+
+### Converting to `sf` Objects
+
+Convert the spatial data in the beetle data.frame into an `sf` object.  Make sure you set the Coordinate Reference System to $4326$.
+
+
+```{r}
+# convert 
+```
+
+
+### Questions
+
+1. How far apart (in km) are the sites Constitución (`const`) and San Francisquito (`sfran`)?  
+2. Is there a correlation between habitat suitability and the ratio of males to female beetles?  
+
+3. Make a plot using ggplot of the data with suitability as the size of the points and the sex ratio as the fill color.
+
+4. Reproject the data and plot it again using an EPSG code defined for Mexico UTM zone 12N.
+
+
+
+
+
+
+
+
+
+
 
 
 

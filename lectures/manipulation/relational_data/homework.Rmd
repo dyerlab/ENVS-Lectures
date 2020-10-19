@@ -90,7 +90,24 @@ Use the tables above to answer the following questions.
 
 1. Which carriers have planes with over 100 flights in 2013 (and how many)?  
 
+```{r}
+
+```
+
+
+
+
 2. During what 48 hour period were the worst delays?  Is there any connection with weather?
+
+
+```{r}
+
+```
+
+
+
+
+
 
 3. What are the five best and five worst airlines for keeping on schedule?
 
@@ -105,4 +122,4 @@ Use the tables above to answer the following questions.
 
 
 
-[^1]: If you get an error when attempting to load this library in, install it with `install.packages("nycflights13")` and then load it in again.
+[^1]: If you get an error when attempting to load this library in, install it with `install.packages("nycflights13")` and then load it in again. 

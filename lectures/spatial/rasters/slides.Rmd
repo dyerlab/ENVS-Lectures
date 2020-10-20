@@ -18,7 +18,7 @@ background-size: cover
 
 
 ```{r setup, include=FALSE}
-library( sf )
+library( raster )
 library( ggplot2 )
 library( tidyverse )
 library( fontawesome )
@@ -36,7 +36,20 @@ theme_set( theme_classic( base_size = 20) )
 ### .fancy[Continuous Data `r fa("map-marker-alt", fill='orange'  )`]
 
 
+---
 
+# Rasters
+
+.red[Rasters represent data distributed continuously across a spatial extent]
+
+
+--
+### Examples:
+
+- Elevation (continuous)  
+- Habitat Type (discrete)
+- Precipitation (continuous)  
+- Imperviable Surfaces (discrete)  
 
 
 
@@ -61,7 +74,7 @@ background-size: auto
 
 .center[
 
-# 🙋🏻‍♀️ Questions?
+# ️ Questions?
 
 
 ![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)

@@ -308,9 +308,12 @@ Now, we need to figure out what the value of elevation in the `alt` raster is at
 **However**, the this function doesn't work directly with `sf` objects so we need to cast it into a `Spatial` object[^1]. Fortunatly, that is a pretty easy coercion.
 
 ```{r}
-extract(alt, as(sfran,"Spatial") ) 
+raster::extract(alt, as(sfran,"Spatial") ) 
 ```
 
+
+<div class="box-yellow">**Warning:** in the above code, I used the function `extract()` to extract the data from the `alt` raster for the coordinate of the target locale.  However, there is also an `extract()` function that has been brought in from the `dplyr` library (as part of `tidyverse`).  In this file, I loaded `library(raster)` before `library(tidyverse)` and as such the `dplyr::extract()` function has overridden the one from `raster`—they cannot *both* be available.  As a consequence, I use the full name of the function with `package::function` when I call it as `raster::extract()` to remove all ambiguity.  If I had not, I got a message saying something like, `Error in UseMethod("extract_") : no applicable method for 'extract_' applied to an object of class "c('RasterLayer', 'Raster', 'BasicRaster')"`.  Now, I know there is an `extract()` function in `raster` so this is the **dead giveaway** that it has been overwritten by a subsequent library call.  
+</div>
 
 ### Option 1 - Manipulate the Raster
 

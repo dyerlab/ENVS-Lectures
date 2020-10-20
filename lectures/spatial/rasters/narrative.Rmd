@@ -1,70 +1,355 @@
 ---
 title: "Rasters"
-output: html_notebook
+output: 
+  html_notebook:
+      css: "envs543-styles.css"
 ---
+
+All raster operations in this topic are accomplished using the `raster` library.
 
 ```{r}
 library(raster)
 ```
 
+Raster are representations of continuous, or semi-continuous, data.  TYou can envision a raster just like an image.  When me make a `leaflet()` map and how the tiles, each pixel is colored a particular value representing elevation, temperature, precipitation, habitat type, or whatever.  This is exactly the same for rasters.  The *key point* here is that each pixel represents some defined region on the earth and as such the raster itself is georeferenced.  It has a coordinate reference system (CRS), boundaries, etc.
 
+## Making Rasters *de novo*
 
+A raster is simply a matrix with rows and columns and each element has a value associated with it.  You can create a raster *de novo* by making a matrix of data and filling it with values, then turning it into a raster.
 
-Load in an elevation raster for Baja California, Mexico.
+Here I make a raster with random numbrers selected from the Poisson Distribution (fishy, I know) using the `rpois()` function.  I then turn it into a matrix with 7 rows (and 7 columns).
+
 
 ```{r}
-url <- "../../../data/alt_22.tif"
+vals <- rpois(49, lambda=12)
+x <- matrix( vals, nrow=7)
+x
+```
+
+While we haven't used matrices much thus far, it is a lot like a `data.frame` with respect to getting and setting values using numerical indices.  For example, the value of the 3rd row and 5th column is:
+
+```{r}
+x[3,5]
+```
+
+To convert this set of data, as a matrix, into a geospatially referenced `raster()` object we do the following:
+
+```{r}
+r <- raster( x )
+r
+```
+
+Notice that when I plot it out, it does not show the data, but a summary of the data along with some key data about the contents, including:  
+- A class definition  
+- The dimensions of the underlying data matrix,  
+- The resolution (e.g., the spatial extent of the sides of each pixel).  Since we have no CRS here, it is equal to $nrows(x)^{-1}$ and $ncols(x)^{-1}$.  
+- The extent (the bounding box) and again since we do not have a CRS defined it just goes from $0$ to $1$.
+- The `crs` (missing)
+- The source can be either `memory` if the raster is not that big or `out of memory` if it is just referencing.
+
+If these data represent something on the planet, we can assign the dimensions and `CRS` values to it and use it in our normal day-to-day operations.
+
+## Loading Rasters from Files or URLs
+
+We can also grab a raster object from the filesystem or from some online repository by passing the link to the `raster()` function.  Here is the elevation, in meters, of the region in which Mexico is found. To load it in, pass the url.
+
+```{r}
+url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
 r <- raster( url )
 r
 ```
+
+Notice that this raster has a defined CRS and as such it is projected and the extent relates to the units of the datum (e.g., from -120 to -90 degrees longitude and 0 to 30 degrees latitude).
+
+If we plot it, we can see the whole raster.
 
 ```{r}
 plot(r)
 ```
 
-
-
-
+Now, this raster is elevation where there is land but where there is no land, it is full of `NA` values.  As such, there is a ton of them.
 
 ```{r}
-sum( is.na(values(r)))
+format( sum( is.na( values(r) ) ), big.mark = "," )
 ```
+
 
 ## Cropping
 
-One of the first things to do is to crop the data down to size.  If we are working on Baja California, there is no need to have the rest of Mexico and all that empty Pacific Ocean there.
+One of the first things to do is to crop the data down to represent the size and extent of our study area.  If we over 10 million missing data points (the ocean) and most of Mexico in this raster above but we are only working with sites in Baja California (Norte y Sur), we would do well to excise (or crop) the raster to only include the area we are interested in working with.  
+
+Top do this, we need to figure out a bounding box (e.g., the minimim and maximum values of longitude and latitude that enclose our data).  Let's assume we are working with the Beetle Data from the [Spatial Points Slides](https://dyerlab.github.io/ENVS-Lectures/spatial/spatial_points/slides.html#1) and load in the Sex-biased dispersal data set and use those points as a starting estimate of the bounding box.
+
 
 ```{r}
-baja_extent <- extent( c(-116.3, -109, 22.5, 30 ) )
+library( sf )
+library( tidyverse )
+beetle_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+
+read_csv( beetle_url ) %>%
+  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) -> beetles
+
+summary( beetles )
+```
+
+Now, we can take the bounding box of these points and get a first approximation.
+
+```{r}
+beetles %>% st_bbox()
+```
+
+OK, so this is the strict bounding box for these points.  This means that the minimum and maximum values for these points are defined by the original locations—for both the latitude and longitude (both minimum and maximum)—we have sites on each of the edges.  This is fine here but we could probably add a little bit of a *buffer* around that bounding box so that we do not have our sites on the very edge of the plot.  We can do this by either *eyeballing-it* to round up to some reasonable area around the points *or* apply a buffer (`st_buffer`) to the union of all the points with some distance and then take the boounding box.   I'll go for the former and make it into an `extent` object.
+
+```{r}
+baja_extent <- extent( c(-116, -109, 22, 30 ) )
+baja_extent
+```
+
+Then we can `crop()` the original raster using this extent object to create our working raster.  I can then dump my points onto the same raster plot by indicaating `add=TRUE`
+
+```{r}
 alt <- crop( r, baja_extent )
 plot(alt)
+plot( beetles["Suitability"], pch=16, add=TRUE)
+```
+
+<div class="box-red">
+<table>
+<tr>
+<td><h1>⚠️</h1></td>
+<td> &nbsp;  &nbsp; </td>
+<td>You need to be careful here.  When you use built-in graphics processes in a markdown document such as this and intend to add subsequent plots to an existing plot you **cannot** run the lines individuall.  They **must** be all executed as the whole chunk.  So there is no <tt>CTRL/CMD + RETURN</tt> action here, it will plot the first one and then complain throughout the remaining ones saying something like `plot.new has not been called yet`.  So you have to either knit the whole document or just run the whole chunk to get them to overlay.</td>
+</tr>
+</table>
+</div>
+
+
+## Plotting with GGPlot
+
+As you may suspect, our old friend `ggplot` has some tricks up its sleave for us.  The main thing here is that `ggplot` requires a `data.frame` object and a raster is not a `data.frame` --- Unless we turn it into one (hehehe) using a cool function called `rasterToPoints()`.  This takes the cells of the raster (and underlying matrix) and makes points from it.
+
+```{r}
+alt %>%
+  rasterToPoints() %>%
+  head()
+```
+
+However, they are not a `data.frame` but a matrix.
+
+```{r}
+alt %>%
+  rasterToPoints() %>%
+  class()
+```
+
+So, if we are going to use this, w need to transform it from a `matrix` object into a `data.frame` object.  We can do this using the `as.data.frame()` function.  Remember from the [lecture on `data.frame` objects](https://dyerlab.github.io/ENVS-Lectures/r_language/data_frames/slides.html#1) that we can coerce columns of data (either `matrix` or `array`) into a `data.frame` this way.
+
+
+So here it is in one pipe, using the following tricks:  
+- Converting raster to points and then to `data.frame` so it will go into `ggplot`    
+- Renaming the columns of data I am going to keep so I don't have to make `xlab` and `ylab`  
+
+```{r}
+alt %>%
+  rasterToPoints() %>%
+  as.data.frame() %>% 
+  transmute(Longitude=x,
+            Latitude=y,
+            Elevation=alt_22)  -> alt.df
+head( alt.df )
+```
+
+Then we can plot it by:  
+- Plotting it using `geom_raster()` and setting the fill color to the value of elevation.
+- Making the coordinates equal (e.g., roughtly equal in area for longitude and latitude), and
+- Applying only a minimal theme.
+
+
+
+```{r}
+alt.df %>%
+  ggplot()  + 
+  geom_raster( aes( x = Longitude, 
+                    y = Latitude, 
+                    fill = Elevation) ) + 
+  coord_equal() +
+  theme_minimal() -> baja_elevation
+
+baja_elevation
 ```
 
 
 
 
+That looks good but we should probably do something with the colors.  There is a built-in `terrain.colors()` and tell `ggplot` to use this for the fill gradient.
+
+```{r}
+baja_elevation + 
+  scale_fill_gradientn( colors=terrain.colors(100))
+```
 
 
+Or you can go dive into colors and set your own, you can set up your own gradient for `ggplot` using independent colors and then tell it where the midpoint is along that gradient and it will *do the right thing<sup>&copy;</copy>*.
+
+```{r}
+baja_elevation + 
+  scale_fill_gradient2( low = "darkolivegreen",
+                        mid = "yellow",
+                        high = "brown", 
+                        midpoint = 1000 ) -> baja_map
+baja_map
+```
+
+Now that looks great.  Now, how about overlaying the points onto the plot and indicate the size of the point by the **♂♀** ratio.
+
+```{r message=FALSE}
+baja_map + 
+  geom_sf( aes(size = MFRatio ), 
+           data = beetles, 
+           color = "dodgerblue2",
+           alpha = 0.75) 
+```
+Now that looks nice.
+
+## Identifying Points
+
+You can get some information from a raster plot interactively by using the `click` function.  This **must** be done with an active raster plot.  After that, you use the `click()` function to grab what you need.  Your mouse will turn from an arrow into a cross hair and you can position it where you like and get information such as the corrdinates (spatial) of the point and the value of the raster pixel at that location.
+
+If you do not specify `n=` in the function then it will continue to collect data until you click outside the graphing area.  If you set `id=TRUE` it will plot the number of the point onto the map so you can see where you had clicked.  Since this is interactive, you will not see the process when you execute the code below, but it will look like.
+
+```{r, eval=FALSE}
+plot( alt )
+click(alt, xy=TRUE, value=TRUE, n=3 ) -> points
+```
+
+![map with points](https://live.staticflickr.com/65535/50505505948_08e3e91dfb_c_d.jpg)
+```{r echo=FALSE}
+points <- data.frame( x = c(-113.6292, -112.4792, -111.2458, -109.9958),
+                      y = c(28.45417, 26.85417, 24.83750, 23.48750),
+                      value = c(870, 1185, 135, 1145) )
+```
+
+Here are what the points look like.  
+
+```{r}
+points
+```
+
+I'm going to rename the column names
+
+```{r}
+points %>%
+  transmute( Longitude = x,
+             Latitude = y,
+             Value = value) -> sites
+```
+
+And then I can plot those points (using `geom_point()`) onto our background map.
+
+```{r}
+baja_map + 
+  geom_point( aes(x = Longitude,
+                  y = Latitude, 
+                  size = Value), data=sites, color="red") 
+```
+
+Mexellent! 
+
+## Reprojecting Rasters 
+
+Just like points, we can reproject the entire raster using the `projectRaster` function.  HJere I am going to project the raster into UTM Zone 12N, a common projection for this part of [Mexico from epsg.io](https://epsg.io/6367).  
+
+Unfortunatly, the `raster` library does not use epsg codes so we'll have to use the large description of that projection.  See the [page](https://epsg.io/6367) for this projection and scroll down to the proj.4 definition.  
+
+```{r}
+new.proj <- "+proj=utm +zone=12 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs "
+```
+
+Copy this into a character variable and then use the `projectRaster()` function and assign that new value as the `CRS`.
+
+```{r message=FALSE, warning=FALSE}
+alt.utm <- projectRaster( alt, crs=new.proj)
+plot( alt.utm, xlab="Easting", ylab="Northing" )
+```
+
+Easy.
 
 
+## Raster Operations
+
+OK, so now we can make and show a raster but what about doing some operations?  A raster is just a matrix *decorated* with more geospatial information.  This allows us to do normal `R` like data manipulations on the underlying data.  
+
+Consider the following question.  
+
+> What are the parts of Baja California that are within 100m of the elevation of site named *San Francisquito* (`sfran`)?  
+
+To answer this, we have the following general outline of operations.
+
+1. Find the coordinates of the site named `sfran`  
+2. Extract the elevation from the `alt` raster that is within 100m (+/-) of that site.
+3. Plot the whole baja data as a background  
+4. Overlay all the locations within that elevation band.
+
+To do this we will use both the `alt` and the `beetles` data objects.
+
+First, we find out the coordinates of the site.
+
+```{r}
+sfran <- beetles$geometry[ beetles$Site == "sfran"]
+sfran
+```
 
 
+Now, we need to figure out what the value of elevation in the `alt` raster is at this site.  This can be done with the `extract()` function from the `raster` library.  
+
+**However**, the this function doesn't work directly with `sf` objects so we need to cast it into a `Spatial` object[^1]. Fortunatly, that is a pretty easy coercion.
+
+```{r}
+extract(alt, as(sfran,"Spatial") ) 
+```
 
 
+### Option 1 - Manipulate the Raster
+
+To work on a raster directly, we can access the values within it using the `values()` function (I know, these statistican/programmers are quite cleaver).
+
+So, to make a copy and make only the values that are +/- 100m of `sfran` we can.
+
+```{r}
+alt_band <- alt
+values( alt_band )[ values(alt_band) <= 205 ] <- NA
+values( alt_band )[ values(alt_band) >= 405 ] <- NA
+alt_band
+```
+
+Then we can plot overlay plots of each (notice how I hid the legend for the first `alt` raster).
+
+```{r}
+plot( alt, col="gray", legend=FALSE, xlab="Longitude", ylab="Latitude")
+plot( alt_band, add=TRUE )
+```
 
 
+### Option 2 - Manipulate the Data Frames
+
+We can also proceed by relying upon the `data.frame` objects representing the elevation.  So let's go back to our the `alt.df` object and use that in combination with a `filter` and plot both `data.frame` objects (the outline of the landscape in gray and the elevation range as a gradient.)
+
+```{r}
+
+alt.df %>%
+  filter( Elevation >= 205,
+          Elevation <= 405) %>%
+  ggplot( aes( x = Longitude,
+               y = Latitude) ) + 
+  geom_raster( fill = "gray80", data=alt.df ) + 
+  geom_raster( aes( fill = Elevation ) ) + 
+  scale_fill_gradient2( low = "darkolivegreen",
+                        mid = "yellow",
+                        high = "brown", 
+                        midpoint = 305 ) +
+  coord_equal() + 
+  theme_minimal()
+```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+[^1]: A `Spatial` object is from the `sp` library.  This is an older library that is still used by some.  It is a robust library *but* it is put together in a slightly different way that complicates situations a bit, which is not why we are covering it in this topic.

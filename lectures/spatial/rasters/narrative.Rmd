@@ -4,6 +4,9 @@ output:
   html_notebook:
       css: "envs543-styles.css"
 ---
+<center>
+![Rasters!](https://live.staticflickr.com/65535/50510757837_c3606682ac_c_d.jpg)
+</center>
 
 All raster operations in this topic are accomplished using the `raster` library.
 
@@ -332,24 +335,43 @@ plot( alt_band, add=TRUE )
 
 ### Option 2 - Manipulate the Data Frames
 
-We can also proceed by relying upon the `data.frame` objects representing the elevation.  So let's go back to our the `alt.df` object and use that in combination with a `filter` and plot both `data.frame` objects (the outline of the landscape in gray and the elevation range as a gradient.)
+We can also proceed by relying upon the `data.frame` objects representing the elevation.  So let's go back to our the `alt.df` object and use that in combination with a `filter` and plot both `data.frame` objects (the outline of the landscape in gray and the elevation range as a gradient).  I then overlay the beetle data with the ratios as sizes and label the locales with `ggrepel`.  Notice here that you can use the `sf::geometry` object from `beetles` if you pass it through the `st_coordinates` function as a statistical tranform making it regular coordinates and not `sf` objects (yes this is kind of a trick and hack but KEEP IT HANDY!).
 
-```{r}
-
+```{r echo=TRUE}
+library( ggrepel )
 alt.df %>%
   filter( Elevation >= 205,
           Elevation <= 405) %>%
-  ggplot( aes( x = Longitude,
-               y = Latitude) ) + 
-  geom_raster( fill = "gray80", data=alt.df ) + 
-  geom_raster( aes( fill = Elevation ) ) + 
+  ggplot() + 
+  geom_raster( aes( x = Longitude,
+                    y = Latitude),
+               fill = "gray80", 
+               data=alt.df ) + 
+  geom_raster( aes( x = Longitude,
+                    y = Latitude, 
+                    fill = Elevation ) ) + 
   scale_fill_gradient2( low = "darkolivegreen",
                         mid = "yellow",
                         high = "brown", 
                         midpoint = 305 ) +
-  coord_equal() + 
-  theme_minimal()
+  geom_sf( aes(size=MFRatio), 
+           alpha=0.5, 
+           color="dodgerblue3", 
+           data=beetles) +
+  geom_text_repel( aes( label = Site,
+                        geometry = geometry),
+                   data = beetles,
+                   stat = "sf_coordinates", 
+                   size = 4, 
+                   color = "dodgerblue4") + 
+  coord_sf() + 
+  theme_minimal() 
 ```
+
+
+
+Very nice indeed.
+
 
 
 [^1]: A `Spatial` object is from the `sp` library.  This is an older library that is still used by some.  It is a robust library *but* it is put together in a slightly different way that complicates situations a bit, which is not why we are covering it in this topic.

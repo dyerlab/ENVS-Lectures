@@ -18,9 +18,739 @@ background-size: cover
 
 
 
-# .orange[Rasters]
+# .green[Rasters]
 
-### .fancy[Continuous Data &lt;svg style="height:0.8em;top:.04em;position:relative;fill:orange;" viewBox="0 0 384 512"&gt;&lt;path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/&gt;&lt;/svg&gt;]
+### .fancy[Continuously Distributed Data &lt;svg style="height:0.8em;top:.04em;position:relative;fill:limegreen;" viewBox="0 0 512 512"&gt;&lt;path d="M149.333 56v80c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V56c0-13.255 10.745-24 24-24h101.333c13.255 0 24 10.745 24 24zm181.334 240v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm32-240v80c0 13.255 10.745 24 24 24H488c13.255 0 24-10.745 24-24V56c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24zm-32 80V56c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm-205.334 56H24c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24zM0 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H24c-13.255 0-24 10.745-24 24zm386.667-56H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zm0 160H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zM181.333 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24z"/&gt;&lt;/svg&gt;]
+
+
+
+
+
+---
+
+# Rasters
+
+.center[
+.red[Rasters represent data distributed continuously across a spatial extent]
+]
+
+--
+### Examples:
+
+- Elevation (continuous)  
+- Habitat Type (discrete)
+- Precipitation (continuous)  
+- Imperviable Surfaces (discrete)  
+
+
+
+
+---
+
+# What is the Structure of a Raster?
+
+A Raster is simply a `matrix` of values with some additional decorations on it that allow it to have a spatial context.  
+
+
+```r
+values &lt;- rpois( n = 36, lambda=12)
+values
+```
+
+```
+##  [1] 14 18 12  9  6 14 15  7 13 17 14 20 16  9 12 11 11
+## [18] 12  5 25 12 22 18  9  5 12  6 13  7 16  7 10 12  9
+## [35] 10  9
+```
+
+--
+
+
+```r
+x &lt;- matrix( values, nrow=6)
+x
+```
+
+```
+##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,]   14   15   16    5    5    7
+## [2,]   18    7    9   25   12   10
+## [3,]   12   13   12   12    6   12
+## [4,]    9   17   11   22   13    9
+## [5,]    6   14   11   18    7   10
+## [6,]   14   20   12    9   16    9
+```
+
+
+---
+
+# Spatial Designations
+
+For each value in the `matrix`, when it is turned into a `raster` object: 
+
+- The `cell` (pixel) has a defined spatial extent (width, height, &amp; origin).
+
+- All the physical space represented by that cell has *exactly the same value*
+
+- The *courseness* of the raster is question dependent:
+
+  - 3x5 matrix for Continental US may not adequately capture elevation trends.
+  
+  - 1m&lt;sup&gt;2&lt;/sup&gt; matrix for elevation may be *a bit* too big.
+
+---
+
+# Matrix `\(\to\)` Raster
+
+
+```r
+library( raster )
+r &lt;- raster( x )
+r
+```
+
+```
+## class      : RasterLayer 
+## dimensions : 6, 6, 36  (nrow, ncol, ncell)
+## resolution : 0.1666667, 0.1666667  (x, y)
+## extent     : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
+## crs        : NA 
+## source     : memory
+## names      : layer 
+## values     : 5, 25  (min, max)
+```
+
+--
+
+Notice that when I plot it out, it does not show the data, but a summary of the data along with some key data about the contents, including:  
+- A class definition  
+- The dimensions of the underlying data matrix,  
+- The resolution (e.g., the spatial extent of the sides of each pixel).  Since we have no CRS here, it is equal to `\(nrows(x)^{-1}\)` and `\(ncols(x)^{-1}\)`.  
+- The extent (the bounding box) and again since we do not have a CRS defined it just goes from `\(0\)` to `\(1\)`.
+- The `crs` (missing)
+- The source can be either `memory` if the raster is not that big or `out of memory` if it is just referencing.
+
+
+---
+
+# Loading A Raster
+
+By far, you will most commonly working with pre-existing raster data.  
+
+- Several file formats including GeoTIFF, BIL, &amp; ASC.
+- All can be loaded from filesystem or internet with address.
+
+
+```r
+url &lt;- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
+r &lt;- raster( url )
+r
+```
+
+```
+## class      : RasterLayer 
+## dimensions : 3600, 3600, 12960000  (nrow, ncol, ncell)
+## resolution : 0.008333333, 0.008333333  (x, y)
+## extent     : -120, -90, 0, 30  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## source     : https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif 
+## names      : alt_22 
+## values     : -202, 5469  (min, max)
+```
+
+Notice that this raster has a defined CRS and as such it is projected and the extent relates to the units of the datum (e.g., from -120 to -90 degrees longitude and 0 to 30 degrees latitude).
+
+
+---
+class: sectionTitle, inverse
+
+# .blue[Visualizing Rasters]
+
+## .fancy[What good are they if we cannot look at them?]
+
+
+---
+
+# Built-in Plotting
+
+Just like all things in `R`, `raster` objects can be visualized using built-in functions as well as functions from external libraries.
+
+.pull-left[
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+```r
+plot( r, 
+      xlab="Longitude", 
+      ylab="Latitude" )
+```
+]
+.pull-right[
+![](https://live.staticflickr.com/65535/50510331198_2a2c5bfe76_c_d.jpg)
+]
+
+
+---
+
+# Raster Sizes
+
+This particular raster is quite large (in terms of the number of cells)
+
+.pull-left[
+
+```
+## class      : RasterLayer 
+## dimensions : 3600, 3600, 12960000  (nrow, ncol, ncell)
+## resolution : 0.008333333, 0.008333333  (x, y)
+## extent     : -120, -90, 0, 30  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## source     : https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif 
+## names      : alt_22 
+## values     : -202, 5469  (min, max)
+```
+]
+
+--
+
+.pull-right[
+
+These data only represent the elevation of the land.  Where there is water, the value in the underlying matrix is `NA`.  
+
+Cell Type | Count 
+----------|-------:
+Land      | 2,469,350  
+Water     | 10,490,650
+
+]
+
+
+
+---
+
+# Cropping
+
+One of the first things to do is to crop the data down to represent the size and extent of our study area.  If we over 10 million missing data points (the ocean) and most of Mexico in this raster above but we are only working with sites in Baja California (Norte y Sur), we would do well to excise (or crop) the raster to only include the area we are interested in working with.  
+
+--
+
+Workflow:  
+
+1. Define a bounding box (the spatial extent of the region of interest)  
+2. Expand it a bit so that points are not **on the edges** of the box.
+3. Create an `extent`
+4. Crop the original matrix to represent the boundaries defined in the `extent`
+
+
+---
+
+# Cropping 1: Bounding Box
+
+Let's use the beetle data from the [Spatial Points Lecture](https://dyerlab.github.io/ENVS-Lectures/spatial/spatial_points/slides.html#1) as the data we will be working with.  
+
+
+```r
+library( sf )
+library( tidyverse )
+beetle_url &lt;- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+
+read_csv( beetle_url ) %&gt;% 
+  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) -&gt; beetles
+
+beetles %&gt;% 
+  st_bbox()
+```
+
+```
+##       xmin       ymin       xmax       ymax 
+## -114.29353   23.28550 -109.32700   29.32541
+```
+
+---
+
+# Cropping 2: Expand the Bounding Box
+
+.pull-left[
+
+### Option 1: Eyeball it!
+
+
+```r
+beetles %&gt;% 
+  st_bbox()
+```
+
+```
+##       xmin       ymin       xmax       ymax 
+## -114.29353   23.28550 -109.32700   29.32541
+```
+
+Maybe rounding it to:
+
+
+```r
+eyeball_bbox &lt;- c(-116, -109, 22, 30)
+```
+
+
+]
+
+--
+
+.pull-right[
+### Option 2: Use Buffer
+
+
+```r
+beetles %&gt;%
+  st_union() %&gt;%
+  st_buffer( dist = 0.5 ) %&gt;%
+  st_bbox()
+```
+
+```
+##       xmin       ymin       xmax       ymax 
+## -114.79353   22.78550 -108.82700   29.82541
+```
+
+]
+
+
+---
+
+# Cropping 3:  Define the Extent
+
+I'll just use the old `eyeball` test to make the numbers 'round'.
+
+
+```r
+baja_extent &lt;- extent( eyeball_bbox )
+baja_extent
+```
+
+```
+## class      : Extent 
+## xmin       : -116 
+## xmax       : -109 
+## ymin       : 22 
+## ymax       : 30
+```
+
+
+---
+
+# Cropping 4: Cropping
+
+To crop the raster, we use the `crop()` function and it makes a new raster (and I can throw the old big one away).
+
+
+```r
+alt &lt;- crop( r, baja_extent)
+rm( r ) # this deletes r from memory
+alt
+```
+
+```
+## class      : RasterLayer 
+## dimensions : 960, 840, 806400  (nrow, ncol, ncell)
+## resolution : 0.008333333, 0.008333333  (x, y)
+## extent     : -116, -109, 22, 30  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## source     : /private/var/folders/5p/lkjbxz7j0236drfl_mgt511c0000gn/T/Rtmp5v42Pj/raster/r_tmp_2020-10-20_201534_44471_31107.grd 
+## names      : alt_22 
+## values     : -202, 2263  (min, max)
+```
+
+
+---
+
+
+```r
+plot( alt, xlab="Longitude", ylab="Latitude" )
+plot( beetles, add=TRUE, col="red", pch=16, cex=1.5)
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-13-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+.footnote[(1) Notice the `add=TRUE` adds to the previous plot, and (2) Need to run whole chunk to see built-in plot overlays.]
+
+
+---
+
+# Plotting Rasters with `ggplot`
+
+As you probably guessed, there is a `geom_raster()` available to us.  .redinline[However], we need to conver the data from a `raster` (`matrix`) to a `data.frame` object that `ggplot` can read.
+
+.pull-left[
+
+```r
+alt %&gt;%
+  rasterToPoints() %&gt;%
+  head()
+```
+
+```
+##              x        y alt_22
+## [1,] -115.7958 29.99583     55
+## [2,] -115.7875 29.99583    126
+## [3,] -115.7792 29.99583     94
+## [4,] -115.7708 29.99583     99
+## [5,] -115.7625 29.99583    106
+## [6,] -115.7542 29.99583    120
+```
+
+]
+
+--
+
+.pull-right[
+
+```r
+alt %&gt;%
+  rasterToPoints() %&gt;%
+  class()
+```
+
+```
+## [1] "matrix" "array"
+```
+
+]
+
+
+---
+
+# Converting A `raster` to a `data.frame`
+
+A little coercion to move `matrix` into `as.data.frame()` is necessary.  I also use the `transmute()` function which does in-place renaming (rather than `mutate( X=y ) %&gt;% select( -y )`)
+
+
+```r
+alt %&gt;%
+  rasterToPoints() %&gt;%
+  as.data.frame() %&gt;% 
+  transmute(Longitude=x,
+            Latitude=y,
+            Elevation=alt_22)  -&gt; alt.df
+head( alt.df )
+```
+
+```
+##   Longitude Latitude Elevation
+## 1 -115.7958 29.99583        55
+## 2 -115.7875 29.99583       126
+## 3 -115.7792 29.99583        94
+## 4 -115.7708 29.99583        99
+## 5 -115.7625 29.99583       106
+## 6 -115.7542 29.99583       120
+```
+
+---
+
+# `geom_raster()`
+
+.pull-left[
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+
+```r
+alt.df %&gt;%
+  ggplot()  + 
+  geom_raster( aes( x = Longitude, 
+                    y = Latitude, 
+                    fill = Elevation) ) + 
+  coord_equal() +
+  theme_minimal() -&gt; baja_elevation
+
+baja_elevation
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-18-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+# Playing with Colors
+
+.pull-left[
+&lt;img src="slides_files/figure-html/unnamed-chunk-19-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+### Using Color Gradients
+
+There is a built-in `terrain.colors()` function that estimates a set of colors that look somewhat topologically orientated.
+
+
+```r
+baja_elevation + 
+  scale_fill_gradientn( colors=terrain.colors(100))
+```
+]
+
+
+---
+
+# Custome Color Gradients
+
+.pull-left[
+
+Set up a custom gradient with a `low`, `mid`, and `high` color and define the value of the elevation that represents the middle of the range.
+
+
+```r
+baja_elevation + 
+  scale_fill_gradient2( low = "darkolivegreen",
+                        mid = "yellow",
+                        high = "brown", 
+                        midpoint = 1000 ) -&gt; baja_map
+baja_map
+```
+
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-22-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Overlay Data
+
+.pull-left[
+&lt;img src="slides_files/figure-html/unnamed-chunk-23-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+Map the `sf` object *over* the background raster and pull it all together.
+
+
+```r
+baja_map + 
+  geom_sf( aes(size = MFRatio ), 
+           data = beetles, 
+           color = "dodgerblue2",
+           alpha = 0.75) 
+```
+]
+
+
+---
+class: sectionTitle, inverse
+
+# .orange[Raster Manipulations]
+
+## .fancy[Getting Data From the Map]
+
+
+
+
+
+---
+
+# Map Interactivity
+
+You can work with raster data interactively (I just cannot do it here on this presentation because it has to be in real time).  
+
+
+.pull-left[
+
+```r
+plot( alt )
+click( alt, 
+       xy=TRUE, 
+       value=TRUE, 
+       n=3 ) -&gt; points
+```
+]
+
+.pull.right[
+![](https://live.staticflickr.com/65535/50505505948_08e3e91dfb_w_d.jpg)
+]
+
+
+---
+
+# Points from `click()`
+
+
+
+Here are what the points look like.  
+
+
+```r
+points
+```
+
+```
+##           x        y value
+## 1 -113.6292 28.45417   870
+## 2 -112.4792 26.85417  1185
+## 3 -111.2458 24.83750   135
+## 4 -109.9958 23.48750  1145
+```
+
+
+
+---
+
+# Reprojecting Rasters
+
+Just like points, we can reproject the entire raster using the `projectRaster` function.  HJere I am going to project the raster into UTM Zone 12N, a common projection for this part of [Mexico from epsg.io](https://epsg.io/6367).  
+
+Unfortunatly, the `raster` library does not use epsg codes so we'll have to use the large description of that projection.  See the [page](https://epsg.io/6367) for this projection and scroll down to the proj.4 definition.  
+
+
+```r
+new.proj &lt;- "+proj=utm +zone=12 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs "
+```
+
+---
+
+# Visualizing
+
+.pull-left[
+
+```r
+alt.utm &lt;- projectRaster( alt, 
+                          crs = new.proj )
+alt.utm
+```
+
+```
+## class      : RasterLayer 
+## dimensions : 981, 879, 862299  (nrow, ncol, ncell)
+## resolution : 834, 923  (x, y)
+## extent     : -21583.09, 711502.9, 2428482, 3333945  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=12 +ellps=GRS80 +units=m +no_defs 
+## source     : memory
+## names      : alt_22 
+## values     : -202, 2222.994  (min, max)
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-30-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+# Extracting Data From Rasters
+
+&gt; What are the parts of Baja California that are within 100m of the elevation of site named *San Francisquito* (`sfran`)?  
+
+To answer this, we have the following general outline of operations.
+
+1. Find the coordinates of the site named `sfran`  
+2. Extract the elevation from the `alt` raster that is within 100m (+/-) of that site.
+3. Plot the whole baja data as a background  
+4. Overlay all the locations within that elevation band.
+
+To do this we will use both the `alt` and the `beetles` data objects.
+
+
+---
+
+# Isolating the Point
+
+
+```r
+sfran &lt;- beetles$geometry[ beetles$Site == "sfran"]
+sfran
+```
+
+```
+## Geometry set for 1 feature 
+## geometry type:  POINT
+## dimension:      XY
+## bbox:           xmin: -112.964 ymin: 27.3632 xmax: -112.964 ymax: 27.3632
+## geographic CRS: WGS 84
+```
+
+
+
+---
+
+# Extracting Data at a Point
+
+To extract data from `raster` objects, we need to coerce and specify.
+
+
+```r
+raster::extract( alt, as(sfran,"Spatial") )
+```
+
+```
+##     
+## 305
+```
+
+
+---
+
+
+.pull-left[
+
+```r
+library( ggrepel )
+alt.df %&gt;%
+  filter( Elevation &gt;= 205,
+          Elevation &lt;= 405 ) %&gt;%
+  ggplot() + 
+  geom_raster( aes( x = Longitude,
+                    y = Latitude),
+               fill = "gray80",
+               data = alt.df ) + 
+  geom_raster( aes( x = Longitude,
+                    y = Latitude,
+                    fill = Elevation) ) +
+  scale_fill_gradient2( low = "darkolivegreen",
+                        mid = "yellow",
+                        high = "brown", 
+                        midpoint = 305 ) +
+  geom_sf( aes(size=MFRatio), 
+           alpha=0.5, 
+           color="dodgerblue3", 
+           data=beetles) +
+  geom_text_repel( aes( label = Site,
+                        geometry = geometry),
+                   data = beetles,
+                   stat = "sf_coordinates", 
+                   size = 4, 
+                   color = "dodgerblue4") + 
+  coord_sf()
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+![](https://live.staticflickr.com/65535/50510757837_c3606682ac_c_d.jpg)
+]
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -48,7 +778,7 @@ background-size: auto
 
 .center[
 
-# 🙋🏻‍♀️ Questions?
+# ️ Questions?
 
 
 ![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)

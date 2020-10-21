@@ -1,0 +1,15 @@
+base
+sf
+ggplot2
+tidyverse
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+fontawesome
+sp
+raster
+ggrepel

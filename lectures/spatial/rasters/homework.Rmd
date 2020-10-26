@@ -1,0 +1,27 @@
+---
+title: "Raster In-Class Work"
+output: html_notebook
+---
+
+Rasters are spatial continuous distributions of geospatial data.  We have been shown that we an work with data in raster format using either `raster` and working on object directly, or via `dplyr` and using the normal data manipulation routines that we've learned for non-spatial data.  In this *in class* exercise, you may use both of these techniques to load, manipulate, and display geospatial data.
+
+## The Raw Data
+
+The data for this will be the same Baja California data we showed in the lectures on [points](https://dyerlab.github.io/ENVS-Lectures/spatial/spatial_points/slides.html#1) and [rasters](https://dyerlab.github.io/ENVS-Lectures/spatial/rasters/slides.html#1).  
+
+```{r}
+raster_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
+beetle_rul <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+```
+
+
+## The Questions
+
+1. Load the raster and point data in and crop to an appropriate size to display the locations of the sampling plots and make a label for each site.
+
+
+2. Use the `click()` function to crop the raster and filter the sites to include only the region that is on the peninsula of Baja California.
+
+3. The peninsula of Baja California is divided into to States, Baja California Norte y Baja California Sur.  The border is at 28° Latitude.  Divide the sample locations into groups based upon which state they are in and plot the average sex ratio of the sample sites partitioned by each site.
+
+

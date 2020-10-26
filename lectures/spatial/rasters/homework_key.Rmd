@@ -1,0 +1,98 @@
+---
+title: "Raster In-Class Work - Key"
+output: html_notebook
+---
+
+Rasters are spatial continuous distributions of geospatial data.  We have been shown that we an work with data in raster format using either `raster` and working on object directly, or via `dplyr` and using the normal data manipulation routines that we've learned for non-spatial data.  In this *in class* exercise, you may use both of these techniques to load, manipulate, and display geospatial data.
+
+## The Raw Data
+
+The data for this will be the same Baja California data we showed in the lectures on [points](https://dyerlab.github.io/ENVS-Lectures/spatial/spatial_points/slides.html#1) and [rasters](https://dyerlab.github.io/ENVS-Lectures/spatial/rasters/slides.html#1).  
+
+```{r}
+raster_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
+beetle_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+```
+
+
+## The Questions
+
+1. Load the raster and point data in and crop to an appropriate size to display the locations of the sampling plots and make a label for each site.
+
+
+```{r}
+library( sf )
+library( readr )
+library( raster )
+library( dplyr )
+library( magrittr )
+
+read_csv( beetle_url ) %>% 
+  st_as_sf( coords=c("Longitude","Latitude"), 
+            crs=4326) -> beetles 
+alt <- raster( raster_url )
+```
+
+
+```{r}
+st_bbox( beetles )
+alt <- crop( alt, extent( -116, -108, 22, 30))
+alt
+```
+
+```{r}
+plot( alt, xlab="Longitude", ylab="Latitude" )
+plot( beetles, add=TRUE, pch=16, col="red")
+```
+
+
+
+2. Use the `click()` function to crop the raster and filter the sites to include only the region that is on the peninsula of Baja California.  Plot the raster and sites as labels.
+
+
+```{r eval=FALSE}
+plot( alt )
+click( alt, xy=TRUE, n=6 ) -> points 
+```
+
+The points I got were the following (yours may differ).  However, since this is an interactive session, I cannot represent it as part of the answer.
+
+```
+          x        y value
+1 -113.1792 29.85417    NA
+2 -108.8792 23.15417    NA
+3 -110.0625 22.62083    NA
+4 -113.1208 25.49583    NA
+5 -115.3625 27.74583    NA
+6 -115.7792 29.99583    94
+```
+
+```{r}
+points <- data.frame( x = c( -113.1792, -108.8792, -110.0625, -113.1208, -115.3625, -115.7792 ), 
+                      y = c( 29.85417, 23.15417, 22.62083, 25.49583, 27.74583, 29.99583) )
+```
+
+To use it to crop, I'm going to turn it into an `sf` object.
+
+```{r}
+points <- st_as_sf( points, coords=c("x","y"), crs=4326)
+points 
+```
+
+Now take the cropped raster and mask all the stuff that is not within your points.
+
+```{r}
+points %>%
+  st_union() %>%
+  st_convex_hull() -> hull
+baja <- mask( alt, as(hull, "Spatial"))
+plot( baja )
+```
+
+
+
+3. The peninsula of Baja California is divided into the States of *Baja California Norte* and *Baja California Sur*.  The border between these states is at 28° Latitude.  Divide the sample locations into groups based upon which state they are located and plot the average sex ratio of the sample sites partitioned by each site.
+
+4. Is there a relationship between the observed sex ratio and the elevation at that site?
+
+

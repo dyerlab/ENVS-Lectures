@@ -126,6 +126,27 @@ plot( beetles["Suitability"], pch=16, add=TRUE)
 </table>
 </div>
 
+## Masking
+
+There is another way to grab just a portion of the raster—similar to cropping—which is to mask.  A mask will not change the size of the raster but just put `NA` values in the cells that are not in the are of interest.  So if we were to just mask above, it would never actually reduce the size of the raster, just add a lot more `NA` values.  However, the setup is the same.
+
+```{r}
+beetles %>%
+  filter( Site != 32 ) %>%
+  st_union() %>%
+  st_convex_hull() -> hull
+
+baja <- mask( alt, as(hull, "Spatial"))
+baja
+```
+
+
+```{r}
+plot(baja)
+```
+
+
+
 
 ## Plotting with GGPlot
 

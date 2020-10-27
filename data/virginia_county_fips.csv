@@ -1,0 +1,363 @@
+State-FIPS,County-FIPS,Place-FIPS,Name
+51,000,00000,Virginia
+51,001,00000,Accomack
+51,003,00000,Albemarle
+51,005,00000,Alleghany
+51,007,00000,Amelia
+51,009,00000,Amherst
+51,011,00000,Appomattox
+51,013,00000,Arlington
+51,015,00000,Augusta
+51,017,00000,Bath
+51,019,00000,Bedford
+51,021,00000,Bland
+51,023,00000,Botetourt
+51,025,00000,Brunswick
+51,027,00000,Buchanan
+51,029,00000,Buckingham
+51,031,00000,Campbell
+51,033,00000,Caroline
+51,035,00000,Carroll
+51,036,00000,Charles City
+51,037,00000,Charlotte
+51,041,00000,Chesterfield
+51,043,00000,Clarke
+51,045,00000,Craig
+51,047,00000,Culpeper
+51,049,00000,Cumberland
+51,051,00000,Dickenson
+51,053,00000,Dinwiddie
+51,057,00000,Essex
+51,059,00000,Fairfax
+51,061,00000,Fauquier
+51,063,00000,Floyd
+51,065,00000,Fluvanna
+51,067,00000,Franklin
+51,069,00000,Frederick
+51,071,00000,Giles
+51,073,00000,Gloucester
+51,075,00000,Goochland
+51,077,00000,Grayson
+51,079,00000,Greene
+51,081,00000,Greensville
+51,083,00000,Halifax
+51,085,00000,Hanover
+51,087,00000,Henrico
+51,089,00000,Henry
+51,091,00000,Highland
+51,093,00000,Isle of Wight
+51,095,00000,James City
+51,097,00000,King and Queen
+51,099,00000,King George
+51,101,00000,King William
+51,103,00000,Lancaster
+51,105,00000,Lee
+51,107,00000,Loudoun
+51,109,00000,Louisa
+51,111,00000,Lunenburg
+51,113,00000,Madison
+51,115,00000,Mathews
+51,117,00000,Mecklenburg
+51,119,00000,Middlesex
+51,121,00000,Montgomery
+51,125,00000,Nelson
+51,127,00000,New Kent
+51,131,00000,Northampton
+51,133,00000,Northumberland
+51,135,00000,Nottoway
+51,137,00000,Orange
+51,139,00000,Page
+51,141,00000,Patrick
+51,143,00000,Pittsylvania
+51,145,00000,Powhatan
+51,147,00000,Prince Edward
+51,149,00000,Prince George
+51,153,00000,Prince William
+51,155,00000,Pulaski
+51,157,00000,Rappahannock
+51,159,00000,Richmond
+51,161,00000,Roanoke
+51,163,00000,Rockbridge
+51,165,00000,Rockingham
+51,167,00000,Russell
+51,169,00000,Scott
+51,171,00000,Shenandoah
+51,173,00000,Smyth
+51,175,00000,Southampton
+51,177,00000,Spotsylvania
+51,179,00000,Stafford
+51,181,00000,Surry
+51,183,00000,Sussex
+51,185,00000,Tazewell
+51,187,00000,Warren
+51,191,00000,Washington
+51,193,00000,Westmoreland
+51,195,00000,Wise
+51,197,00000,Wythe
+51,199,00000,York
+51,510,00000,Alexandria city
+51,520,00000,Bristol city
+51,530,00000,Buena Vista city
+51,540,00000,Charlottesville city
+51,550,00000,Chesapeake city
+51,570,00000,Colonial Heights city
+51,580,00000,Covington city
+51,590,00000,Danville city
+51,595,00000,Emporia city
+51,600,00000,Fairfax city
+51,610,00000,Falls Church city
+51,620,00000,Franklin city
+51,630,00000,Fredericksburg city
+51,640,00000,Galax city
+51,650,00000,Hampton city
+51,660,00000,Harrisonburg city
+51,670,00000,Hopewell city
+51,678,00000,Lexington city
+51,680,00000,Lynchburg city
+51,683,00000,Manassas city
+51,685,00000,Manassas Park city
+51,690,00000,Martinsville city
+51,700,00000,Newport News city
+51,710,00000,Norfolk city
+51,720,00000,Norton city
+51,730,00000,Petersburg city
+51,735,00000,Poquoson city
+51,740,00000,Portsmouth city
+51,750,00000,Radford city
+51,760,00000,Richmond city
+51,770,00000,Roanoke city
+51,775,00000,Salem city
+51,790,00000,Staunton city
+51,800,00000,Suffolk city
+51,810,00000,Virginia Beach city
+51,820,00000,Waynesboro city
+51,830,00000,Williamsburg city
+51,840,00000,Winchester city
+51,000,00148,Abingdon
+51,000,00180,Accomac
+51,000,00724,Alberta
+51,000,01000,Alexandria city
+51,000,01528,Altavista
+51,000,01672,Amherst
+51,000,02040,Appalachia
+51,000,02072,Appomattox
+51,000,03368,Ashland
+51,000,05544,Bedford
+51,000,05912,Belle Haven
+51,000,06968,Berryville
+51,000,07480,Big Stone Gap
+51,000,07784,Blacksburg
+51,000,07832,Blackstone
+51,000,08120,Bloxom
+51,000,08152,Bluefield
+51,000,08584,Boones Mill
+51,000,08888,Bowling Green
+51,000,08984,Boyce
+51,000,09016,Boydton
+51,000,09032,Boykins
+51,000,09208,Branchville
+51,000,09656,Bridgewater
+51,000,09816,Bristol city
+51,000,10040,Broadway
+51,000,10072,Brodnax
+51,000,10296,Brookneal
+51,000,10744,Buchanan
+51,000,11032,Buena Vista city
+51,000,11560,Burkeville
+51,000,12808,Cape Charles
+51,000,12904,Capron
+51,000,13784,Cedar Bluff
+51,000,14952,Charlotte Court House
+51,000,14968,Charlottesville city
+51,000,14984,Chase City
+51,000,15000,Chatham
+51,000,15112,Cheriton
+51,000,16000,Chesapeake city
+51,000,16480,Chilhowie
+51,000,16512,Chincoteague
+51,000,16608,Christiansburg
+51,000,16880,Claremont
+51,000,16992,Clarksville
+51,000,17296,Cleveland
+51,000,17376,Clifton
+51,000,17440,Clifton Forge
+51,000,17504,Clinchco
+51,000,17536,Clinchport
+51,000,17552,Clintwood
+51,000,17952,Coeburn
+51,000,18400,Colonial Beach
+51,000,18448,Colonial Heights city
+51,000,19600,Courtland
+51,000,19728,Covington city
+51,000,19904,Craigsville
+51,000,20160,Crewe
+51,000,20752,Culpeper
+51,000,21184,Damascus
+51,000,21344,Danville city
+51,000,21648,Dayton
+51,000,22160,Dendron
+51,000,22560,Dillwyn
+51,000,23376,Drakes Branch
+51,000,23648,Dublin
+51,000,23680,Duffield
+51,000,23760,Dumfries
+51,000,23952,Dungannon
+51,000,24752,Eastville
+51,000,25008,Edinburg
+51,000,25408,Elkton
+51,000,25808,Emporia city
+51,000,26416,Exmore
+51,000,26496,Fairfax city
+51,000,27200,Falls Church city
+51,000,27440,Farmville
+51,000,27824,Fincastle
+51,000,28544,Floyd
+51,000,29600,Franklin city
+51,000,29744,Fredericksburg city
+51,000,29920,Fries
+51,000,29968,Front Royal
+51,000,30208,Galax city
+51,000,30496,Gate City
+51,000,31056,Glade Spring
+51,000,31136,Glasgow
+51,000,31376,Glen Lyn
+51,000,31936,Gordonsville
+51,000,31968,Goshen
+51,000,33232,Gretna
+51,000,33488,Grottoes
+51,000,33648,Grundy
+51,000,34064,Halifax
+51,000,34176,Hallwood
+51,000,34240,Hamilton
+51,000,35000,Hampton city
+51,000,35624,Harrisonburg city
+51,000,35976,Haymarket
+51,000,36008,Haysi
+51,000,36648,Herndon
+51,000,37288,Hillsboro
+51,000,37336,Hillsville
+51,000,38280,Honaker
+51,000,38424,Hopewell city
+51,000,39224,Hurt
+51,000,39528,Independence
+51,000,40024,Iron Gate
+51,000,40088,Irvington
+51,000,40232,Ivor
+51,000,40536,Jarratt
+51,000,41272,Jonesville
+51,000,41656,Keller
+51,000,41832,Kenbridge
+51,000,42264,Keysville
+51,000,42424,Kilmarnock
+51,000,43176,La Crosse
+51,000,44520,Lawrenceville
+51,000,44696,Lebanon
+51,000,44984,Leesburg
+51,000,45512,Lexington city
+51,000,47144,Louisa
+51,000,47208,Lovettsville
+51,000,47528,Luray
+51,000,47672,Lynchburg city
+51,000,48344,McKenney
+51,000,48488,Madison
+51,000,48952,Manassas city
+51,000,48968,Manassas Park city
+51,000,49464,Marion
+51,000,49784,Martinsville city
+51,000,50984,Melfa
+51,000,51448,Middleburg
+51,000,51512,Middletown
+51,000,52120,Mineral
+51,000,52680,Monterey
+51,000,52952,Montross
+51,000,53864,Mount Crawford
+51,000,53992,Mount Jackson
+51,000,54904,Narrows
+51,000,54984,Nassawadox
+51,000,55592,New Castle
+51,000,55848,New Market
+51,000,56000,Newport News city
+51,000,56096,Newsoms
+51,000,56304,Nickelsville
+51,000,57000,Norfolk city
+51,000,57688,Norton city
+51,000,58696,Occoquan
+51,000,59336,Onancock
+51,000,59384,Onley
+51,000,59496,Orange
+51,000,60296,Painter
+51,000,60488,Pamplin City
+51,000,60680,Parksley
+51,000,61208,Pearisburg
+51,000,61336,Pembroke
+51,000,61560,Pennington Gap
+51,000,61832,Petersburg city
+51,000,61896,Phenix
+51,000,63288,Pocahontas
+51,000,63768,Poquoson city
+51,000,63928,Port Royal
+51,000,64000,Portsmouth city
+51,000,64272,Pound
+51,000,64880,Pulaski
+51,000,65008,Purcellville
+51,000,65120,Quantico
+51,000,65392,Radford city
+51,000,66512,Remington
+51,000,66896,Rich Creek
+51,000,66928,Richlands
+51,000,67000,Richmond city
+51,000,67208,Ridgeway
+51,000,68000,Roanoke city
+51,000,68496,Rocky Mount
+51,000,69168,Round Hill
+51,000,69456,Rural Retreat
+51,000,69792,St. Charles
+51,000,69936,St. Paul
+51,000,70000,Salem city
+51,000,70096,Saltville
+51,000,70576,Saxis
+51,000,70752,Scottsburg
+51,000,70800,Scottsville
+51,000,71776,Shenandoah
+51,000,73200,Smithfield
+51,000,73712,South Boston
+51,000,73904,South Hill
+51,000,75008,Stanardsville
+51,000,75024,Stanley
+51,000,75216,Staunton city
+51,000,75344,Stephens City
+51,000,75840,Stony Creek
+51,000,76000,Strasburg
+51,000,76256,Stuart
+51,000,76432,Suffolk city
+51,000,76880,Surry
+51,000,77520,Tangier
+51,000,77568,Tappahannock
+51,000,77792,Tazewell
+51,000,78192,The Plains
+51,000,78736,Timberville
+51,000,79024,Toms Brook
+51,000,79456,Troutdale
+51,000,79472,Troutville
+51,000,80272,Urbanna
+51,000,81024,Victoria
+51,000,81072,Vienna
+51,000,81280,Vinton
+51,000,81312,Virgilina
+51,000,82000,Virginia Beach city
+51,000,82320,Wachapreague
+51,000,82384,Wakefield
+51,000,83136,Warrenton
+51,000,83168,Warsaw
+51,000,83248,Washington
+51,000,83600,Waverly
+51,000,83680,Waynesboro city
+51,000,83808,Weber City
+51,000,84960,West Point
+51,000,85600,White Stone
+51,000,86160,Williamsburg city
+51,000,86720,Winchester city
+51,000,86784,Windsor
+51,000,87072,Wise
+51,000,87712,Woodstock
+51,000,88000,Wytheville

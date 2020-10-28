@@ -28,6 +28,9 @@ library( dplyr )
 library( magrittr )
 
 read_csv( beetle_url ) %>% 
+  mutate( State = ifelse( Latitude > 28.0, 
+                          "Baja California Norte", 
+                          "Baja California Sur") ) %>%
   st_as_sf( coords=c("Longitude","Latitude"), 
             crs=4326) -> beetles 
 alt <- raster( raster_url )
@@ -86,13 +89,33 @@ points %>%
   st_union() %>%
   st_convex_hull() -> hull
 baja <- mask( alt, as(hull, "Spatial"))
+baja_beetles <- beetles %>% filter 
 plot( baja )
 ```
 
 
-
 3. The peninsula of Baja California is divided into the States of *Baja California Norte* and *Baja California Sur*.  The border between these states is at 28° Latitude.  Divide the sample locations into groups based upon which state they are located and plot the average sex ratio of the sample sites partitioned by each site.
+
+
+```{r}
+beetles %>% 
+  ggplot( aes(State,MFRatio)) +
+  geom_boxplot( notch=TRUE )
+  
+```
+
 
 4. Is there a relationship between the observed sex ratio and the elevation at that site?
 
+```{r}
+beetles %>%
+  filter( Site != 32 ) -> baja_beetles
+
+baja_beetles %>%
+  mutate( Elevation = raster::extract(baja, as(baja_beetles, "Spatial")) ) %>%
+  ggplot( aes( x=Elevation, y=MFRatio ) ) + 
+  geom_point() + 
+  stat_smooth( formula="y~x", method="lm") + 
+  theme_minimal()
+```
 

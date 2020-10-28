@@ -134,12 +134,14 @@ There is another way to grab just a portion of the rasterâ€”similar to croppingâ
 beetles %>%
   filter( Site != 32 ) %>%
   st_union() %>%
+  st_buffer( dist = 1 ) %>%
   st_convex_hull() -> hull
 
 baja <- mask( alt, as(hull, "Spatial"))
 baja
 ```
 
+And it looks like.
 
 ```{r}
 plot(baja)

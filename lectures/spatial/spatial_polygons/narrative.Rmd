@@ -1,8 +1,7 @@
 ---
-title: "Lines Polygons"
+title: "Lines & Polygons"
 output: html_notebook
 ---
-
 
 ```{r startup, include=FALSE}
 library( sf )
@@ -13,7 +12,107 @@ ggplot2::theme_set( theme_minimal( base_size=16) )
 ```
 
 
+In this section, we will focus on lines and polygons.  These are represented as `sf` objects, we can leverage a large amount of `st_*` functions to perform manipulations, and we can visualize them using either built-in routines or via `ggplot` (as expected).
+
+## Raw Data
+
+In this section, we will be working with lines and polygons.  These are going to be represented by roads and development zones in Richmond, Virginia.  These data are made available by the GIS Department of the City of Richmond. For this example, we will be loading these in as *shapefiles*.
+
+You can load in shapefile data directly into R but we have to do a little work.  First, we should understand that *a shapefile* is not an actual file, it is a collection of several files.  They are often zipped up into a single archive.  
+
+Here are two shape file archives that I have up on Github in the class repository.  
+
+```{r}
+roads_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Centerlines-shp.zip"
+district_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Zoning_Districts-shp.zip"
+```
+
+We can use `R` to download and unzip the file *in the current data directory* (n.b., you can do it using a browser as well).  To use `R` you need to first download them (I've set `eval=FALSE` to the chuck so it is not redownloaded each time.  Run it by hand using `CTRL/CMD + Return`).
+
+```{r eval=FALSE}
+download.file( district_url , destfile = "./Districts.zip")
+download.file( roads_url, destfile =  "./Roads.zip")
+```
+
+We can unzip them now as:
+
+```{r}
+unzip("Districts.zip")
+unzip("Roads.zip")
+```
+
+These routines will expand the archives in the current directory.
+
+Depending upon how the archives were created, they may make a subdirectory or just a pile of files in the same directory.  For this example, the are one of each with the *Zoning_Districts.* set of files expanded in the current directory and the *Roads* expanded to a subfolder nnamed *Centerlines-shp*.
+
+```{r}
+system( "ls" )
+```
+
+
+## Lines
+
+We've covered [points](https://dyerlab.github.io/ENVS-Lectures/spatial/spatial_points/slides.html#1) and now if we put them together in a sequence, we get lines.  They are taken in the order given.  
+
+Instead of loading these in manually, I'm going to load in the shapefile with the roads.  To load in shapefiles, we use the `st_read()` function and pass it the .shp file.
+
+```{r}
+roads <- st_read( "Centerlines-shp/tran_Carriageway.shp" ) 
+names( roads )
+```
+
+We can clean it up a bit by removing the extraneous columns.
+
+```{r}
+roads %>%
+  select(-CreatedBy,
+         -CreatedDat,
+         -EditBy,
+         -EditDate) %>%
+  select( FIPS, AssetID, StreetType, Functional, FullName, OneWay, geometry ) -> roads
+roads
+```
+
+You can see that the `geometry` object is a `LINESTRING` (in `sf` terms).  We can see the coordinates for one of these (say *Dwyer St*), by conveting the `geometry` object to a Well Know Text (WKT) version representing the sequence of points.
+
+For any particular street, say *Three Chopt Road* in Richmond, we can filter out the rows of this for each `LINESTRING` object. 
+
+```{r}
+roads %>% 
+  filter( FullName == "Three Chopt Road") -> three_chopt
+three_chopt
+```
+
+This one has `r nrow( three_chopt)` elements, each of which is created by a sequence of points.  We can loop through them and print out the coordinates in textual format as:
+
+```{r}
+for( i in 1:nrow(three_chopt) ) {
+  geo <- three_chopt$geometry[i]
+  cat( i, st_as_text( geo ), "\n") 
+}
+```
+
+We can then plot this using the built-in plot commands as:
+
+```{r}
+plot( three_chopt["StreetType"] )
+```
+
+Or using `ggplot` as:
+
+```{r}
+ggplot( three_chopt ) + 
+  geom_sf() + 
+  coord_sf()
+```
+
+## Polygons
+
+Polygons are simply lines whose first and last point are the same (e.g., they close upon themselves).  We can create these *de novo*
+
 ### Polygons from Data Frames
+
+As a first approximation, we can grab polygon data from `ggplot` itself.  Here I pull in the `data.frame` representing the counties of Virginia.
 
 ```{r}
 map_data( "county", "virginia") %>%
@@ -23,7 +122,6 @@ map_data( "county", "virginia") %>%
           County = subregion) -> va_counties
 head( va_counties )
 ```
-
 To get an idea of what theses data represent visually, let's first plot it as a `geom_point()` object.  This wil show you where all the coordinates are located (just not the connecting lines).
 
 
@@ -62,40 +160,21 @@ va_counties %>%
 
 Notice that the points on the border are repeated in both `County == "hanover"` and `County == "henrico"`.
 
+### Polygons from Shapefiles
 
-## Shapefiles
-
-You can load in shapefile data directly into R but we have to do a little work.  First, we should understand that *a shapefile* is not an actual file, it is a collection of several files.  They are often zipped up into a single archive.  
-
-Here are two shape file archives that I have up on Github in the class repository.  
-
-```{r}
-district_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Zoning_Districts-shp.zip"
-roads_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Centerlines-shp.zip"
-```
-
-We can use `R` to download and unzip the file *in the current data directory* (n.b., you can do it using a browser as well).
-
-To use `R` you need to first download them (I've set `eval=FALSE` to the chuck so it is not redownloaded each time.  Run it by hand using `CTRL/CMD + Return`).
-
-```{r eval=FALSE}
-download.file( district_url , destfile = "./Districts.zip")
-download.file( roads_url, destfile =  "./Roads.zip")
-```
-
-Next, we can unzip them in the current directory.
+We can also load these in from shapefiles.  In the Richmond GIS data, we have Zoning District data.  We can unzip them in the current directory as before.
 
 ```{r eval=FALSE}
 unzip( "./Districts.zip")
 ```
 
-Now, go look at your directory and you will see a nice set of files named `Zoning_Districts.*`. The `*.shp` files are the actual *shapefiles* and the other stuff are supportive documentation (such as the projection in the .prj file).
+And in this case, it simply expands all the files in the current directory as a set of files named `Zoning_Districts.*`. 
 
 ```{r}
 system("ls -al Zoning*")
 ```
 
-To load it in, we read the shapefile from the local directory.
+To load it in, we read the shapefile (.shp) from the local directory.
 
 ```{r}
 districts <- st_read( "Zoning_Districts.shp" )
@@ -286,19 +365,10 @@ fanRoads %>%
   scale_fill_manual( values=c("grey90","dodgerblue3"))
 ```
 
-## Buffers and
-
-
-
-
-
 Go check out the `sf` cheatsheet for more geospatial joins and options.
 
 
 
-
-
-
-[^1]: **Dyer's First Law: Reproject then forget**.
+[^1]: **Dyer's First Law**: Reproject then forget about it!
 
 [^2]: You should be careful when you use joins on `sf` objects.  If you `sf` object is on the right side (see discussion of joins [here](https://dyerlab.github.io/ENVS-Lectures/manipulation/relational_data/slides.html#5)) then the result will not be an `sf` object and you'll have to coerce it back into one again.  It always adopts the characteristics of the left object. 

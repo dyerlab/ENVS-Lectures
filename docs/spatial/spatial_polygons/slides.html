@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>POlygons</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/slide_styles.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50362989122_a8ee154fea_k_d.jpg")
+background-size: cover
+
+
+
+
+
+# .green[Lines &amp; Polygons &lt;svg style="height:0.8em;top:.04em;position:relative;fill:limegreen;" viewBox="0 0 448 512"&gt;&lt;path d="M384 352c-.35 0-.67.1-1.02.1l-39.2-65.32c5.07-9.17 8.22-19.56 8.22-30.78s-3.14-21.61-8.22-30.78l39.2-65.32c.35.01.67.1 1.02.1 35.35 0 64-28.65 64-64s-28.65-64-64-64c-23.63 0-44.04 12.95-55.12 32H119.12C108.04 44.95 87.63 32 64 32 28.65 32 0 60.65 0 96c0 23.63 12.95 44.04 32 55.12v209.75C12.95 371.96 0 392.37 0 416c0 35.35 28.65 64 64 64 23.63 0 44.04-12.95 55.12-32h209.75c11.09 19.05 31.49 32 55.12 32 35.35 0 64-28.65 64-64 .01-35.35-28.64-64-63.99-64zm-288 8.88V151.12A63.825 63.825 0 0 0 119.12 128h208.36l-38.46 64.1c-.35-.01-.67-.1-1.02-.1-35.35 0-64 28.65-64 64s28.65 64 64 64c.35 0 .67-.1 1.02-.1l38.46 64.1H119.12A63.748 63.748 0 0 0 96 360.88zM272 256c0-8.82 7.18-16 16-16s16 7.18 16 16-7.18 16-16 16-16-7.18-16-16zM400 96c0 8.82-7.18 16-16 16s-16-7.18-16-16 7.18-16 16-16 16 7.18 16 16zM64 80c8.82 0 16 7.18 16 16s-7.18 16-16 16-16-7.18-16-16 7.18-16 16-16zM48 416c0-8.82 7.18-16 16-16s16 7.18 16 16-7.18 16-16 16-16-7.18-16-16zm336 16c-8.82 0-16-7.18-16-16s7.18-16 16-16 16 7.18 16 16-7.18 16-16 16z"/&gt;&lt;/svg&gt;]
+
+### .fancy[Mere collections of points]
+
+
+
+---
+
+# Learning Objectives &lt;svg style="height:0.8em;top:.04em;position:relative;fill:red;" viewBox="0 0 576 512"&gt;&lt;path d="M386.539 111.485l15.096 248.955-10.979-.275c-36.232-.824-71.64 8.783-102.657 27.997-31.016-19.214-66.424-27.997-102.657-27.997-45.564 0-82.07 10.705-123.516 27.723L93.117 129.6c28.546-11.803 61.484-18.115 92.226-18.115 41.173 0 73.836 13.175 102.657 42.544 27.723-28.271 59.013-41.721 98.539-42.544zM569.07 448c-25.526 0-47.485-5.215-70.542-15.645-34.31-15.645-69.993-24.978-107.871-24.978-38.977 0-74.934 12.901-102.657 40.623-27.723-27.723-63.68-40.623-102.657-40.623-37.878 0-73.561 9.333-107.871 24.978C55.239 442.236 32.731 448 8.303 448H6.93L49.475 98.859C88.726 76.626 136.486 64 181.775 64 218.83 64 256.984 71.685 288 93.095 319.016 71.685 357.17 64 394.225 64c45.289 0 93.049 12.626 132.3 34.859L569.07 448zm-43.368-44.741l-34.036-280.246c-30.742-13.999-67.248-21.41-101.009-21.41-38.428 0-74.385 12.077-102.657 38.702-28.272-26.625-64.228-38.702-102.657-38.702-33.761 0-70.267 7.411-101.009 21.41L50.298 403.259c47.211-19.487 82.894-33.486 135.045-33.486 37.604 0 70.817 9.606 102.657 29.644 31.84-20.038 65.052-29.644 102.657-29.644 52.151 0 87.834 13.999 135.045 33.486z"/&gt;&lt;/svg&gt;
+
+This section covers the following topics:
+
+- Creation of `sf::LINESTRING` and `sf::MULTIPOLYGON` objects from raw data.  
+- Loading map polygons from `get_data()`  
+
+- Importing data from ESRI shapefile.  
+
+- Implementing Spatial Joins.
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Lines]
+
+### .fancy[Collections of Points &lt;svg style="height:0.8em;top:.04em;position:relative;fill:limegreen;" viewBox="0 0 320 512"&gt;&lt;path d="M313.553 119.669L209.587 7.666c-9.485-10.214-25.676-10.229-35.174 0L70.438 119.669C56.232 134.969 67.062 160 88.025 160H152v272H68.024a11.996 11.996 0 0 0-8.485 3.515l-56 56C-4.021 499.074 1.333 512 12.024 512H208c13.255 0 24-10.745 24-24V160h63.966c20.878 0 31.851-24.969 17.587-40.331z"/&gt;&lt;/svg&gt;]
+
+
+
+
+
+---
+
+# Data Sources: *De novo* Creation
+
+It is possible to make data from scratch by entering coordinates directly.
+
+
+
+```r
+df &lt;- data.frame( id = c(rep("Rodney",5), rep("Sarah",5)),
+                  Data = rnorm( 10, 42, 42),
+                  Longitude = rnorm(10, -78, 1 ),
+                  Latitude = rnorm(10, 37, 1) )
+df
+```
+
+```
+##        id       Data Longitude Latitude
+## 1  Rodney  60.409209 -78.74995 38.19367
+## 2  Rodney -61.651860 -78.90520 36.62070
+## 3  Rodney  69.043262 -78.42494 36.76393
+## 4  Rodney  82.004263 -78.89095 35.20811
+## 5  Rodney 102.764668 -77.76583 38.95965
+## 6   Sarah  26.705180 -79.03787 37.24509
+## 7   Sarah  45.964014 -78.05613 36.03545
+## 8   Sarah 142.705109 -77.38307 36.55846
+## 9   Sarah   2.160583 -79.03871 38.15149
+## 10  Sarah  37.314092 -78.20329 36.56311
+```
+
+---
+
+# Data Sources: *De novo* Creation
+
+To Make to `sf` as `POINT` objects as normal.
+
+
+```r
+df %&gt;%
+  st_as_sf( coords = c("Longitude", "Latitude"), crs=4326 ) -&gt; pts
+pts
+```
+
+```
+## Simple feature collection with 10 features and 2 fields
+## geometry type:  POINT
+## dimension:      XY
+## bbox:           xmin: -79.03871 ymin: 35.20811 xmax: -77.38307 ymax: 38.95965
+## geographic CRS: WGS 84
+##        id       Data                   geometry
+## 1  Rodney  60.409209 POINT (-78.74995 38.19367)
+## 2  Rodney -61.651860   POINT (-78.9052 36.6207)
+## 3  Rodney  69.043262 POINT (-78.42494 36.76393)
+## 4  Rodney  82.004263 POINT (-78.89095 35.20811)
+## 5  Rodney 102.764668 POINT (-77.76583 38.95965)
+## 6   Sarah  26.705180 POINT (-79.03787 37.24509)
+## 7   Sarah  45.964014 POINT (-78.05613 36.03545)
+## 8   Sarah 142.705109 POINT (-77.38307 36.55846)
+## 9   Sarah   2.160583 POINT (-79.03871 38.15149)
+## 10  Sarah  37.314092 POINT (-78.20329 36.56311)
+```
+
+
+---
+
+# Plotting Points
+
+
+.pull-left[
+
+### GGPLot
+
+```r
+ggplot( pts ) + 
+  geom_sf( aes(color = id, size=Data)) + 
+  coord_sf()
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-4-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+
+---
+
+# Data Sources: *De novo* Creation
+
+To make `sf` as `LINESTRING` we can group by the id value and then we need to summarize the `Data` component, then cast it to a Linestring.
+
+
+```r
+df %&gt;%
+  st_as_sf( coords = c("Longitude", "Latitude"), crs=4326 ) %&gt;%
+  group_by( id ) %&gt;%
+  summarize( Data = mean( Data ) ) %&gt;%
+  st_cast("LINESTRING") -&gt; lines 
+lines
+```
+
+```
+## Simple feature collection with 2 features and 2 fields
+## geometry type:  LINESTRING
+## dimension:      XY
+## bbox:           xmin: -79.03871 ymin: 35.20811 xmax: -77.38307 ymax: 38.95965
+## geographic CRS: WGS 84
+## # A tibble: 2 x 3
+##   id      Data                                                          geometry
+##   &lt;chr&gt;  &lt;dbl&gt;                                                  &lt;LINESTRING [°]&gt;
+## 1 Rodney  50.5 (-78.9052 36.6207, -78.89095 35.20811, -78.74995 38.19367, -78.4…
+## 2 Sarah   51.0 (-79.03871 38.15149, -79.03787 37.24509, -78.20329 36.56311, -78…
+```
+
+
+
+---
+
+# Visualizing Line Objects
+
+.pull-left[
+
+```r
+plot( lines["Data"], 
+      col=c("red","green"),
+      lwd = 2)
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-7-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+
+
+---
+
+# Operations on `LINESTRING` Objects
+
+
+
+```r
+st_length( lines )
+```
+
+```
+## Units: [m]
+## [1] 900076.0 350545.3
+```
+
+
+
+```r
+st_bbox( lines )
+```
+
+```
+##      xmin      ymin      xmax      ymax 
+## -79.03871  35.20811 -77.38307  38.95965
+```
+
+
+```r
+library( units )
+lines %&gt;% 
+  st_union() %&gt;% 
+  st_convex_hull() %&gt;% 
+  st_area() %&gt;%
+  set_units( km^2 )
+```
+
+```
+## 40079.48 [km^2]
+```
+
+
+---
+
+# Textual Versions of `geometry` Objects
+
+While it is easy to go from text `\(\to\)` `POLYGON`, the same thing can be done going in the opposite direction.
+
+
+
+```r
+lines$geometry[1] %&gt;% st_as_text()
+```
+
+```
+## [1] "LINESTRING (-78.9052 36.6207, -78.89095 35.20811, -78.74995 38.19367, -78.42494 36.76393, -77.76583 38.95965)"
+```
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Polygons]
+
+### .fancy[The snake that is eating its tail. &lt;svg style="height:0.8em;top:.04em;position:relative;fill:limegreen;" viewBox="0 0 512 512"&gt;&lt;path d="M288 39.056v16.659c0 10.804 7.281 20.159 17.686 23.066C383.204 100.434 440 171.518 440 256c0 101.689-82.295 184-184 184-101.689 0-184-82.295-184-184 0-84.47 56.786-155.564 134.312-177.219C216.719 75.874 224 66.517 224 55.712V39.064c0-15.709-14.834-27.153-30.046-23.234C86.603 43.482 7.394 141.206 8.003 257.332c.72 137.052 111.477 246.956 248.531 246.667C393.255 503.711 504 392.788 504 256c0-115.633-79.14-212.779-186.211-240.236C302.678 11.889 288 23.456 288 39.056z"/&gt;&lt;/svg&gt;]
+
+
+
+---
+
+# Polygons
+
+.red[Polygons are simply lines whose first and last coordinate are exactly the same]
+
+
+```r
+df.p &lt;- df[ c(1:5,1, 6:10,6),]
+df.p
+```
+
+```
+##         id       Data Longitude Latitude
+## 1   Rodney  60.409209 -78.74995 38.19367
+## 2   Rodney -61.651860 -78.90520 36.62070
+## 3   Rodney  69.043262 -78.42494 36.76393
+## 4   Rodney  82.004263 -78.89095 35.20811
+## 5   Rodney 102.764668 -77.76583 38.95965
+## 1.1 Rodney  60.409209 -78.74995 38.19367
+## 6    Sarah  26.705180 -79.03787 37.24509
+## 7    Sarah  45.964014 -78.05613 36.03545
+## 8    Sarah 142.705109 -77.38307 36.55846
+## 9    Sarah   2.160583 -79.03871 38.15149
+## 10   Sarah  37.314092 -78.20329 36.56311
+## 6.1  Sarah  26.705180 -79.03787 37.24509
+```
+
+
+---
+
+# Polygon *de novo* Creation
+
+
+```r
+df %&gt;%
+  st_as_sf( coords = c("Longitude", "Latitude"), crs=4326 ) %&gt;%
+  group_by( id ) %&gt;%
+  summarize( Data = mean( Data ) ) %&gt;%
+  st_cast("POLYGON") -&gt; polygons
+polygons
+```
+
+```
+## Simple feature collection with 2 features and 2 fields
+## geometry type:  POLYGON
+## dimension:      XY
+## bbox:           xmin: -79.03871 ymin: 35.20811 xmax: -77.38307 ymax: 38.95965
+## geographic CRS: WGS 84
+## # A tibble: 2 x 3
+##   id      Data                                                          geometry
+##   &lt;chr&gt;  &lt;dbl&gt;                                                     &lt;POLYGON [°]&gt;
+## 1 Rodney  50.5 ((-78.9052 36.6207, -78.89095 35.20811, -78.74995 38.19367, -78.…
+## 2 Sarah   51.0 ((-79.03871 38.15149, -79.03787 37.24509, -78.20329 36.56311, -7…
+```
+
+---
+
+# Visualizing Polygon Objects
+
+
+```r
+ggplot( polygons ) + 
+  geom_sf( aes( fill = Data ), alpha=0.75 ) + 
+  coord_sf() 
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Polygons From Data Frames
+
+
+```r
+map_data( "county", "virginia") %&gt;%
+  dplyr::select( Longitude = long,
+                 Latitude = lat,
+                 group,
+                 County = subregion) -&gt; va_counties
+head( va_counties )
+```
+
+```
+##   Longitude Latitude group   County
+## 1 -75.27519 38.03867     1 accomack
+## 2 -75.21790 38.02721     1 accomack
+## 3 -75.21790 38.02721     1 accomack
+## 4 -75.24655 37.99283     1 accomack
+## 5 -75.30384 37.94127     1 accomack
+## 6 -75.31530 37.92981     1 accomack
+```
+
+---
+
+
+```r
+ggplot( va_counties, aes( Longitude, Latitude) ) + 
+  geom_point( size=0.25 ) + 
+  coord_quickmap()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-16-1.png" width="864" style="display: block; margin: auto;" /&gt;
+.footnote[`coord_quickmap()` is quick coordinate space projection.]
+---
+
+
+```r
+va_counties %&gt;%
+  filter( County %in%  c("hanover","henrico") ) %&gt;%
+  ggplot( aes(Longitude, Latitude) ) + 
+  geom_polygon( aes( fill = County), alpha=0.1 ) +
+  geom_point( aes( color = County) ) +
+  coord_quickmap()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-17-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+ggplot( va_counties, aes( Longitude, Latitude) ) + 
+  geom_polygon( aes( group=group ),
+                fill="grey80",
+                color = "black", 
+                size = 0.25) + 
+  coord_quickmap()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-18-1.png" width="720" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
+ggplot() + 
+  geom_polygon( aes( Longitude, Latitude, group=group ),
+                fill="grey80",
+                color = "black", 
+                size = 0.25, 
+                data=va_counties) +
+  geom_sf( aes( color=Data), lwd=3, data=lines) + 
+  coord_sf()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-19-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+class: sectionTitle, inverse
+
+# .green[Shapefiles 🤷]
+
+### .fancy[The standard format that is neither standard or a file. ️]
+
+
+
+
+---
+
+# Shapefiles
+
+The ESRI *Shapefile* is a common format for packaging vector based data (`POINT`, `LINESTRING`, `POLYGON`, etc.).  
+
+However, it is not actually a file but it is a collection of files, which may (or may not) expand directly in the folder or within a subfolder.
+
+
+![](https://live.staticflickr.com/65535/50540213032_8bd1f297a6_c_d.jpg)
+
+
+---
+
+# Archived ZIP Files.
+
+I've uploaded some shapefiles to the [Github Repository](https://github.com/dyerlab/ENVS-Lectures) for this class.  These are from the Richmond City GIS Department and represent the centerlines of roads in the city as well as the zoning districts.
+
+Here are the URL's for both of these files.
+
+
+```r
+roads_url &lt;- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Centerlines-shp.zip"
+district_url &lt;- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Zoning_Districts-shp.zip"
+```
+
+
+---
+
+# Downloading Files Using R
+
+You can use your browser and copy and paste those addresses in to download the files to your computer.  Then you'll have to move those archives to your PROJECT FOLDER (you are using Projects right?).
+
+--
+
+`OR`
+
+You can have `R` download the file and save it locally.
+
+
+```r
+download.file( district_url , destfile = "./Districts.zip")
+download.file( roads_url, destfile =  "./Roads.zip")
+```
+
+
+
+---
+
+# Unziping Files
+
+You can open your computer finder and have the OS unzip the archives.
+
+`OR`
+
+You can have `R` do it.
+
+
+```r
+unzip("Districts.zip")
+unzip("Roads.zip")
+```
+
+
+
+---
+
+# File Components
+
+
+![](https://live.staticflickr.com/65535/50540213032_8bd1f297a6_c_d.jpg)
+
+![](https://live.staticflickr.com/65535/50540256782_1e697d935c_c_d.jpg)
+
+---
+
+# Loading A Shapefile
+
+You can load it in using `sf::st_read()` and passing it the `.shp` file path to it.
+
+
+```r
+st_read("Zoning_Districts.shp") -&gt; districts 
+```
+
+```
+## Reading layer `Zoning_Districts' from data source `/Users/rodney/Public/ENVS-Lectures/lectures/spatial/spatial_polygons/Zoning_Districts.shp' using driver `ESRI Shapefile'
+## Simple feature collection with 634 features and 14 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: 11743500 ymin: 3687944 xmax: 11806060 ymax: 3744741
+## projected CRS:  NAD83 / Virginia South (ftUS)
+```
+
+---
+
+# Shapefiles Convert to `sf` Objects
+
+By default, the data associated with a vector object are put into a `data.frame` and the `geometry` object is properly created.
+
+
+```r
+head( districts, n=2 )
+```
+
+```
+## Simple feature collection with 2 features and 14 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: 11773600 ymin: 3730159 xmax: 11789510 ymax: 3731016
+## projected CRS:  NAD83 / Virginia South (ftUS)
+##   OBJECTID Name Ordinance OrdinanceP Conditiona AdoptionDa Comment
+## 1        1 RO-2      &lt;NA&gt;       &lt;NA&gt;         No 2000-01-01    &lt;NA&gt;
+## 2        2  B-2      &lt;NA&gt;       &lt;NA&gt;         No 2000-01-01    &lt;NA&gt;
+##            CreatedBy CreatedDat             EditBy   EditDate
+## 1 richard.morton_cor 2020-08-24 richard.morton_cor 2020-08-24
+## 2 richard.morton_cor 2020-08-24 richard.morton_cor 2020-08-24
+##                               GlobalID Shape__Are Shape__Len
+## 1 334799f0-fe38-46bf-97c2-260f5a036559   60150.29   983.6815
+## 2 558df9cd-4f9c-4248-a689-bc2d9c79d060   56987.01   971.8832
+##                         geometry
+## 1 MULTIPOLYGON (((11773598 37...
+## 2 MULTIPOLYGON (((11789222 37...
+```
+
+---
+
+# Simplifying Data
+
+
+```r
+names( districts )
+```
+
+```
+##  [1] "OBJECTID"   "Name"       "Ordinance"  "OrdinanceP" "Conditiona"
+##  [6] "AdoptionDa" "Comment"    "CreatedBy"  "CreatedDat" "EditBy"    
+## [11] "EditDate"   "GlobalID"   "Shape__Are" "Shape__Len" "geometry"
+```
+
+--
+
+
+```r
+districts %&gt;% 
+  dplyr::select( -Comment, -CreatedBy, -CreatedDat, -EditBy, -EditDate ) %&gt;%
+  dplyr::select( -Shape__Are, -Shape__Len) -&gt; districts
+head( districts, n=1)
+```
+
+```
+## Simple feature collection with 1 feature and 7 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: 11773600 ymin: 3730159 xmax: 11773940 ymax: 3730493
+## projected CRS:  NAD83 / Virginia South (ftUS)
+##   OBJECTID Name Ordinance OrdinanceP Conditiona AdoptionDa
+## 1        1 RO-2      &lt;NA&gt;       &lt;NA&gt;         No 2000-01-01
+##                               GlobalID                       geometry
+## 1 334799f0-fe38-46bf-97c2-260f5a036559 MULTIPOLYGON (((11773598 37...
+```
+
+
+---
+
+# District Codes
+
+
+```r
+districts$Name %&gt;% unique() %&gt;% sort()
+```
+
+```
+##  [1] "B-1"     "B-2"     "B-3"     "B-4"     "B-5"     "B-6"     "B-7"    
+##  [8] "CM"      "DCC"     "I"       "M-1"     "M-2"     "OS"      "R-1"    
+## [15] "R-2"     "R-3"     "R-4"     "R-43"    "R-48"    "R-5"     "R-53"   
+## [22] "R-6"     "R-63"    "R-7"     "R-73"    "R-8"     "R-MH"    "RF-1"   
+## [29] "RF-2"    "RO-1"    "RO-2"    "RO-3"    "RO2-PE2" "RO2-PE4" "RP"     
+## [36] "TOD-1"   "UB"      "UB-2"    "UB-PE2"  "UB-PE3"  "UB-PE4"  "UB-PE5" 
+## [43] "UB-PE6"  "UB-PE7"  "UB-PE8"  "UB-PO1"  "UB-PO2"  "UB-PO3"  "UB-PO4" 
+## [50] "UB2-PE8"
+```
+
+
+
+---
+
+# Visualizing 
+
+
+```r
+plot( districts["Name"] )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-28-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Visualizing Overlays
+
+
+
+```r
+plot( st_geometry( districts ))
+plot( st_geometry( districts[districts$OBJECTID==530,] ), col='red', add=TRUE )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-29-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Vector Operations]
+
+### .fancy[Spatial Joins &amp; Other Fun &lt;svg style="height:0.8em;top:.04em;position:relative;fill:orange;" viewBox="0 0 448 512"&gt;&lt;path d="M448 384c-28.02 0-31.26-32-74.5-32-43.43 0-46.825 32-74.75 32-27.695 0-31.454-32-74.75-32-42.842 0-47.218 32-74.5 32-28.148 0-31.202-32-74.75-32-43.547 0-46.653 32-74.75 32v-80c0-26.5 21.5-48 48-48h16V112h64v144h64V112h64v144h64V112h64v144h16c26.5 0 48 21.5 48 48v80zm0 128H0v-96c43.356 0 46.767-32 74.75-32 27.951 0 31.253 32 74.75 32 42.843 0 47.217-32 74.5-32 28.148 0 31.201 32 74.75 32 43.357 0 46.767-32 74.75-32 27.488 0 31.252 32 74.5 32v96zM96 96c-17.75 0-32-14.25-32-32 0-31 32-23 32-64 12 0 32 29.5 32 56s-14.25 40-32 40zm128 0c-17.75 0-32-14.25-32-32 0-31 32-23 32-64 12 0 32 29.5 32 56s-14.25 40-32 40zm128 0c-17.75 0-32-14.25-32-32 0-31 32-23 32-64 12 0 32 29.5 32 56s-14.25 40-32 40z"/&gt;&lt;/svg&gt; ️]
+
+
+---
+
+# Spatial Joins
+
+In the topic covering [Relational Operations], we used *Primary* and *Foreign* Keys to join `data.frame` objects and combine data.  We can do simliar operations using geospatial positions to perform `spatial joins`.
+
+There are a wide variety of operations available:
+
+.center[.red[[Check out the Cheetsheet](https://github.com/rstudio/cheatsheets/blob/master/sf.pdf)]]
+
+
+
+
+---
+
+# Secondary Vector Data Set
+
+
+```r
+road.shapefile &lt;- st_read("Centerlines-shp/tran_Carriageway.shp")
+```
+
+```
+## Reading layer `tran_Carriageway' from data source `/Users/rodney/Public/ENVS-Lectures/lectures/spatial/spatial_polygons/Centerlines-shp/tran_Carriageway.shp' using driver `ESRI Shapefile'
+## Simple feature collection with 29081 features and 25 fields
+## geometry type:  LINESTRING
+## dimension:      XY
+## bbox:           xmin: 11734060 ymin: 3682790 xmax: 11817490 ymax: 3751927
+## projected CRS:  NAD83 / Virginia South (ftUS)
+```
+
+--
+
+
+```r
+names( road.shapefile )
+```
+
+```
+##  [1] "FID"        "Carriagewa" "AssetID"    "StreetType" "Functional"
+##  [6] "FIPS"       "LeftFromAd" "LeftToAddr" "RightFromA" "RightToAdd"
+## [11] "PrefixDire" "ProperName" "SuffixType" "SuffixDire" "FullName"  
+## [16] "RouteName"  "OneWay"     "PostedSpee" "CADRouteSp" "CreatedBy" 
+## [21] "CreatedDat" "EditBy"     "EditDate"   "GlobalID"   "SHAPE_Leng"
+## [26] "geometry"
+```
+
+
+---
+
+# Check Projections
+
+.red[Dyer's First Rule: Make Sure Projections Are the Same]
+
+
+
+```r
+st_crs( road.shapefile ) == st_crs( districts )
+```
+
+```
+## [1] TRUE
+```
+
+--
+
+If they differed, one could do something like:
+
+
+```r
+road.shapefile %&gt;%
+  st_transform( crs = st_crs( districts ) ) -&gt; road.shapefile
+```
+
+
+
+
+
+
+
+
+
+
+---
+
+# Data Cleanup
+
+
+```r
+road.shapefile %&gt;%
+  dplyr::select( FullName, OneWay, StreetType,
+                 SpeedLimit = PostedSpee, Length = SHAPE_Leng,
+                 geometry) %&gt;%
+  mutate( OneWay = factor( OneWay ),
+          StreetType = factor( StreetType) ) -&gt; roads
+summary( roads )
+```
+
+```
+##    FullName          OneWay                    StreetType      SpeedLimit   
+##  Length:29081       1   :    2   Alley              : 3139   Min.   : 0.00  
+##  Class :character   FT  : 3225   Artery             : 5201   1st Qu.:25.00  
+##  Mode  :character   TF  : 3148   Highway            :  384   Median :25.00  
+##                     NA's:22706   Highway Interchange:   93   Mean   :25.17  
+##                                  Private            : 1540   3rd Qu.:25.00  
+##                                  Ramp               :  378   Max.   :55.00  
+##                                  Secondary          :18346   NA's   :7959   
+##      Length                   geometry    
+##  Min.   :    2.943   LINESTRING   :29081  
+##  1st Qu.:  164.849   epsg:2284    :    0  
+##  Median :  292.517   +proj=lcc ...:    0  
+##  Mean   :  379.338                        
+##  3rd Qu.:  461.146                        
+##  Max.   :17851.326                        
+## 
+```
+
+
+
+---
+
+# Visualizing
+
+.pull-left[
+
+### Filter Highways &amp; Plot
+
+```r
+roads %&gt;%
+  filter( StreetType %in% c("Highway", 
+                            "Highway Interchange",
+                            "Ramp")) -&gt; highways
+plot( highways["SpeedLimit"], col=heat.colors(56) )
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-36-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Visualizing A Single Entity
+
+.pull-left[
+
+### Using Normal Filtering
+
+```r
+roads %&gt;% 
+  filter( FullName == "Three Chopt Road") %&gt;%
+  ggplot() + 
+  geom_sf( aes(color=SpeedLimit), lwd=2) + 
+  coord_sf()
+```
+
+]
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-38-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+
+
+
+---
+
+# Intersection Plotting
+
+Let's grab a bit of zoning from *The Fan*
+
+
+```r
+districts %&gt;%
+  filter( OBJECTID == 368 ) %&gt;%
+  st_buffer(dist = 1500) %&gt;%
+  st_bbox() -&gt; fan_bbox
+
+districts %&gt;%
+  st_crop( fan_bbox ) -&gt; theFan 
+```
+
+
+---
+
+
+```r
+plot( theFan["Name"])
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-40-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Add Auxillary Data
+
+
+
+```r
+zone_url &lt;- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/DistrictCodes.csv"
+
+theFan %&gt;%
+  left_join( read_csv( zone_url ),
+             by="Name") %&gt;%
+  mutate( Category = factor( Category) ) %&gt;%
+  select( OBJECTID, 
+          Name, 
+          Category, 
+          everything() )  -&gt; theFan
+```
+
+---
+
+```r
+ggplot( theFan ) + geom_sf( aes( fill=Category)) + scale_fill_brewer( type="qual", palette = "Set3")
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-42-1.png" width="864" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+# Cropping Roads
+
+
+```r
+roads %&gt;% st_crop( st_bbox( theFan )) -&gt; fanRoads
+plot( st_geometry( fanRoads ))
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-43-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Selecting a Single Zone
+
+.pull-left[
+Add an attribute to the POLYGON's indicating if the district is that big one in the middle of the plot.
+
+
+```r
+theFan %&gt;%
+  mutate( Target = ifelse( OBJECTID == 368, 
+                           TRUE, 
+                           FALSE) ) -&gt; theFan
+theFan %&gt;%
+  ggplot() + 
+  geom_sf( aes(fill=Target) ) + 
+  geom_sf_text( aes(label=OBJECTID), size=3 ) +
+  coord_sf() 
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-45-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Isolate the District
+
+
+```r
+target &lt;- theFan[ theFan$OBJECTID == 368, ]
+plot( st_geometry( target ) ) 
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-46-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+
+```r
+fanRoads %&gt;%
+  filter( st_intersects( fanRoads, target, 
+                         sparse = FALSE ) == TRUE ) %&gt;%
+  as_data_frame() %&gt;% select( `Street Name` = FullName ) %&gt;%
+  arrange( `Street Name`) %&gt;% unique() 
+```
+
+```
+## # A tibble: 39 x 1
+##    `Street Name` 
+##    &lt;chr&gt;         
+##  1 Allison St    
+##  2 Birch St      
+##  3 Boyd St       
+##  4 Floyd Ave     
+##  5 Grove Ave     
+##  6 Hanover Ave   
+##  7 Kensington Ave
+##  8 Lombardy Pl   
+##  9 Madumbie Lane 
+## 10 Monument Ave  
+## # … with 29 more rows
+```
+
+
+---
+
+
+```r
+fanRoads %&gt;%
+  filter( st_intersects( fanRoads, target, 
+                         sparse = FALSE ) == TRUE ) %&gt;%
+  ggplot() +
+  geom_sf( data=target  ) +
+  geom_sf( color="darkgreen" ) 
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-48-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# ️ Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

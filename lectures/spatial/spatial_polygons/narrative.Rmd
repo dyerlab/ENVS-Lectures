@@ -29,7 +29,7 @@ district_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Zoning
 
 We can use `R` to download and unzip the file *in the current data directory* (n.b., you can do it using a browser as well).  To use `R` you need to first download them (I've set `eval=FALSE` to the chuck so it is not redownloaded each time.  Run it by hand using `CTRL/CMD + Return`).
 
-```{r eval=FALSE}
+```{r}
 download.file( district_url , destfile = "./Districts.zip")
 download.file( roads_url, destfile =  "./Roads.zip")
 ```

@@ -1,0 +1,158 @@
+---
+title: "Spatial Data Homework"
+output: html_notebook
+---
+
+Here is the homework for the geospatial data content.
+
+## The Raw Data
+
+For this homework we will continue to work with the data from Baja California on the Sonoran Desert bark beetle, *Araptus attenuatus*.  
+
+Here are the coordinates and other data for the sample sites in Baja California.
+
+```{r}
+beetle_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+```
+
+And here are links to the rasters.
+
+```{r}
+precip_total_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Annual_Precip_22.tif"
+minimum_precip_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Minimum_Precip_22.tif"
+maximum_precip_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Maximum_Precip.tif"
+
+minimum_temp_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Minimum_Temp_22.tif"
+mean_temp_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Mean_Temp_22.tif"
+maximum_temp_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Maximum_Temp_22.tif"
+
+elevation_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
+```
+
+
+
+
+
+
+```{r}
+library( sf )
+library( knitr )
+library( kableExtra )
+library( tidyverse )
+library( raster )
+
+read_csv( beetle_url ) %>%
+  st_as_sf( coords=c("Longitude","Latitude"),
+            crs = 4326 ) -> beetles 
+
+box <- extent( c(-115, -109, 23, 30 ) )
+
+raster( elevation_url ) %>% crop( box ) -> elevation
+raster( minimum_precip_url ) %>% crop( box ) -> precip_min
+raster( precip_total_url ) %>% crop( box ) -> precip_total
+raster( maximum_precip_url ) %>% crop( box ) -> precip_max
+raster( minimum_temp_url ) %>% crop( box ) -> temp_min
+raster( mean_temp_url ) %>% crop( box ) -> temp_mean
+raster( maximum_temp_url ) %>% crop( box ) -> temp_max
+
+```
+
+
+
+
+
+
+## Questions
+
+1. Is there any correlation between the environmental variables represented in the rasters above and the sex ratio sampled at each site?  Present your results in tabular format and make appropriate caption.
+
+
+```{r}
+beetles$precip_total <- extract( precip_min,   as(beetles, "Spatial"))
+beetles$precip_min   <- extract( precip_total, as(beetles, "Spatial"))
+beetles$precip_max   <- extract( precip_max,   as(beetles, "Spatial"))
+beetles$temp_min     <- extract( temp_min,     as(beetles, "Spatial"))
+beetles$temp_mean    <- extract( temp_mean,    as(beetles, "Spatial"))
+beetles$temp_max     <- extract( temp_max,     as(beetles, "Spatial"))
+beetles$elevation    <- extract( elevation,    as(beetles, "Spatial"))
+
+
+df <- st_drop_geometry( beetles )
+
+env.df <- data.frame( Feature = names( df[,9:14]),
+                      Correlation = NA ,
+                      P = NA)
+
+
+
+cor <- cor.test(  df$MFRatio, df$precip_total )
+env.df$Correlation[ 1 ] <- cor$estimate
+env.df$P[1] <- cor$p.value
+
+cor <- cor.test(  df$MFRatio, df$precip_min )
+env.df$Correlation[ 2 ] <- cor$estimate
+env.df$P[2] <- cor$p.value
+
+cor <- cor.test(  df$MFRatio, df$precip_max )
+env.df$Correlation[ 3 ] <- cor$estimate
+env.df$P[3] <- cor$p.value
+
+cor <- cor.test(  df$MFRatio, df$temp_min )
+env.df$Correlation[ 4 ] <- cor$estimate
+env.df$P[4] <- cor$p.value
+
+cor <- cor.test(  df$MFRatio, df$temp_mean )
+env.df$Correlation[ 5 ] <- cor$estimate
+env.df$P[5] <- cor$p.value
+
+cor <- cor.test(  df$MFRatio, df$temp_max )
+env.df$Correlation[ 6 ] <- cor$estimate
+env.df$P[6] <- cor$p.value
+
+env.df %>%
+  kable( digits = 3 ) %>%
+  kableExtra::kable_minimal()
+```
+
+
+
+2. Create a plot of all populations in the data set with the size of the plot symbol representing the sex ratio and the fill color representing the habitat suitability.
+
+```{r}
+elevation %>%
+  rasterToPoints() %>%
+  as.data.frame() %>% 
+  transmute( Longitude = x,
+             Latitude = y,
+             Elevation = alt_22 ) -> elev 
+
+ggplot() + 
+  geom_raster( aes(Longitude, Latitude, fill=Elevation), 
+               data = elev ) +   
+  geom_sf( aes(size=MFRatio, color=Suitability), 
+           data=beetles, 
+           pch=16) +
+  geom_sf_text( aes(label=Site), 
+                   data = beetles )  + 
+  scale_fill_gradient2( low = "darkolivegreen",
+                        mid = "yellow",
+                        high = "brown", 
+                        midpoint = 1000 ) + 
+  scale_color_gradient( high="#1e7537",
+                        low="#c7e4cf") +
+  theme_minimal()
+```
+
+
+3. The sites in the Cape Region (that bottom part of the peninsula, are of particular interest).  Contrast these sites by creating plots for all the environmental features in these "Cape" populations and compare them to the same features sampled from the remaining "Peninsular" populations.  Contrast by feature.
+
+
+4. Crop all the rasters to show the peninsular sites between 27° and 28° North Latitude.  Shoe a plot for each feature.
+
+
+5. Of all the environmental features as well as the data within the `beetles` data set, which set of predictor variables best describes the observed sex ratios?  Support your argument with data, graphs, or tables.
+
+
+
+
+

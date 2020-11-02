@@ -1,0 +1,290 @@
+---
+title: "In-Class: Lines & Polygons"
+output: html_notebook
+---
+
+```{r startup, include=FALSE}
+library( sf )
+library( units )
+library( knitr )
+library( kableExtra )
+library( tidyverse )
+theme_set( theme_minimal( base_size = 14))
+knitr::opts_chunk$set( message = FALSE,
+                       warning = FALSE,
+                       echo = TRUE )
+```
+
+
+
+For this activity, we will focus on loading and manipulating `LINESTRING` and `POLYGON` objects derived from the City of Richmond, GIS Department.
+
+Here are the URL's for the shapefile zip archives.  Let's first download them and then expand them in place (we will delete them at the end of the homework).
+
+```{r}
+roads_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Centerlines-shp.zip"
+download.file( roads_url, destfile = "Centerlines-shp.zip" )
+unzip( "Centerlines-shp.zip" )
+st_read( "Centerlines-shp/tran_Carriageway.shp") %>% 
+  select( FID,                                         # Select usable columns.
+          `Street Name` = FullName, 
+          `One Way` = OneWay, 
+          Type = StreetType, 
+          `Speed Limit` = PostedSpee,
+          geometry) %>%
+  mutate( `One Way` = ifelse( is.na(`One Way`), TRUE, FALSE), # Fix One Way & Type
+          Type = factor( Type) ) %>%                     
+  arrange( `Street Name`) -> rva_roads 
+
+
+district_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Zoning_Districts-shp.zip"
+download.file( district_url, destfile = "Zoning_Districts-shp.zip" )
+unzip( "Zoning_Districts-shp.zip" )
+unlink( "Zoning_Districts-shp.zip" )
+st_read("Zoning_Districts.shp") %>% 
+  select( OBJECTID,
+          `Zoning Code` = Name, 
+          geometry) -> rva_districts
+
+
+schools_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/rps_schools.zip"
+download.file( schools_url, destfile = "rps_schools.zip" )
+unzip( "rps_schools.zip" )
+st_read( "f4996b83-ce9c-4eef-94d0-dc53e4e269e32020314-1-5d1dz8.ribms.shp" ) %>% 
+  select( OBJECTID, 
+          `School Name` = Name,
+          Type, 
+          Address,
+          geometry) %>% 
+  mutate( Type = factor( Type,       # set school type as factor
+                         ordered=TRUE,
+                         levels = c( "Specialty", "Elementary", "Middle", "High") ) ) -> rva_schools 
+```
+
+And here is the CSV file for describing Zoning Types.
+
+```{r}
+zone_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/DistrictCodes.csv"
+read_csv( zone_url ) %>%
+  mutate( `Zoning Code` = Name ) %>%
+  select( -Name ) -> types 
+rva_districts %>%
+  left_join( types ) %>% summary() 
+```
+
+## Questions
+
+For these questions, you may want to 
+
+1. In which Zoning District is Monroe Park located and what is the area of that district.
+
+*OK, so what I did is find the roads that encircle Monroe Park.  Then plot them to look at what is going on.*
+```{r}
+rva_roads %>% 
+  filter( `Street Name` %in% c("N Laurel St",
+                               "W Franklin St",
+                               "W Main St",
+                               "N Belvidere St")) -> monroe
+plot( st_geometry( monroe ), axes=TRUE )
+```
+
+*OK, so let's zoom in to the part that the park is within just using the `xlim` and `ylim`.  I literally just copied off the axes of the figure above.*
+
+```{r}
+plot( st_geometry( monroe), 
+      axes=TRUE,
+      xlim=c(11784000, 11790000), 
+      ylim=c(3723000, 3725000))
+```
+
+*I can now crop both roads and districts to this extent*
+
+```{r}
+monroe %>% 
+  st_crop( xmin = 11784000, 
+           xmax = 11790000,
+           ymin = 3723000,
+           ymax = 3725000) -> monroe_park
+rva_districts %>%
+  st_crop( monroe_park ) -> monroe_districts 
+```
+
+
+*Then I can plot the districts over the same place and label the objects by `OBJECTID` to identify which one encloses Monroe Park itself.*
+
+```{r}
+ggplot() + 
+  geom_sf( aes( fill = `Zoning Code` ),
+           data = monroe_districts ) + 
+  geom_sf( color = "red",
+           size = 1.25,
+           data = monroe_park ) +
+  geom_sf_text( aes( label = OBJECTID ),
+                data = monroe_districts )
+```
+
+*So it is `OBJECTID==533`, which has an area of `r format( rva_districts %>% filter( OBJECTID==533 ) %>% st_area( m^2) %>% as.numeric(), digits=2, big.mark=",")` m<sup>2</sup>.*
+
+
+
+
+
+2. Create a map of the area enclosed by N Belvidere St, East Broad St, and I-95.  Within this area, show the streets, but not alleys.
+
+```{r}
+rva_roads %>%
+  filter( `Street Name` %in% c("I 95",
+                               "N Belvidere St",
+                               "E Broad St")) -> downtown
+
+plot( st_geometry(downtown ) )
+```
+*OK, so it looks like there is a gap in `I-95` where it overlaps with "I-64".  Also, Broad Street goes from East to West in the target area.*
+
+```{r}
+rva_roads %>%
+  filter( Type == "Highway" ) %>%
+  st_drop_geometry() %>%
+  select( `Street Name` ) %>%
+  unique()
+```
+
+*OK, so let's grab the rest of the `I 95` streets by name and then graph it with axes on to be able to adjust the x- and y- axis scales to zoom in on that area of interest.  To do this, I litterally look at the axes and then iteratively plot and zoom in to get the area of interest in the forefront.*
+
+```{r}
+rva_roads %>%
+  filter( `Street Name` %in% c("I 95",
+                               "N Belvidere St",
+                               "E Broad St",
+                               "W Broad St",
+                               "I 95 / I 64",
+                               "I 95 N to Pocahontas Pkwy")) -> downtown
+
+plot( st_geometry(downtown ), axes=TRUE, 
+      xlim = c(11785500,11795000),
+      ylim = c(3720000, 3728000))
+```
+*So now, we know what the area should be, we can plot all the data (minus the alleys).*
+
+```{r}
+st_crop( rva_roads, 
+         xmin = 11786400, 
+         xmax = 11795100,
+         ymin = 3720400,
+         ymax = 3726600 ) -> downtown_roads
+
+st_crop( downtown, downtown_roads) -> downtown 
+
+downtown_roads %>%
+  filter( Type != "Alley" ) %>%
+  ggplot() + 
+  geom_sf( aes(color=Type)) + 
+  geom_sf( data = downtown ) + 
+  coord_sf( expand=FALSE,
+            datum = st_crs(rva_roads) ) + 
+  xlab("Easting") +
+  ylab("Northing")
+  
+```
+
+
+3. What kind of Zoning Districts are within this area?  Make a table showing category & area.
+
+*Look to see which ones are in the box*
+
+```{r}
+ggplot() +
+  geom_sf( data = rva_districts ) + 
+  geom_sf( data = downtown,
+           color = "red") + 
+  geom_sf_text( aes(label=OBJECTID),
+                data = rva_districts) + 
+  coord_sf( xlim = c(11786500, 11795000),
+            ylim = c(3720500, 3726500),
+            expand=FALSE,
+            datum = st_crs(rva_roads) ) + 
+  xlab("Easting") +
+  ylab("Northing")
+```
+
+*Now grab them and put them into a table.*
+
+
+```{r}
+rva_districts %>%
+  filter( OBJECTID %in% c( 188, 187, 302,
+                           11, 12, 216,
+                           566, 565, 304,
+                           303, 215, 564,
+                           562, 314, 591) ) %>%
+  mutate( Area = units::set_units(st_area(geometry), m^2 ) ) %>% 
+  arrange( `Zoning Code` ) %>%
+  st_drop_geometry() %>%
+  select( `Zoning Code`, 
+          `Object ID` = OBJECTID, 
+          Area ) %>%
+  kable( caption = "Table 1: Zoning Districts in downtown Richmond Virginia enclsed by Broad Street, Bevidere, and I-95." ) %>%
+  kableExtra::kable_material()
+```
+
+
+
+
+4. Download the Richmond School shapefile above and make a table of all the schools that are within 1000 ft of any highways in Richmond, Virginia.
+
+
+*So let's take a look a the raw data.  I'm going to plot the highways and highway interchanges with a 1000ft buffer (remember, the default datum for these data are ftUS).  Then overlay the schools on top of it.*
+
+```{r}
+rva_roads %>%
+  filter( Type %in% c("Highway",
+                      "Highway Interchange") ) %>%
+  st_geometry() %>% 
+  st_simplify() -> highways
+
+plot( st_buffer( st_geometry(highways), dist=1000), col="grey90" )
+rva_schools %>%
+  select( Type, geometry ) %>%
+  plot( add=TRUE, pch=16 )
+```
+
+*Looks like there are some schools here.  So let's do a spatial join using st_intersection and then plot it out as a table.*
+
+```{r}
+highways %>%
+  st_buffer( dist = 1000 ) -> highway_buffer  # make buffers
+
+
+# Filter schools
+rva_schools %>%
+  st_intersection( highway_buffer ) %>%
+  arrange( Type, `School Name`) %>%
+  select( `School Name`, Type, Address ) %>%
+  st_drop_geometry() %>%
+  knitr::kable(caption = "Table 2: Public schools that are within 1000 feet of a highway.") %>%
+  kableExtra::kable_material()
+
+```
+
+
+
+
+### Cleaning up files.
+
+We can clean up all the raw data hanging around by executing the following code.
+
+```{r}
+unlink("Zoning_Districts.*")
+unlink("f4996b83-ce9c-4eef-94d0-dc53e4e269e32020314-1-5d1dz8.ribms.*")
+unlink("Centerlines-sh*", recursive = TRUE, force=TRUE, expand = TRUE )
+```
+
+
+
+
+
+
+
+
+
+

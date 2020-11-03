@@ -1,0 +1,166 @@
+---
+title: "Spatial Points Activity"
+output: html_notebook
+---
+
+<center>
+![*Araptus attenuatus* the enigmatic Sonoran Desert Bark Beetle.](https://live.staticflickr.com/65535/50441339417_74e04216fa_w_d.jpg)
+</center>
+
+
+This *in-class activity* has two purposes:
+
+1. To make sure everyone can get their computer up-to-date with the proper set of libraries so that we can work with geospatial data, and
+2. Give you some practice turning normal numerical data into geospatial coordiantes and performing basic opertions.
+
+## Spatial Libraries
+
+The following code defines the set of necessary libraries for the next few weeks and then figures out which (potential) subset you need to install. It then installs them all in one call.  It will not load them into your session, you'll have to do that later in your code chunks.
+
+```{r}
+needed_libraries <- c("sf",
+                      "maps",
+                      "units",
+                      "rgdal",
+                      "rgeos",
+                      "GGally",
+                      "raster",
+                      "mapproj",
+                      "leaflet",
+                      "rnaturalearth",
+                      "rnaturalearthdata"
+                      )
+
+# Determines which libraries you do not have
+#   already installed.
+need_inst <- setdiff( needed_libraries, 
+                      rownames( installed.packages()) )
+
+if( length( need_inst ) ) {
+  install.packages( need_inst, dependencies = TRUE )
+}
+```
+
+
+
+## In Class Activities
+
+
+The data for this is some site-level data from the Sonoran Desert bark beetle.  In the next chunck, add the appropriate code to load the data from the [Github repository](https://github.com/dyerlab/ENVS-Lectures).  
+
+```{r}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+library( sf )
+library( tidyverse )
+
+read_csv( url ) -> data
+
+
+```
+
+
+
+### Interactive Map
+
+Use the `leaflet` library and make an interactive map.  If you can, add a label to each marker with the ID of the site.  You can look at the provider tiles [here](https://leaflet-extras.github.io/leaflet-providers/preview/) and use on in the `addProviderTiles()` function. 
+
+There is a great tutorial [here](https://rstudio.github.io/leaflet/map_widget.html) on how to customize the leaflet display.  You may want to go look at it and see what you can use to make a better display.
+
+```{r}
+# make leaflet map here
+library( leaflet )
+
+data %>%
+  leaflet() %>%
+  addMarkers( ~Longitude, ~Latitude ) %>%
+  addTiles() 
+```
+
+
+
+
+### Converting to `sf` Objects
+
+Convert the spatial data in the beetle data.frame into an `sf` object.  Make sure you set the Coordinate Reference System to $4326$.
+
+
+```{r}
+# convert 
+data %>%  
+  st_as_sf( coords=c("Longitude","Latitude"), 
+            crs=4326) -> beetles
+```
+
+
+### Questions
+
+1. How far apart (in km) are the sites Constitución (`const`) and San Francisquito (`sfran`)?  
+
+
+*For this I am going to filter out the data frame to just include the sites I'm looking at and then measure the distance.  However, the raw distance is in meters, so I just set it to be km by translation.*
+
+```{r}
+library( units )
+beetles %>%
+  filter( Site %in% c("const","sfran")) %>%
+  st_distance() %>%
+  set_units( km )
+```
+
+2. Is there a correlation between habitat suitability and the ratio of males to female beetles?  
+
+*For this, I'll just run the `cor.test()` function we've used to date and look at the output.  It appears that there is a negative correlation between the two variables.*
+
+
+```{r}
+cor.test( data$MFRatio, data$Suitability )
+```
+
+*If we want to look at the relationship, here is a plot.*
+
+```{r}
+ggplot( data, aes(Suitability, MFRatio) ) + 
+  geom_point() + 
+  stat_smooth( se=FALSE, 
+               method = "lm",
+               formula = "y ~ exp(-x)")
+```
+
+3. Make a plot using ggplot of the data with suitability as the size of the points and the sex ratio as the fill color.
+
+```{r}
+ggplot( data ) + 
+  geom_point( aes(Longitude,Latitude,
+                  color = MFRatio,
+                  size = Suitability)) + 
+  coord_map() + 
+  theme_minimal()
+```
+
+
+4. Reproject the data and plot it again using an EPSG code defined for Mexico UTM zone 12N.
+
+```{r}
+beetles %>%
+  st_transform( crs="+proj=utm +zone=12 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs" ) -> df.baja
+
+df.baja
+
+
+df.baja
+  st_geometry() %>%
+  plot( xlab="Easting",ylab="Northing", axes=TRUE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

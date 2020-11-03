@@ -1,12 +1,13 @@
 :root {
-  --color-blue: #61acf0; /* blue */
-  --color-orange: #f0a561; /* orange */
-  --color-green: #cbd20a; /* lime */
-  --color-red: #e74a2f; /* red */
+  --color-blue: #082D55; /* blue */
+  --color-orange: #EC9A29; /* orange */
+  --color-green: #0F8B8D; /* lime */
+  --color-yellow: #FDD545; /* yellow */
+  --color-red: #A8201A; /* red */
   --color-black: #1a1917; /* black was #1a1917 */
   --color-darkgreen: #262923; /* Dark green for inverse */
-  --color-black: #ffffff; 
-  --color-white: #000000;
+  --color-lightgray: #dad2d8;
+  --color-lightblue: #;
 }
 
 .large { 
@@ -14,14 +15,20 @@
 }
 
 .black {
-  color: var(--color-);
-  font-size: 200%; 
-  font-weight:700;
+  color: "black";
+  font-size: 200%;
+  font-weight: 700;
+}
+
+.white {
+  color: "white";
+  font-size: 200%;
+  font-weight: 700;
 }
 
 
-.white {
-  color: var(--color-white);
+.yellow {
+  color: var(--color-yellow);
   font-size: 200%; 
   font-weight:700;
 }
@@ -72,6 +79,10 @@
   color: var(--color-red);
 }
 
+.yellowinline {
+  color: var(--color-yellow);
+}
+
 
 /* highlighted code */
 
@@ -93,38 +104,19 @@
 .img-cover img { object-fit: cover; height:100%; width:100%;  overflow: hidden}
 .img-none img { object-fit: none; height:100%; width:100%; }
 
-/* from lucy's css!
 
-ol {
-  max-width: 350px;
-  counter-reset: my-counter;
-  list-style: none;
-  padding-left: 40px;
+
+body {
+  background-color: var(--color-lightgray);
 }
-ol li {
-  counter-increment: my-counter;
-  position: relative;
-  margin: 20px 0;
+
+
+body h1 {
+  color: var(--color-blue);
 }
-ol li::before {
-  content: counter(my-counter);
-  color: #fff;
-  font-weight: bold;
-  position: absolute;
-  left: -60px;
-  width: 9%;
-  height: 0;
-  padding-bottom: 9%;
-  line-height: 1em;
-  margin-top: -0.5em;
-  background: var(--color-orange);
-  border-radius: 50%;
-  text-align: center;
-}
-*/
 
 .inverse {
-  background-color: var(--color-darkgreen);
+  background-color: var(--color-blue);
   text-shadow: 0 0 0;
 }
 
@@ -260,7 +252,7 @@ img.lil {
 
 
 .sectionTitle {
-  background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png");
+  background-image: url("https://live.staticflickr.com/65535/50559539697_1c35d0a56a_o_d.png");
   background-position: right;
   background-size: auto;
   vertical-align: middle;

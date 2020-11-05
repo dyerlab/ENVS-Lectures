@@ -1,5 +1,354 @@
 ---
-title: "Factor Data"
+title: "Correlation Models"
 output: html_notebook
 ---
+
+```{r setup, include=FALSE}
+library( tidyverse )
+theme_set( theme_minimal( base_size = 16 ) )
+```
+
+
+This topic is going to focus on developing the theory of correlations.  
+
+
+> Correlation is a test to see if two variables change in a coordinate fashion.  However, this does not imply they are functionally linked or causal in nature.
+
+
+Consider the following data consisting of the the decade from 1999 - 2009 and recording the number of movies each year by the actor Nicolas Cage (source IMDB) and the number of people who accidentally died by falling into a swimming pool (source U.S. Centers for Disease Control).
+
+```{r}
+df <- data.frame( Year = 1999:2009 )
+df$`Nicolas Cage Movies` <- c( 2, 2, 2, 3, 1, 1, 2, 3, 4, 1, 4)
+df$`Drowning Deaths in Pools` <- c( 109, 102, 102, 98, 85, 95, 96, 98, 123, 94, 102 ) 
+df
+```
+
+If we look at these data by year, it does not look like there is much of a trend (at least temporally).
+
+```{r}
+library( reshape2 )
+df %>%
+  melt( id = "Year" ) %>%
+  ggplot( aes( Year, value, color = variable) ) + 
+  geom_line()  +
+  geom_point()  
+```
+
+However, if we look at the two variables together we see an entirely different thing.
+
+```{r}
+df %>%
+  ggplot( aes(`Nicolas Cage Movies`, `Drowning Deaths in Pools` ) ) +
+  geom_point() + 
+  stat_smooth( formula=y ~ x,
+               method='lm',
+               se=FALSE,
+               color = "red",
+               size = 0.5) +
+  geom_text( aes(x=1.5,
+                 y=115,
+                 label = paste( "Correlation = ", format( cor(df[,2],df[,3]), digits=3) ) ) )
+```
+
+And in fact, if we run the statistical test on these data.
+
+```{r}
+cor.test( df$`Nicolas Cage Movies`, df$`Drowning Deaths in Pools`)
+```
+
+We do in fact seee a significant (P = 0.025) relationship.  
+
+Now, do we think that because Nicolas Cage makes more movies people are dying at an increased rate?  No.  These are spurious correlations, though do prove a point about causation.
+
+## Some New Data
+
+For this topic, I thought I would turn to a bit of a more digestible set of data—data describing beer styles! There is a new CSV data set on the GitHub site located at the following URL.
+
+```{r}
+beer_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Beer_Styles.csv"
+beer <- read_csv( beer_url )
+summary( beer )
+```
+
+
+The data consist of the following categories of data.  For all but he first two columns of data, a range is given for the appropriate values for each style with `Min` and `Max` values.
+
+- *Styles* - The official name of the beer style.  Yes, there is an international standard that is officiated by the [Beer Judge Certification Program](https://bjcp.org/). 
+- *Yeast Type* - The species of yeast most commonly used for fermenation, consists of top fermenting Ale yeasts and bottom fermenting Lager yeasts.  
+- *ABV* - The amount of alcohol in the finished beer as a percentage of the volume.  This is a non-negative numerical value.
+- *IBU* - The 'International Bitterness Unit' which roughly measures the amont of $\alpha$-acids (asymptotically) added to the beer by the hops.  This is a non-negative numerical value, with higher values indicating more bitter beer, though human ability to taste increasingly bitter beer is asymptotic.
+- *SRM* - The Standard Reference Method calibration measuring the color of the finished beer.  This is a non-negative integer going from 1 - 40 (light straw color - dark opaque).
+- *OG* - The amount of dissolved sugars in the wort (the pre-beer liquid prior to putting in yeast and the initiation of fermentation), relative to pure water.  This is a measurement 'relative' to water, which is 1.0.  Values less than 1.0 have lower liquid densities than pure water and those greater than 1.0 have more dissolved sugars than pure water.
+- *FG* - The amount of dissolved sugars in the beer after fermentation has been completed.  Same as above but the difference in *OG* and *FG* can tell us what the *ABV* should be.  Hihger *FG* beers are more sweet and have more body than lower *OG* beers (which may appear to have a cleaner, drier, mouth feel—yes that is a real term as well).
+
+As we talk about correlations, we will use these as examples.
+
+
+
+
+## Parameters & Estimates
+
+In statistics, we have two kinds of entities, parameters and estimates, which are dualities of each other.  The `TRUE` mean of a set of data is referred to by $\mu$ whereas the mean of the data we measured is referred to as $\bar{x}$.  The greek version is the *idealized* value for the parameter, something that we are striving to find the real estimate of.  However, as a Frequentist, we can never actually get to that parameter (remember the actual population of data is infinite but we can only sample a small amount of it) and when we talk about the data associated with what we collect, we refer to it as a estimate and use normal variable names.
+
+
+## Parametric Assumptions
+
+For much of the statistics we use, there are underlying assumptions about the form of the data that we shold look at.
+
+### Testing for Normality.
+
+> The data can be estimated by a normal density function, or at least can be transformed into data that is reasonably normal in distribution.
+
+The normal distribution function is defined as:
+
+\[
+f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{x - \mu}{\sigma})}
+\]
+
+where $\mu$ and $\sigma$ are the true value of the underlying mean and standard deviation.  This distribution is denoted as $N(\mu,\sigma)$ and the differences in the mean value ($\mu$) and the variation measured by the standard deviation ($\sigma$) are shown below for $N(0,1)$, $N(0,5)$, and $N(10,1)$.
+
+```{r}
+N <- 1000
+data.frame( Distribution = rep(c("N(0,1)","N(10,1)", "N(0,5)"), each=N ),
+            Data = c( rnorm(N,0,1),
+                      rnorm(N,10,1),
+                      rnorm(N,0,5) ) ) %>%
+  ggplot( aes( Data ) ) + 
+  geom_histogram( alpha=0.75, 
+                  bins = 50) + 
+  facet_grid(Distribution ~.)
+
+```
+
+There are a couple of ways to look at our data to see if they can be considered as normal.  First, visually we can plot the theoretical (parameter) quantiles of the data against the sample quantiles using the `qqnorm()` plot.  What this does is sort the data by expectation and observation and plot them and if the data are normal, then they should roughly be in a straight line.  The `qqline()` function shows the expected line (n.b., this is another one of those things where you have to run the whole chunk to get both points and lines on the same graph if you are working in Markdown).
+
+```{r}
+qqnorm( beer$ABV_Min )
+qqline( beer$ABV_Min, col="red")
+```
+
+So, what we commonly see is most of the data falling along the line throughout the middle portion of the distribution and then deviating around the edges.  What this does not do is give you a statistic to test to see if we can reject the hypothesis $H_O: Data\;is\;normal$.  For this, we can use the Shapiro-Wilkes Normality test which produces the statistic:
+
+\[
+W = \frac{\left(\sum_{i=1}^Na_iR_{x_i}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}
+\]
+
+where $N$ is the number of samples, $a_i$ is a standardizing coeeficient, $x_i$ is the $i^{th}$ value of $x$, $\bar{x}$ is the mean of the observed values, and $R_{x_i}$ is the rank of the $x_i^{th}$ observation.
+
+```{r}
+shapiro.test( beer$ABV_Min )
+```
+
+Rejection of the null hypothesis (e.g., a small `p-value` from the test) indicates that the data *are not* to be considered as coming from a normal distribution.  So, for the `ABV_Min` data above, it appears that it is not actually normally distributed.  So what do we do?
+
+
+### Transformations
+
+If the data are not normal, we can look towards trying to see if we can transform it to a normally distributed variable.  There are a lot of 
+
+
+
+*Studentized Data* - One way to standardize the data is to make it have a mean of 0.0 and a standard deviation of 1.0.  To do this, we subtract the `mean()` and divide by the `sd()`.
+
+```{r}
+x <- beer$ABV_Min 
+x.std <- (x - mean(x)) / sd( x )
+```
+
+There are times when this can be a nice way to compare the 
+
+
+
+*Box Cox* - In 1964, Box & Cox defined a *family* of transformations known as the Box/Cox.  This family is defined by a single parameter, $\lambda$, whose value may vary depending upon the data.  The original data, $x$, is then transformed using the following relationship
+
+\[
+\tilde{x} = \frac{x^\lambda - 1}{\lambda}
+\]
+
+**As long as $\lambda \ne 0$ (else we would be dividing by zero, which is not a good thing)!**  
+
+One way to use this transformation is to look at a range of values for $\lambda$ and determine if the transformation 
+
+
+```{r}
+test_boxcox <- function( x, lambdas = seq(-1.1, 1.1, by = 0.015) ) {
+  ret <- data.frame( Lambda = lambdas,
+                     W = NA,
+                     P = NA)
+  
+  for( lambda in lambdas ) {
+    x.tilde <- (x^lambda - 1) / lambda   
+    w <- shapiro.test( x.tilde )
+    ret$W[ ret$Lambda == lambda ] <- w$statistic
+    ret$P[ ret$Lambda == lambda ] <- w$p.value
+  }
+  
+  return( ret )
+}
+
+vals <- test_boxcox( beer$ABV_Min ) 
+
+
+vals %>%
+  ggplot( aes(Lambda, P) ) + 
+  geom_line() + 
+  ylab("P-Value")
+
+```
+
+So if you look at this plot, it shows the P-value of the Shapiro-Wilkes test across a range of values.  Depending upon the level of rigor, this approaches the $\alpha = 0.05$ value closest at:
+
+```{r}
+vals[ which(vals$P == max( vals$P)),]
+```
+
+with $\lambda = 0.115$ and a $P = 0.044$.
+
+*Arc-Sine Square Root*  When dealing with fractions, it is common that they do not behave very well when they are very close to 0.0 or 1.0.  One of the common transformations to use with these kinds of data is the arc-sin square root transformation.  For us, the ABV columns in the data is a percentage (but listed in numerical form as percent not as fraction).  So to transform it we can do the following.
+
+```{r}
+abv <- beer$ABV_Min / 100.0
+asin( sqrt( abv ) ) -> abv.1
+shapiro.test( abv.1)
+```
+
+
+
+## Equal Variance
+
+Another parametric assumption is the equality of variance across a range of the data.  This means, for example, that the variance from one part of the experiment should not be different than the variance in samples from another portion of data.  We will return to this when we evaluate regression models.
+
+
+## Independence of Data
+
+The samples you collect, and the way that you design your experiments are most important to ensure that your data are individually independent.  You need to think about this very carefully as you design your experiments.
+
+
+# Correlation Tests
+
+The following types of correlation statistics are a sample of the most common approaches.
+
+## Parametric Test: Pearson Product Moment Correlations
+
+By far, the most common correlation statistic we see is the Pearson Product Moment Correlation, denoted as $\rho$.  For two variables, $x$ and $y$, the correlation parameter is estimated as:
+
+\[
+\rho = \frac{\sum_{i=1}^N(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^N(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^N(y_i - \bar{y})^2}}
+\]
+
+The values of these data fall wihtin the range of: $-1 \le \rho \le +1$ with negative values indicating that when one variable goes up, the other goes down.  Positive values of a correlation indicate that both variable change systematically in the same direction (e.g., both up or both down).
+
+Here are some examples of the distribution of two variables and their associated correlation coefficient.
+
+![*Figure 1: Data and associated correlation statistics.*](https://live.staticflickr.com/65535/50569436828_a110515a21_c_d.jpg)
+
+Significance testing for a correlation such as $\rho$ determine the extent to which we thing the value of is deviant from zero.  The Null Hypothesis is $H_O: \rho \ne 0$ and can be evaluated using the Student's t.test.  With large enough sample sizes, it can be approximated by: 
+
+\[
+t = r \frac{N-2}{1-r^2}
+\]
+
+However, we should probably rely upon `R` to look up the critical values of the statistic. 
+
+The default value for `cor.test()` is the Pearson.  Here is an example of its use and the output that we've seen before.
+
+```{r}
+cor.test( beer$OG_Max, beer$FG_Max ) -> OG.FG.pearson
+OG.FG.pearson
+```
+
+Of particular note are the components associated with the results object that allows you to gain access to specifics for any analysis.
+
+```{r}
+names( OG.FG.pearson )
+```
+
+## Non-Parametric Test: Spearman's Rho
+
+Another way to de a correlation test that does not rely upon parametric assumptions is to use non-parametric approaches.  Most non-parametric tests are based upon ranks of the data rather than the assumption of normality of the data that is necessary for the Pearson Product Moment statistic.  One of the constraints for non-parametric statistics is that they are often evaluated for probability based upon permutations.
+
+The form of the estimator for this is almost identical to that of the Pearson statistic except that instead of the raw data, we are replacing values with the ranks of each value instead.  In doing so, there is a loss of the breadth of the raw data since we are just using ranks, and if the underlying data are poorly behaved because of outliers or other issues, this takes care of it.
+
+\[
+\rho_{Spearman} = \frac{ \sum_{i=1}^N(R_{x_i} - \bar{R_{x}})(R_{y_i} - \bar{R_{y}})}{\sqrt{\sum_{i=1}^N(R_{x_i} - \bar{R_{x}})^2}\sqrt{\sum_{i=1}^N(R_{y_i} - \bar{R_{y}})^2}}
+\]
+
+With the same data, it does provide potentially different estimates of the amount of correlation between the variables.
+
+```{r}
+OG.FG.spearman <- cor.test( beer$OG_Max, beer$FG_Max, 
+                            method = "spearman" )
+OG.FG.spearman
+```
+
+
+## Permutation Testing for Significance
+
+In both of the previous methods, we used specific approaches to evaluate the significance of the statistic. For Pearson, we approximated using the $t$.  For the Spearman test with small numbers of samples, an approximation of the $t$ test is used, based upon counting ranks and the number of ways we can get different combinations of ranks.  For larger sample size tests using Spearman, an approximation using the $t$ test can be used.
+
+Another way of doing this is based upon permutation and this approach can be applied to a wide array of questions.  For correlation's, if we consider the null hypothesis $H_O: \rho = 0$ we can make a few inferences.  If this hypothesis is true then we are, essentially, saying that the current relationship between $x_i$ and $y_i$ has no intrinsic relationship as there is no correlation.  This is, by default, what the null hypothesis says.  
+
+If that is true, however, that means that any permutation of one of the variables, say $y$, should produce a correlation statistic that is just as large as any other permutation of the data.  This is key.  
+
+So, if we assume the $H_O$ is true then we should be able to shuffle one of the data and estimate a correlation statistic a large number of times.  We can then create a permuted distribution of values for the correlation, **Assuming the NULL Hypothesis is true.**  To this distribution, we can evaluate the magnitude of the original correlation.  Here is an example using the data from above.
+
+```{r}
+x <- beer$OG_Max
+y <- beer$FG_Max
+df <- data.frame( Estimate = factor( c( "Original",
+                                        rep("Permuted", 999))), 
+                  rho =  c( cor.test( x, y )$estimate,
+                            rep(NA, 999)) )
+
+summary( df )
+```
+
+Now, we can go through the 999 `NA` values we put into that data frame and:  
+1. Permute one of the variables
+2. Run the analysis  
+3. Store the statistic.
+
+
+```{r}
+for( i in 2:1000) {
+  yhat <- sample( y,   # this shuffles the data in y
+                  size = length(y), 
+                  replace = FALSE)
+  model <- cor.test( x, yhat )
+  df$rho[i] <- model$estimate 
+}
+```
+
+
+Now we can look at the distribution of permuted values and the original one and see the relationship.  If:  
+
+- The observed value is within the body of the permuted values, then it is not too rare—given $H_O$, or
+- If the observed value is way outside those permuted values, then it appears to be somewhat rare.
+
+
+```{r}
+ggplot( df ) + 
+  geom_histogram( aes(rho, fill=Estimate ) )
+```
+
+If you look at the graph above, you see that the original value is **way bigger** than the values that would be found `if and only if` $H_O$ were true.  This suggests that the correlation is not zero and in fact it is the largest observation of the 1000 observations (a P estimate of $\frac{1}{1000}$...).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

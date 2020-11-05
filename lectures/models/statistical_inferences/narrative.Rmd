@@ -1,0 +1,65 @@
+---
+title: "Statistical Inference"
+output: html_notebook
+---
+
+
+## The Catfish Data
+
+```{r}
+p <- 37/50
+q <- 1-p
+```
+
+
+
+
+
+## Coin Flipping & Sample Sizes
+
+
+```{r}
+coin <- c("Heads","Tails")
+```
+
+
+Take a random sample (e.g., flip it!)
+
+```{r}
+sample( coin, size=10, replace=TRUE )
+```
+
+
+Sample Sizes
+
+```{r}
+N <- c( 10, 20, 50, 100, 250, 500 )
+```
+
+
+
+```{r}
+df <- data.frame( N = rep(N, each=20),
+                  Catfish = NA )
+
+flip_coins <- function( n ) {
+  outcome <- sample(coin,size=n,replace=TRUE)
+  return( sum( outcome == "Heads" ) )
+}
+
+df$Catfish = sapply( df$N,  
+                     flip_coins, 
+                     simplify=TRUE )
+
+head( df )
+```
+
+```{r}
+library( ggplot2 )
+df$N <- as.factor( df$N ) 
+ggplot( df, aes(N, Catfish, fill=N)) + 
+  geom_violin() +
+  theme_minimal( base_size = 16 ) + 
+  theme( legend.position = "none")
+```
+

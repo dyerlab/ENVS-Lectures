@@ -147,9 +147,9 @@ beetles %>%
 df.baja
 
 
-df.baja
-  st_geometry() %>%
-  plot( xlab="Easting",ylab="Northing", axes=TRUE)
+#df.baja
+#  st_geometry() %>%
+#  plot( xlab="Easting",ylab="Northing", axes=TRUE)
 ```
 
 

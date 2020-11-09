@@ -5,10 +5,25 @@
   --color-red: #e74a2f; /* red */
   --color-black: #1a1917; /* black was #1a1917 */
   --color-darkgreen: #262923; /* Dark green for inverse */
+  --color-black: #ffffff; 
+  --color-white: #000000;
 }
 
 .large { 
   font-size: 160%;
+}
+
+.black {
+  color: var(--color-);
+  font-size: 200%; 
+  font-weight:700;
+}
+
+
+.white {
+  color: var(--color-white);
+  font-size: 200%; 
+  font-weight:700;
 }
 
 .blue {

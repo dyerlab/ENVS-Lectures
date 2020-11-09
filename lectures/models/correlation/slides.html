@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Correlation</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/slide_model_styles.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50559539697_1c35d0a56a_o_d.png")
+background-size: cover
+
+
+
+
+
+# .black[Models of Correlation]
+
+&amp;nbsp;
+
+### .yellow-inline[.fancy[How do we know? 🤔]]
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+
+---
+class: middle, center
+
+
+&gt; ## Correlation is a test to see if two variables change in a coordinate fashion.  However, this does not imply they are functionally linked or causal in nature.
+
+
+
+---
+
+# Example Data
+
+
+```r
+df &lt;- data.frame( Year = 1999:2009 )
+df$`Nicolas Cage Movies` &lt;- c( 2, 2, 2, 3, 1, 1, 2, 3, 4, 1, 4)
+df$`Drowning Deaths in Pools` &lt;- c( 109, 102, 102, 98, 85, 95, 96, 98, 123, 94, 102 ) 
+head( df )
+```
+
+```
+##   Year Nicolas Cage Movies Drowning Deaths in Pools
+## 1 1999                   2                      109
+## 2 2000                   2                      102
+## 3 2001                   2                      102
+## 4 2002                   3                       98
+## 5 2003                   1                       85
+## 6 2004                   1                       95
+```
+
+---
+
+```r
+library( reshape2 )
+df %&gt;%
+  melt( id = "Year" ) %&gt;%
+  ggplot( aes( Year, value, color = variable) ) + 
+  geom_line()  +  geom_point()  + 
+  theme( legend.position = "top",legend.title = element_blank() )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-2-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
+df %&gt;%
+  ggplot( aes(`Nicolas Cage Movies`, `Drowning Deaths in Pools` ) ) +
+  geom_point() + stat_smooth( formula=y ~ x, method='lm', se=FALSE, color = "red", size = 0.5) +
+  geom_text( aes(x=1.5, y=115, label = paste( "Correlation = ", format( cor(df[,2],df[,3]), digits=3) ) ), size=6 )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-3-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+# The Correlation Test
+
+
+```r
+cor.test( df$`Nicolas Cage Movies`, df$`Drowning Deaths in Pools`)
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  df$`Nicolas Cage Movies` and df$`Drowning Deaths in Pools`
+## t = 2.6785, df = 9, p-value = 0.02527
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.1101273 0.9045101
+## sample estimates:
+##       cor 
+## 0.6660043
+```
+
+
+
+
+---
+class: inverse, middle
+background-image: linear-gradient(to bottom, rgba(8,45,85,0.9) 0%, rgba(8,45,85,0.9) 100%),url("https://live.staticflickr.com/65535/50583295071_4caf054046_c_d.jpg")
+background-size: cover
+
+# .yellow[New Data Set]
+
+## .yellow[&lt;svg style="height:0.8em;top:.04em;position:relative;fill:#FDD545;" viewBox="0 0 448 512"&gt;&lt;path d="M368 96h-48V56c0-13.255-10.745-24-24-24H24C10.745 32 0 42.745 0 56v400c0 13.255 10.745 24 24 24h272c13.255 0 24-10.745 24-24v-42.11l80.606-35.977C429.396 365.063 448 336.388 448 304.86V176c0-44.112-35.888-80-80-80zm16 208.86a16.018 16.018 0 0 1-9.479 14.611L320 343.805V160h48c8.822 0 16 7.178 16 16v128.86zM208 384c-8.836 0-16-7.164-16-16V144c0-8.836 7.164-16 16-16s16 7.164 16 16v224c0 8.836-7.164 16-16 16zm-96 0c-8.836 0-16-7.164-16-16V144c0-8.836 7.164-16 16-16s16 7.164 16 16v224c0 8.836-7.164 16-16 16z"/&gt;&lt;/svg&gt;]
+
+
+
+
+
+---
+
+# Beer Judge Certification Program
+
+.pull-left[ ### Recognized Beer Styles
+
+- 100 Distinct Styles (not just IPA's &amp; that yellow American Corn Lager!)  
+
+- Global &amp; Regional Styles
+
+- Quantitative Characteristics
+  - IBU, SRM, ABV, OG, FG
+  
+- Qualitative Characteristics 
+  - Overall Impression, Aroma, Appearance, Flavor, &amp; Mouthfeel
+
+]
+.pull-right[.center[![](https://live.staticflickr.com/65535/50570218057_8a1887e597_w_d.jpg)]]
+
+
+&amp;nbsp; 
+
+The [BJCP Style Guidelines](https://bjcp.org/stylecenter.php) exist for beer, mead, and ciders.
+
+
+---
+
+# Basic Yeast Types
+
+.center[
+![](https://live.staticflickr.com/65535/50569334528_f5152c320b_c_d.jpg)
+]
+
+--
+
+Not including sour beers, which use yeast and bacteria mixtures.
+
+
+
+---
+
+# Dissolved Sugars - OG &amp; FG
+
+
+.pull-left[The more sugar in the wort, the more food for the yeast to work on, and the more alcohol that may be produced.
+
+The difference between the gravities before and after fermentation can be used to estimate ABV.
+]
+.pull-right[
+
+&amp;nbsp;
+
+![](https://live.staticflickr.com/65535/50570081896_82bacc922e_w_d.jpg)
+
+]
+
+
+---
+
+# Bitterness
+
+Bitterness is created by the addition of herbs.
+
+
+.center[![](https://live.staticflickr.com/65535/50569334583_3f3bbae387_w_d.jpg)]
+
+
+
+---
+
+# Color
+
+The color of the beer is quantified using the Standard Reference Method (SRM) scale.
+
+
+.center[![](https://live.staticflickr.com/65535/50570214697_6a57066d3b_w_d.jpg)]
+
+
+
+---
+
+# The Data
+
+Here are the raw characteristic data for the different styles.
+
+
+```r
+beer_url &lt;- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Beer_Styles.csv"
+read_csv( beer_url ) %&gt;%
+  mutate( Yeast = factor(Yeast) ) -&gt; beer
+summary( beer )
+```
+
+```
+##     Styles             Yeast       ABV_Min         ABV_Max      
+##  Length:100         Ale   :69   Min.   :2.400   Min.   : 3.200  
+##  Class :character   Either: 4   1st Qu.:4.200   1st Qu.: 5.475  
+##  Mode  :character   Lager :27   Median :4.600   Median : 6.000  
+##                                 Mean   :4.947   Mean   : 6.768  
+##                                 3rd Qu.:5.500   3rd Qu.: 8.000  
+##                                 Max.   :9.000   Max.   :14.000  
+##     IBU_Min         IBU_Max          SRM_Min         SRM_Max     
+##  Min.   : 0.00   Min.   :  8.00   Min.   : 2.00   Min.   : 3.00  
+##  1st Qu.:15.00   1st Qu.: 25.00   1st Qu.: 3.50   1st Qu.: 7.00  
+##  Median :20.00   Median : 35.00   Median : 8.00   Median :17.00  
+##  Mean   :21.97   Mean   : 38.98   Mean   : 9.82   Mean   :17.76  
+##  3rd Qu.:25.00   3rd Qu.: 45.00   3rd Qu.:14.00   3rd Qu.:22.00  
+##  Max.   :60.00   Max.   :120.00   Max.   :30.00   Max.   :40.00  
+##      OG_Min          OG_Max          FG_Min          FG_Max     
+##  Min.   :1.026   Min.   :1.032   Min.   :0.998   Min.   :1.006  
+##  1st Qu.:1.040   1st Qu.:1.052   1st Qu.:1.008   1st Qu.:1.012  
+##  Median :1.046   Median :1.060   Median :1.010   Median :1.015  
+##  Mean   :1.049   Mean   :1.065   Mean   :1.009   Mean   :1.016  
+##  3rd Qu.:1.056   3rd Qu.:1.075   3rd Qu.:1.010   3rd Qu.:1.018  
+##  Max.   :1.080   Max.   :1.130   Max.   :1.020   Max.   :1.040
+```
+
+
+
+
+---
+class: middle, center
+
+# .orange[Field Trip!]
+
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[Specifics About Statistics] 
+
+
+
+---
+
+# Parameters &amp; Estimators
+
+.pull-left[
+### Parameter
+
+Estimating the real value that is created by the the **entire** popualtion of entities.
+- Mean of the `real` population, `\(\mu\)`.
+
+- Variance of the `real` population, `\(\sigma^2\)`
+]
+
+--
+.pull-right[
+### Estimators
+
+The values we get by **sampling** from the much larger population to gain inferences
+
+- Sample mean, `\(\bar{x}\)`  
+
+- Sample variance, `\(s^2\)`
+]
+
+
+
+---
+
+# Parametric Assumptions
+
+Much of the way we determine the significance of a model is based upon *assumptions* of the underlying data.
+
+- Normality  
+
+- Independence  
+
+- Homoscedasticity
+
+
+
+---
+
+# Normality
+
+
+.pull-left[
+
+The data, or derivatives thereof, are assumed to be able to be quanitfied by a Normal distribution `\(N(\mu,\sigma)\)`.  
+
+The normal distribution is defined as: 
+
+$$
+f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{x - \mu}{\sigma})}
+$$
+
+where `\(\mu\)` and `\(\sigma\)` are the true value of the underlying mean and standard deviation.
+]
+
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-6-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+# Testing for Normality - Visualization
+
+```r
+qqnorm( beer$ABV_Min )
+qqline( beer$ABV_Min, col="red")
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-7-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+# Statistical Tests for Normality - Shapiro Wilkes Test
+
+The null hypothesis `\(H_O: Data\;is\;normal\)` is evaluated by estimating the statistic, `\(W\)`, defined as:
+
+`\(W = \frac{\left(\sum_{i=1}^Na_iR_{x_i}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}\)` 
+
+where `\(N\)` is the number of samples, `\(a_i\)` is a standardizing coeeficient, `\(x_i\)` is the `\(i^{th}\)` value of `\(x\)`, `\(\bar{x}\)` is the mean of the observed values, and `\(R_{x_i}\)` is the rank of the `\(x_i^{th}\)` observation.
+
+--
+
+
+```r
+shapiro.test( beer$ABV_Min )
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  beer$ABV_Min
+## W = 0.94595, p-value = 0.0004532
+```
+
+---
+
+#  Data Transformations - ArcSin Square Root
+
+Fractions and Percentages are known  to behave poorly, particularly around the edges (e.g., close to 0 or 1).  It is not uncommon to use a simple ArcSin Square Root transformation to try to help fractional data.
+
+
+```r
+abv &lt;- beer$ABV_Min / 100.0
+asin( sqrt( abv ) ) -&gt; abv.1
+shapiro.test( abv.1)
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  abv.1
+## W = 0.96746, p-value = 0.01418
+```
+
+--
+
+`Conclusion? Are these data normal?`
+
+
+---
+
+# Data Transformations - Box Cox
+
+
+\[
+\tilde{x} = \frac{x^\lambda - 1}{\lambda}
+\]
+
+
+
+---
+
+# Data Transformations - Box Cox
+
+
+```r
+test_boxcox &lt;- function( x, lambdas = seq(-1.1, 1.1, by = 0.015) ) {
+  ret &lt;- data.frame( Lambda = lambdas,
+                     W = NA,
+                     P = NA)
+  
+  for( lambda in lambdas ) {
+    x.tilde &lt;- (x^lambda - 1) / lambda   
+    w &lt;- shapiro.test( x.tilde )
+    ret$W[ ret$Lambda == lambda ] &lt;- w$statistic
+    ret$P[ ret$Lambda == lambda ] &lt;- w$p.value
+  }
+  
+  return( ret )
+}
+```
+
+--
+
+
+```r
+vals &lt;- test_boxcox( beer$ABV_Min ) 
+summary( vals )
+```
+
+```
+##      Lambda              W                P            
+##  Min.   :-1.1000   Min.   :0.9157   Min.   :8.410e-06  
+##  1st Qu.:-0.5525   1st Qu.:0.9481   1st Qu.:6.228e-04  
+##  Median :-0.0050   Median :0.9621   Median :5.666e-03  
+##  Mean   :-0.0050   Mean   :0.9576   Mean   :1.343e-02  
+##  3rd Qu.: 0.5425   3rd Qu.:0.9708   3rd Qu.:2.548e-02  
+##  Max.   : 1.0900   Max.   :0.9738   Max.   :4.352e-02
+```
+
+
+---
+
+# Data Transformations - Box Cox
+
+
+.pull-left[
+&lt;img src="slides_files/figure-html/unnamed-chunk-12-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[ 
+
+```r
+vals[ which(vals$P == max( vals$P)),]
+```
+
+```
+##    Lambda        W          P
+## 82  0.115 0.973805 0.04351988
+```
+]
+
+
+
+
+---
+
+# Equality of Variance
+
+It is assumed that the variance of the data are 
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Independence of Data
+
+
+.pull-left[The samples you collect, and the way that you design your experiments are most important to ensure that your data are individually independent.  You need to think about this very carefully as you design your experiments.]
+
+.pull-right[![](https://live.staticflickr.com/65535/50582673933_4db6638924_w_d.jpg)]
+
+
+
+
+
+---
+class: inverse, sectionTitle 
+
+# .yellow[Correlation Models]
+
+
+
+
+---
+
+# Parametric Correlation
+### The Pearson Product Moment Correlation
+
+`\(\rho = \frac{\sum_{i=1}^N(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^N(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^N(y_i - \bar{y})^2}}\)`
+
+
+whose values are confined to be within the range `\(-1.0 \le \rho \le +1.0\)`
+
+--
+
+Whose significance is tested by using a variant of the `t.test`:
+
+`\(t = r \frac{N-1}{1-r^2}\)`
+
+
+
+---
+# Visual Examples
+
+.center[
+![*Figure 1: Data and associated correlation statistics.*](https://live.staticflickr.com/65535/50569436828_a110515a21_c_d.jpg)
+]
+
+
+
+
+---
+# The Correlation Test
+
+
+```r
+cor.test( beer$OG_Max, beer$FG_Max ) -&gt; OG.FG.pearson
+ OG.FG.pearson
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  beer$OG_Max and beer$FG_Max
+## t = 15.168, df = 98, p-value &lt; 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.7671910 0.8878064
+## sample estimates:
+##       cor 
+## 0.8374184
+```
+
+--
+
+Note, the object that is returned has all the components within it.
+
+
+```r
+names( OG.FG.pearson )
+```
+
+```
+## [1] "statistic"   "parameter"   "p.value"     "estimate"    "null.value" 
+## [6] "alternative" "method"      "data.name"   "conf.int"
+```
+
+
+
+---
+
+# Non-Parametric Correlation - Spearman's Rho
+
+To alleviate some of the underlying parametric assumptions, we can use ranks of the data instead of the raw data directly.  
+
+
+`\(\rho_{Spearman} = \frac{ \sum_{i=1}^N(R_{x_i} - \bar{R_{x}})(R_{y_i} - \bar{R_{y}})}{\sqrt{\sum_{i=1}^N(R_{x_i} - \bar{R_{x}})^2}\sqrt{\sum_{i=1}^N(R_{y_i} - \bar{R_{y}})^2}}\)`
+
+--
+
+
+```r
+OG.FG.spearman &lt;- cor.test( beer$OG_Max, beer$FG_Max, 
+                            method = "spearman" )
+OG.FG.spearman
+```
+
+```
+## 
+## 	Spearman's rank correlation rho
+## 
+## data:  beer$OG_Max and beer$FG_Max
+## S = 39257, p-value &lt; 2.2e-16
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+##       rho 
+## 0.7644328
+```
+
+
+
+---
+
+# Permutation for Significance.
+
+Another way to circumvent some of the constraints based upon the form of the data, we can use permutation to test significance.
+
+`\(H_O: \rho = 0\)`
+
+
+---
+
+# Setting up Permutations
+
+
+```r
+x &lt;- beer$OG_Max
+y &lt;- beer$FG_Max
+df &lt;- data.frame( Estimate = factor( c( "Original",
+                                        rep("Permuted", 999))), 
+                  rho =  c( cor.test( x, y )$estimate,
+                            rep(NA, 999)) )
+
+summary( df )
+```
+
+```
+##      Estimate        rho        
+##  Original:  1   Min.   :0.8374  
+##  Permuted:999   1st Qu.:0.8374  
+##                 Median :0.8374  
+##                 Mean   :0.8374  
+##                 3rd Qu.:0.8374  
+##                 Max.   :0.8374  
+##                 NA's   :999
+```
+
+
+
+---
+# Permuting "Under the Null"
+
+Now, we can go through the 999 `NA` values we put into that data frame and:  
+1. Permute one of the variables
+2. Run the analysis  
+3. Store the statistic.
+
+
+
+```r
+for( i in 2:1000) {
+  yhat &lt;- sample( y,   # this shuffles the data in y
+                  size = length(y), 
+                  replace = FALSE)
+  model &lt;- cor.test( x, yhat )
+  df$rho[i] &lt;- model$estimate 
+}
+
+summary( df )
+```
+
+```
+##      Estimate        rho           
+##  Original:  1   Min.   :-0.285367  
+##  Permuted:999   1st Qu.:-0.071739  
+##                 Median :-0.011990  
+##                 Mean   :-0.005742  
+##                 3rd Qu.: 0.058309  
+##                 Max.   : 0.837418
+```
+
+
+---
+
+# Visualizing the NULL
+
+
+
+```r
+ggplot( df ) + geom_histogram( aes(rho, fill=Estimate ) )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-20-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

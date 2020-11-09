@@ -1,0 +1,28 @@
+---
+title: "Correlation Homework"
+output: html_notebook
+---
+
+<center>![](https://live.staticflickr.com/65535/50583597682_52130fb040_c_d.jpg)</center>
+
+For this homework, we are going to go back to work with our beloved Rice Rivers Center data.  You have your data formatting function that you created to grab it from the server.
+
+
+## Questions
+
+1. Pull out the data related to atomospheric parameters (e.g., those not measuring something in the water).  Create a plot of their pairwise relationship.
+
+
+2. For those atmospheric data, what which pair of variables have the strongest correlation?  What is the 95% confidence interval on that correlation coefficient?
+
+
+3. Using the first 40 observations in air temperature and barometric pressure from the Rice Center data set, determine if they are indiviudally distributed as a normal random variable.
+
+
+4. Given your findings in the last question, what kind of correlation statistic would be most appropriate for estimating the correlation between this subset of data?
+
+
+5. Look at a `qqnorm()` plot of the barometric pressure data you used in the previous example.  Is there something that 'looks' odd with these data?  Explain, why those data are the way they are.
+
+
+6. Using a permutation approach, define the distribution of correlation values between the variables in #3 assuming that the NULL hypothesis is actually true.  Plot these as a histogram and include the observed correlation.

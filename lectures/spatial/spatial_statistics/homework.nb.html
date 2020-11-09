@@ -1756,24 +1756,24 @@ summary {
 <p>Here are the coordinates and other data for the sample sites in Baja California.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmVldGxlX3VybCA8LSBcXGh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9keWVybGFiL0VOVlMtTGVjdHVyZXMvbWFzdGVyL2RhdGEvQXJhcHR1c19EaXNwZXJhbF9CaWFzLmNzdlxcXG5gYGAifQ== -->
-<pre class="r"><code>beetle_url &lt;- \https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv\</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYmVldGxlX3VybCA8LSBcImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9keWVybGFiL0VOVlMtTGVjdHVyZXMvbWFzdGVyL2RhdGEvQXJhcHR1c19EaXNwZXJhbF9CaWFzLmNzdlwiIn0= -->
+<pre class="r"><code>beetle_url &lt;- &quot;https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv&quot;</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>And here are links to the rasters.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJlY2lwX3RvdGFsX3VybCA8LSBcXGh0dHBzOi8vZ2l0aHViLmNvbS9keWVybGFiL0VOVlMtTGVjdHVyZXMvcmF3L21hc3Rlci9kYXRhL0FubnVhbF9QcmVjaXBfMjIudGlmXFxcbm1pbmltdW1fcHJlY2lwX3VybCA8LSBcXGh0dHBzOi8vZ2l0aHViLmNvbS9keWVybGFiL0VOVlMtTGVjdHVyZXMvcmF3L21hc3Rlci9kYXRhL01pbmltdW1fUHJlY2lwXzIyLnRpZlxcXG5tYXhpbXVtX3ByZWNpcF91cmwgPC0gXFxodHRwczovL2dpdGh1Yi5jb20vZHllcmxhYi9FTlZTLUxlY3R1cmVzL3Jhdy9tYXN0ZXIvZGF0YS9NYXhpbXVtX1ByZWNpcC50aWZcXFxuXG5taW5pbXVtX3RlbXBfdXJsIDwtIFxcaHR0cHM6Ly9naXRodWIuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9yYXcvbWFzdGVyL2RhdGEvTWluaW11bV9UZW1wXzIyLnRpZlxcXG5tZWFuX3RlbXBfdXJsIDwtIFxcaHR0cHM6Ly9naXRodWIuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9yYXcvbWFzdGVyL2RhdGEvTWVhbl9UZW1wXzIyLnRpZlxcXG5tYXhpbXVtX3RlbXBfdXJsIDwtIFxcaHR0cHM6Ly9naXRodWIuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9yYXcvbWFzdGVyL2RhdGEvTWF4aW11bV9UZW1wXzIyLnRpZlxcXG5cbmVsZXZhdGlvbl91cmwgPC0gXFxodHRwczovL2dpdGh1Yi5jb20vZHllcmxhYi9FTlZTLUxlY3R1cmVzL3Jhdy9tYXN0ZXIvZGF0YS9hbHRfMjIudGlmXFxcbmBgYCJ9 -->
-<pre class="r"><code>precip_total_url &lt;- \https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Annual_Precip_22.tif\
-minimum_precip_url &lt;- \https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Minimum_Precip_22.tif\
-maximum_precip_url &lt;- \https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Maximum_Precip.tif\
+<!-- rnb-source-begin eyJkYXRhIjpbInByZWNpcF90b3RhbF91cmwgPC0gXCJodHRwczovL2dpdGh1Yi5jb20vZHllcmxhYi9FTlZTLUxlY3R1cmVzL3Jhdy9tYXN0ZXIvZGF0YS9Bbm51YWxfUHJlY2lwXzIyLnRpZlwiIiwibWluaW11bV9wcmVjaXBfdXJsIDwtIFwiaHR0cHM6Ly9naXRodWIuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9yYXcvbWFzdGVyL2RhdGEvTWluaW11bV9QcmVjaXBfMjIudGlmXCIiLCJtYXhpbXVtX3ByZWNpcF91cmwgPC0gXCJodHRwczovL2dpdGh1Yi5jb20vZHllcmxhYi9FTlZTLUxlY3R1cmVzL3Jhdy9tYXN0ZXIvZGF0YS9NYXhpbXVtX1ByZWNpcC50aWZcIiIsIiIsIm1pbmltdW1fdGVtcF91cmwgPC0gXCJodHRwczovL2dpdGh1Yi5jb20vZHllcmxhYi9FTlZTLUxlY3R1cmVzL3Jhdy9tYXN0ZXIvZGF0YS9NaW5pbXVtX1RlbXBfMjIudGlmXCIiLCJtZWFuX3RlbXBfdXJsIDwtIFwiaHR0cHM6Ly9naXRodWIuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9yYXcvbWFzdGVyL2RhdGEvTWVhbl9UZW1wXzIyLnRpZlwiIiwibWF4aW11bV90ZW1wX3VybCA8LSBcImh0dHBzOi8vZ2l0aHViLmNvbS9keWVybGFiL0VOVlMtTGVjdHVyZXMvcmF3L21hc3Rlci9kYXRhL01heGltdW1fVGVtcF8yMi50aWZcIiIsIiIsImVsZXZhdGlvbl91cmwgPC0gXCJodHRwczovL2dpdGh1Yi5jb20vZHllcmxhYi9FTlZTLUxlY3R1cmVzL3Jhdy9tYXN0ZXIvZGF0YS9hbHRfMjIudGlmXCIiXX0= -->
+<pre class="r"><code>precip_total_url &lt;- &quot;https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Annual_Precip_22.tif&quot;
+minimum_precip_url &lt;- &quot;https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Minimum_Precip_22.tif&quot;
+maximum_precip_url &lt;- &quot;https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Maximum_Precip.tif&quot;
 
-minimum_temp_url &lt;- \https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Minimum_Temp_22.tif\
-mean_temp_url &lt;- \https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Mean_Temp_22.tif\
-maximum_temp_url &lt;- \https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Maximum_Temp_22.tif\
+minimum_temp_url &lt;- &quot;https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Minimum_Temp_22.tif&quot;
+mean_temp_url &lt;- &quot;https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Mean_Temp_22.tif&quot;
+maximum_temp_url &lt;- &quot;https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Maximum_Temp_22.tif&quot;
 
-elevation_url &lt;- \https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif\</code></pre>
+elevation_url &lt;- &quot;https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif&quot;</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->

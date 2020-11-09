@@ -18,6 +18,7 @@ background-size: cover
 
 
 ```{r setup, include=FALSE}
+library( reshape2 )
 library( tidyverse )
 library( fontawesome )
 knitr::opts_chunk$set( fig.retina = 3, 
@@ -42,19 +43,537 @@ theme_set( theme_minimal( base_size = 22) )
 
 
 ---
+class: middle, center
 
 
-# hello 
+> ## Correlation is a test to see if two variables change in a coordinate fashion.  However, this does not imply they are functionally linked or causal in nature.
 
 
-Bob
+
+---
+
+# Example Data
+
+```{r}
+df <- data.frame( Year = 1999:2009 )
+df$`Nicolas Cage Movies` <- c( 2, 2, 2, 3, 1, 1, 2, 3, 4, 1, 4)
+df$`Drowning Deaths in Pools` <- c( 109, 102, 102, 98, 85, 95, 96, 98, 123, 94, 102 ) 
+head( df )
+```
+
+---
+```{r}
+library( reshape2 )
+df %>%
+  melt( id = "Year" ) %>%
+  ggplot( aes( Year, value, color = variable) ) + 
+  geom_line()  +  geom_point()  + 
+  theme( legend.position = "top",legend.title = element_blank() )
+```
+
+
+---
+
+```{r}
+df %>%
+  ggplot( aes(`Nicolas Cage Movies`, `Drowning Deaths in Pools` ) ) +
+  geom_point() + stat_smooth( formula=y ~ x, method='lm', se=FALSE, color = "red", size = 0.5) +
+  geom_text( aes(x=1.5, y=115, label = paste( "Correlation = ", format( cor(df[,2],df[,3]), digits=3) ) ), size=6 )
+```
+
+---
+
+# The Correlation Test
+
+```{r}
+cor.test( df$`Nicolas Cage Movies`, df$`Drowning Deaths in Pools`)
+```
+
+
+
+
+---
+class: inverse, middle
+background-image: linear-gradient(to bottom, rgba(8,45,85,0.9) 0%, rgba(8,45,85,0.9) 100%),url("https://live.staticflickr.com/65535/50583295071_4caf054046_c_d.jpg")
+background-size: cover
+
+# .yellow[New Data Set]
+
+## .yellow[`r fa("beer", fill='#FDD545'  )`]
+
+
+
+
+
+---
+
+# Beer Judge Certification Program
+
+.pull-left[ ### Recognized Beer Styles
+
+- 100 Distinct Styles (not just IPA's & that yellow American Corn Lager!)  
+
+- Global & Regional Styles
+
+- Quantitative Characteristics
+  - IBU, SRM, ABV, OG, FG
+  
+- Qualitative Characteristics 
+  - Overall Impression, Aroma, Appearance, Flavor, & Mouthfeel
+
+]
+.pull-right[.center[![](https://live.staticflickr.com/65535/50570218057_8a1887e597_w_d.jpg)]]
+
+
+&nbsp; 
+
+The [BJCP Style Guidelines](https://bjcp.org/stylecenter.php) exist for beer, mead, and ciders.
+
+
+---
+
+# Basic Yeast Types
+
+.center[
+![](https://live.staticflickr.com/65535/50569334528_f5152c320b_c_d.jpg)
+]
+
+--
+
+Not including sour beers, which use yeast and bacteria mixtures.
+
+
+
+---
+
+# Dissolved Sugars - OG & FG
+
+
+.pull-left[The more sugar in the wort, the more food for the yeast to work on, and the more alcohol that may be produced.
+
+The difference between the gravities before and after fermentation can be used to estimate ABV.
+]
+.pull-right[
+
+&nbsp;
+
+![](https://live.staticflickr.com/65535/50570081896_82bacc922e_w_d.jpg)
+
+]
+
+
+---
+
+# Bitterness
+
+Bitterness is created by the addition of herbs.
+
+
+.center[![](https://live.staticflickr.com/65535/50569334583_3f3bbae387_w_d.jpg)]
+
+
+
+---
+
+# Color
+
+The color of the beer is quantified using the Standard Reference Method (SRM) scale.
+
+
+.center[![](https://live.staticflickr.com/65535/50570214697_6a57066d3b_w_d.jpg)]
+
+
+
+---
+
+# The Data
+
+Here are the raw characteristic data for the different styles.
+
+```{r}
+beer_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Beer_Styles.csv"
+read_csv( beer_url ) %>%
+  mutate( Yeast = factor(Yeast) ) -> beer
+summary( beer )
+```
+
+
+
+
+---
+class: middle, center
+
+# .orange[Field Trip!]
+
 
 
 
 ---
 class: inverse, sectionTitle
 
-# Bob
+# .yellow[Specifics About Statistics] 
+
+
+
+---
+
+# Parameters & Estimators
+
+.pull-left[
+### Parameter
+
+Estimating the real value that is created by the the **entire** popualtion of entities.
+- Mean of the `real` population, $\mu$.
+
+- Variance of the `real` population, $\sigma^2$
+]
+
+--
+.pull-right[
+### Estimators
+
+The values we get by **sampling** from the much larger population to gain inferences
+
+- Sample mean, $\bar{x}$  
+
+- Sample variance, $s^2$
+]
+
+
+
+---
+
+# Parametric Assumptions
+
+Much of the way we determine the significance of a model is based upon *assumptions* of the underlying data.
+
+- Normality  
+
+- Independence  
+
+- Homoscedasticity
+
+
+
+---
+
+# Normality
+
+
+.pull-left[
+
+The data, or derivatives thereof, are assumed to be able to be quanitfied by a Normal distribution $N(\mu,\sigma)$.  
+
+The normal distribution is defined as: 
+
+$$
+f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{x - \mu}{\sigma})}
+$$
+
+where $\mu$ and $\sigma$ are the true value of the underlying mean and standard deviation.
+]
+
+
+.pull-right[
+```{r echo=FALSE}
+N <- 1000
+data.frame( Distribution = rep(c("N(0,1)","N(10,1)", "N(0,5)"), each=N ),
+            Data = c( rnorm(N,0,1),
+                      rnorm(N,10,1),
+                      rnorm(N,0,5) ) ) %>%
+  ggplot( aes( Data ) ) + 
+  geom_histogram( alpha=0.75, 
+                  bins = 50) + 
+  facet_grid(Distribution ~.)
+```
+
+]
+
+
+---
+# Testing for Normality - Visualization
+```{r}
+qqnorm( beer$ABV_Min )
+qqline( beer$ABV_Min, col="red")
+```
+
+
+
+---
+
+# Statistical Tests for Normality - Shapiro Wilkes Test
+
+The null hypothesis $H_O: Data\;is\;normal$ is evaluated by estimating the statistic, $W$, defined as:
+
+$W = \frac{\left(\sum_{i=1}^Na_iR_{x_i}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}$ 
+
+where $N$ is the number of samples, $a_i$ is a standardizing coeeficient, $x_i$ is the $i^{th}$ value of $x$, $\bar{x}$ is the mean of the observed values, and $R_{x_i}$ is the rank of the $x_i^{th}$ observation.
+
+--
+
+```{r}
+shapiro.test( beer$ABV_Min )
+```
+
+---
+
+#  Data Transformations - ArcSin Square Root
+
+Fractions and Percentages are known  to behave poorly, particularly around the edges (e.g., close to 0 or 1).  It is not uncommon to use a simple ArcSin Square Root transformation to try to help fractional data.
+
+```{r}
+abv <- beer$ABV_Min / 100.0
+asin( sqrt( abv ) ) -> abv.1
+shapiro.test( abv.1)
+```
+
+--
+
+`Conclusion? Are these data normal?`
+
+
+---
+
+# Data Transformations - Box Cox
+
+
+\[
+\tilde{x} = \frac{x^\lambda - 1}{\lambda}
+\]
+
+
+
+---
+
+# Data Transformations - Box Cox
+
+```{r}
+test_boxcox <- function( x, lambdas = seq(-1.1, 1.1, by = 0.015) ) {
+  ret <- data.frame( Lambda = lambdas,
+                     W = NA,
+                     P = NA)
+  
+  for( lambda in lambdas ) {
+    x.tilde <- (x^lambda - 1) / lambda   
+    w <- shapiro.test( x.tilde )
+    ret$W[ ret$Lambda == lambda ] <- w$statistic
+    ret$P[ ret$Lambda == lambda ] <- w$p.value
+  }
+  
+  return( ret )
+}
+```
+
+--
+
+```{r}
+vals <- test_boxcox( beer$ABV_Min ) 
+summary( vals )
+```
+
+
+---
+
+# Data Transformations - Box Cox
+
+
+.pull-left[
+```{r echo=FALSE}
+vals %>%
+  ggplot( aes(Lambda, P) ) + 
+  geom_line() + 
+  ylab("P-Value")
+```
+]
+
+.pull-right[ 
+```{r}
+vals[ which(vals$P == max( vals$P)),]
+```
+]
+
+
+
+
+---
+
+# Equality of Variance
+
+It is assumed that the variance of the data are 
+
+```{r echo=FALSE}
+df <- data.frame( x = c(1, 1, 5, 5, 1), 
+                  y = c(3, 4, 8, 1, 3) )
+ggplot( df ) + 
+  geom_polygon( aes(x,y), fill="gray", alpha=0.75 ) +
+  xlab("") + ylab("")
+```
+
+
+---
+
+# Independence of Data
+
+
+.pull-left[The samples you collect, and the way that you design your experiments are most important to ensure that your data are individually independent.  You need to think about this very carefully as you design your experiments.]
+
+.pull-right[![](https://live.staticflickr.com/65535/50582673933_4db6638924_w_d.jpg)]
+
+
+
+
+
+---
+class: inverse, sectionTitle 
+
+# .yellow[Correlation Models]
+
+
+
+
+---
+
+# Parametric Correlation
+### The Pearson Product Moment Correlation
+
+$\rho = \frac{\sum_{i=1}^N(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^N(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^N(y_i - \bar{y})^2}}$
+
+
+whose values are confined to be within the range $-1.0 \le \rho \le +1.0$
+
+--
+
+Whose significance is tested by using a variant of the `t.test`:
+
+$t = r \frac{N-1}{1-r^2}$
+
+
+
+---
+# Visual Examples
+
+.center[
+![*Figure 1: Data and associated correlation statistics.*](https://live.staticflickr.com/65535/50569436828_a110515a21_c_d.jpg)
+]
+
+
+
+
+---
+# The Correlation Test
+
+```{r}
+cor.test( beer$OG_Max, beer$FG_Max ) -> OG.FG.pearson
+ OG.FG.pearson
+```
+
+--
+
+Note, the object that is returned has all the components within it.
+
+```{r}
+names( OG.FG.pearson )
+```
+
+
+
+---
+
+# Non-Parametric Correlation - Spearman's Rho
+
+To alleviate some of the underlying parametric assumptions, we can use ranks of the data instead of the raw data directly.  
+
+
+$\rho_{Spearman} = \frac{ \sum_{i=1}^N(R_{x_i} - \bar{R_{x}})(R_{y_i} - \bar{R_{y}})}{\sqrt{\sum_{i=1}^N(R_{x_i} - \bar{R_{x}})^2}\sqrt{\sum_{i=1}^N(R_{y_i} - \bar{R_{y}})^2}}$
+
+--
+
+```{r}
+OG.FG.spearman <- cor.test( beer$OG_Max, beer$FG_Max, 
+                            method = "spearman" )
+OG.FG.spearman
+```
+
+
+
+---
+
+# Permutation for Significance.
+
+Another way to circumvent some of the constraints based upon the form of the data, we can use permutation to test significance.
+
+$H_O: \rho = 0$
+
+
+---
+
+# Setting up Permutations
+
+```{r}
+x <- beer$OG_Max
+y <- beer$FG_Max
+df <- data.frame( Estimate = factor( c( "Original",
+                                        rep("Permuted", 999))), 
+                  rho =  c( cor.test( x, y )$estimate,
+                            rep(NA, 999)) )
+
+summary( df )
+```
+
+
+
+---
+# Permuting "Under the Null"
+
+Now, we can go through the 999 `NA` values we put into that data frame and:  
+1. Permute one of the variables
+2. Run the analysis  
+3. Store the statistic.
+
+
+```{r}
+for( i in 2:1000) {
+  yhat <- sample( y,   # this shuffles the data in y
+                  size = length(y), 
+                  replace = FALSE)
+  model <- cor.test( x, yhat )
+  df$rho[i] <- model$estimate 
+}
+
+summary( df )
+```
+
+
+---
+
+# Visualizing the NULL
+
+
+```{r fig.height=5}
+ggplot( df ) + geom_histogram( aes(rho, fill=Estimate ) )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

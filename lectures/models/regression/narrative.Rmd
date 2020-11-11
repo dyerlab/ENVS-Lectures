@@ -1,5 +1,537 @@
 ---
-title: "Factor Data"
+title: "Regression Analysis"
 output: html_notebook
 ---
+
+```{r setup, include=FALSE}
+library( knitr )
+library( kableExtra )
+library( tidyverse )
+theme_set( theme_minimal( base_size = 16) )
+```
+
+
+
+> The overall goal of any model is to provide a low-level description of patterns within the data.
+
+If we think of all the variation in a data set, we can partition it into the following components:
+
+\[
+\sigma_{Total}^2 = \sigma_{Model}^2 + \sigma_{Residual}^2
+\]
+
+In that some of the underlying variation goes towards explaining the patterns in the data and the rest of the variation is *residual* (or left over).  For regression analyses, consider the simple linear regression model.
+
+
+\[
+y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
+\]
+
+Where th terms $\beta_0$ is the where the expected line interscepts the y-axis when $x = 0$, the coefficient $\beta_1$ is the rate at which the $y$ (the results) changes *per unit change* in $x$ (the predictor, and $\epsilon$ is the left over variation (residual) that each point has.  
+
+The null hypothesis for this kind of regression model is 
+
+$H_O: \beta_1 = 0$
+
+We could have a hypothesis that $\beta_0 = 0$ but that is often not that interesting of an idea since that is a constant term in the equation (n.b., we could subtract it out from both sides).  If we have more than one predictor variable, the null hypothesis becomes $H_O: \beta_i = 0; \forall i$ (that upside down triangle is 'for all').
+
+Graphically, let us look at the following data as an example for basic regression models.
+
+```{r}
+df <- data.frame( x = 1:10,
+                  y = c( 15.5, 28.1, 22.3, 32.3, 31.1, 26.8, 41.8, 30.3, 47.9, 41.1) )
+ggplot( df, aes(x,y) ) + 
+  stat_smooth( method="lm", formula = y ~ x, se=FALSE, color="red", size=0.5) + 
+  geom_point( ) 
+```
+
+The notion here is to be estimate the underlying formula for that red line that describes the variation in the original values in how `y` changes systemactically across measured values of `x`.
+
+
+## Least Squares Fitting
+
+So how do we figure this out?  One of the most common ways is to uses a methods called *Least Squared Distance* fitting.  To describe this, consider a set of hypothetical random models with random values estimated for both the interscept ($\beta_0$) and slipe ($\beta_1$) coefficients.  These *could be* close to a good models or not.
+
+```{r}
+models <- data.frame( beta0 = runif(250,-20,40),
+                      beta1 = runif(250, -5, 5))
+summary( models )
+```
+
+We can plot these and the original data and all these randomly defined models.
+
+```{r}
+ggplot() + 
+  geom_abline( aes(intercept = beta0, 
+                   slope = beta1), 
+               data = models,
+               alpha = 0.1) + 
+  geom_point( aes(x,y), 
+              data=df )
+```
+
+A least squares fit is one that minimizes the distances of each point (in the y-axis) from the line created by the model.  In the graph below, we can see this would be the distances (squared so we do not have positive and negative values) along the y-axis, between each point and the fitted line.
+
+The "best model" here is one that minimizes the sum of squared distances distances.
+
+```{r echo=FALSE}
+fit <- lm( y ~ x, data=df )
+yhat <- data.frame( x = 1:10,
+                    yhat = predict( fit ),
+                    y= df$y )
+
+ggplot( df ) + 
+  geom_abline( aes( intercept = fit$coefficients[1],
+                    slope = fit$coefficients[2]),
+               color="red") +
+  geom_segment( aes(x=x, y = y, xend = x, yend = yhat), 
+                data = yhat,
+                color = "blue") + 
+  geom_point( aes(x,y) ) 
+```
+
+Let's look at those hypothetical models.  I'm going to make a few little functions to help make the code look easy.
+
+First, here is a function that returns the distances between the original points and a hypothesized regression line defined by an interscept and slope from the original points.
+
+```{r}
+model_distance <- function( interscept, slope, X, Y ) {
+  yhat <- interscept + slope * X
+  diff <- Y - yhat
+  return( sqrt( mean( diff ^ 2 ) ) )
+}
+```
+
+Now, let's go through all the models and estimate the mean squared distances between the proposed line (from intercept and slope) and the original data.
+
+```{r}
+models$dist <- NA
+for( i in 1:nrow(models) ) {
+  models$dist[i] <- model_distance( models$beta0[i],
+                                    models$beta1[i],
+                                    df$x,
+                                    df$y )
+}
+head( models )
+```
+
+If we look through these models, we can see which are better than others by sorting in increasing squared distance.
+
+```{r}
+ggplot()  + 
+  geom_abline( aes(intercept = beta0,
+                   slope = beta1, 
+                   color = -dist),
+               data = filter( models, rank(dist) <= 10 ),
+               alpha = 0.5) + 
+  geom_point( aes(x,y),
+              data=df) 
+  
+```
+
+These models in the *parameter space* of intercepts and slopes can be visualized as this.  These red-circles are close to where the best models are located.
+
+
+```{r}
+ggplot( models, aes(x = beta0, 
+                    y = beta1,
+                    color = -dist)) + 
+  geom_point( data = filter( models, rank(dist) <= 10), 
+              color = "red",
+              size = 4) +
+    geom_point()
+```
+
+In addition to a random search, we can be a bit more systematic about it and make a grid of interscept and slope values, using a *grid search*.
+
+
+```{r}
+grid <- expand.grid( beta0 = seq(15,20, length = 25),
+                     beta1 = seq(2, 3.5, length = 25))
+grid$dist <- NA
+for( i in 1:nrow(grid) ) {
+  grid$dist[i] <- model_distance( grid$beta0[i],
+                                  grid$beta1[i],
+                                  df$x,
+                                  df$y )
+}
+
+ggplot( grid, aes(x = beta0, 
+                  y = beta1,
+                  color = -dist)) + 
+  geom_point( data = filter( grid, rank(dist) <= 10), 
+              color = "red",
+              size = 4) +
+  geom_point()
+```
+
+You could imagine that we could iteratively soom in this grid and find the best fit combination of $\beta_0$ and $\beta_1$ values until we converged on a really well fit set.
+
+There is a more direct way to get to these results (though is much less pretty to look at) using the `lm()` linear models function.
+
+
+## Our Friend `lm()`
+
+To specify a potential model, we need to get the function the form we are interested in using.
+
+```{r}
+fit <- lm( y ~ x, data = df )
+fit
+```
+
+We can see that for the values of the coefficients (labeled *Interscept* and *x*), it has a `model_distance()` of
+
+```{r}
+model_distance( -1.76, 3.385, df$x, df$y )
+```
+
+which we can see is pretty close in terms of the coefficients and has a smaller model distance than those examined in the grid.
+
+```{r}
+grid %>%
+  arrange( dist ) %>%
+  head( n = 1) 
+```
+
+Fortunately, we have a lot of additional information available to us because we used the `lm()` function.
+
+
+
+## Model Fit
+
+We can estimate a bunch of different models but before we look to see if it well behaved.  There are several interesting plots that we can examine from the model object such as:
+
+```{r}
+plot( fit, which = 1 )
+```
+
+
+```{r}
+plot( fit, which = 2 )
+```
+
+```{r}
+plot( fit, which = 5 )
+```
+
+
+## Analysis of Variance Tables - Decomposing Variation
+
+Thus far, we've been able to estiamte a model, but is it one that explains a significant amount of variation? To determine this, we use the *analysis of variance table*.
+
+
+```{r}
+anova( fit )
+```
+
+The terms in this table are:
+
+- Degrees of Freedom (*df*): representing `1` degree of freedom for the model, and `N-1` for the residuals.  
+
+- Sums of Squared Deviations: 
+    - $SS_{Total} = \sum_{i=1}^N (y_i - \bar{y})^2$
+    - $SS_{Model} = \sum_{i=1}^N (\hat{y}_i - \bar{y})^2$, and 
+    - $SS_{Residual} = SS_{Total} - SS_{Model}$
+    
+- Mean Squares (Standardization of the Sums of Squares for the degrees of freedom)  
+    - $MS_{Model} = \frac{SS_{Model}}{df_{Model}}$
+    - $MS_{Residual} = \frac{SS_{Residual}}{df_{Residual}}$
+    
+- The $F$-statistic is from a known distribution and is defined by the ratio of Mean Squared values.
+
+- `Pr(>F)` is the probability associated the value of the $F$-statistic and is dependent upon the degrees of freedom for the model and residuals.
+
+
+## Variance Explained
+
+There is a correlative measurement in regression models to the Pearson Product Moment Coefficient, ($\rho$) in a statistic called $R^2$.  This parameter tells you, *How much of the observed variation in `y` is explained by the model?*  
+
+The equation for *R^2* is:
+
+\[
+R^2 = \frac{SS_{Model}}{SS_{Total}}
+\]
+
+The value of this parameter is bound by 0 (the model explains no variation) and 1.0 (the model explains all the variation in the data).  We can get to this and a few other parameters in the regression model by taking its summary.
+
+```{r}
+summary( fit )
+```
+
+Just like the model itself, the `summary.lm` object also has all these data contained within it in case you need to access them in textual format or to annotate graphical output.
+
+```{r}
+names( summary( fit ) )
+```
+
+Notice that the `p-value` is not in this list...  It is estimable from the `fstatistic` and `df` values and here is a quick function that returns the raw p-value by looking up the are under the curve equal to or greater than the observed `fstatistic` with those degrees of freedom.
+
+```{r}
+get_pval <- function( model ) {
+  f <- summary( model )$fstatistic[1]
+  df1 <- summary( model )$fstatistic[2]
+  df2 <- summary( model )$fstatistic[3]
+  p <- as.numeric( 1.0 - pf( f, df1, df2 ) )
+  return( p  )
+}
+
+get_pval( fit )
+```
+
+
+As an often-overlooked side effect, the $R^2$ from a simple one predictor regression model and the correlation coefficient $r$ from `cor.test(method='pearson')` are related as follows:
+
+```{r}
+c( `Regression R^2` = summary( fit )$r.squared,
+   `Squared Correlation` = as.numeric( cor.test( df$x, df$y )$estimate^2 ) )
+```
+
+(e.g., the square of the correlation estimate $r$ is equal to $R^2$).
+
+## Extensions of the Model
+
+There are several helper functions for dealing with regression models such as finding the predicted values.
+
+```{r}
+predict( fit ) -> yhat 
+yhat 
+```
+
+And we can plot it as:
+
+```{r}
+plot( yhat ~ df$x, type='l', bty="n", col="red" )
+```
+
+The residual values (e.g., the distance between the original data on the y-axis and the fitted regression model).
+
+```{r}
+residuals( fit ) -> resids
+resids 
+```
+
+We almost **always** need to look at the residuals of a regression model to help diagnose any potential problems (as shown above in the plots of the raw model itself).
+
+```{r}
+plot( resids ~ yhat, bty="n", xlab="Predicted Values", ylab="Residuals (yhat - y)", pch=16 )
+abline(0, 0, lty=2, col="red")
+```
+
+
+
+## Comparing Models
+
+OK, so we have a model that appears to suggest that the predicted values in `x` can explain the variation observed in `y`.  Great.  But, is this the best model or only one that is sufficiently *meh* such that we can reject the null hypothesis.  How can we tell?
+
+There are two parameters that we have already looked at that may help.  These are:
+
+- The `P-value`: Models with smaller probabilities could be considered more informative.  
+
+- The $R^2$: Models that explain more of the variation may be considered more informative.
+
+Let's start by looking at some airquality data we have played with previously when working on [data.frame objects](https://dyerlab.github.io/ENVS-Lectures/r_language/data_frames/homework.nb.html).
+
+```{r}
+airquality %>%
+  select( -Month, -Day ) -> df.air
+summary( df.air )
+```
+
+Let's assume that we are interested in trying to explain the variation in `Ozone` (the response) by one or more of the other variables as predictors.
+
+```{r}
+fit.solar <- lm( Ozone ~ Solar.R, data = df.air )
+anova( fit.solar )
+```
+
+
+Let's look at all the predictors and take a look at both the `p-value` and `R-squared`.
+
+```{r}
+fit.temp <- lm( Ozone ~ Temp, data = df.air )
+fit.wind <- lm( Ozone ~ Wind, data = df.air )
+
+data.frame( Model = c( "Ozone ~ Solar",
+                       "Ozone ~ Temp",
+                       "Ozone ~ Wind"), 
+            R2 = c( summary( fit.solar )$r.squared,
+                    summary( fit.temp )$r.squared,
+                    summary( fit.wind )$r.squared ), 
+            P = c( get_pval( fit.solar), 
+                   get_pval( fit.temp ),
+                   get_pval( fit.wind ) ) ) -> df.models
+
+df.models %>%
+  arrange( -R2 ) %>%
+  mutate( P = format( P, scientific=TRUE, digits=3)) %>%
+  kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973.",
+         digits = 3) %>%
+  kable_minimal()
+```
+
+So if we look at these results, we see that in both $R^2$ and $P$, the model with `Temp` seems to be most explanatory as well as having the lowest probability.  But is is significantly better?
+
+How about if we start adding more than one variable to the equation so that we now have two variables (multiple regression) with the general model specified as:
+
+\[
+y = \beta_0 + \beta_1 x_1 + beta_2 x_2 + \epsilon
+\]
+
+Now, we are estimating two regression coefficients and an interscept.  For three predictors, this gives us 3 more models.
+
+
+```{r}
+fit.temp.wind <- lm( Ozone ~ Temp + Wind, data = df.air )
+fit.temp.solar <- lm( Ozone ~ Temp + Solar.R, data = df.air )
+fit.wind.solar <- lm( Ozone ~ Wind + Solar.R, data = df.air )
+```
+
+
+Now, we can add these output to the table.
+
+```{r}
+df.models <- rbind( df.models, 
+                    data.frame( Model = c( "Ozone ~ Temp + Wind",
+                                           "Ozone ~ Temp + Solar",
+                                           "Ozone ~ Wind + Solar" ),
+                                R2 = c( summary( fit.temp.wind )$r.squared,
+                                        summary( fit.temp.solar )$r.squared,
+                                        summary( fit.wind.solar )$r.squared ),
+                                P = c( get_pval( fit.temp.wind),
+                                       get_pval( fit.temp.solar),
+                                       get_pval( fit.wind.solar) )
+                                ))
+df.models %>%
+  mutate( P = format( P, scientific=TRUE, digits=3)) %>%
+  kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973.",
+         digits = 3) %>%
+  kable_minimal()
+```
+
+Hmmmmmm.  
+
+And for completeness, let's just add the model that has all three predictors
+
+\[
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
+\]
+
+```{r}
+fit.all <- lm( Ozone ~ Solar.R + Temp + Wind, data = df.air )
+```
+
+Now let's add that one
+
+
+```{r}
+df.models <- rbind( df.models, 
+                    data.frame( Model = c( "Ozone ~ Temp + Wind + Solar"),
+                                R2 = c( summary( fit.all )$r.squared ),
+                                P = c( get_pval( fit.all)  )
+                                ))
+
+
+df.models$P = cell_spec( format( df.models$P, 
+                                 digits=3, 
+                                 scientific=TRUE), 
+                         color = ifelse( df.models$P == min(df.models$P), 
+                                         "red",
+                                         "black"))
+df.models$R2 = cell_spec( format( df.models$R2, 
+                                  digits=3, 
+                                  scientific=TRUE), 
+                          color = ifelse( df.models$R2 == max( df.models$R2), 
+                                          "green",
+                                          "black"))
+
+df.models %>%
+  mutate( P = format( P, digits=3, scientific = TRUE) ) %>% 
+  kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973.  Values in green indicate the model with the largest variance explained and those in red indicate models with the lowest probability.",
+         escape = FALSE) %>%
+  kable_paper( "striped", full_width = FALSE )
+```
+
+So how do we figure out which one is best?
+
+### Effects of Adding Parameters
+
+Before we can answer this, we should be clear about one thing.  We are getting more variance explained by adding more predictor variables.  In fact, by adding any variable, whether they are informative or not, one can explain some amount of the Sums of Squares in a model.  Taken to the extreme, this means that we could add an infinite number of explanatory variables to a model and explain all the variation there is!  
+
+Here is an example using our small data set.   I'm going to make several models, one of which is the original one and the remaining add one more predeictor varible that is made up of a random variables.  We will then look at the $R^2$ of each of these models.
+
+```{r}
+random.models  <- list()
+random.models[["Ozone ~ Temp"]] <- fit.temp
+random.models[["Ozone ~ Wind"]] <- fit.wind
+random.models[["Ozone ~ Solar"]] <- fit.solar
+random.models[["Ozone ~ Temp + Wind"]] <- fit.temp.wind
+random.models[["Ozone ~ Temp + Solar"]] <- fit.temp.solar
+random.models[["Ozone ~ Wind + Solar"]] <- fit.wind.solar
+random.models[[ "Ozone ~ Temp + Wind + Solar" ]] <- fit.all
+
+df.tmp <- df.air
+
+for( i in 1:8 ) {
+  lbl <- paste("Ozone ~ Temp + Wind + Solar + ", i, " Random Variables", sep="")
+  df.tmp[[lbl]] <- rnorm( nrow(df.tmp) )
+  random.models[[lbl]] <- lm( Ozone ~ ., data = df.tmp ) 
+}
+
+data.frame( Models = names( random.models ),
+            R2 = sapply( random.models, 
+                          FUN = function( x ) return( summary( x )$r.squared), 
+                          simplify = TRUE ),
+            P = sapply( random.models, 
+                        FUN = get_pval ) ) -> df.random
+
+df.random %>%
+  kable( caption = "Fraction of variation explained by original variable as well as models with incrementally more predictor variables made up of randomly derived data.",
+         digits=4,
+         row.names = FALSE ) %>%
+  kable_paper("striped", full_width = FALSE )
+```
+
+So if we just add random data to a model, we get a better fit!!!!  Sounds great.  That is easy!  I can **always** get the best fit there is!
+
+This is a well-known situation in statistics.  An in fact, we must be very careful when we are examining the differences between models and attempting to decide which set of models are actually better than other sets of models.  
+
+## Model Fitting
+
+To get around this, we have a few tools at our disposal.  The most common approach is to look at the *information content* in each model relative to the amount of pedictor variables.  In essence, we must *punish* ourselves for adding more predictors so that we do not all run around and add random data to our models.  The most common one is called Akaike Information Criterion (AIC), and provide a general framework for comparing several models.
+
+
+\[
+AIC = -2 \ln L + 2p
+\]
+
+Where $L$ is the log likelihood estimate of the variance and $p$ is the number of parameters.  What this does is allow you to evaluate different models with different subsets of parameters.  In general, the best model is the one with the smallest value for `AIC`.
+
+We can also evaluate the relative values of all the models by looking in the difference between the "best" model and the rest by taking the difference 
+
+
+\[
+\delta AIC = AIC - min(AIC)
+\]
+
+The prevailing notion is that models that have $\delta AIC < 2.0$ should be considered as almost equally informative, where as those whose $\delta AIC > 5.0$ are to be rejected as being informative.  That $2.0 \le \delta AIC \le 5.0$ range is where it gets a bit fuzzy. 
+
+```{r}
+
+df.random$AIC <- sapply( random.models, 
+                         FUN = AIC, 
+                         simplify = TRUE )
+
+df.random$deltaAIC = df.random$AIC - min( df.random$A)
+
+df.random %>%
+  select( -P ) %>%
+  kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973 with variance explained, AIC, and ∂AIC for alternative models.",
+         escape = FALSE,
+         row.names = FALSE, 
+         digits = 3) %>%
+  kable_paper( "striped", full_width = FALSE )
+```
+
+
+So as we look at the data here, we see that the best fit model is the full model though others may be considered as informative and this is where we need to look at the biological importance of variables added to the models.
 

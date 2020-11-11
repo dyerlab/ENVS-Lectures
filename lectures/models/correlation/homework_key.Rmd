@@ -1,0 +1,135 @@
+---
+title: "Correlation Homework"
+author: "YOUR NAME HERE"
+date: ''
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE, error=FALSE)
+options(digits=3)
+```
+
+# Correlation
+
+For these questions, use the Rice Rivers Center dataset.
+
+*1. Pull out the data related to atomospheric parameters (e.g., those not measuring something in the water).  Create a plot of their pairwise relationship.*
+
+```{r}
+library(tidyverse)
+library(lubridate)
+source("getRiceData.R")
+
+rice_data <- getRiceData() 
+
+rice_data %>%
+  select( AirTemp, Rain, WindSpeed, PAR, WindDir, RelHumidity, BP_HG ) -> data
+
+library(GGally)
+
+data %>%
+  ggpairs()
+
+```
+
+
+
+*2. For those atmospheric data, what which pair of variables have the strongest correlation?  What is the 95% confidence interval on that correlation coefficient?*
+
+
+```{r}
+fit <- cor.test( data$WindSpeed, data$AirTemp )
+fit
+```
+
+The highest correaltion seems to be between the variables `WindSpeed` and `AirTemp` (Pearson; $\rho$=`r fit$estimate`, df = `r fit$parameter`, t = `r fit$statistic`, P = `r fit$p.value`) with a 95% confidence interval on the correlation statistic of `r fit$conf.int[1]` - `r fit$conf.int[2]`.
+
+*3. Using the first 40 observations in air temperature and barometric pressure from the Rice Center data set, determine if they are indiviudally distributed as a normal random variable.*
+
+```{r}
+data %>%
+  select( AirTemp, BP_HG) %>%
+  slice( 1:40 ) -> sm_data
+
+qqnorm(sm_data$AirTemp)
+qqline(sm_data$AirTemp, col="red")
+fit <- shapiro.test(sm_data$AirTemp)
+fit
+```
+
+For `AirTemp`, we visualally evaluate the normality using QQ-plots and then test the null hypothesis $H_O:$ *AirTemp is normally distributed* using the Shapiro Wilk Normality Test.  The value of the test statistic and associated p-value ($P =$ `r fit$p.value`) suggest that we *cannot reject the null* hypothesis that these data are normal.
+
+```{r}
+qqnorm( sm_data$BP_HG )
+qqline( sm_data$BP_HG, col="red" )
+fit <- shapiro.test( sm_data$BP_HG )
+fit
+```
+
+For the `Barometric Pressure`, we see that the associated p-value of the test statistic is small (e.g., $P =$ `r fit$p.value`) suggesting that we should reject the null hypothesis.
+
+*4. Given your findings in the last question, what kind of correlation statistic would be most appropriate for estimating the correlation between this subset of data?*
+
+Since `BP_HG` may not be normal, it would be more appropriate to perform a correlation test that does not rely upon the assumption of normality.
+
+*5. Look at a qqnorm plot of the barometric pressure data you used in the previous example.  Is there something that 'looks' odd with these data?  Explain, why those data are the way they are.*
+
+```{r}
+qqnorm( sm_data$BP_HG )
+qqline( sm_data$BP_HG, col="red" )
+```
+
+These seem to be discrete values for barometric pressure.  It looks to me like the machine that estimates them can only provide 2 significant digits of accuracy and this may be why it has a stairstep looking output.
+
+*6. Using a permutation approach, define the distribution of correlation values between the variables in #3 assuming that the NULL hypothesis is actually true.  Plot these as a histogram and include the observed correlation.*
+
+The original correlation was (using the spearman approach due to problems with normality in barometric pressure).
+
+```{r}
+sm_data %>%
+  ggplot() + 
+  geom_point( aes(AirTemp, BP_HG), color="blue" ) +
+  xlab("Air Temperature (C)") + 
+  ylab("Barometric Pressure (mm Hg)") + 
+  theme_minimal()
+```
+
+In looking at the data, it appears to exhibit a negatively relationship.
+
+```{r}
+fit.orig <- cor.test( sm_data$AirTemp, sm_data$BP_HG, method = "spearman")
+fit.orig
+```
+
+To set up the permutation of the Null Hypothesis, we shuffle one of the data types and recompute the test statistic a large number of times and then compare the observed to those values estimated *assuming* no correlation (e.g., the NULL Hypothesis is correct).
+
+```{r}
+df <- data.frame( Correlation = rep(NA,1000), 
+                  Value=c("Original",
+                          rep("Permuted", times=999) ) 
+                  )
+df$Correlation[1] <- fit.orig$estimate
+for( i in 2:1000) {
+  permed.AirTemp <- sample( sm_data$AirTemp, 40, replace = FALSE)
+  fit.perm <- cor.test( permed.AirTemp, sm_data$BP_HG, method="spearman")
+  df$Correlation[i] <- fit.perm$estimate 
+}
+
+summary(df)
+```
+
+Now plot these values to see where the original one comes out.
+
+```{r}
+df %>%
+  ggplot() + 
+  geom_histogram( aes(Correlation, fill=Value)) + 
+  ylab("Frequency") +
+  theme_minimal()
+```
+
+The interpretation is that the observed value of the correlation is significatnly lower than the distribution of values *assuming the null hypothesis is true*.  To estimate a probability here, you would estimate the fraction that are as small or smaller than the observed, which in this case is $\frac{1}{1000}$ since all the values of the permutated estimates are larger than the observed.
+

@@ -35,6 +35,12 @@ elevation_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_2
 1. Is there any correlation between the environmental variables represented in the rasters above and the sex ratio sampled at each site?  Present your results in tabular format and make appropriate caption.
 
 
+```{r}
+library( raster )
+```
+
+
+
 2. Create a plot of all populations in the data set with the size of the plot symbol representing the sex ratio and the fill color representing the habitat suitability.
 
 

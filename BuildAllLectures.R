@@ -36,3 +36,4 @@ system("find docs -iname '*.zip' -delete" )
 
 # clean up the lecture folder
 #system("find lectures -iname '*.html' -delete")
+

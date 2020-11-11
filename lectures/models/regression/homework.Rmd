@@ -1,0 +1,25 @@
+---
+title: "Regression Homework"
+output: html_notebook
+---
+
+Regression models are very useful for creating predictive models.  For this exercise, we will play with some different data yet again. I do this for two reasons. First, it gets a bit old to be using the same data set over and over again. Second, regression analysis relies upon the notion that you are predicting the functional relationship between variables and the various things measured in the classic Rice Center data set are not causal. 
+
+<center>
+![](https://live.staticflickr.com/65535/50590074636_9277189260_d.jpg)
+</center>
+
+So instead, we will be using car data described as:
+
+> Cars were selected at random from among 1993 passenger car models that were listed in both the Consumer Reports issue and the PACE Buying Guide. Pickup trucks and Sport/Utility vehicles were eliminated due to incomplete information in the Consumer Reports source. Duplicate models (e.g., Dodge Shadow and Plymouth Sundance) were listed at most once.
+
+And can be loaded into your session as:
+
+```{r}
+library( MASS )
+names( Cars93 )
+```
+
+## The Question
+
+The sole question for this topic is to have you figure out the best regression model that describes the variation in car weight in the `Cars93` data set.  In you evaluation of alternative models, make sure you are looking at the normality of predictors, the relative fit of the alternative models, etc.

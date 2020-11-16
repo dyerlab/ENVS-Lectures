@@ -11,10 +11,6 @@ output:
 ---
 
 
-<!-- 
-https://cs193p.sites.stanford.edu
--->
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(purrr)

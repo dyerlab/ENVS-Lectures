@@ -8,9 +8,19 @@ output: html_notebook
 For this homework, we are going to go back to work with our beloved Rice Rivers Center data.  You have your data formatting function that you created to grab it from the server.
 
 
+```{r}
+source("getRiceData.R")
+
+rice <- getRiceData()
+summary( rice )
+```
+
+
+
+
 ## Questions
 
-1. Pull out the data related to atomospheric parameters (e.g., those not measuring something in the water).  Create a plot of their pairwise relationship.
+1. Pull out the data related to atmospheric parameters (e.g., those not measuring something in the water).  Create a plot of their pairwise relationship.
 
 
 2. For those atmospheric data, what which pair of variables have the strongest correlation?  What is the 95% confidence interval on that correlation coefficient?

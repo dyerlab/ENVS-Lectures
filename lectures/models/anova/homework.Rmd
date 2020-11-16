@@ -1,0 +1,24 @@
+---
+title: "Analysis of Mean Values"
+output: html_notebook
+---
+<center>
+![](https://live.staticflickr.com/65535/50609570091_661feaf811_c_d.jpg)
+</center>
+
+The analysis of mean values can be applied to single vectors of data, to pairs of data, and to a multitude of observed measurements.  
+
+# The Data
+
+For this homework, we are looking at the data from the Rice Rivers Center.  Here we will be testing individual, pairs, and complete sets of mean values using `t.test` and `aov` values.  Start by loading in the raw data using the function that you've already made to format it properly.
+
+## Questions
+
+For the following questions, answer using statistics, graphs, tables, or whatever you need to properly address the question being asked.  *Make sure to specifically state which $H_O$ you are actually testing.*
+
+1. Test the null hypothesis that the average overnight air temperatures (say between 7am & 7pm) on all Mondays in January & February were above freezing.  *Describe your results verbally with the aid of the statistics, visualization, or whatever you feel will help you make your point*.
+
+2. Are weekend water temperatures in February warmer than weekend air temperatures? *Describe your results verbally with the aid of the statistics, visualization, or whatever you feel will help you make your point*.
+
+3. Are there differences in the average rain recorded each weekeay at the Rice Rivers Center?  *Describe your results verbally with the aid of the statistics, visualization, or whatever you feel will help you make your point*.
+

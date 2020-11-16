@@ -36,7 +36,7 @@ theme_set( theme_minimal( base_size = 22) )
 
 &nbsp;
 
-### .yellow[.fancy[Linear models & <br>Model Comparison]]
+### .yellow[.fancy[Linear Models & <br>Model Comparison]]
 
 &nbsp;
 
@@ -201,14 +201,9 @@ ggplot()  +
 
 # The Best Coefficients
 
-```{r}
-ggplot( models, aes(x = beta0, 
-                    y = beta1,
-                    color = -dist)) + 
-  geom_point( data = filter( models, rank(dist) <= 10), 
-              color = "red",
-              size = 4) +
-    geom_point()
+```{r fig.height=5}
+ggplot( models, aes(x = beta0, y = beta1, color = -dist)) + 
+  geom_point( data = filter( models, rank(dist) <= 10), color = "red",  size = 4) + geom_point()
 ```
 
 
@@ -360,7 +355,7 @@ get_pval( fit )
 # Model Diagnostics - Residuals
 
 
-```{r}
+```{r fig.height=5}
 plot( fit, which = 1 )
 ```
 
@@ -369,7 +364,7 @@ plot( fit, which = 1 )
 
 # Normality Of the Data
 
-```{r}
+```{r fig.height=5}
 plot( fit, which = 2 )
 ```
 
@@ -378,7 +373,7 @@ plot( fit, which = 2 )
 
 # Leverage
 
-```{r}
+```{r fig.height=5}
 plot( fit, which=5 )
 ```
 

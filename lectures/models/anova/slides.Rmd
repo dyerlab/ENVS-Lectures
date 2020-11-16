@@ -1,0 +1,559 @@
+---
+title: "Analysis of Variance"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "../../css/slide_model_styles.css", "../../css/slide_fonts.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50559539697_1c35d0a56a_o_d.png")
+background-size: cover
+
+
+```{r setup, include=FALSE}
+library( knitr )
+library( reshape2 )
+library( tidyverse )
+library( kableExtra )
+library( fontawesome )
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+
+theme_set( theme_minimal( base_size = 22) )
+```
+
+
+# .orange[Analysis of Variance  ]
+
+&nbsp;
+
+### .orange[.fancy[Testing Differences of Means] `r fa('th', fill="#ec9a29")`]
+
+&nbsp;
+
+&nbsp;
+
+
+
+---
+
+# Testing for Specific Values
+
+In general, many times we are interested in testing to see if some samples have a particular value.  Examples may include:
+
+- $H_O: \mu} = c$ The mean of the data is equal to a specific value.  
+
+- $H_O: \mu_1 = \mu_2 $ These two samples have the same mean.  
+
+- $H_O: \mu_1 = \mu_2 = \mu_3 ... \mu_k$: The mean of all $k$ values are all the same.
+
+
+
+
+---
+
+# Testing a Single Sample Mean: 1-Sample Tests
+
+The 1-sample `t.test()` defined by the null hypothesis $H_O: \mu = c$ is where we are testing to see if this sample 
+
+
+
+
+\[
+t =\frac{\bar{x}-\mu}{s_{\bar{x}}}
+\]
+
+
+
+---
+
+# Degrees of Freedom & Rejection Regions
+
+
+.pull-left[
+```{r echo=FALSE}
+library( ggplot2 )
+x <- seq(-5,5,by=0.02)
+d <- data.frame( t=c(x,x,x),
+                  f=c(dt(x,df=1),
+                      dt(x,df=3),
+                      dt(x,df=Inf)),
+                  df=rep(c("1","3","Inf"),each=length(x)))
+
+ggplot( d, aes(x=t,y=f,color=df)) + geom_line() 
+```
+]
+
+--
+
+.pull-right[
+
+### Asymptotic Nature of Samples
+
+As $df \to \infty$ then $PDF(t) \to Normal$
+
+Which is defined (in such elegance) as:
+
+$P(t|x,v)= \frac{ \Gamma\left( \frac{v+1}{2}\right)}{\sqrt{v\pi}\Gamma\left( \frac{v}{2}\right)} \left( 1 + \frac{x^2}{v}\right)^{-\frac{v+1}{2}}$
+
+]
+
+
+---
+
+# Rejection Regions
+
+.pull-left[
+### The Rejection Of $H_O$
+
+Two Tailed Test: $H_A: \mu \ne c$
+
+One Tailed Test: $H_A: \mu \lt c$
+
+One Tailed Test: $H_A: \mu \gt c$
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+d1 <- data.frame(t=c( seq(-5,-2.064, by=0.02), -2.064, -5), 
+                 f=c( dt( seq(-5,-2.064, by=0.02),df=1), 0.01224269, 0.01224269))
+d2 <- data.frame(t=c( seq(2.064,5,by=0.02), 5, 2.064),
+                 f=c( dt( seq( 2.064, 5, by=0.02),df=1), 0.01224269, 0.01224269))
+d3 <- data.frame( x=c(2.5,-2.5), y=0.02719, label="2.5%")
+ggplot() + 
+  geom_polygon(aes(t,f),data=d1, fill="#F8766D",alpha=0.5,color="#F8766D") + 
+  geom_polygon(aes(t,f),data=d2, fill="#F8766D",alpha=0.5,color="#F8766D") + 
+  geom_line( aes(t,f),data=d[d$df==1,], color="#F8766D") + 
+  geom_text( aes(x,y,label=label),data=d3)
+```
+
+]
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[One-Sample Tests]
+
+
+---
+
+# Measuring Dispersal
+
+
+.pull-left[
+
+```{r}
+
+iris %>%
+  group_by( Species ) %>%
+  summarize( SL.m = mean( Sepal.Length),
+             SL.sd = sd( Sepal.Length ) ) %>%
+  mutate( `Sepal Length` = paste( SL.m, "+/-", format( SL.sd, digits=3) , sep=" " ) ) %>%
+  mutate( Species = paste( "I.",Species) ) %>%
+  select( Species, `Sepal Length` ) %>%
+  kable( digits=3)
+```
+]
+
+
+
+.pull-right[
+.center[
+![Iris](https://live.staticflickr.com/65535/50609360207_92d21b056f_w_d.jpg)
+]
+]
+
+
+
+
+---
+
+# Iris Example: 1-Sample Test Setosa
+
+.pull-left[
+
+$H_O: Iris\;setosa\;Sepal\;Length = 6.0$
+
+```{r}
+iris %>%
+  filter( Species == "setosa" ) %>%
+  select( Sepal.Length ) %>%
+  t.test( mu=6 )
+```
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+ggplot( iris, aes(x=Sepal.Length, fill=Species)) + geom_density(alpha=0.75)
+```
+]
+
+
+
+---
+
+# Iris Example: 1-Sample Test Versicolor
+
+.pull-left[
+
+$H_O: Iris\;setosa\;Sepal\;Length = 6.0$
+
+```{r}
+iris %>%
+  filter( Species == "versicolor" ) %>%
+  select( Sepal.Length ) %>%
+  t.test( mu=6 )
+```
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+ggplot( iris, aes(x=Sepal.Length, fill=Species)) + geom_density(alpha=0.75)
+```
+]
+
+
+
+---
+
+# Iris Example: 1-Sample Test Virginica
+
+.pull-left[
+
+$H_O: Iris\;setosa\;Sepal\;Length = 6.0$
+
+```{r}
+iris %>%
+  filter( Species == "virginica" ) %>%
+  select( Sepal.Length ) %>%
+  t.test( mu=6 )
+```
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+ggplot( iris, aes(x=Sepal.Length, fill=Species)) + geom_density(alpha=0.75)
+```
+]
+
+
+
+---
+
+# Confidence Intervals.
+
+
+```{r}
+t <- iris %>%
+  filter( Species == "virginica" ) %>%
+  select( Sepal.Length ) %>%
+  t.test( mu=6 ) 
+names(t)
+```
+
+--
+
+The confidence interval itself is defined by the underlying t-distribution as:
+
+$\bar{x} - t_{\alpha, df} s_{\bar{x}} < \mu < \bar{x} + t_{\alpha, df} s_{\bar{x}}$
+
+```{r}
+t$conf.int
+```
+
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[Two-Sample Tests]
+
+
+---
+
+# Evaluating Equality of 2 Means
+
+
+.pull-left[
+
+### Null Hypothesis
+
+$H_O: \mu_{versicolor} = \mu_{virginica}$
+
+Which is estimated by the statistic.
+
+$t = \frac{\bar{x}_1 - \bar{x}_2}{s_{\bar{x}_1-\bar{x}_2}}$
+
+where $s_{\bar{x}_1-\bar{x}_2}$ is referred to as the *pooled variance* and is defined as:
+
+$s_{\bar{x}_1-\bar{x}_2} = \sqrt{ \frac{s_1^2}{N_1}+\frac{s_2^2}{N}}$
+
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+iris %>%
+  filter( Species != "setosa" ) %>%
+  ggplot( aes(Species,Sepal.Length) ) + geom_boxplot(notch=TRUE)
+```
+]
+
+---
+
+# Testing Equality of 2 Means
+
+```{r}
+x <- iris %>% filter( Species == "versicolor") %>% select( Sepal.Length ) 
+y <- iris %>% filter( Species == "virginica") %>% select( Sepal.Length ) 
+t.test( x, y )
+```
+
+---
+
+# Paired t-tests
+
+If the data are collected in a way that there is supposed to be a *connection* between the values of `x` and `y` (e.g., looking at fluctuating asymeetry in wing shape in individual birds where left wing = right wing), you could instead treat the two data as:
+
+$H_O: \mu_{x} -  \mu_{y} = 0.0$
+
+and can be evaluated as:
+
+```{r eval=FALSE}
+t.test(x, y, paired = TRUE)
+```
+
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[Testing Equality of Many Means]
+
+
+
+---
+
+# Why Not All-Pairs t-tests?
+
+--
+
+$H_O: Not\;Pregnant$
+
+.center[
+![](https://live.staticflickr.com/65535/50609390796_c9445f28fe_c_d.jpg)
+]
+
+.pull-left[Rejecting of a true null hypothesis `false positive`]
+
+.pull-right[Non-rejection of a false null hypothesis, `false negative`]
+
+
+---
+
+# Multiple Testing Problem
+
+The rejection region as $\alpha$ is defined as the fraction of the underlying distribution that we will consider as rare enough to reject $H_O$.  
+
+The probability of rejecting $H_O$ incorrectly is $\alpha$ and the probability of not rejecting $H_O$ incorrectly is $1-\alpha$.  
+
+> What is the probability of getting at least one false positive result if we test all three pairs of individual mean values in the Iris data set?
+
+--
+
+$P(false\;positive) = 1 - P(no\;significant\;results)$ 
+
+which is equal to $1 - (1-0.05)^3 \approx 0.1426$
+
+If we test all three pairs of tests for the *Iris* data, what mean that we are expecting, .redinline[even if there are absolutely **no differences** between species], to reject the $H_O$ at least 14% of the time!
+
+
+#### Change either $\alpha$ (known as a Bonferroni Correction) or adjust the Model itself (preferred).
+
+---
+
+# A Linear Model Approach
+
+.pull-left[
+```{r echo=FALSE}
+ggplot( iris, aes(x=Species, y=Sepal.Length)) + 
+  geom_boxplot(notch = TRUE, color="#cc8011") + 
+  stat_summary( color="#0F8B8D", size=1.3 ) +
+  geom_point( alpha=0.75) + 
+  geom_jitter( width=0.25) +
+  ylab("Sepal Length") 
+```
+]
+
+--
+
+.pull-right[
+$y_{ij} = \mu + \tau_i + \epsilon_j$
+
+where: 
+- $\mu$ is the overall mean of all the data.  
+- $\tau_i$ is the deviation of the $i^{th}$ treatment level from the overall mean.  
+- $\epsilon_j$ is the deviation of the observation from the treatment mean.
+
+
+#### The Null Hypothesis
+
+$H_O: \tau_i = 0$
+
+
+]
+
+---
+
+# Decomposing the Variance
+
+The Analysis of Variance Table for Testing the Null Hypothesis $H_O: \tau_i = 0$.
+
+
+
+Source  | df    | SS                                                                 | MS
+--------|-------|--------------------------------------------------------------------|------------------------------------------------
+Among   | $K-1$ | $\sum_{i=1}^K N_i \left( \bar{x}_i - \bar{x} \right)^2$            | $\frac{SS_A}{K-1}$
+Within  | $N-K$ | $\sum_{i=1}^Kn_i\left( \sum_{j=1}^{N_i}(x_{ij}-\bar{x}_i)^2 \right)$ | $\frac{SS_W}{N-K}$
+Total   | $N-1$ | $\sum_{i=1}^K \sum_{j=1}^{N_i} (x_{ij} - \bar{x})^2$               | 
+
+--
+
+&nbsp;
+
+.pull-left[
+Which is evaluated by the statistic:
+
+$F = \frac{MS_A}{MS_W}$
+]
+
+.pull-right[
+defined by the most excellent $F$ distribution.
+
+$f(x | df_A, df_W) = \frac{\sqrt{\frac{(df_Ax)^{df_A}df_W^{df_W}}{(df_Ax + df_W)^{df_W+df_A}}}}{x\mathbf{B}\left( \frac{df_A}{2}, \frac{df_W}{2} \right)}$
+]
+
+
+
+---
+
+# Analysis of Variance (aov)
+
+```{r}
+fit.aov <- aov( Sepal.Length ~ Species, data=iris)
+fit.aov
+```
+
+---
+
+# Analysis of Variance Table
+
+```{r}
+anova( fit.aov )
+```
+
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[Post-Hoc Tests]
+
+---
+
+# Why Post-Hoc?
+
+Potential Outcomes where $H_O$ is rejected:
+
+- $\mu_{setosa} \; \ne \mu_{virginica}$
+
+- $\mu_{setosa} \; \ne \mu_{versicolor}$
+
+- $\mu_{virginica} \; \ne \mu_{versicolor}$
+
+- $\mu_{setosa} \; \ne \; \mu_{virginica} \; \ne \mu_{versicolor}$
+
+--
+
+By rejecting $H_O$, we do not know which of the previous situations caused the Among-Treatment Sums of Squares to be large enough to push the estimate of $F$ into the rejection region of the distribution.
+
+
+
+---
+
+# The Tukey Test
+
+This test examines all pairs of means and determines if their confidence intervals overlap or not.
+
+```{r}
+tuk <- TukeyHSD(fit.aov)
+tuk
+```
+
+The difference is: 
+
+$q = \frac{\bar{y}_{max} - \bar{y}_{min}}{\sigma \sqrt{2/N}}$
+
+and the confidence intervals are based upon Student-ized confidence ranges.
+
+
+
+
+
+
+---
+
+# Visualizing the Tukey
+
+```{r fig.height= 5.5}
+plot( tuk, xlim=c(-1,2) )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+class: middle
+background-position: right
+background-size: auto
+
+.center[
+
+# Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+<p>&nbsp;</p>
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+
+

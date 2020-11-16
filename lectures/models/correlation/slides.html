@@ -219,20 +219,13 @@ summary( beer )
 ```
 
 ```
-##     Styles             Yeast       ABV_Min         ABV_Max      
-##  Length:100         Ale   :69   Min.   :2.400   Min.   : 3.200  
-##  Class :character   Either: 4   1st Qu.:4.200   1st Qu.: 5.475  
-##  Mode  :character   Lager :27   Median :4.600   Median : 6.000  
-##                                 Mean   :4.947   Mean   : 6.768  
-##                                 3rd Qu.:5.500   3rd Qu.: 8.000  
-##                                 Max.   :9.000   Max.   :14.000  
-##     IBU_Min         IBU_Max          SRM_Min         SRM_Max     
-##  Min.   : 0.00   Min.   :  8.00   Min.   : 2.00   Min.   : 3.00  
-##  1st Qu.:15.00   1st Qu.: 25.00   1st Qu.: 3.50   1st Qu.: 7.00  
-##  Median :20.00   Median : 35.00   Median : 8.00   Median :17.00  
-##  Mean   :21.97   Mean   : 38.98   Mean   : 9.82   Mean   :17.76  
-##  3rd Qu.:25.00   3rd Qu.: 45.00   3rd Qu.:14.00   3rd Qu.:22.00  
-##  Max.   :60.00   Max.   :120.00   Max.   :30.00   Max.   :40.00  
+##     Styles             Yeast       ABV_Min         ABV_Max          IBU_Min         IBU_Max          SRM_Min         SRM_Max     
+##  Length:100         Ale   :69   Min.   :2.400   Min.   : 3.200   Min.   : 0.00   Min.   :  8.00   Min.   : 2.00   Min.   : 3.00  
+##  Class :character   Either: 4   1st Qu.:4.200   1st Qu.: 5.475   1st Qu.:15.00   1st Qu.: 25.00   1st Qu.: 3.50   1st Qu.: 7.00  
+##  Mode  :character   Lager :27   Median :4.600   Median : 6.000   Median :20.00   Median : 35.00   Median : 8.00   Median :17.00  
+##                                 Mean   :4.947   Mean   : 6.768   Mean   :21.97   Mean   : 38.98   Mean   : 9.82   Mean   :17.76  
+##                                 3rd Qu.:5.500   3rd Qu.: 8.000   3rd Qu.:25.00   3rd Qu.: 45.00   3rd Qu.:14.00   3rd Qu.:22.00  
+##                                 Max.   :9.000   Max.   :14.000   Max.   :60.00   Max.   :120.00   Max.   :30.00   Max.   :40.00  
 ##      OG_Min          OG_Max          FG_Min          FG_Max     
 ##  Min.   :1.026   Min.   :1.032   Min.   :0.998   Min.   :1.006  
 ##  1st Qu.:1.040   1st Qu.:1.052   1st Qu.:1.008   1st Qu.:1.012  
@@ -555,8 +548,7 @@ names( OG.FG.pearson )
 ```
 
 ```
-## [1] "statistic"   "parameter"   "p.value"     "estimate"    "null.value" 
-## [6] "alternative" "method"      "data.name"   "conf.int"
+## [1] "statistic"   "parameter"   "p.value"     "estimate"    "null.value"  "alternative" "method"      "data.name"   "conf.int"
 ```
 
 
@@ -654,13 +646,13 @@ summary( df )
 ```
 
 ```
-##      Estimate        rho           
-##  Original:  1   Min.   :-0.285367  
-##  Permuted:999   1st Qu.:-0.071739  
-##                 Median :-0.011990  
-##                 Mean   :-0.005742  
-##                 3rd Qu.: 0.058309  
-##                 Max.   : 0.837418
+##      Estimate        rho            
+##  Original:  1   Min.   :-0.2892758  
+##  Permuted:999   1st Qu.:-0.0730548  
+##                 Median :-0.0073230  
+##                 Mean   : 0.0002596  
+##                 3rd Qu.: 0.0670440  
+##                 Max.   : 0.8374184
 ```
 
 

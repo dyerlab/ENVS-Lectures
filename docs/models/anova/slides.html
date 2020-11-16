@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Analysis of Variance</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/slide_model_styles.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50559539697_1c35d0a56a_o_d.png")
+background-size: cover
+
+
+
+
+
+# .orange[Analysis of Variance  ]
+
+&amp;nbsp;
+
+### .orange[.fancy[Testing Differences of Means] &lt;svg style="height:0.8em;top:.04em;position:relative;fill:#ec9a29;" viewBox="0 0 512 512"&gt;&lt;path d="M149.333 56v80c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V56c0-13.255 10.745-24 24-24h101.333c13.255 0 24 10.745 24 24zm181.334 240v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm32-240v80c0 13.255 10.745 24 24 24H488c13.255 0 24-10.745 24-24V56c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24zm-32 80V56c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm-205.334 56H24c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24zM0 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H24c-13.255 0-24 10.745-24 24zm386.667-56H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zm0 160H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zM181.333 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24z"/&gt;&lt;/svg&gt;]
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+
+---
+
+# Testing for Specific Values
+
+In general, many times we are interested in testing to see if some samples have a particular value.  Examples may include:
+
+- `\(H_O: \mu} = c\)` The mean of the data is equal to a specific value.  
+
+- $H_O: \mu_1 = \mu_2 $ These two samples have the same mean.  
+
+- `\(H_O: \mu_1 = \mu_2 = \mu_3 ... \mu_k\)`: The mean of all `\(k\)` values are all the same.
+
+
+
+
+---
+
+# Testing a Single Sample Mean: 1-Sample Tests
+
+The 1-sample `t.test()` defined by the null hypothesis `\(H_O: \mu = c\)` is where we are testing to see if this sample 
+
+
+
+
+\[
+t =\frac{\bar{x}-\mu}{s_{\bar{x}}}
+\]
+
+
+
+---
+
+# Degrees of Freedom &amp; Rejection Regions
+
+
+.pull-left[
+&lt;img src="slides_files/figure-html/unnamed-chunk-1-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+--
+
+.pull-right[
+
+### Asymptotic Nature of Samples
+
+As `\(df \to \infty\)` then `\(PDF(t) \to Normal\)`
+
+Which is defined (in such elegance) as:
+
+`\(P(t|x,v)= \frac{ \Gamma\left( \frac{v+1}{2}\right)}{\sqrt{v\pi}\Gamma\left( \frac{v}{2}\right)} \left( 1 + \frac{x^2}{v}\right)^{-\frac{v+1}{2}}\)`
+
+]
+
+
+---
+
+# Rejection Regions
+
+.pull-left[
+### The Rejection Of `\(H_O\)`
+
+Two Tailed Test: `\(H_A: \mu \ne c\)`
+
+One Tailed Test: `\(H_A: \mu \lt c\)`
+
+One Tailed Test: `\(H_A: \mu \gt c\)`
+
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-2-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[One-Sample Tests]
+
+
+---
+
+# Measuring Dispersal
+
+
+.pull-left[
+
+
+```r
+iris %&gt;%
+  group_by( Species ) %&gt;%
+  summarize( SL.m = mean( Sepal.Length),
+             SL.sd = sd( Sepal.Length ) ) %&gt;%
+  mutate( `Sepal Length` = paste( SL.m, "+/-", format( SL.sd, digits=3) , sep=" " ) ) %&gt;%
+  mutate( Species = paste( "I.",Species) ) %&gt;%
+  select( Species, `Sepal Length` ) %&gt;%
+  kable( digits=3)
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Sepal Length &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; I. setosa &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 5.006 +/- 0.352 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; I. versicolor &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 5.936 +/- 0.516 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; I. virginica &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 6.588 +/- 0.636 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+
+.pull-right[
+.center[
+![Iris](https://live.staticflickr.com/65535/50609360207_92d21b056f_w_d.jpg)
+]
+]
+
+
+
+
+---
+
+# Iris Example: 1-Sample Test Setosa
+
+.pull-left[
+
+`\(H_O: Iris\;setosa\;Sepal\;Length = 6.0\)`
+
+
+```r
+iris %&gt;%
+  filter( Species == "setosa" ) %&gt;%
+  select( Sepal.Length ) %&gt;%
+  t.test( mu=6 )
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  .
+## t = -19.94, df = 49, p-value &lt; 2.2e-16
+## alternative hypothesis: true mean is not equal to 6
+## 95 percent confidence interval:
+##  4.905824 5.106176
+## sample estimates:
+## mean of x 
+##     5.006
+```
+
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-5-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+
+# Iris Example: 1-Sample Test Versicolor
+
+.pull-left[
+
+`\(H_O: Iris\;setosa\;Sepal\;Length = 6.0\)`
+
+
+```r
+iris %&gt;%
+  filter( Species == "versicolor" ) %&gt;%
+  select( Sepal.Length ) %&gt;%
+  t.test( mu=6 )
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  .
+## t = -0.87674, df = 49, p-value = 0.3849
+## alternative hypothesis: true mean is not equal to 6
+## 95 percent confidence interval:
+##  5.789306 6.082694
+## sample estimates:
+## mean of x 
+##     5.936
+```
+
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-7-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+
+# Iris Example: 1-Sample Test Virginica
+
+.pull-left[
+
+`\(H_O: Iris\;setosa\;Sepal\;Length = 6.0\)`
+
+
+```r
+iris %&gt;%
+  filter( Species == "virginica" ) %&gt;%
+  select( Sepal.Length ) %&gt;%
+  t.test( mu=6 )
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  .
+## t = 6.5386, df = 49, p-value = 3.441e-08
+## alternative hypothesis: true mean is not equal to 6
+## 95 percent confidence interval:
+##  6.407285 6.768715
+## sample estimates:
+## mean of x 
+##     6.588
+```
+
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-9-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+
+# Confidence Intervals.
+
+
+
+```r
+t &lt;- iris %&gt;%
+  filter( Species == "virginica" ) %&gt;%
+  select( Sepal.Length ) %&gt;%
+  t.test( mu=6 ) 
+names(t)
+```
+
+```
+##  [1] "statistic"   "parameter"   "p.value"     "conf.int"    "estimate"    "null.value"  "stderr"     
+##  [8] "alternative" "method"      "data.name"
+```
+
+--
+
+The confidence interval itself is defined by the underlying t-distribution as:
+
+`\(\bar{x} - t_{\alpha, df} s_{\bar{x}} &lt; \mu &lt; \bar{x} + t_{\alpha, df} s_{\bar{x}}\)`
+
+
+```r
+t$conf.int
+```
+
+```
+## [1] 6.407285 6.768715
+## attr(,"conf.level")
+## [1] 0.95
+```
+
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[Two-Sample Tests]
+
+
+---
+
+# Evaluating Equality of 2 Means
+
+
+.pull-left[
+
+### Null Hypothesis
+
+`\(H_O: \mu_{versicolor} = \mu_{virginica}\)`
+
+Which is estimated by the statistic.
+
+`\(t = \frac{\bar{x}_1 - \bar{x}_2}{s_{\bar{x}_1-\bar{x}_2}}\)`
+
+where `\(s_{\bar{x}_1-\bar{x}_2}\)` is referred to as the *pooled variance* and is defined as:
+
+`\(s_{\bar{x}_1-\bar{x}_2} = \sqrt{ \frac{s_1^2}{N_1}+\frac{s_2^2}{N}}\)`
+
+
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-12-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Testing Equality of 2 Means
+
+
+```r
+x &lt;- iris %&gt;% filter( Species == "versicolor") %&gt;% select( Sepal.Length ) 
+y &lt;- iris %&gt;% filter( Species == "virginica") %&gt;% select( Sepal.Length ) 
+t.test( x, y )
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  x and y
+## t = -5.6292, df = 94.025, p-value = 1.866e-07
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.8819731 -0.4220269
+## sample estimates:
+## mean of x mean of y 
+##     5.936     6.588
+```
+
+---
+
+# Paired t-tests
+
+If the data are collected in a way that there is supposed to be a *connection* between the values of `x` and `y` (e.g., looking at fluctuating asymeetry in wing shape in individual birds where left wing = right wing), you could instead treat the two data as:
+
+`\(H_O: \mu_{x} -  \mu_{y} = 0.0\)`
+
+and can be evaluated as:
+
+
+```r
+t.test(x, y, paired = TRUE)
+```
+
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[Testing Equality of Many Means]
+
+
+
+---
+
+# Why Not All-Pairs t-tests?
+
+--
+
+`\(H_O: Not\;Pregnant\)`
+
+.center[
+![](https://live.staticflickr.com/65535/50609390796_c9445f28fe_c_d.jpg)
+]
+
+.pull-left[Rejecting of a true null hypothesis `false positive`]
+
+.pull-right[Non-rejection of a false null hypothesis, `false negative`]
+
+
+---
+
+# Multiple Testing Problem
+
+The rejection region as `\(\alpha\)` is defined as the fraction of the underlying distribution that we will consider as rare enough to reject `\(H_O\)`.  
+
+The probability of rejecting `\(H_O\)` incorrectly is `\(\alpha\)` and the probability of not rejecting `\(H_O\)` incorrectly is `\(1-\alpha\)`.  
+
+&gt; What is the probability of getting at least one false positive result if we test all three pairs of individual mean values in the Iris data set?
+
+--
+
+`\(P(false\;positive) = 1 - P(no\;significant\;results)\)` 
+
+which is equal to `\(1 - (1-0.05)^3 \approx 0.1426\)`
+
+If we test all three pairs of tests for the *Iris* data, what mean that we are expecting, .redinline[even if there are absolutely **no differences** between species], to reject the `\(H_O\)` at least 14% of the time!
+
+
+#### Change either `\(\alpha\)` (known as a Bonferroni Correction) or adjust the Model itself (preferred).
+
+---
+
+# A Linear Model Approach
+
+.pull-left[
+&lt;img src="slides_files/figure-html/unnamed-chunk-15-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+--
+
+.pull-right[
+`\(y_{ij} = \mu + \tau_i + \epsilon_j\)`
+
+where: 
+- `\(\mu\)` is the overall mean of all the data.  
+- `\(\tau_i\)` is the deviation of the `\(i^{th}\)` treatment level from the overall mean.  
+- `\(\epsilon_j\)` is the deviation of the observation from the treatment mean.
+
+
+#### The Null Hypothesis
+
+`\(H_O: \tau_i = 0\)`
+
+
+]
+
+---
+
+# Decomposing the Variance
+
+The Analysis of Variance Table for Testing the Null Hypothesis `\(H_O: \tau_i = 0\)`.
+
+
+
+Source  | df    | SS                                                                 | MS
+--------|-------|--------------------------------------------------------------------|------------------------------------------------
+Among   | `\(K-1\)` | `\(\sum_{i=1}^K N_i \left( \bar{x}_i - \bar{x} \right)^2\)`            | `\(\frac{SS_A}{K-1}\)`
+Within  | `\(N-K\)` | `\(\sum_{i=1}^Kn_i\left( \sum_{j=1}^{N_i}(x_{ij}-\bar{x}_i)^2 \right)\)` | `\(\frac{SS_W}{N-K}\)`
+Total   | `\(N-1\)` | `\(\sum_{i=1}^K \sum_{j=1}^{N_i} (x_{ij} - \bar{x})^2\)`               | 
+
+--
+
+&amp;nbsp;
+
+.pull-left[
+Which is evaluated by the statistic:
+
+`\(F = \frac{MS_A}{MS_W}\)`
+]
+
+.pull-right[
+defined by the most excellent `\(F\)` distribution.
+
+`\(f(x | df_A, df_W) = \frac{\sqrt{\frac{(df_Ax)^{df_A}df_W^{df_W}}{(df_Ax + df_W)^{df_W+df_A}}}}{x\mathbf{B}\left( \frac{df_A}{2}, \frac{df_W}{2} \right)}\)`
+]
+
+
+
+---
+
+# Analysis of Variance (aov)
+
+
+```r
+fit.aov &lt;- aov( Sepal.Length ~ Species, data=iris)
+fit.aov
+```
+
+```
+## Call:
+##    aov(formula = Sepal.Length ~ Species, data = iris)
+## 
+## Terms:
+##                  Species Residuals
+## Sum of Squares  63.21213  38.95620
+## Deg. of Freedom        2       147
+## 
+## Residual standard error: 0.5147894
+## Estimated effects may be unbalanced
+```
+
+---
+
+# Analysis of Variance Table
+
+
+```r
+anova( fit.aov )
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: Sepal.Length
+##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Species     2 63.212  31.606  119.26 &lt; 2.2e-16 ***
+## Residuals 147 38.956   0.265                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[Post-Hoc Tests]
+
+---
+
+# Why Post-Hoc?
+
+Potential Outcomes where `\(H_O\)` is rejected:
+
+- `\(\mu_{setosa} \; \ne \mu_{virginica}\)`
+
+- `\(\mu_{setosa} \; \ne \mu_{versicolor}\)`
+
+- `\(\mu_{virginica} \; \ne \mu_{versicolor}\)`
+
+- `\(\mu_{setosa} \; \ne \; \mu_{virginica} \; \ne \mu_{versicolor}\)`
+
+--
+
+By rejecting `\(H_O\)`, we do not know which of the previous situations caused the Among-Treatment Sums of Squares to be large enough to push the estimate of `\(F\)` into the rejection region of the distribution.
+
+
+
+---
+
+# The Tukey Test
+
+This test examines all pairs of means and determines if their confidence intervals overlap or not.
+
+
+```r
+tuk &lt;- TukeyHSD(fit.aov)
+tuk
+```
+
+```
+##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = Sepal.Length ~ Species, data = iris)
+## 
+## $Species
+##                       diff       lwr       upr p adj
+## versicolor-setosa    0.930 0.6862273 1.1737727     0
+## virginica-setosa     1.582 1.3382273 1.8257727     0
+## virginica-versicolor 0.652 0.4082273 0.8957727     0
+```
+
+The difference is: 
+
+`\(q = \frac{\bar{y}_{max} - \bar{y}_{min}}{\sigma \sqrt{2/N}}\)`
+
+and the confidence intervals are based upon Student-ized confidence ranges.
+
+
+
+
+
+
+---
+
+# Visualizing the Tukey
+
+
+```r
+plot( tuk, xlim=c(-1,2) )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-19-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+class: middle
+background-position: right
+background-size: auto
+
+.center[
+
+# Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

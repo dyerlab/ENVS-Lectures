@@ -1,0 +1,53 @@
+---
+title: "Analysis of Mean Values"
+output: html_notebook
+---
+
+For this homework, we are looking at the data from the Rice Rivers Center.  Here we will be testing individual, pairs, and complete sets of mean values using `t.test` and `aov` values.  Start by loading in the raw data.
+
+```{r}
+source("getRiceData.R")
+data <- getRiceData()
+```
+
+
+Complete the following tests.
+
+1. Test the null hypothesis that the average overnight air temperatures (say between 7am & 7pm) on all Mondays in January & February were above freezing.  *Describe your results verbally with the aid of the statistics, visualization, or whatever you feel will help you make your point*.
+
+```{r}
+data %>%
+  filter( month( Date ) < 3 ) %>% 
+  filter( Weekday  == "Monday" ) %>%
+  filter( hour( Date ) >= 7 & hour( Date ) <= 19 )  %>%
+  select( AirTemp ) %>%
+  t.test( mu = 0, alternative = "greater" )
+```
+
+2. Are weekend water temperatures in February warmer than weekend air temperatures? *Describe your results verbally with the aid of the statistics, visualization, or whatever you feel will help you make your point*.
+
+```{r}
+data %>%
+  filter( Weekday %in% c("Saturday","Sunday"), 
+          month( Date ) == 2 ) -> weekend
+
+data %>%
+filter( !(Weekday %in% c("Saturday","Sunday")), 
+          month( Date ) == 2 ) -> weekday
+
+t.test( x = weekend$H2O_TempC, y= weekday$AirTemp, aalternative = "less" )
+```
+
+3. Are there differences in the average rain recorded each weekeay at the Rice Rivers Center?  *Describe your results verbally with the aid of the statistics, visualization, or whatever you feel will help you make your point*.
+
+```{r}
+fit.aov <- aov( Rain ~ Weekday, data=data)
+fit.aov
+anova( fit.aov )
+fit.tuk <- TukeyHSD( fit.aov )
+fit.tuk
+plot( fit.tuk )
+```
+
+
+

@@ -32,13 +32,6 @@ output: html_notebook
 
 { Compare the two models, are the differences between the continents the same in 2014 as they were in 1984?  Describe any differences you see.}
 
+## References
 
-
-
-
-
-
-
-
-
-[^1]: Boden, T.A., G. Marland, and R.J. Andres. 2013. Global, Regional, and National Fossil-Fuel CO2 Emissions. Carbon Dioxide Information Analysis Center, Oak Ridge National Laboratory, U.S. Department of Energy, Oak Ridge, Tenn., U.S.A. [doi](https://doi.org/10.3334/CDIAC/00001_V2013).
+Boden, T.A., G. Marland, and R.J. Andres. 2013. Global, Regional, and National Fossil-Fuel CO2 Emissions. Carbon Dioxide Information Analysis Center, Oak Ridge National Laboratory, U.S. Department of Energy, Oak Ridge, Tenn., U.S.A. [doi](https://doi.org/10.3334/CDIAC/00001_V2013).

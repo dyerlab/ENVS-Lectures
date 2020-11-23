@@ -1,5 +1,0 @@
----
-title: "Factor Data"
-output: html_notebook
----
-

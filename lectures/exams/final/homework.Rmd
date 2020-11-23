@@ -1,0 +1,98 @@
+---
+title: "Final Examination"
+output: html_notebook
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( echo=FALSE )
+library( knitr )
+library( kableExtra )
+library( tidyverse )
+```
+
+
+This is a take-home exam and you are free to use all the resources of the internet, this class, and your notes.  DO NOT work on this collaboratively, this is an individualized effort.
+
+## The Data 
+
+The data are derived from the report by Boden *et al.* (2013)[^1] describing fossil fuel CO<sub>2</sub> submissions.  The data set is available for download from [datahub.io](https://datahub.io/core/co2-fossil-by-nation) and consist of the following columns of information.
+
+
+```{r}
+data.frame( Name = c("Year","Country","Total","Solid Fuels",
+                           "Liquid Fuels","Gas Fuel","Cement", "Gas Flaring", 
+                           "Per Capita", "Bunker Fuels"),
+                  Class = c("numeric", "string", "numeric", "numeric", 
+                            "numeric", "numeric", "numeric", "numeric", 
+                            "numeric", "numeric"), 
+                  Description = c( "The year the data represent",
+                                   "The nation where the data were collected",
+                                   "Total carbon emissions from fossil fuel consumption and cement production (million metric tons of C)",
+                                   "Carbon emissions from solid fuel consumption",
+                                   "Carbon emissions from liquid fuel consumption",
+                                   "Carbon emissions from gas fuel consumption",
+                                   "Carbon emissions from cement production",
+                                   "Carbon emissions from gas flaring",
+                                   "Per capita carbon emissions (metric tons of carbon; after 1949 only)",
+                                   "Carbon emissions from bunker fuels (not included in total)"
+                                   ) 
+                  ) %>%
+  kable( caption = "Table 1: Field names, data types, and general description of datum in the Boden et al. (2013) manuscript describing global CO<sub>2</sub> output from fossil fuels.") %>%
+  kable_paper()
+
+
+```
+
+
+## Exam Format
+
+The exam will require you to analyze and visualize data and write it up as a pseudo report.  I am expecting you to create a new R notebook and perform all the analyses and narrative in that one document.  This document must include a setup chunk that has the option to turn off the `echo` of all analysis chunks (Figure 1).
+
+![*Figure 1: Setup chunk options at the beginning of the document that turns off showing of all the `R` code in chunks.  This is also a great place to put all of your `library()` calls so that their output is hidden.*](https://live.staticflickr.com/65535/50636987708_a7f110a54e_w_d.jpg)
+When working on the document, you can set `echo=TRUE` so that you see the code in the output, but in the end, you must turn in a document that is just narrative, images, table, etc. with all the code hidden.
+
+---
+
+# Global CO2 Emissions
+### YOUR NAME HERE
+
+
+{ A single paragraph here about why CO2 emissions are of interest to us. }
+
+## The Data 
+
+{ A narrative (e.g., not just a list of figures or R output) about the data, where it comes from, and what it contains.  This is a complete paragraph just like you find in a normal research paper.  As part of this description, make a table describing the $CO_2$ data including columns for the minimum, mean, and maximum value for each of the emission variables.
+
+## Components of Emissions
+
+{ The total emissions is composed of several types of data.  For the data from the year 2010, analyze the relative contributions of CO<sub>2</sub> by source for each of the G7 Countries.  }
+
+{ Divide the data into the G7 (e.g., Canada, France, Germany, Italy, Japan, the United Kingdom, and the United States) and non-G7 countries.  Compare emission output amongst all G7 countries to those from the rest of the world combined.  All plots must be labelled properly and have an appropriate caption. }
+
+{ Perform a statistical analysis of G7 vs. non-G7 countries output by source.  Provide textual description of your analyses and present output as tables or in-text. }
+
+## Temporal Trends
+
+{ For the G7 countries, deterime if total emissions between 1960-2010 correlated?  Which two countries have the highest and which two have the lowest correlation? Describe these in words and input appropriate graphics and in-text statistical parameters (Pearson correlation; *df = X, t = Y, p = Z, r = W*). }
+
+{ Take the total emission output from the past 50 years for the US.  Attempt to develop a linear regression model to fit these data.  Create appropriate plots of the raw data and model diagnostics.  Is this a good model?  Are the residuals of this model reasonably behaved?  Explain why or why not this may be an appropriate approach }
+
+## Spatial Trends
+
+{ Group all the countries by continent and take two time periods, 1984 and 2014. Make a map of total emissions by continent for each time period. }
+
+{ Test the hypothesis that total emissions by countries grouped within each continent (e.g. continent is the treatment but each country within it are the data) are not significantly different.  Describe the models you develop textually (with in-text statistical parameters as above) and use appropriate graphical and tabular output to make your point.}  
+
+{ Compare the two models, are the differences between the continents the same in 2014 as they were in 1984?  Describe any differences you see.}
+
+
+
+
+
+
+
+
+
+
+[^1]: Boden, T.A., G. Marland, and R.J. Andres. 2013. Global, Regional, and National Fossil-Fuel CO2 Emissions. Carbon Dioxide Information Analysis Center, Oak Ridge National Laboratory, U.S. Department of Energy, Oak Ridge, Tenn., U.S.A. [doi](https://doi.org/10.3334/CDIAC/00001_V2013).

@@ -10,7 +10,6 @@ For this homework, we are going to go back to work with our beloved Rice Rivers 
 
 ```{r}
 source("getRiceData.R")
-
 rice <- getRiceData()
 summary( rice )
 ```
@@ -26,7 +25,7 @@ summary( rice )
 2. For those atmospheric data, what which pair of variables have the strongest correlation?  What is the 95% confidence interval on that correlation coefficient?
 
 
-3. Using the first 40 observations in air temperature and barometric pressure from the Rice Center data set, determine if they are indiviudally distributed as a normal random variable.
+3. Using the first 40 observations in air temperature and barometric pressure from the Rice Center data set, determine if they are individually distributed as a normal random variable.
 
 
 4. Given your findings in the last question, what kind of correlation statistic would be most appropriate for estimating the correlation between this subset of data?

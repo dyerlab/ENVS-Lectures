@@ -1,0 +1,137 @@
+---
+title: "Ordination"
+output: html_notebook
+---
+
+Ordination is a technique to take high-dimensional data and to represent it in a lower dimensional context.  
+
+```{r setup, include=FALSE}
+library( rgl )
+knitr::knit_hooks$set( webgl = hook_webgl )
+knitr::opts_chunk$set( echo = TRUE, 
+                       fig.align = "center", 
+                       fig.width = 6, 
+                       fig.height=5, 
+                       warning=FALSE, 
+                       message=FALSE)
+library( tidyverse )
+theme_set( theme_bw( base_size = 18) )
+```
+
+> Ordination is a collective term for multivariate techniques which summarize a multidimensional dataset in such a way that when it is projected onto a low dimensional space, any intrinsic pattern the data may possess becomes apparent upon visual inspection[^1].
+
+One of the largest challenges in data analysis is the ability to understand and gain inferences from it!  This is especially compounded when we have many different kinds of data describing our individual observations.  For example, at a particular vernal pool, we may have measured pool size, pool depth, elevation, rainfall, temperature, canopy cover, pH, aquatic vegitation, species1 density, species2 density, etc.  To describe all of these variables we could either plot all combinations of them *or* be a bit clever and use some ordination approaches.
+
+For this activity, I am going to use the beer styles as a data set in explaining a couple of different types of ordination.  It is available as the raw CSV file.
+
+```{r}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Beer_Styles.csv"
+read_csv( url ) %>%
+  mutate( Yeast = as.factor( Yeast ) ) -> data
+summary(data)
+```
+
+These data give ranges of values but it is probably easier if we just take the midpoint of the range.
+
+```{r}
+data %>%
+  mutate( ABV=( ABV_Max+ABV_Min)/2,
+          IBU=( IBU_Max+IBU_Min)/2,
+          SRM=( SRM_Max+SRM_Min)/2,
+          OG=( OG_Max+OG_Min)/2,
+          FG=( FG_Max+FG_Min)/2 )  %>%
+  select( Styles, Yeast, ABV, IBU, SRM, OG, FG) -> beers
+summary( beers)
+```
+
+Excellent.  If we look a the data now, we can see that there are a moderate amount of correlation between data types and all of the characteristics are spread reasonably well across the Yeast types.  Here is a pairwise plot of all the data using the `GGally::ggpairs()` function.
+
+```{r message=FALSE, warning=FALSE}
+library(GGally)
+beers %>%
+  select( -Styles ) %>%
+  ggpairs() 
+```
+
+
+
+## Principle Component Analyses
+
+Principle component analysis (PCA) is a translation of the original data into new coordinate spaces.  This has absolutely nothing to do with the relationship among the data themselves but is more of a way to create new coordinates for each data point under the following criteria:  
+1. The number of axes in the translated data are the same as the number of axes in the original data.
+2. Axes are chosen by taking all the data and finding transects through it that account for the broadest variation in the data.
+3. Each axis is defined as a linear combination of the original axes.
+3. Subsequent axes *must be* orthoganal to all previous ones (e.g., at 90$\deg$ angles).
+4. The amount of the total variation in the system can be partitioned by these new axes and they are ordered from those that explain the most variation to those who explain the least.
+
+An exmaple of this rotation is given below.
+
+![A rotation of 2-dimenational data from the original coordinate space (represented by the x- and y-axes) onto synthetic principal component (the red axes). The rotation itself maximizes the distributional width of the data (depicted as density plots in grey for the original axes and red for the rotated axes).](https://live.staticflickr.com/65535/50613620086_2d1f9ca6dd_c_d.jpg)
+
+To conduct this rotation on our data, we use the function `prcomp()`.  It does the rotation and returns an analysis object that has all the information we need in it.
+
+```{r}
+pc.fit <- prcomp(beers[,3:7])
+names( pc.fit)
+```
+
+If we look at the raw analysis output, we see a summary of the amount of data explained by each of the axes as well as the loadings (e.g., the linear combinations of the original data that translate the old coordinates into the new ones).
+
+```{r}
+pc.fit
+```
+
+We can plot these and by default it shows the variation explained by each axis.
+
+```{r}
+plot( pc.fit )
+```
+
+This rotation seems to be able to produce axes that account for a lot of the underyling variation.  Here is a synopsis:
+
+```{r}
+format( pc.fit$sdev / sum( pc.fit$sdev ), digits=3)
+```
+
+So, the first axis describes 63% of the variation and the second describes 31%, etc.
+
+We can plot the original data points, projected into this new coordiante space.
+
+```{r}
+data.frame( predict( pc.fit )) %>%
+  mutate( Yeast = beers$Yeast, 
+          Style = beers$Styles ) -> predicted
+
+ggplot( predicted ) + 
+  geom_point( aes(PC1, PC2, color=Yeast), size=4 )
+
+```
+
+## Principal Coordinate Analyses (PCoA)
+
+
+
+
+
+
+## Non-metric Multiple Dimensional Scaling (NMDS)
+
+```{r}
+library( vegan )
+beers %>%
+  select( -Styles, -Yeast ) %>%
+  metaMDS( trace = FALSE ) %>%
+  ordiplot( )
+```
+
+
+
+## Using Rotated Data
+
+
+
+
+
+[^1]: Pielou EC, (1984) The interpretation of ecological data: A primer on classification and ordination.  288pg. ISBN: ![978-0-471-88950-2](https://www.wiley.com/en-us/The+Interpretation+of+Ecological+Data%3A+A+Primer+on+Classification+and+Ordination-p-9780471889502)
+
+

@@ -36,11 +36,9 @@ background-size: cover
 
 In general, many times we are interested in testing to see if some samples have a particular value.  Examples may include:
 
-- `\(H_O: \mu} = c\)` The mean of the data is equal to a specific value.  
-
-- $H_O: \mu_1 = \mu_2 $ These two samples have the same mean.  
-
-- `\(H_O: \mu_1 = \mu_2 = \mu_3 ... \mu_k\)`: The mean of all `\(k\)` values are all the same.
+- &amp;nbsp; `\(H_O: \mu = c\)`  The mean of the data is equal to a specific value.  
+- &amp;nbsp; `\(H_O: \mu_1 = \mu_2\)`  These two samples have the same mean.  
+- &amp;nbsp; `\(H_O: \mu_1 = \mu_2 = \mu_3 ... \mu_k\)`: The mean of all `\(k\)` values are all the same.
 
 
 
@@ -54,9 +52,7 @@ The 1-sample `t.test()` defined by the null hypothesis `\(H_O: \mu = c\)` is whe
 
 
 
-\[
-t =\frac{\bar{x}-\mu}{s_{\bar{x}}}
-\]
+`\(t =\frac{\bar{x}-\mu}{s_{\bar{x}}}\)`
 
 
 
@@ -114,7 +110,7 @@ class: inverse, sectionTitle
 
 ---
 
-# Measuring Dispersal
+# The Iris Data (Again)
 
 
 .pull-left[
@@ -210,7 +206,7 @@ iris %&gt;%
 
 .pull-left[
 
-`\(H_O: Iris\;setosa\;Sepal\;Length = 6.0\)`
+`\(H_O: Iris\;versicolor\;Sepal\;Length = 6.0\)`
 
 
 ```r
@@ -248,7 +244,7 @@ iris %&gt;%
 
 .pull-left[
 
-`\(H_O: Iris\;setosa\;Sepal\;Length = 6.0\)`
+`\(H_O: Iris\;virginica\;Sepal\;Length = 6.0\)`
 
 
 ```r
@@ -295,8 +291,8 @@ names(t)
 ```
 
 ```
-##  [1] "statistic"   "parameter"   "p.value"     "conf.int"    "estimate"    "null.value"  "stderr"     
-##  [8] "alternative" "method"      "data.name"
+##  [1] "statistic"   "parameter"   "p.value"     "conf.int"    "estimate"   
+##  [6] "null.value"  "stderr"      "alternative" "method"      "data.name"
 ```
 
 --

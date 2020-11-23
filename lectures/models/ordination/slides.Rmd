@@ -1,0 +1,827 @@
+---
+title: "Regression"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "../../css/slide_model_styles.css", "../../css/slide_fonts.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50559539697_1c35d0a56a_o_d.png")
+background-size: cover
+
+
+```{r setup, include=FALSE}
+library( knitr )
+library( reshape2 )
+library( tidyverse )
+library( kableExtra )
+library( fontawesome )
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+
+theme_set( theme_minimal( base_size = 22) )
+```
+
+
+# .black[Regression Models `r fa('chart-line', fill="#FDD545")` ]
+
+&nbsp;
+
+### .yellow[.fancy[Linear Models & <br>Model Comparison]]
+
+&nbsp;
+
+&nbsp;
+
+
+
+---
+# Linear Models
+
+
+$$
+y = \beta_0 + \beta_1 x_1 + \epsilon 
+$$
+
+
+.pull-left[
+The basic linear model has:  
+- An intercept ( $\beta_0$ ),
+
+- A slope coefficient ( $\beta_1$ ), and 
+
+- And an error term ( $\epsilon$ ).
+]
+
+.pull-right[
+```{r echo=FALSE, fig.height = 5.5}
+df <- data.frame( x = 1:10,
+                  y = c( 15.5, 28.1, 22.3, 32.3, 31.1, 26.8, 41.8, 30.3, 47.9, 41.1) )
+ggplot( df, aes(x,y) ) + 
+  stat_smooth( method="lm", formula = y ~ x, se=FALSE, color="red", size=1) + 
+  geom_point( size=4 ) 
+```
+]
+
+
+
+---
+
+# Building A Model - Random Search
+
+
+
+.pull-left[
+```{r}
+models <- data.frame( beta0 = runif(250,-20,40),
+                      beta1 = runif(250, -5, 5))
+summary( models )
+```
+]
+
+--
+
+.pull-right[
+```{r echo=FALSE}
+ggplot() + 
+  geom_abline( aes(intercept = beta0, 
+                   slope = beta1), 
+               data = models,
+               alpha = 0.2) + 
+  geom_point( aes(x,y), 
+              data=df, 
+              size = 4 )
+```
+
+]
+
+
+---
+
+# Building A Model - Search Criterion
+
+.center[
+```{r echo=FALSE}
+fit <- lm( y ~ x, data=df )
+yhat <- data.frame( x = 1:10,
+                    yhat = predict( fit ),
+                    y= df$y )
+
+ggplot( df ) + 
+  geom_abline( aes( intercept = fit$coefficients[1],
+                    slope = fit$coefficients[2]),
+               color="red",
+               size = 1.25 ) +
+  geom_segment( aes(x=x, y = y, xend = x, yend = yhat), 
+                data = yhat,
+                color = "blue", size = 1.25) + 
+  geom_point( aes(x,y), size=4 ) 
+```
+]
+
+
+
+
+
+---
+
+# Searching Random Model Space
+
+```{r}
+model_distance <- function( interscept, slope, X, Y ) {
+  yhat <- interscept + slope * X
+  diff <- Y - yhat
+  return( sqrt( mean( diff ^ 2 ) ) )
+}
+```
+
+--
+
+```{r}
+models$dist <- NA
+for( i in 1:nrow(models) ) {
+  models$dist[i] <- model_distance( models$beta0[i],
+                                    models$beta1[i],
+                                    df$x,
+                                    df$y )
+}
+head( models )
+```
+
+
+
+---
+
+# Top 10 Random Models
+
+
+
+.pull-left[
+```{r echo=FALSE}
+ggplot()  + 
+  geom_abline( aes(intercept = beta0,
+                   slope = beta1, 
+                   color = -dist),
+               data = filter( models, rank(dist) <= 10 ),
+               alpha = 0.5) + 
+  geom_point( aes(x,y),
+              data=df) 
+```
+]
+
+
+.pull-right[
+
+The 10 best models (filtering in data= inside a `geom_abline()`) with original points.
+
+```{r eval=FALSE}
+ggplot()  + 
+  geom_abline( aes(intercept = beta0,
+                   slope = beta1, 
+                   color = -dist),
+               data = filter( models, rank(dist) <= 10 ),
+               alpha = 0.5) + 
+  geom_point( aes(x,y),
+              data=df) 
+```
+]
+
+
+
+---
+
+# The Best Coefficients
+
+```{r fig.height=5}
+ggplot( models, aes(x = beta0, y = beta1, color = -dist)) + 
+  geom_point( data = filter( models, rank(dist) <= 10), color = "red",  size = 4) + geom_point()
+```
+
+
+
+---
+
+# Systematic Grid Search
+
+.pull-left[
+```{r echo=FALSE}
+grid <- expand.grid( beta0 = seq(15,20, length = 25),
+                     beta1 = seq(2, 3, length = 25))
+grid$dist <- NA
+for( i in 1:nrow(grid) ) {
+  grid$dist[i] <- model_distance( grid$beta0[i],
+                                  grid$beta1[i],
+                                  df$x,
+                                  df$y )
+}
+
+ggplot( grid, aes(x = beta0, 
+                  y = beta1,
+                  color = -dist)) + 
+  geom_point( data = filter( grid, rank(dist) <= 10), 
+              color = "red",
+              size = 4) +
+  geom_point()
+```
+]
+
+.pull-right[
+```{r eval=FALSE}
+grid <- expand.grid( beta0 = seq(15,20, length = 25),
+                     beta1 = seq(2, 3, length = 25))
+grid$dist <- NA
+for( i in 1:nrow(grid) ) {
+  grid$dist[i] <- model_distance( grid$beta0[i],
+                                  grid$beta1[i],
+                                  df$x,
+                                  df$y )
+}
+
+ggplot( grid, aes(x = beta0, 
+                  y = beta1,
+                  color = -dist)) + 
+  geom_point( data = filter( grid, rank(dist) <= 10), 
+              color = "red",
+              size = 4) +
+  geom_point()
+```
+]
+
+
+---
+class: inverse, sectionTitle
+
+
+# .yellow[Our Friend `lm()`]
+
+
+## .fancy[Linear Models]
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/50588297022_62f043a616_c_d.jpg)
+
+
+---
+
+# Specifying a Formula
+
+*Single Predictor Model*
+
+```
+y ~ x
+```
+
+*Multiple Additive Predictors*
+
+```
+y ~ x1 + x2 
+```
+
+*Interaction Terms*
+
+```
+y ~ x1 + x2 + x1*x2
+```
+
+
+---
+
+# Fitting A Model
+
+
+```{r}
+fit <- lm( y ~ x, data = df )
+fit 
+```
+
+
+
+---
+
+# Model Summaries
+
+```{r}
+summary( fit )
+```
+
+
+---
+
+# Components within the Summary Object
+
+```{r}
+names( summary( fit ) )
+```
+
+--
+
+The probability can be found by looking at the data in the `F-Statistic` and then asking the F-distribution for the probability associated with the value of the test statistic and the degrees of freedom for both the model and the residuals.
+
+```{r}
+summary( fit )$fstatistic 
+```
+
+
+```{r}
+get_pval <- function( model ) {
+  f <- summary( model )$fstatistic[1]
+  df1 <- summary( model )$fstatistic[2]
+  df2 <- summary( model )$fstatistic[3]
+  p <- as.numeric( 1.0 - pf( f, df1, df2 ) )
+  return( p  )
+}
+
+get_pval( fit )
+```
+
+
+
+
+
+---
+
+# Model Diagnostics - Residuals
+
+
+```{r fig.height=5}
+plot( fit, which = 1 )
+```
+
+
+---
+
+# Normality Of the Data
+
+```{r fig.height=5}
+plot( fit, which = 2 )
+```
+
+
+---
+
+# Leverage
+
+```{r fig.height=5}
+plot( fit, which=5 )
+```
+
+
+---
+
+# Decomposition of Variance
+
+
+The terms in this table are:
+
+- Degrees of Freedom (*df*): representing `1` degree of freedom for the model, and `N-1` for the residuals.  
+
+- Sums of Squared Deviations: 
+    - $SS_{Total} = \sum_{i=1}^N (y_i - \bar{y})^2$
+    - $SS_{Model} = \sum_{i=1}^N (\hat{y}_i - \bar{y})^2$, and 
+    - $SS_{Residual} = SS_{Total} - SS_{Model}$
+    
+- Mean Squares (Standardization of the Sums of Squares for the degrees of freedom)  
+    - $MS_{Model} = \frac{SS_{Model}}{df_{Model}}$
+    - $MS_{Residual} = \frac{SS_{Residual}}{df_{Residual}}$
+    
+- The $F$-statistic is from a known distribution and is defined by the ratio of Mean Squared values.
+
+- `Pr(>F)` is the probability associated the value of the $F$-statistic and is dependent upon the degrees of freedom for the model and residuals.
+
+
+---
+
+# Decomposition of Variance
+
+
+```{r}
+anova( fit )
+```
+
+
+---
+
+# Variance Exaplained
+
+
+```{r}
+summary( fit )
+```
+
+
+---
+
+# Relationship Between $R^2$ & $r$
+
+How much of the variation is explained?
+
+
+$$R^2 = \frac{SS_{Model}}{SS_{Total}}$$
+
+--
+
+```{r}
+c( `Regression R^2` = summary( fit )$r.squared,
+   `Squared Correlation` = as.numeric( cor.test( df$x, df$y )$estimate^2 ) )
+```
+
+> The square of the Pearson Correlation is equal to R
+
+---
+
+## Helper Functions
+
+
+
+.pull-left[
+
+Grabbing the predicted values $\hat{y}$ from the model.
+
+```{r}
+predict( fit ) -> yhat 
+yhat
+```
+
+
+```{r eval=FALSE}
+plot( yhat ~ df$x, type='l', bty="n", col="red" )
+```
+
+]
+
+
+.pull-right[
+```{r echo=FALSE}
+plot( yhat ~ df$x, type='l', bty="n", col="red", cex.lab=2, cex.axis = 2 )
+```
+]
+
+
+
+
+---
+
+# Helper Functions - Residuals
+
+.pull-left[
+
+The residuals are the distances between the observed value and its corresponding value on the fitted line.
+
+```{r}
+residuals( fit ) 
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+plot( residuals( fit )  ~ yhat, bty="n", xlab="Predicted Values", ylab="Residuals (yhat - y)", pch=16 )
+abline(0, 0, lty=2, col="red")
+```
+
+]
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[Comparing Models]
+
+
+
+---
+
+# What Makes One Model Better
+
+There are two parameters that we have already looked at that may help.  These are:
+
+- The $P-value$: Models with smaller probabilities could be considered more informative.  
+
+- The $R^2$: Models that explain more of the variation may be considered more informative.
+
+--
+
+Let's start by looking at some airquality data we have played with previously when working on [data.frame objects](https://dyerlab.github.io/ENVS-Lectures/r_language/data_frames/homework.nb.html).
+
+```{r}
+airquality %>%
+  select( -Month, -Day ) -> df.air
+summary( df.air )
+```
+
+
+---
+
+# Base Models - What Influences Ozone
+
+```{r}
+fit.solar <- lm( Ozone ~ Solar.R, data = df.air )
+fit.temp <- lm( Ozone ~ Temp, data = df.air )
+fit.wind <- lm( Ozone ~ Wind, data = df.air )
+```
+
+
+--
+
+
+
+```{r echo=FALSE}
+data.frame( Model = c( "Ozone ~ Solar",
+                       "Ozone ~ Temp",
+                       "Ozone ~ Wind"), 
+            R2 = c( summary( fit.solar )$r.squared,
+                    summary( fit.temp )$r.squared,
+                    summary( fit.wind )$r.squared ), 
+            P = c( get_pval( fit.solar), 
+                   get_pval( fit.temp ),
+                   get_pval( fit.wind ) ) ) -> df.models
+
+df.models %>%
+  mutate( P = format( P, scientific=TRUE, digits=3)) %>%
+  kable( caption = "Model parameters predicting mean ozone in parts per billion mearsured in New York during the period of 1 May 2973 - 30 September 2973 as predicted by Temperature, Windspeed, and Solar Radiation.",
+         digits = 3,
+         align='l') %>%
+  kable_classic_2()
+```
+
+
+
+
+
+---
+
+# More Complicated Models
+
+Multiple Regression Model - Including more than one predictors.
+
+$y = \beta_0 + \beta_1 x_1 + beta_2 x_2 + \epsilon$
+
+
+
+```{r}
+fit.temp.wind <- lm( Ozone ~ Temp + Wind, data = df.air )
+fit.temp.solar <- lm( Ozone ~ Temp + Solar.R, data = df.air )
+fit.wind.solar <- lm( Ozone ~ Wind + Solar.R, data = df.air )
+```
+
+--
+
+```{r echo=FALSE}
+df.models <- rbind( df.models, 
+                    data.frame( Model = c( "Ozone ~ Temp + Wind",
+                                           "Ozone ~ Temp + Solar",
+                                           "Ozone ~ Wind + Solar" ),
+                                R2 = c( summary( fit.temp.wind )$r.squared,
+                                        summary( fit.temp.solar )$r.squared,
+                                        summary( fit.wind.solar )$r.squared ),
+                                P = c( get_pval( fit.temp.wind),
+                                       get_pval( fit.temp.solar),
+                                       get_pval( fit.wind.solar) )
+                                ))
+df.models %>%
+  mutate( P = format( P, scientific=TRUE, digits=3)) %>%
+  kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973.",
+         digits = 3,
+         align="l") %>%
+  kable_classic_2()
+```
+
+
+
+---
+
+# For Completeness
+
+How about all the predictors. $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon$
+
+```{r}
+fit.all <- lm( Ozone ~ Solar.R + Temp + Wind, data = df.air )
+```
+
+--
+
+```{r echo=FALSE}
+df.models <- rbind( df.models, 
+                    data.frame( Model = c( "Ozone ~ Temp + Wind + Solar"),
+                                R2 = c( summary( fit.all )$r.squared ),
+                                P = c( get_pval( fit.all)  )
+                                ))
+
+
+df.models$P = cell_spec( format( df.models$P, 
+                                 digits=3, 
+                                 scientific=TRUE), 
+                         color = ifelse( df.models$P == min(df.models$P), 
+                                         "red",
+                                         "black"))
+df.models$R2 = cell_spec( format( df.models$R2, 
+                                  digits=3, 
+                                  scientific=TRUE), 
+                          color = ifelse( df.models$R2 == max( df.models$R2), 
+                                          "green",
+                                          "black"))
+
+df.models %>%
+  mutate( P = format( P, digits=3, scientific = TRUE) ) %>% 
+  kable( escape = FALSE) %>%
+  kable_paper( "striped", full_width = FALSE )
+```
+
+
+---
+
+## $R^2$ Inflation
+
+Any variable added to a model will be able to generate *Sums of Squares* (even if it is a small amount).  So, `adding variables may artifically inflate the Model Sums of Squares`.
+
+
+Example:
+
+> What happens if I add just random data to the regression models?  How does $R^2$ change?
+
+
+
+---
+
+# Random Data Effects
+
+
+
+```{r echo=FALSE}
+random.models  <- list()
+random.models[["Ozone ~ Temp"]] <- fit.temp
+random.models[["Ozone ~ Wind"]] <- fit.wind
+random.models[["Ozone ~ Solar"]] <- fit.solar
+random.models[["Ozone ~ Temp + Wind"]] <- fit.temp.wind
+random.models[["Ozone ~ Temp + Solar"]] <- fit.temp.solar
+random.models[["Ozone ~ Wind + Solar"]] <- fit.wind.solar
+random.models[[ "Ozone ~ Temp + Wind + Solar" ]] <- fit.all
+
+df.tmp <- df.air
+
+for( i in 1:8 ) {
+  lbl <- paste("Ozone ~ Temp + Wind + Solar + ", i, " Random Variables", sep="")
+  df.tmp[[lbl]] <- runif( nrow(df.tmp), min = -100, max = 100 )
+  random.models[[lbl]] <- lm( Ozone ~ ., data = df.tmp ) 
+}
+
+data.frame( Models = names( random.models ),
+            R2 = sapply( random.models, 
+                          FUN = function( x ) return( summary( x )$r.squared), 
+                          simplify = TRUE ),
+            P = sapply( random.models, 
+                        FUN = get_pval ) ) -> df.random
+```
+
+.pull-left[
+
+```{r echo=FALSE}
+df.random %>%
+  head( n = 7 ) %>%
+  select( Models, R2 ) %>%
+  kable( caption = "Original Models",
+         digits=4,
+         row.names = FALSE,
+         align="l") %>%
+  kable_paper("striped", full_width = FALSE )
+```
+
+
+]
+
+--
+
+.pull-right[
+
+```{r echo=FALSE}
+df.random %>%
+  tail( n = 8 ) %>%
+  select( Models, R2 ) %>%
+  kable( caption = "Original Models + Random Variables",
+         digits=4,
+         row.names = FALSE,
+         align='l') %>%
+  kable_paper("striped", full_width = FALSE )
+```
+
+
+]
+
+
+---
+
+# Perfect - My Models RULE
+
+#### I can just add **random** variables to my model and always get an .redinline[awesome] fit!
+
+
+<p>&nbsp;</p>
+
+.center[
+<iframe src="https://giphy.com/embed/7ymcoEE72hEf6" width="480" height="225" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+]
+
+
+<p>&nbsp;</p>
+
+.orangeinline[Not so fast Bevis.]
+
+
+
+---
+
+# Model Comparisons
+
+Akaike Information Criterion (AIC) is a measurement that allows us to compare models while penalizing for adding new parameters.
+
+$AIC = -2 \ln L + 2p$
+
+The criterion here are to find models with the lowest AIC values.
+
+--
+
+## Comparisons
+
+To compare, we evaluate the differences in AIC for alternative models.
+
+$\delta AIC = AIC - min( AIC )$
+
+
+
+
+---
+
+# AIC & ∂AIC
+
+```{r echo=FALSE}
+df.random$AIC <- sapply( random.models, 
+                         FUN = AIC, 
+                         simplify = TRUE )
+
+df.random$deltaAIC = df.random$AIC - min( df.random$A)
+```
+
+
+
+.pull-left[
+```{r echo=FALSE}
+df.random %>%
+  select( -P ) %>%
+  head( n = 7 ) %>%
+  kable( escape = FALSE,
+         row.names = FALSE, 
+         digits = 3) %>%
+  kable_paper( "striped", full_width = FALSE )
+```
+]
+
+
+--
+
+.pull-right[
+```{r echo=FALSE}
+df.random %>%
+  select( -P ) %>%
+  tail( n = 8 ) %>%
+  head( n = 7 ) %>%
+  kable( escape = FALSE,
+         row.names = FALSE, 
+         digits = 3) %>%
+  kable_paper( "striped", full_width = FALSE )
+```
+]
+
+
+
+
+---
+
+class: middle
+background-position: right
+background-size: auto
+
+.center[
+
+# Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+<p>&nbsp;</p>
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+
+

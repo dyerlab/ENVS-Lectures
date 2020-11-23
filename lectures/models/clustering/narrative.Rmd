@@ -1,0 +1,141 @@
+---
+title: "Hierarchical Clustering"
+output: html_notebook
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", fig.width = 6, fig.height=5, warning=FALSE, message=FALSE)
+library( tidyverse )
+theme_set( theme_bw(base_size = 14) )
+```
+
+
+## Theory
+
+In the previous section, we examined how to recast the data into new coordinant spaces for visualization.  Another ordination approach is to try to cluster our data.  Hierarchical clustering are very helpful in understanding groupings in the data, particularly if there is a ‘nesting’ structure. While there are many ways to do it, they all generally proceed as follows:  
+1. Define a numeric metric that measured the distances between all $K$ observations.  
+2. Find the two groups that have the smallest distance and coalesce them together into a pair.  
+3. Assume that the coalesced pair now constitutes a single entity, estimate the numeric metric among all $K-1$ groups in the data set.  
+4. Go to #2 and repeat until you have coalesced all the groups together.
+
+
+
+Here is an example of how this works.  Consider the data below:
+
+```{r}
+x <- c(1, 2, 0, 3, 6)
+y <- c(0, 3, 4, 2, 3)
+coords <- cbind(x,y)
+rownames(coords) <- LETTERS[1:5]
+coords
+```
+
+If you assume a Euclidean Distance, you can see the pairwise distances as:
+
+```{r}
+dist( coords ) 
+```
+
+Notice how the `rownames` on the `coords` object are perpetuated into the distance matrix.  Here, $B$ and $D$ are the closest object.  We can coalesce them by taking their mean coordinate.  Here I manually take the 2nd and 4th entries and replace them with the mean values, I label them as $(BD)$
+
+```{r}
+x <- c(1, (2+3)/2, 0, 6)
+y <- c(0, (3+2)/2, 4, 3)
+coords <- cbind(x,y)
+rownames(coords) <- c("A","(BD)","C","E")
+coords
+dist(coords)
+```
+
+Now, $A$ and $BD$ are the closest so I coalesce these into $(A(BD))$, take their mean coordinate and redo it again.
+
+
+```{r}
+x <- c( (1 +(2+3)/2)/2, 0, 6)
+y <- c( (0 +(3+2)/2)/2, 4, 3)
+coords <- cbind(x,y)
+rownames(coords) <- c("(A(BD))","C","E")
+coords
+dist(coords)
+```
+
+Then
+
+```{r}
+x <- c( ((1 +(2+3)/2)/2 + 0)/2, 6)
+y <- c( ((0 +(3+2)/2)/2+ 4)/2, 3)
+coords <- cbind(x,y)
+rownames(coords) <- c("((A(BD))C)","E")
+coords
+dist(coords)
+```
+
+Which is obviously resulting in $((A(BD))C)E$ as $E$ is the only one left.  This means that if you group these, $BD$ go together, then $A$ attaches to that group then $C$ then $E$.  Boom!  You just did a hierarchical clustering!
+
+```{r echo=FALSE}
+x <- c(1, 2, 0, 3, 6)
+y <- c(0, 3, 4, 2, 3)
+coords <- cbind(x,y)
+rownames(coords) <- LETTERS[1:5]
+group_dist <- dist(coords,method = "euclidean")
+h <- hclust(group_dist)
+plot(h, cex=2, xlab="",title="", axes=F, main="", ylab="", ysub="")
+```
+
+
+
+## A Real-Data Version
+
+For a slightly more complicated version, we will be using the `beer style` data set.  It can be loaded in from the Github site.
+
+```{r}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Beer_Styles.csv"
+read_csv( url ) %>%
+  mutate( Yeast = as.factor( Yeast ) ) -> data
+summary(data)
+```
+
+These data give ranges of values for each style but it is probably easier if we just take the midpoint of the range for what we are going to be doing here.  So let's fix that.
+
+```{r}
+data %>%
+  mutate( ABV=( ABV_Max+ABV_Min)/2,
+          IBU=( IBU_Max+IBU_Min)/2,
+          SRM=( SRM_Max+SRM_Min)/2,
+          OG=( OG_Max+OG_Min)/2,
+          FG=( FG_Max+FG_Min)/2 )  %>%
+  select( Styles, Yeast, ABV, IBU, SRM, OG, FG) -> beers
+summary( beers)
+```
+
+```{r fig.height=6}
+m <- as.matrix( beers[,3:7])
+rownames(m) <- beers$Styles 
+beer_dist <- dist( m )
+h <- hclust( beer_dist )
+h
+```
+
+
+
+```{r}
+plot(h, cex=0.5)
+```
+
+
+This is a bit confusing, so let's play around with a little interactive interface to the data.  This will not show up on the PDF version, you'll have to look at the web version.
+
+```{r eval=FALSE}
+library( networkD3 )
+grp_colors <- c("red","green","blue")[as.numeric(as.factor(beers$Yeast))]
+dendroNetwork( h, height=2400,
+               zoom=TRUE,
+               textColour=grp_colors)
+```
+
+There are other interactive ways to look at your data.  A good set of examples can be found at https://christophergandrud.github.io/networkD3/
+
+
+
+

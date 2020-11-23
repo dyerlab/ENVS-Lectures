@@ -1767,62 +1767,6 @@ cols(
 )
 See spec(...) for full column specifications.</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmljZSA8LSBnZXRSaWNlRGF0YSgpXG5gYGAifQ== -->
-<pre class="r"><code>rice &lt;- getRiceData()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICAuZGVmYXVsdCA9IGNvbF9kb3VibGUoKSxcbiAgRGF0ZVRpbWUgPSBjb2xfY2hhcmFjdGVyKClcbilcblNlZSBzcGVjKC4uLikgZm9yIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb25zLlxuIn0= -->
-<pre><code>Parsed with column specification:
-cols(
-  .default = col_double(),
-  DateTime = col_character()
-)
-See spec(...) for full column specifications.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeSggcmljZSApXG5gYGAifQ== -->
-<pre class="r"><code>summary( rice )</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgRGF0ZSAgICAgICAgICAgICAgICAgICAgICAgICAgV2Vla2RheSAgICAgICAgQWlyVGVtcCAgICAgICAgICAgICAgUmFpbiAgICAgICAgIFxuIE1pbi4gICA6MjAxNC0wMS0wMSAwMDowMDowMCAgIE1vbmRheSAgIDoxMTUyICAgTWluLiAgIDotMTUuNjk1MCAgIE1pbi4gICA6MC4wMDAwMDAgIFxuIDFzdCBRdS46MjAxNC0wMS0yMiAwODoyMjozMCAgIFR1ZXNkYXkgIDoxMTUyICAgMXN0IFF1LjogLTAuMjUyOCAgIDFzdCBRdS46MC4wMDAwMDAgIFxuIE1lZGlhbiA6MjAxNC0wMi0xMiAxNjo0NTowMCAgIFdlZG5lc2RheToxMjQ4ICAgTWVkaWFuIDogIDMuMDIyMiAgIE1lZGlhbiA6MC4wMDAwMDAgIFxuIE1lYW4gICA6MjAxNC0wMi0xMiAxNjo0NTowMCAgIFRodXJzZGF5IDoxMTkxICAgTWVhbiAgIDogIDMuNzc1MSAgIE1lYW4gICA6MC4wMDIxMzcgIFxuIDNyZCBRdS46MjAxNC0wMy0wNiAwMTowNzozMCAgIEZyaWRheSAgIDoxMTUyICAgM3JkIFF1LjogIDguMDA1NiAgIDNyZCBRdS46MC4wMDAwMDAgIFxuIE1heC4gICA6MjAxNC0wMy0yNyAwOTozMDowMCAgIFNhdHVyZGF5IDoxMTUyICAgTWF4LiAgIDogMjMuODE2NyAgIE1heC4gICA6MC44ODEzODAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFN1bmRheSAgIDoxMTUyICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgV2luZFNwZWVkICAgICAgICAgUmVjb3JkSUQgICAgICAgICAgUEFSICAgICAgICAgICAgICBXaW5kRGlyICAgICAgICBSZWxIdW1pZGl0eSAgIFxuIE1pbi4gICA6IDAuMDAwICAgTWluLiAgIDo0MzgxNiAgIE1pbi4gICA6ICAgMC4wMDAgICBNaW4uICAgOiAgMC4wMCAgIE1pbi4gICA6MTUuMzcgIFxuIDFzdCBRdS46IDMuOTcwICAgMXN0IFF1Ljo0NTg2NiAgIDFzdCBRdS46ICAgMC4wMDAgICAxc3QgUXUuOiAzNy4zMSAgIDFzdCBRdS46NDIuMjUgIFxuIE1lZGlhbiA6IDYuNTgyICAgTWVkaWFuIDo0NzkxNSAgIE1lZGlhbiA6ICAgMC4wNDYgICBNZWRpYW4gOjEzNy4zMCAgIE1lZGlhbiA6NTYuNDAgIFxuIE1lYW4gICA6IDguNzY0ICAgTWVhbiAgIDo0NzkxNSAgIE1lYW4gICA6IDI0MS45ODQgICBNZWFuICAgOjE0Ni4yMCAgIE1lYW4gICA6NTguMzcgIFxuIDNyZCBRdS46MTEuNzM1ICAgM3JkIFF1Ljo0OTk2NCAgIDNyZCBRdS46IDMzNy45MDAgICAzcmQgUXUuOjI0OS45NSAgIDNyZCBRdS46NzYuNTkgIFxuIE1heC4gICA6NDkuMzI2ICAgTWF4LiAgIDo1MjAxNCAgIE1heC4gICA6MTk1Ny4wMDAgICBNYXguICAgOjM2MC4wMCAgIE1heC4gICA6OTMuMDAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgICBCUF9IRyAgICAgICAgIEgyT19UZW1wQyAgICAgICBTcENvbmRfbVNjbSAgICAgIFNhbGluaXR5X3BwdCAgICAgICAgICBQSCAgICAgIFxuIE1pbi4gICA6MjkuMTEgICBNaW4uICAgOi0wLjE0MCAgIE1pbi4gICA6MC4wMTEwICAgTWluLiAgIDowLjAwMDAgICBNaW4uICAgOjYuNDMgIFxuIDFzdCBRdS46MjkuODcgICAxc3QgUXUuOiAzLjkzMCAgIDFzdCBRdS46MC4xNDMwICAgMXN0IFF1LjowLjA3MDAgICAxc3QgUXUuOjcuNTAgIFxuIE1lZGlhbiA6MzAuMDEgICBNZWRpYW4gOiA1LjQ1MCAgIE1lZGlhbiA6MC4xNjUwICAgTWVkaWFuIDowLjA4MDAgICBNZWRpYW4gOjcuNTggIFxuIE1lYW4gICA6MzAuMDIgICBNZWFuICAgOiA1LjUyOSAgIE1lYW4gICA6MC4xNjExICAgTWVhbiAgIDowLjA3NTkgICBNZWFuICAgOjcuNjAgIFxuIDNyZCBRdS46MzAuMjEgICAzcmQgUXUuOiA3LjQxMCAgIDNyZCBRdS46MC4xNzYwICAgM3JkIFF1LjowLjA4MDAgICAzcmQgUXUuOjcuNjkgIFxuIE1heC4gICA6MzAuNTggICBNYXguICAgOjEzLjMwMCAgIE1heC4gICA6MC4yMTEwICAgTWF4LiAgIDowLjEwMDAgICBNYXguICAgOjkuMDAgIFxuICAgICAgICAgICAgICAgICBOQSdzICAgOjEgICAgICAgIE5BJ3MgICA6MSAgICAgICAgTkEncyAgIDoxICAgICAgICBOQSdzICAgOjEgICAgIFxuIFR1cmJpZGl0eV9udHUgICAgICAgQ2hsYV91Z2wgICAgICAgQkdBUENfQ01MICAgICAgICAgT0RPX3NhdCAgICAgICAgIE9ET19tZ2wgICAgIFxuIE1pbi4gICA6ICA2LjIwICAgTWluLiAgIDogIDEuMyAgIE1pbi4gICA6ICAgMTg4ICAgTWluLiAgIDogODcuNSAgIE1pbi4gICA6MTAuMzQgIFxuIDFzdCBRdS46IDE1LjUwICAgMXN0IFF1LjogIDMuNyAgIDFzdCBRdS46ICAgOTcxICAgMXN0IFF1LjogOTkuMiAgIDFzdCBRdS46MTIuMzQgIFxuIE1lZGlhbiA6IDIxLjgwICAgTWVkaWFuIDogIDYuNyAgIE1lZGlhbiA6ICAxMzY5ICAgTWVkaWFuIDoxMDEuOCAgIE1lZGlhbiA6MTIuODggIFxuIE1lYW4gICA6IDI0LjU0ICAgTWVhbiAgIDoxMzcuMyAgIE1lYW4gICA6MTUzNTcxICAgTWVhbiAgIDoxMDIuMCAgIE1lYW4gICA6MTIuODggIFxuIDNyZCBRdS46IDMwLjMwICAgM3JkIFF1LjozMDIuNiAgIDNyZCBRdS46MzQ1MjExICAgM3JkIFF1LjoxMDQuMSAgIDNyZCBRdS46MTMuMzQgIFxuIE1heC4gICA6MTg3LjcwICAgTWF4LiAgIDozMzAuMSAgIE1heC4gICA6MzQ1NDcxICAgTWF4LiAgIDoxMjAuOCAgIE1heC4gICA6MTQuOTkgIFxuIE5BJ3MgICA6MSAgICAgICAgTkEncyAgIDoxICAgICAgIE5BJ3MgICA6MSAgICAgICAgTkEncyAgIDoxICAgICAgIE5BJ3MgICA6MSAgICAgIFxuICAgIERlcHRoX20gICAgIFxuIE1pbi4gICA6My43MDUgIFxuIDFzdCBRdS46NC40NTEgIFxuIE1lZGlhbiA6NC42ODQgIFxuIE1lYW4gICA6NC42NzcgIFxuIDNyZCBRdS46NC45MTMgIFxuIE1heC4gICA6NS40NTQgIFxuICAgICAgICAgICAgICAgIFxuIn0= -->
-<pre><code>      Date                          Weekday        AirTemp              Rain         
- Min.   :2014-01-01 00:00:00   Monday   :1152   Min.   :-15.6950   Min.   :0.000000  
- 1st Qu.:2014-01-22 08:22:30   Tuesday  :1152   1st Qu.: -0.2528   1st Qu.:0.000000  
- Median :2014-02-12 16:45:00   Wednesday:1248   Median :  3.0222   Median :0.000000  
- Mean   :2014-02-12 16:45:00   Thursday :1191   Mean   :  3.7751   Mean   :0.002137  
- 3rd Qu.:2014-03-06 01:07:30   Friday   :1152   3rd Qu.:  8.0056   3rd Qu.:0.000000  
- Max.   :2014-03-27 09:30:00   Saturday :1152   Max.   : 23.8167   Max.   :0.881380  
-                               Sunday   :1152                                        
-   WindSpeed         RecordID          PAR              WindDir        RelHumidity   
- Min.   : 0.000   Min.   :43816   Min.   :   0.000   Min.   :  0.00   Min.   :15.37  
- 1st Qu.: 3.970   1st Qu.:45866   1st Qu.:   0.000   1st Qu.: 37.31   1st Qu.:42.25  
- Median : 6.582   Median :47915   Median :   0.046   Median :137.30   Median :56.40  
- Mean   : 8.764   Mean   :47915   Mean   : 241.984   Mean   :146.20   Mean   :58.37  
- 3rd Qu.:11.735   3rd Qu.:49964   3rd Qu.: 337.900   3rd Qu.:249.95   3rd Qu.:76.59  
- Max.   :49.326   Max.   :52014   Max.   :1957.000   Max.   :360.00   Max.   :93.00  
-                                                                                     
-     BP_HG         H2O_TempC       SpCond_mScm      Salinity_ppt          PH      
- Min.   :29.11   Min.   :-0.140   Min.   :0.0110   Min.   :0.0000   Min.   :6.43  
- 1st Qu.:29.87   1st Qu.: 3.930   1st Qu.:0.1430   1st Qu.:0.0700   1st Qu.:7.50  
- Median :30.01   Median : 5.450   Median :0.1650   Median :0.0800   Median :7.58  
- Mean   :30.02   Mean   : 5.529   Mean   :0.1611   Mean   :0.0759   Mean   :7.60  
- 3rd Qu.:30.21   3rd Qu.: 7.410   3rd Qu.:0.1760   3rd Qu.:0.0800   3rd Qu.:7.69  
- Max.   :30.58   Max.   :13.300   Max.   :0.2110   Max.   :0.1000   Max.   :9.00  
-                 NA&#39;s   :1        NA&#39;s   :1        NA&#39;s   :1        NA&#39;s   :1     
- Turbidity_ntu       Chla_ugl       BGAPC_CML         ODO_sat         ODO_mgl     
- Min.   :  6.20   Min.   :  1.3   Min.   :   188   Min.   : 87.5   Min.   :10.34  
- 1st Qu.: 15.50   1st Qu.:  3.7   1st Qu.:   971   1st Qu.: 99.2   1st Qu.:12.34  
- Median : 21.80   Median :  6.7   Median :  1369   Median :101.8   Median :12.88  
- Mean   : 24.54   Mean   :137.3   Mean   :153571   Mean   :102.0   Mean   :12.88  
- 3rd Qu.: 30.30   3rd Qu.:302.6   3rd Qu.:345211   3rd Qu.:104.1   3rd Qu.:13.34  
- Max.   :187.70   Max.   :330.1   Max.   :345471   Max.   :120.8   Max.   :14.99  
- NA&#39;s   :1        NA&#39;s   :1       NA&#39;s   :1        NA&#39;s   :1       NA&#39;s   :1      
-    Depth_m     
- Min.   :3.705  
- 1st Qu.:4.451  
- Median :4.684  
- Mean   :4.677  
- 3rd Qu.:4.913  
- Max.   :5.454  
-                </code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="questions" class="section level2">
@@ -1830,7 +1774,7 @@ See spec(...) for full column specifications.</code></pre>
 <ol style="list-style-type: decimal">
 <li><p>Pull out the data related to atmospheric parameters (e.g., those not measuring something in the water). Create a plot of their pairwise relationship.</p></li>
 <li><p>For those atmospheric data, what which pair of variables have the strongest correlation? What is the 95% confidence interval on that correlation coefficient?</p></li>
-<li><p>Using the first 40 observations in air temperature and barometric pressure from the Rice Center data set, determine if they are indiviudally distributed as a normal random variable.</p></li>
+<li><p>Using the first 40 observations in air temperature and barometric pressure from the Rice Center data set, determine if they are individually distributed as a normal random variable.</p></li>
 <li><p>Given your findings in the last question, what kind of correlation statistic would be most appropriate for estimating the correlation between this subset of data?</p></li>
 <li><p>Look at a <code>qqnorm()</code> plot of the barometric pressure data you used in the previous example. Is there something that ‘looks’ odd with these data? Explain, why those data are the way they are.</p></li>
 <li><p>Using a permutation approach, define the distribution of correlation values between the variables in #3 assuming that the NULL hypothesis is actually true. Plot these as a histogram and include the observed correlation.</p></li>
@@ -1838,7 +1782,7 @@ See spec(...) for full column specifications.</code></pre>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29ycmVsYXRpb24gSG9tZXdvcmsiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCjxjZW50ZXI+IVtdKGh0dHBzOi8vbGl2ZS5zdGF0aWNmbGlja3IuY29tLzY1NTM1LzUwNTgzNTk3NjgyXzUyMTMwZmIwNDBfY19kLmpwZyk8L2NlbnRlcj4KCkZvciB0aGlzIGhvbWV3b3JrLCB3ZSBhcmUgZ29pbmcgdG8gZ28gYmFjayB0byB3b3JrIHdpdGggb3VyIGJlbG92ZWQgUmljZSBSaXZlcnMgQ2VudGVyIGRhdGEuICBZb3UgaGF2ZSB5b3VyIGRhdGEgZm9ybWF0dGluZyBmdW5jdGlvbiB0aGF0IHlvdSBjcmVhdGVkIHRvIGdyYWIgaXQgZnJvbSB0aGUgc2VydmVyLgoKCmBgYHtyfQpzb3VyY2UoImdldFJpY2VEYXRhLlIiKQoKcmljZSA8LSBnZXRSaWNlRGF0YSgpCnN1bW1hcnkoIHJpY2UgKQpgYGAKCgoKCiMjIFF1ZXN0aW9ucwoKMS4gUHVsbCBvdXQgdGhlIGRhdGEgcmVsYXRlZCB0byBhdG1vc3BoZXJpYyBwYXJhbWV0ZXJzIChlLmcuLCB0aG9zZSBub3QgbWVhc3VyaW5nIHNvbWV0aGluZyBpbiB0aGUgd2F0ZXIpLiAgQ3JlYXRlIGEgcGxvdCBvZiB0aGVpciBwYWlyd2lzZSByZWxhdGlvbnNoaXAuCgoKMi4gRm9yIHRob3NlIGF0bW9zcGhlcmljIGRhdGEsIHdoYXQgd2hpY2ggcGFpciBvZiB2YXJpYWJsZXMgaGF2ZSB0aGUgc3Ryb25nZXN0IGNvcnJlbGF0aW9uPyAgV2hhdCBpcyB0aGUgOTUlIGNvbmZpZGVuY2UgaW50ZXJ2YWwgb24gdGhhdCBjb3JyZWxhdGlvbiBjb2VmZmljaWVudD8KCgozLiBVc2luZyB0aGUgZmlyc3QgNDAgb2JzZXJ2YXRpb25zIGluIGFpciB0ZW1wZXJhdHVyZSBhbmQgYmFyb21ldHJpYyBwcmVzc3VyZSBmcm9tIHRoZSBSaWNlIENlbnRlciBkYXRhIHNldCwgZGV0ZXJtaW5lIGlmIHRoZXkgYXJlIGluZGl2aXVkYWxseSBkaXN0cmlidXRlZCBhcyBhIG5vcm1hbCByYW5kb20gdmFyaWFibGUuCgoKNC4gR2l2ZW4geW91ciBmaW5kaW5ncyBpbiB0aGUgbGFzdCBxdWVzdGlvbiwgd2hhdCBraW5kIG9mIGNvcnJlbGF0aW9uIHN0YXRpc3RpYyB3b3VsZCBiZSBtb3N0IGFwcHJvcHJpYXRlIGZvciBlc3RpbWF0aW5nIHRoZSBjb3JyZWxhdGlvbiBiZXR3ZWVuIHRoaXMgc3Vic2V0IG9mIGRhdGE/CgoKNS4gTG9vayBhdCBhIGBxcW5vcm0oKWAgcGxvdCBvZiB0aGUgYmFyb21ldHJpYyBwcmVzc3VyZSBkYXRhIHlvdSB1c2VkIGluIHRoZSBwcmV2aW91cyBleGFtcGxlLiAgSXMgdGhlcmUgc29tZXRoaW5nIHRoYXQgJ2xvb2tzJyBvZGQgd2l0aCB0aGVzZSBkYXRhPyAgRXhwbGFpbiwgd2h5IHRob3NlIGRhdGEgYXJlIHRoZSB3YXkgdGhleSBhcmUuCgoKNi4gVXNpbmcgYSBwZXJtdXRhdGlvbiBhcHByb2FjaCwgZGVmaW5lIHRoZSBkaXN0cmlidXRpb24gb2YgY29ycmVsYXRpb24gdmFsdWVzIGJldHdlZW4gdGhlIHZhcmlhYmxlcyBpbiAjMyBhc3N1bWluZyB0aGF0IHRoZSBOVUxMIGh5cG90aGVzaXMgaXMgYWN0dWFsbHkgdHJ1ZS4gIFBsb3QgdGhlc2UgYXMgYSBoaXN0b2dyYW0gYW5kIGluY2x1ZGUgdGhlIG9ic2VydmVkIGNvcnJlbGF0aW9uLgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29ycmVsYXRpb24gSG9tZXdvcmsiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCjxjZW50ZXI+IVtdKGh0dHBzOi8vbGl2ZS5zdGF0aWNmbGlja3IuY29tLzY1NTM1LzUwNTgzNTk3NjgyXzUyMTMwZmIwNDBfY19kLmpwZyk8L2NlbnRlcj4KCkZvciB0aGlzIGhvbWV3b3JrLCB3ZSBhcmUgZ29pbmcgdG8gZ28gYmFjayB0byB3b3JrIHdpdGggb3VyIGJlbG92ZWQgUmljZSBSaXZlcnMgQ2VudGVyIGRhdGEuICBZb3UgaGF2ZSB5b3VyIGRhdGEgZm9ybWF0dGluZyBmdW5jdGlvbiB0aGF0IHlvdSBjcmVhdGVkIHRvIGdyYWIgaXQgZnJvbSB0aGUgc2VydmVyLgoKCmBgYHtyfQpzb3VyY2UoImdldFJpY2VEYXRhLlIiKQpyaWNlIDwtIGdldFJpY2VEYXRhKCkKc3VtbWFyeSggcmljZSApCmBgYAoKCgoKIyMgUXVlc3Rpb25zCgoxLiBQdWxsIG91dCB0aGUgZGF0YSByZWxhdGVkIHRvIGF0bW9zcGhlcmljIHBhcmFtZXRlcnMgKGUuZy4sIHRob3NlIG5vdCBtZWFzdXJpbmcgc29tZXRoaW5nIGluIHRoZSB3YXRlcikuICBDcmVhdGUgYSBwbG90IG9mIHRoZWlyIHBhaXJ3aXNlIHJlbGF0aW9uc2hpcC4KCgoyLiBGb3IgdGhvc2UgYXRtb3NwaGVyaWMgZGF0YSwgd2hhdCB3aGljaCBwYWlyIG9mIHZhcmlhYmxlcyBoYXZlIHRoZSBzdHJvbmdlc3QgY29ycmVsYXRpb24/ICBXaGF0IGlzIHRoZSA5NSUgY29uZmlkZW5jZSBpbnRlcnZhbCBvbiB0aGF0IGNvcnJlbGF0aW9uIGNvZWZmaWNpZW50PwoKCjMuIFVzaW5nIHRoZSBmaXJzdCA0MCBvYnNlcnZhdGlvbnMgaW4gYWlyIHRlbXBlcmF0dXJlIGFuZCBiYXJvbWV0cmljIHByZXNzdXJlIGZyb20gdGhlIFJpY2UgQ2VudGVyIGRhdGEgc2V0LCBkZXRlcm1pbmUgaWYgdGhleSBhcmUgaW5kaXZpZHVhbGx5IGRpc3RyaWJ1dGVkIGFzIGEgbm9ybWFsIHJhbmRvbSB2YXJpYWJsZS4KCgo0LiBHaXZlbiB5b3VyIGZpbmRpbmdzIGluIHRoZSBsYXN0IHF1ZXN0aW9uLCB3aGF0IGtpbmQgb2YgY29ycmVsYXRpb24gc3RhdGlzdGljIHdvdWxkIGJlIG1vc3QgYXBwcm9wcmlhdGUgZm9yIGVzdGltYXRpbmcgdGhlIGNvcnJlbGF0aW9uIGJldHdlZW4gdGhpcyBzdWJzZXQgb2YgZGF0YT8KCgo1LiBMb29rIGF0IGEgYHFxbm9ybSgpYCBwbG90IG9mIHRoZSBiYXJvbWV0cmljIHByZXNzdXJlIGRhdGEgeW91IHVzZWQgaW4gdGhlIHByZXZpb3VzIGV4YW1wbGUuICBJcyB0aGVyZSBzb21ldGhpbmcgdGhhdCAnbG9va3MnIG9kZCB3aXRoIHRoZXNlIGRhdGE/ICBFeHBsYWluLCB3aHkgdGhvc2UgZGF0YSBhcmUgdGhlIHdheSB0aGV5IGFyZS4KCgo2LiBVc2luZyBhIHBlcm11dGF0aW9uIGFwcHJvYWNoLCBkZWZpbmUgdGhlIGRpc3RyaWJ1dGlvbiBvZiBjb3JyZWxhdGlvbiB2YWx1ZXMgYmV0d2VlbiB0aGUgdmFyaWFibGVzIGluICMzIGFzc3VtaW5nIHRoYXQgdGhlIE5VTEwgaHlwb3RoZXNpcyBpcyBhY3R1YWxseSB0cnVlLiAgUGxvdCB0aGVzZSBhcyBhIGhpc3RvZ3JhbSBhbmQgaW5jbHVkZSB0aGUgb2JzZXJ2ZWQgY29ycmVsYXRpb24uCg==</div>
 
 
 

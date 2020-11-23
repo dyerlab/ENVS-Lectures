@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Regression</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/slide_model_styles.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50559539697_1c35d0a56a_o_d.png")
+background-size: cover
+
+
+
+
+
+# .black[Regression Models &lt;svg style="height:0.8em;top:.04em;position:relative;fill:#FDD545;" viewBox="0 0 512 512"&gt;&lt;path d="M496 384H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM464 96H345.94c-21.38 0-32.09 25.85-16.97 40.97l32.4 32.4L288 242.75l-73.37-73.37c-12.5-12.5-32.76-12.5-45.25 0l-68.69 68.69c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L192 237.25l73.37 73.37c12.5 12.5 32.76 12.5 45.25 0l96-96 32.4 32.4c15.12 15.12 40.97 4.41 40.97-16.97V112c.01-8.84-7.15-16-15.99-16z"/&gt;&lt;/svg&gt; ]
+
+&amp;nbsp;
+
+### .yellow[.fancy[Linear Models &amp; &lt;br&gt;Model Comparison]]
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+
+---
+# Linear Models
+
+
+$$
+y = \beta_0 + \beta_1 x_1 + \epsilon 
+$$
+
+
+.pull-left[
+The basic linear model has:  
+- An intercept ( `\(\beta_0\)` ),
+
+- A slope coefficient ( `\(\beta_1\)` ), and 
+
+- And an error term ( `\(\epsilon\)` ).
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-1-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+
+# Building A Model - Random Search
+
+
+
+.pull-left[
+
+```r
+models &lt;- data.frame( beta0 = runif(250,-20,40),
+                      beta1 = runif(250, -5, 5))
+summary( models )
+```
+
+```
+##      beta0             beta1        
+##  Min.   :-19.762   Min.   :-4.9136  
+##  1st Qu.: -4.687   1st Qu.:-2.4890  
+##  Median : 11.796   Median : 0.1548  
+##  Mean   : 10.393   Mean   : 0.1094  
+##  3rd Qu.: 27.195   3rd Qu.: 2.7937  
+##  Max.   : 39.905   Max.   : 4.9440
+```
+]
+
+--
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-3-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+# Building A Model - Search Criterion
+
+.center[
+&lt;img src="slides_files/figure-html/unnamed-chunk-4-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+
+---
+
+# Searching Random Model Space
+
+
+```r
+model_distance &lt;- function( interscept, slope, X, Y ) {
+  yhat &lt;- interscept + slope * X
+  diff &lt;- Y - yhat
+  return( sqrt( mean( diff ^ 2 ) ) )
+}
+```
+
+--
+
+
+```r
+models$dist &lt;- NA
+for( i in 1:nrow(models) ) {
+  models$dist[i] &lt;- model_distance( models$beta0[i],
+                                    models$beta1[i],
+                                    df$x,
+                                    df$y )
+}
+head( models )
+```
+
+```
+##       beta0      beta1      dist
+## 1 13.942856  3.8742764  7.266031
+## 2 -4.470881  3.4799721 18.006116
+## 3 29.234491 -0.5092726 11.682216
+## 4 -2.525953  2.6900096 20.145226
+## 5 22.674884 -1.6924079 22.762173
+## 6 23.290843  4.2399282 16.452584
+```
+
+
+
+---
+
+# Top 10 Random Models
+
+
+
+.pull-left[
+&lt;img src="slides_files/figure-html/unnamed-chunk-7-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+.pull-right[
+
+The 10 best models (filtering in data= inside a `geom_abline()`) with original points.
+
+
+```r
+ggplot()  + 
+  geom_abline( aes(intercept = beta0,
+                   slope = beta1, 
+                   color = -dist),
+               data = filter( models, rank(dist) &lt;= 10 ),
+               alpha = 0.5) + 
+  geom_point( aes(x,y),
+              data=df) 
+```
+]
+
+
+
+---
+
+# The Best Coefficients
+
+
+```r
+ggplot( models, aes(x = beta0, y = beta1, color = -dist)) + 
+  geom_point( data = filter( models, rank(dist) &lt;= 10), color = "red",  size = 4) + geom_point()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-9-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+# Systematic Grid Search
+
+.pull-left[
+&lt;img src="slides_files/figure-html/unnamed-chunk-10-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+```r
+grid &lt;- expand.grid( beta0 = seq(15,20, length = 25),
+                     beta1 = seq(2, 3, length = 25))
+grid$dist &lt;- NA
+for( i in 1:nrow(grid) ) {
+  grid$dist[i] &lt;- model_distance( grid$beta0[i],
+                                  grid$beta1[i],
+                                  df$x,
+                                  df$y )
+}
+
+ggplot( grid, aes(x = beta0, 
+                  y = beta1,
+                  color = -dist)) + 
+  geom_point( data = filter( grid, rank(dist) &lt;= 10), 
+              color = "red",
+              size = 4) +
+  geom_point()
+```
+]
+
+
+---
+class: inverse, sectionTitle
+
+
+# .yellow[Our Friend `lm()`]
+
+
+## .fancy[Linear Models]
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/50588297022_62f043a616_c_d.jpg)
+
+
+---
+
+# Specifying a Formula
+
+*Single Predictor Model*
+
+```
+y ~ x
+```
+
+*Multiple Additive Predictors*
+
+```
+y ~ x1 + x2 
+```
+
+*Interaction Terms*
+
+```
+y ~ x1 + x2 + x1*x2
+```
+
+
+---
+
+# Fitting A Model
+
+
+
+```r
+fit &lt;- lm( y ~ x, data = df )
+fit 
+```
+
+```
+## 
+## Call:
+## lm(formula = y ~ x, data = df)
+## 
+## Coefficients:
+## (Intercept)            x  
+##      17.280        2.625
+```
+
+
+
+---
+
+# Model Summaries
+
+
+```r
+summary( fit )
+```
+
+```
+## 
+## Call:
+## lm(formula = y ~ x, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.9836 -4.0182 -0.8709  5.3064  6.9909 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)   17.280      4.002   4.318  0.00255 **
+## x              2.626      0.645   4.070  0.00358 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 5.859 on 8 degrees of freedom
+## Multiple R-squared:  0.6744,	Adjusted R-squared:  0.6337 
+## F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581
+```
+
+
+---
+
+# Components within the Summary Object
+
+
+```r
+names( summary( fit ) )
+```
+
+```
+##  [1] "call"          "terms"         "residuals"     "coefficients" 
+##  [5] "aliased"       "sigma"         "df"            "r.squared"    
+##  [9] "adj.r.squared" "fstatistic"    "cov.unscaled"
+```
+
+--
+
+The probability can be found by looking at the data in the `F-Statistic` and then asking the F-distribution for the probability associated with the value of the test statistic and the degrees of freedom for both the model and the residuals.
+
+
+```r
+summary( fit )$fstatistic 
+```
+
+```
+##    value    numdf    dendf 
+## 16.56838  1.00000  8.00000
+```
+
+
+
+```r
+get_pval &lt;- function( model ) {
+  f &lt;- summary( model )$fstatistic[1]
+  df1 &lt;- summary( model )$fstatistic[2]
+  df2 &lt;- summary( model )$fstatistic[3]
+  p &lt;- as.numeric( 1.0 - pf( f, df1, df2 ) )
+  return( p  )
+}
+
+get_pval( fit )
+```
+
+```
+## [1] 0.0035813
+```
+
+
+
+
+
+---
+
+# Model Diagnostics - Residuals
+
+
+
+```r
+plot( fit, which = 1 )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-17-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Normality Of the Data
+
+
+```r
+plot( fit, which = 2 )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-18-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Leverage
+
+
+```r
+plot( fit, which=5 )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-19-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Decomposition of Variance
+
+
+The terms in this table are:
+
+- Degrees of Freedom (*df*): representing `1` degree of freedom for the model, and `N-1` for the residuals.  
+
+- Sums of Squared Deviations: 
+    - `\(SS_{Total} = \sum_{i=1}^N (y_i - \bar{y})^2\)`
+    - `\(SS_{Model} = \sum_{i=1}^N (\hat{y}_i - \bar{y})^2\)`, and 
+    - `\(SS_{Residual} = SS_{Total} - SS_{Model}\)`
+    
+- Mean Squares (Standardization of the Sums of Squares for the degrees of freedom)  
+    - `\(MS_{Model} = \frac{SS_{Model}}{df_{Model}}\)`
+    - `\(MS_{Residual} = \frac{SS_{Residual}}{df_{Residual}}\)`
+    
+- The `\(F\)`-statistic is from a known distribution and is defined by the ratio of Mean Squared values.
+
+- `Pr(&gt;F)` is the probability associated the value of the `\(F\)`-statistic and is dependent upon the degrees of freedom for the model and residuals.
+
+
+---
+
+# Decomposition of Variance
+
+
+
+```r
+anova( fit )
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: y
+##           Df Sum Sq Mean Sq F value   Pr(&gt;F)   
+## x          1 568.67  568.67  16.568 0.003581 **
+## Residuals  8 274.58   34.32                    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+---
+
+# Variance Exaplained
+
+
+
+```r
+summary( fit )
+```
+
+```
+## 
+## Call:
+## lm(formula = y ~ x, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.9836 -4.0182 -0.8709  5.3064  6.9909 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)   17.280      4.002   4.318  0.00255 **
+## x              2.626      0.645   4.070  0.00358 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 5.859 on 8 degrees of freedom
+## Multiple R-squared:  0.6744,	Adjusted R-squared:  0.6337 
+## F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581
+```
+
+
+---
+
+# Relationship Between `\(R^2\)` &amp; `\(r\)`
+
+How much of the variation is explained?
+
+
+`$$R^2 = \frac{SS_{Model}}{SS_{Total}}$$`
+
+--
+
+
+```r
+c( `Regression R^2` = summary( fit )$r.squared,
+   `Squared Correlation` = as.numeric( cor.test( df$x, df$y )$estimate^2 ) )
+```
+
+```
+##      Regression R^2 Squared Correlation 
+##           0.6743782           0.6743782
+```
+
+&gt; The square of the Pearson Correlation is equal to R
+
+---
+
+## Helper Functions
+
+
+
+.pull-left[
+
+Grabbing the predicted values `\(\hat{y}\)` from the model.
+
+
+```r
+predict( fit ) -&gt; yhat 
+yhat
+```
+
+```
+##        1        2        3        4        5        6        7        8 
+## 19.90545 22.53091 25.15636 27.78182 30.40727 33.03273 35.65818 38.28364 
+##        9       10 
+## 40.90909 43.53455
+```
+
+
+
+```r
+plot( yhat ~ df$x, type='l', bty="n", col="red" )
+```
+
+]
+
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-25-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+---
+
+# Helper Functions - Residuals
+
+.pull-left[
+
+The residuals are the distances between the observed value and its corresponding value on the fitted line.
+
+
+```r
+residuals( fit ) 
+```
+
+```
+##          1          2          3          4          5          6          7 
+## -4.4054545  5.5690909 -2.8563636  4.5181818  0.6927273 -6.2327273  6.1418182 
+##          8          9         10 
+## -7.9836364  6.9909091 -2.4345455
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-27-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[Comparing Models]
+
+
+
+---
+
+# What Makes One Model Better
+
+There are two parameters that we have already looked at that may help.  These are:
+
+- The `\(P-value\)`: Models with smaller probabilities could be considered more informative.  
+
+- The `\(R^2\)`: Models that explain more of the variation may be considered more informative.
+
+--
+
+Let's start by looking at some airquality data we have played with previously when working on [data.frame objects](https://dyerlab.github.io/ENVS-Lectures/r_language/data_frames/homework.nb.html).
+
+
+```r
+airquality %&gt;%
+  select( -Month, -Day ) -&gt; df.air
+summary( df.air )
+```
+
+```
+##      Ozone           Solar.R           Wind             Temp      
+##  Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
+##  1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00  
+##  Median : 31.50   Median :205.0   Median : 9.700   Median :79.00  
+##  Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88  
+##  3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00  
+##  Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00  
+##  NA's   :37       NA's   :7
+```
+
+
+---
+
+# Base Models - What Influences Ozone
+
+
+```r
+fit.solar &lt;- lm( Ozone ~ Solar.R, data = df.air )
+fit.temp &lt;- lm( Ozone ~ Temp, data = df.air )
+fit.wind &lt;- lm( Ozone ~ Wind, data = df.air )
+```
+
+
+--
+
+
+
+&lt;table class=" lightable-classic-2" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Model parameters predicting mean ozone in parts per billion mearsured in New York during the period of 1 May 2973 - 30 September 2973 as predicted by Temperature, Windspeed, and Solar Radiation.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Model &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; R2 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; P &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.121 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1.79e-04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.488 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.00e+00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Wind &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.362 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 9.27e-13 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+---
+
+# More Complicated Models
+
+Multiple Regression Model - Including more than one predictors.
+
+`\(y = \beta_0 + \beta_1 x_1 + beta_2 x_2 + \epsilon\)`
+
+
+
+
+```r
+fit.temp.wind &lt;- lm( Ozone ~ Temp + Wind, data = df.air )
+fit.temp.solar &lt;- lm( Ozone ~ Temp + Solar.R, data = df.air )
+fit.wind.solar &lt;- lm( Ozone ~ Wind + Solar.R, data = df.air )
+```
+
+--
+
+&lt;table class=" lightable-classic-2" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Model &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; R2 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; P &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.121 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1.79e-04 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.488 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.00e+00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Wind &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.362 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 9.27e-13 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.569 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.00e+00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.510 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.00e+00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Wind + Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.449 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 9.99e-15 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+---
+
+# For Completeness
+
+How about all the predictors. `\(y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon\)`
+
+
+```r
+fit.all &lt;- lm( Ozone ~ Solar.R + Temp + Wind, data = df.air )
+```
+
+--
+
+&lt;table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Model &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; R2 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; P &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1.21e-01&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;1.79e-04&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;4.88e-01&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: red !important;"&gt;0.00e+00&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Wind &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;3.62e-01&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;9.27e-13&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;5.69e-01&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: red !important;"&gt;0.00e+00&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;5.10e-01&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: red !important;"&gt;0.00e+00&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Wind + Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;4.49e-01&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;"&gt;9.99e-15&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: green !important;"&gt;6.06e-01&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: red !important;"&gt;0.00e+00&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+
+## `\(R^2\)` Inflation
+
+Any variable added to a model will be able to generate *Sums of Squares* (even if it is a small amount).  So, `adding variables may artifically inflate the Model Sums of Squares`.
+
+
+Example:
+
+&gt; What happens if I add just random data to the regression models?  How does `\(R^2\)` change?
+
+
+
+---
+
+# Random Data Effects
+
+
+
+
+
+.pull-left[
+
+&lt;table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Original Models&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Models &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; R2 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.4877 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Wind &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.3619 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.1213 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.5687 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.5103 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Wind + Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.4495 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6059 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+]
+
+--
+
+.pull-right[
+
+&lt;table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Original Models + Random Variables&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Models &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; R2 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 1 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6060 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 2 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6111 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 3 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6113 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 4 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6115 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 5 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6363 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 6 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6682 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 7 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6697 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 8 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6704 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+]
+
+
+---
+
+# Perfect - My Models RULE
+
+#### I can just add **random** variables to my model and always get an .redinline[awesome] fit!
+
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.center[
+&lt;iframe src="https://giphy.com/embed/7ymcoEE72hEf6" width="480" height="225" frameBorder="0" class="giphy-embed" allowFullScreen&gt;&lt;/iframe&gt;
+]
+
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.orangeinline[Not so fast Bevis.]
+
+
+
+---
+
+# Model Comparisons
+
+Akaike Information Criterion (AIC) is a measurement that allows us to compare models while penalizing for adding new parameters.
+
+`\(AIC = -2 \ln L + 2p\)`
+
+The criterion here are to find models with the lowest AIC values.
+
+--
+
+## Comparisons
+
+To compare, we evaluate the differences in AIC for alternative models.
+
+`\(\delta AIC = AIC - min( AIC )\)`
+
+
+
+
+---
+
+# AIC &amp; ∂AIC
+
+
+
+
+
+.pull-left[
+&lt;table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Models &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; R2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; AIC &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; deltaAIC &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.488 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1067.706 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76.098 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Wind &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.362 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1093.187 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 101.579 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Solar &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.121 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1083.714 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 92.106 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.569 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1049.741 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.132 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Solar &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.510 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1020.820 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29.211 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Wind + Solar &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.449 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1033.816 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.207 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.606 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 998.717 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.108 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+--
+
+.pull-right[
+&lt;table class=" lightable-paper lightable-striped" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Models &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; R2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; AIC &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; deltaAIC &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 1 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.606 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1000.699 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.091 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 2 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.611 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1001.246 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.637 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 3 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.611 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1003.190 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.581 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 4 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.612 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1005.120 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.511 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 5 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.636 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 999.813 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.204 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 6 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.668 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 991.609 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 7 Random Variables &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.670 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 993.106 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.497 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+
+
+---
+
+class: middle
+background-position: right
+background-size: auto
+
+.center[
+
+# Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,190 @@
+---
+title: "Regression Homework"
+output: html_notebook
+---
+
+Regression models are very useful for creating predictive models.  For this exercise, we will play with some different data yet again. I do this for two reasons. First, it gets a bit old to be using the same data set over and over again. Second, regression analysis relies upon the notion that you are predicting the functional relationship between variables and the various things measured in the classic Rice Center data set are not causal. 
+
+<center>
+![](https://live.staticflickr.com/65535/50590074636_9277189260_d.jpg)
+</center>
+
+So instead, we will be using car data described as:
+
+> Cars were selected at random from among 1993 passenger car models that were listed in both the Consumer Reports issue and the PACE Buying Guide. Pickup trucks and Sport/Utility vehicles were eliminated due to incomplete information in the Consumer Reports source. Duplicate models (e.g., Dodge Shadow and Plymouth Sundance) were listed at most once.
+
+And can be loaded into your session as:
+
+```{r}
+library( MASS )
+names( Cars93 )
+```
+
+## The Question
+
+*The sole question for this topic is to have you figure out the best regression model that describes the variation in car weight in the `Cars93` data set.  In you evaluation of alternative models, make sure you are looking at the normality of predictors, the relative fit of the alternative models, etc.*
+
+
+A good model is one that best explains the observed data.  Here I am going to take the following approach to determine which model seems to be the best.  First, I'm going to select the variables that may be important.
+
+
+```{r}
+library( tidyverse )
+Cars93 %>%
+  select( Weight, Cylinders, EngineSize, Fuel.tank.capacity,
+          Passengers, Length, Width, Rear.seat.room, Luggage.room ) -> data
+summary( data )
+```
+
+Well, it looks like the `Cylinders` variable is a categorical one because of the rotary engine.  I'm going to take that out and turn it into a numeric variable.
+
+```{r}
+data %>%
+  filter( Cylinders != 'rotary') %>%
+  mutate( Cylinders = as.numeric( as.character( Cylinders ) )  ) -> data 
+  
+summary( data ) 
+```
+
+That is OK.  Perhaps we should take out the rows of data that is missing.  Since these are generally cars that have, for example, no luggage room, I'm going to put `0` in there for all the `NA` values.  Same for `Rear.seat.room`.
+
+```{r}
+data$Rear.seat.room[ is.na( data$Rear.seat.room)] <- 0.0 
+data$Luggage.room[ is.na( data$Luggage.room) ] <- 0.0
+summary( data )
+```
+
+Now that looks good.  
+
+## Strategy for Finding the *Best Model*
+
+To find the best model, I'm going to make the first order models (e.g., `y ~ x1`, `y ~ x2`, etc.) and compare them using AIC.
+
+
+
+
+
+
+### First Order Models
+
+So I'm going to first find out which of the variables is most highly correlated with Weight. 
+
+```{r}
+fit.1 <- lm( Weight ~ Cylinders, data=data )
+fit.2 <- lm( Weight ~ EngineSize, data=data )
+fit.3 <- lm( Weight ~ Fuel.tank.capacity, data=data)
+fit.4 <- lm( Weight ~ Passengers, data=data)
+fit.5 <- lm( Weight ~ Length, data=data)
+fit.6 <- lm( Weight ~ Width, data=data)
+fit.7 <- lm( Weight ~ Rear.seat.room, data=data)
+fit.8 <- lm( Weight ~ Luggage.room, data=data)
+```
+
+Then I'll craft a `data.frame` to compare them.
+
+```{r}
+df <- data.frame( Model = c( as.character( fit.1$call[2] ),
+                             as.character( fit.2$call[2] ),
+                             as.character( fit.3$call[2] ),
+                             as.character( fit.4$call[2] ),
+                             as.character( fit.5$call[2] ),
+                             as.character( fit.6$call[2] ),
+                             as.character( fit.7$call[2] ),
+                             as.character( fit.8$call[2] ) ),
+                  R2 = c( summary( fit.1 )$r.squared,
+                          summary( fit.2 )$r.squared,
+                          summary( fit.3 )$r.squared,
+                          summary( fit.4 )$r.squared,
+                          summary( fit.5 )$r.squared,
+                          summary( fit.6 )$r.squared,
+                          summary( fit.7 )$r.squared,
+                          summary( fit.8 )$r.squared ),
+                  AIC = c( AIC( fit.1 ),
+                           AIC( fit.2 ),
+                           AIC( fit.3 ),
+                           AIC( fit.4 ),
+                           AIC( fit.5 ),
+                           AIC( fit.6 ),
+                           AIC( fit.7 ),
+                           AIC( fit.8 ) )
+)
+```
+
+Now, let's look at them.
+
+```{r}
+library( knitr )
+library( kableExtra )
+
+df %>%
+  mutate( dAIC = AIC - min(AIC) ) %>%
+  arrange( dAIC ) %>%
+  kable( digits = 3, 
+         caption = "First order models with amount of variation observed and AIC." ) %>%
+  kable_paper( full_width = FALSE )
+```
+
+So, if I'm only going to fit a single term, it looks like `Fuel.tank.capacity` (`fit.3`) may be the best one to fit.  Let's look at the model itself.
+
+
+```{r}
+plot( fit.3, which=1 )
+plot( fit.3, which=2 )
+```
+
+
+Looks pretty good.  What if I want to use two terms though?  Something like, `Weight ~ Fuel.tank.capacity + X`.  The two predictor models are
+
+```{r}
+fit.9 <- lm( Weight ~ Fuel.tank.capacity + Cylinders,       data=data )
+fit.10 <- lm( Weight ~ Fuel.tank.capacity + EngineSize,     data=data )
+fit.11 <- lm( Weight ~ Fuel.tank.capacity + Passengers,     data=data)
+fit.12 <- lm( Weight ~ Fuel.tank.capacity + Length,         data=data)
+fit.13 <- lm( Weight ~ Fuel.tank.capacity + Width,          data=data)
+fit.14 <- lm( Weight ~ Fuel.tank.capacity + Rear.seat.room, data=data)
+fit.15 <- lm( Weight ~ Fuel.tank.capacity + Luggage.room,   data=data)
+```
+
+Now, making that big `data.frame` is a bit of a pain, so I'm going to make a quick function that takes a model and makes an identical `data.frame` to bind onto the original one.
+
+```{r}
+make_df <- function( model ) {
+  df <- data.frame( Model = as.character( model$call[2] ),
+                    R2 = summary( model )$r.squared,
+                    AIC = AIC( model ) )
+  return( df ) 
+}
+```
+
+Then I can just paste these new ones on the end ande then look at it again (I'm going to filter by `dAIC <= 10` for simplicity.)
+
+```{r}
+df <- rbind( df, make_df( fit.9 ) )
+df <- rbind( df, make_df( fit.10 ) )
+df <- rbind( df, make_df( fit.11 ) )
+df <- rbind( df, make_df( fit.12 ) )
+df <- rbind( df, make_df( fit.13 ) )
+df <- rbind( df, make_df( fit.14 ) )
+df <- rbind( df, make_df( fit.15 ) )
+
+
+df %>%
+  mutate( dAIC = AIC - min(AIC) ) %>%
+  arrange( dAIC ) %>%
+  filter( dAIC <= 10.0 ) %>% 
+  kable( digits = 3, 
+         caption = "First order models with two predictor variables, amount of variation observed, AIC, and dAIC." ) %>%
+  kable_paper( full_width = FALSE )
+```
+
+You can then continue in the same fashion to find the best model with first-level predictors.  The best model I've found was one that had the following terms in it
+
+`Weight ~ Cylinders + EngineSize + Fuel.tank.capacity + Length + Rear.seat.room + Luggage.room`
+
+However, from the AIC values, there are some other models that are withing a few points of AIC, which you'll will want to acknowledge that they may be helpful in understanding the relationships.  Here are the main things that are important.
+
+- Approach the model building process as an iterative activity.  
+- Evaluate the fit of the models by looking at the residuals and if necessary, perform transformations as necessary.  
+- Decide on the best models by looking at the AIC.
+
+

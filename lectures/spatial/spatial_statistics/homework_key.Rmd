@@ -5,6 +5,19 @@ output: html_notebook
 
 Here is the homework for the geospatial data content.
 
+
+```{r setup, include=FALSE}
+library( sf )
+library( knitr )
+library( kableExtra )
+library( tidyverse )
+library( raster )
+
+theme_set( theme_minimal( base_size = 16 ))
+```
+
+
+
 ## The Raw Data
 
 For this homework we will continue to work with the data from Baja California on the Sonoran Desert bark beetle, *Araptus attenuatus*.  
@@ -30,17 +43,22 @@ elevation_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_2
 ```
 
 
+```{r echo=FALSE}
+precip_total_url <- "../../../data/Annual_Precip_22.tif"
+minimum_precip_url <- "../../../data/Minimum_Precip_22.tif"
+maximum_precip_url <- "../../../data/Maximum_Precip.tif"
+
+minimum_temp_url <- "../../../data/Minimum_Temp_22.tif"
+mean_temp_url <- "../../../data/Mean_Temp_22.tif"
+maximum_temp_url <- "../../../data/Maximum_Temp_22.tif"
+
+elevation_url <- "../../../data/alt_22.tif"
+```
 
 
 
 
 ```{r}
-library( sf )
-library( knitr )
-library( kableExtra )
-library( tidyverse )
-library( raster )
-
 read_csv( beetle_url ) %>%
   st_as_sf( coords=c("Longitude","Latitude"),
             crs = 4326 ) -> beetles 
@@ -68,46 +86,50 @@ raster( maximum_temp_url ) %>% crop( box ) -> temp_max
 
 
 ```{r}
-beetles$precip_total <- extract( precip_min,   as(beetles, "Spatial"))
-beetles$precip_min   <- extract( precip_total, as(beetles, "Spatial"))
-beetles$precip_max   <- extract( precip_max,   as(beetles, "Spatial"))
-beetles$temp_min     <- extract( temp_min,     as(beetles, "Spatial"))
-beetles$temp_mean    <- extract( temp_mean,    as(beetles, "Spatial"))
-beetles$temp_max     <- extract( temp_max,     as(beetles, "Spatial"))
-beetles$elevation    <- extract( elevation,    as(beetles, "Spatial"))
+beetles$`Total Precipitation`     <- extract( precip_min,   as(beetles, "Spatial"))
+beetles$`Minimum Precipitation`   <- extract( precip_total, as(beetles, "Spatial"))
+beetles$`Maximum Precipitation`   <- extract( precip_max,   as(beetles, "Spatial"))
+beetles$`Minimum Temperature`     <- extract( temp_min,     as(beetles, "Spatial"))
+beetles$`Mean Temperature`        <- extract( temp_mean,    as(beetles, "Spatial"))
+beetles$`Maximum Temperature`     <- extract( temp_max,     as(beetles, "Spatial"))
+beetles$`Elevation`               <- extract( elevation,    as(beetles, "Spatial"))
 
 
 df <- st_drop_geometry( beetles )
 
-env.df <- data.frame( Feature = names( df[,9:14]),
+env.df <- data.frame( Feature = names( df[,8:14]),
                       Correlation = NA ,
                       P = NA)
 
 
 
-cor <- cor.test(  df$MFRatio, df$precip_total )
+cor <- cor.test(  df$MFRatio, df$`Total Precipitation` )
 env.df$Correlation[ 1 ] <- cor$estimate
 env.df$P[1] <- cor$p.value
 
-cor <- cor.test(  df$MFRatio, df$precip_min )
+cor <- cor.test(  df$MFRatio, df$`Minimum Precipitation` )
 env.df$Correlation[ 2 ] <- cor$estimate
 env.df$P[2] <- cor$p.value
 
-cor <- cor.test(  df$MFRatio, df$precip_max )
+cor <- cor.test(  df$MFRatio, df$`Maximum Precipitation` )
 env.df$Correlation[ 3 ] <- cor$estimate
 env.df$P[3] <- cor$p.value
 
-cor <- cor.test(  df$MFRatio, df$temp_min )
+cor <- cor.test(  df$MFRatio, df$`Minimum Temperature` )
 env.df$Correlation[ 4 ] <- cor$estimate
 env.df$P[4] <- cor$p.value
 
-cor <- cor.test(  df$MFRatio, df$temp_mean )
+cor <- cor.test(  df$MFRatio, df$`Mean Temperature` )
 env.df$Correlation[ 5 ] <- cor$estimate
 env.df$P[5] <- cor$p.value
 
-cor <- cor.test(  df$MFRatio, df$temp_max )
+cor <- cor.test(  df$MFRatio, df$`Maximum Temperature` )
 env.df$Correlation[ 6 ] <- cor$estimate
 env.df$P[6] <- cor$p.value
+
+cor <- cor.test(  df$MFRatio, df$`Elevation` )
+env.df$Correlation[ 7 ] <- cor$estimate
+env.df$P[7] <- cor$p.value
 
 env.df %>%
   kable( digits = 3 ) %>%
@@ -118,7 +140,7 @@ env.df %>%
 
 2. Create a plot of all populations in the data set with the size of the plot symbol representing the sex ratio and the fill color representing the habitat suitability.
 
-```{r}
+```{r warnings=FALSE}
 elevation %>%
   rasterToPoints() %>%
   as.data.frame() %>% 
@@ -146,13 +168,97 @@ ggplot() +
 
 3. The sites in the Cape Region (that bottom part of the peninsula, are of particular interest).  Contrast these sites by creating plots for all the environmental features in these "Cape" populations and compare them to the same features sampled from the remaining "Peninsular" populations.  Contrast by feature.
 
+```{r}
+cape_populations <- c("Aqu", "157", "163", "73", "48")
 
-4. Crop all the rasters to show the peninsular sites between 27° and 28° North Latitude.  Shoe a plot for each feature.
+beetles %>%
+  mutate( Region = ifelse( Site %in% cape_populations, "Cape", "Peninsula") ) -> beetles
+
+
+# You can make these plots in a lot of different ways. Here they are as a grid of violin plots.
+#  ggplot( beetles, aes(Region, `Maximum Precipitation`) ) + geom_violin()
+# and the rest of them.
+
+# I'm going to reshape the data frame into long format and use facet_wrap to make all the plots 
+library( reshape2 )
+beetles[, c(1,16,9:15) ] %>% 
+  melt( id = c("Site","Region"), 
+        measure.vars = names(beetles)[9:15] ) %>%
+  ggplot( aes(Region, value) ) + 
+    geom_violin() + 
+    facet_wrap(.~variable, ncol=3) + 
+    ylab("Environmental Value")
+```
+
+4. Crop all the rasters to show the peninsular sites between 27° and 28° North Latitude.  Show a plot for each feature.
+
+```{r}
+north_baja <- extent( c(-115, -111.5, 27, 28 ) )
+
+crop( precip_min, north_baja) %>% 
+  plot( xlab="Longitude", ylab="Latitude", main="Minimum Precipitation") 
+
+crop( precip_total, north_baja) %>% 
+  plot( xlab="Longitude", ylab="Latitude", main="Total Precipitation") 
+
+crop( precip_max, north_baja) %>% 
+  plot( xlab="Longitude", ylab="Latitude", main="Maximum Precipitation") 
+
+crop( temp_min, north_baja) %>% 
+  plot( xlab="Longitude", ylab="Latitude", main="Minimum Temperature") 
+
+crop( temp_mean, north_baja) %>% 
+  plot( xlab="Longitude", ylab="Latitude", main="Mean Temperature") 
+
+crop( temp_max, north_baja) %>% 
+  plot( xlab="Longitude", ylab="Latitude", main="Maximum Temperature") 
+
+crop( elevation, north_baja) %>% 
+  plot( xlab="Longitude", ylab="Latitude", main="Elevation") 
+
+```
+
+
 
 
 5. Of all the environmental features as well as the data within the `beetles` data set, which set of predictor variables best describes the observed sex ratios?  Support your argument with data, graphs, or tables.
 
+```{r}
+# you can use a number of ways to represent these data, I'm going to make a fancy table
+df.summary <- data.frame( Variable = names( df )[c(4,6:14)] )
+df.summary$Correlation <- NA
+df.summary$LowerCI <- NA
+df.summary$UpperCI <- NA
+
+df.small <- as.data.frame( df[ , c(4,6:14) ] )
+
+for( i in 1:10 ) {
+  fit.cor <- cor.test( df$MFRatio, df.small[,i] )
+  df.summary$Correlation[i] <- fit.cor$estimate
+  df.summary$LowerCI[i] <- as.numeric( fit.cor$conf.int )[1]
+  df.summary$UpperCI[i] <- as.numeric( fit.cor$conf.int )[2]
+}
+
+df.summary %>% 
+  dplyr::select( Variable, Correlation ) %>%
+  mutate( `Confidence Interval` = "" ) %>%
+  kable( digits=3 ) %>%
+  kable_paper( full_width=FALSE) %>%
+  column_spec( 3, image = spec_pointrange(
+    x = df.summary$Correlation,
+    xmin = df.summary$LowerCI,
+    xmax = df.summary$UpperCI,
+    vline = 0
+  ))
+
+```
 
 
+```{r echo=FALSE}
+fit.suitability <- cor.test( df$MFRatio, df$Suitability )
+```
+
+
+*I would interpret this that of all these variables, the largest correlation, and only variable with significant correlation was provided by `Suitability` (Pearson Correlation, r = `r format( fit.suitability$estimate, digits=3)`, t = `r format(fit.suitability$statistic, digits=3)`, df = `r fit.suitability$parameter`, P = `r format( fit.suitability$p.value, digits=3)`). None of the other varibles were statistically larger than zero.*
 
 

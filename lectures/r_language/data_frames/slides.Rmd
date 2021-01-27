@@ -20,7 +20,7 @@ background-position: right
 background-size: auto
 
 
-# Markdown
+# Markdown & Notebooks
 
 ### Merging Data, Verbiage, Analyses, & Results
 
@@ -152,7 +152,7 @@ Pandoc
 
 
 .pull-left[
-File $\to$ New File $\to$ R Markdown ...
+File $\to$ New File $\to$ R Markdown (.red[OR] R Notebook)
 
 
 - Built-in Templates
@@ -165,6 +165,28 @@ File $\to$ New File $\to$ R Markdown ...
 ![](https://live.staticflickr.com/65535/50882088207_6fe14769f0_o_d.png)
 ]
 
+
+
+
+
+---
+# Notebooks vs Markdown
+
+Two different types of markdown documents.  
+
+
+*Markdown Document* - A Document that can be turned into HTML, Word, PDF, Powerpoint, etc.
+
+*Markdown Notebook* - A markdown document that contains the underlying RMD file itself.
+
+
+
+&nbsp;
+
+&nbsp;
+
+
+## Demo Time!!
 
 
 

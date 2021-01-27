@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>The R Environment</title>
+    <title>R Markdown</title>
     <meta charset="utf-8" />
     <link href="libs/remark-css-0.0.1/middlebury.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/middlebury-fonts.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
     <link rel="stylesheet" href="envs543-styles.css" type="text/css" />
   </head>
   <body>
@@ -17,9 +19,9 @@ background-position: right
 background-size: auto
 
 
-# Data Containers
+# Markdown &amp; Notebooks
 
-### vectors - data.frame - list - matrix
+### Merging Data, Verbiage, Analyses, &amp; Results
 
 
 
@@ -34,7 +36,170 @@ background-size: auto
 
 class: sectionTitle
 
-# Vectors
+# But WHY?
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50880814503_4efb8e1b8e_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881637532_84832f6ab5_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881533096_6773eb1ffc_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881532926_6a4b11ef29_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881637242_2679ab5371_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881674822_fa6bcb2acd_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881658837_8729965515_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+
+---
+
+# Reproducible Research
+
+One of the prime goals for us as scientists is to produce quality, *reproducible* research.  One of the easiest ways to do this is to put the data, analyses, and interpretation as close to each other as possible.
+
+
+--
+
+![](https://live.staticflickr.com/65535/50881988332_683e0f3313_o_d.png)
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881870486_ce99a1f7b2_o_d.png)
+background-position: right
+background-size: auto
+
+# One Document to Rule them All
+
+
+.pull-left[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+Easily move from R Markdown to a wide range of output styles, both static and dynamic.
+]
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881919942_aa77880202_w_d.jpg")
+background-position: right
+background-size: contain
+
+# Markdown &amp; Ohter Formats
+
+Pandoc
+
+- Universal "Rosetta Stone"
+
+- Converts Between Types
+
+- Built into RStudio
+
+
+
+
+
+---
+
+# Creating A Markdown Document
+
+
+.pull-left[
+File `\(\to\)` New File `\(\to\)` R Markdown (.red[OR] R Notebook)
+
+
+- Built-in Templates
+
+- Documents, applications, and presentations
+
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/50882088207_6fe14769f0_o_d.png)
+]
+
+
+
+
+
+---
+# Notebooks vs Markdown
+
+Two different types of markdown documents.  
+
+
+*Markdown Document* - A Document that can be turned into HTML, Word, PDF, Powerpoint, etc.
+
+*Markdown Notebook* - A markdown document that contains the underlying RMD file itself.
+
+
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+## Demo Time!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -43,34 +208,540 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Data Frames
+# Markdown
+
+
+---
+# Textual Representations
+
+&gt; Text is text, nothing more, nothing less.
+
+--
+
+.pull-left[ 
+### Markdown 
+`This is text`
+]
+.pull-right[
+### Shows As
+This is text
+]
+
+
+--
+
+.pull-left[ 
+`*Homo sapien*`
+]
+.pull-right[
+*Homo sapien*
+]
+
+--
+
+.pull-left[ 
+`**Stuff**`
+]
+.pull-right[
+**Stuff**
+]
+
+
+--
+
+.pull-left[ 
+`&gt; To be, or not to be...`
+]
+.pull-right[
+&gt; To be, or not to be...
+]
+
+
+
+
+
+---
+# Textual Representations - Headers
+
+
+
+.pull-left[ 
+### Markdown 
+`# Primary Heading`
+]
+.pull-right[
+### Shows As
+# Primary Heading
+]
+
+
+--
+.pull-left[ 
+`## Secondary Heading`
+]
+.pull-right[
+## Secondary Heading
+]
+
+
+--
+.pull-left[ 
+`### Tertiary Heading`
+]
+.pull-right[
+### Tertiary Heading
+]
+
+
+
+
+
+
+
+
+
+
+---
+# Lists Representations
+
+&gt; Just type them out
+
+--
+
+.pull-left[ 
+### Markdown 
+&lt;pre&gt;
+- Thing
+- Other Thing
+&lt;/pre&gt;
+]
+.pull-right[
+### Shows As
+- Thing  
+- Other Thing
+]
+
+
+.pull-left[ 
+&lt;pre&gt;
+1. First thing in ordered list
+2. Next thing
+&lt;/pre&gt;
+]
+.pull-right[
+1. First thing in ordered list  
+2. Next thing  
+]
+
+
+
+---
+# Links &amp; URL's
+
+RMarkdown is smart enough to make a raw link into a clickable link.  See https://rmarkdown.rstudio.com for more information on how markdown is implemented in RStudio.
+
+
+--
+
+.pull-left[ 
+### Markdown 
+`This is [my website](https://dyerlab.org)` 
+]
+.pull-right[
+### Shows As
+This is [my website](https://dyerlab.org)
+]
+
+--
+
+.pull-left[ 
+`![Mr. Snuggles](https://bit.ly/3colMKu)` 
+]
+.pull-right[
+![Mr. Snuggles](https://live.staticflickr.com/65535/50881616521_464293dcb8_w_d.jpg)
+]
+
+
+
+---
+# Tables
+
+Tables can be statically written in markdown by defining the columns using the pipe character and the header by dashes.
+
+
+.pull-left[
+
+### Raw Text 
+```
+Source | df | SS
+-------|----|-----  
+Model  | 1  | 23.23  
+Error  | 41 | 232.32
+Total  | 42 | 255.55
+```
+]
+
+--
+
+
+.pull-right[
+### Becomes
+
+Source | df | SS
+-------|----|-----  
+Model  | 1  | 23.23  
+Error  | 41 | 232.32
+Total  | 42 | 255.55
+]
+
+--
+
+&amp;nbsp;
+
+.red[Important:] The end of each row in a table needs 2 spaces.
+
+
+---
+# HTML Encodings ([characters](https://www.w3schools.com/html/html_charset.asp) &amp; [emoji](https://www.w3schools.com/charsets/ref_emoji.asp))
+
+
+You can embed content as raw HTML into R Markdown and it will convert it.
+
+### `&amp;copy;` `\(\to\)` &amp;copy;  
+### - `&amp;beta;` `\(\to\)` &amp;beta;
+### - ` &amp;#128169;` `\(\to\)`  &amp;#128169; 
+### - `&amp;#x1F37A;` `\(\to\)` &amp;#x1F37A;
+
+
+
+---
+# Embedding Videos
+
+You can use iframes to embed videos
+
+
+.pull-left[
+`&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;`
+]
+.pull-right[
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+]
+
+
+
+---
+# Embedding Live Pages
+
+You can use iframes to embed other web pages (like this presentation with an embed of itself).
+
+
+.pull-left[
+`&lt;iframe width="560" height="315" src="https://dyerlab.github.io/ENVS-Lectures/markdown/markdown/slides.html#1"&gt;&lt;/iframe&gt;`
+]
+.pull-right[
+&lt;iframe width="560" height="315" src="https://dyerlab.github.io/ENVS-Lectures/markdown/markdown/slides.html#1"&gt;&lt;/iframe&gt;
+]
+
+
+
+
+---
+class: sectionTitle
+
+# Code &amp; Markdown
+
+
+
+
+
+
+
+
+---
+# Code Chunks
+
+A set of code can be inserted as a single chunk.  (Keyboard Shortcut: CMD+OPT+i)
+
+![chunk](https://live.staticflickr.com/65535/50881114688_c1c25b06c5_o_d.png)
+
+
+becomes 
+
+
+
+```r
+library( sf )
+```
+
+```
+## Linking to GEOS 3.8.1, GDAL 3.1.4, PROJ 6.3.1
+```
+
+```r
+nc &lt;- st_read(system.file("shape/nc.shp", package="sf"))
+```
+
+```
+## Reading layer `nc' from data source `/Library/Frameworks/R.framework/Versions/4.0/Resources/library/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Simple feature collection with 100 features and 14 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
+## geographic CRS: NAD27
+```
+
+
+
+
+
+
+---
+# Code Chunks
+
+Several options exist to modify the characteristics of a chunk.
+
+- Visibility/Invisibility  
+
+- Code is executed or not
+
+- Output options (figure size, DPI, etc.)
+
+- Warning &amp; Error message suppression
+
+- Global or Local options.
 
 
 
 
 ---
 
-class: sectionTitle
+# Inline Code
 
-# Lists
+You can insert code into text and have it evaluated by surrounding it with single backticks, the first of which is postpended by the letter `r`.
+
+&lt;pre&gt;The *nc* data set has a longitudinal boundary of &amp;#96;r st_bbox(nc)[1]&amp;#96;. &lt;/pre&gt; 
+
+--
+
+Is rendered as:
+
+The *nc* data set has a longitudinal boundary of -84.324. 
+
+&amp;nbsp;
+
+
+Which is .red[very] helpful when writing manuscripts and integrating components of your analyses into the text.
 
 
 
 ---
+# Figures 
 
-class: sectionTitle
+.pull-left[
+&lt;pre&gt;
+&amp;#96;&amp;#96;&amp;#96;{r echo=FALSE}
+plot( nc["SID79"], axes=TRUE )
+&amp;#96;&amp;#96;&amp;#96;
+&lt;/pre&gt;
+]
 
-# Matrices
+.pull-right[
+![](slides_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+]
 
 
 
+---
+# Table
 
 
+.pull-left[
+
+The `knitr` library has built-in formatting for making tables that can be inserted into the document.
+
+The following code produces table on the right.
+
+&lt;font size="-1"&gt;
+&lt;pre&gt;
+&amp;#96;&amp;#96;&amp;#96;{r echo=FALSE}
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+link &lt;- "https://haozhu233.github.io/kableExtra/"
+caption &lt;- "Table X: Data from the first eight cars in
+the `mtcars` data set that is included in the base `R` install."
+
+mtcars[1:8, 1:8] %&gt;%
+  kable( caption = caption ) %&gt;%
+  kable_paper(full_width = F) %&gt;%
+  column_spec(2, 
+    color = spec_color(mtcars$mpg[1:8]),
+    link = link) %&gt;%
+  column_spec(6, 
+    color = "white",
+    background = spec_color( mtcars$drat[1:8], end = 0.7),
+    popover = paste("am:", mtcars$am[1:8]))
+&amp;#96;&amp;#96;&amp;#96;
+&lt;/pre&gt;
+&lt;/font&gt;
+]
 
 
+.pull-right[
 
+```
+## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
+```
 
+```
+## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.0.5     ✓ dplyr   1.0.3
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.0
+```
 
+```
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+```
+
+```
+## 
+## Attaching package: 'kableExtra'
+```
+
+```
+## The following object is masked from 'package:dplyr':
+## 
+##     group_rows
+```
+
+&lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Table X: Data from the first eight cars in the `mtcars` data set that is included in the base `R` install.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; mpg &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; cyl &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; disp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; hp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; drat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; wt &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; qsec &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; vs &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mazda RX4 &lt;/td&gt;
+   &lt;td style="text-align:right;color: rgba(52, 182, 121, 1) !important;"&gt;
+&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(52, 182, 121, 1) !important;"&gt; 21.0 &lt;/a&gt;
+&lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 160.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: rgba(67, 191, 113, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 1"&gt; 3.90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.620 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.46 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mazda RX4 Wag &lt;/td&gt;
+   &lt;td style="text-align:right;color: rgba(52, 182, 121, 1) !important;"&gt;
+&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(52, 182, 121, 1) !important;"&gt; 21.0 &lt;/a&gt;
+&lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 160.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: rgba(67, 191, 113, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 1"&gt; 3.90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.875 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Datsun 710 &lt;/td&gt;
+   &lt;td style="text-align:right;color: rgba(149, 216, 64, 1) !important;"&gt;
+&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(149, 216, 64, 1) !important;"&gt; 22.8 &lt;/a&gt;
+&lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 108.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 93 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: rgba(55, 184, 120, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 1"&gt; 3.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.320 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Hornet 4 Drive &lt;/td&gt;
+   &lt;td style="text-align:right;color: rgba(68, 191, 112, 1) !important;"&gt;
+&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(68, 191, 112, 1) !important;"&gt; 21.4 &lt;/a&gt;
+&lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 258.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: rgba(65, 67, 135, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 0"&gt; 3.08 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.215 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Hornet Sportabout &lt;/td&gt;
+   &lt;td style="text-align:right;color: rgba(38, 129, 142, 1) !important;"&gt;
+&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(38, 129, 142, 1) !important;"&gt; 18.7 &lt;/a&gt;
+&lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 360.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 175 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: rgba(60, 79, 138, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 0"&gt; 3.15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.440 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Valiant &lt;/td&gt;
+   &lt;td style="text-align:right;color: rgba(44, 114, 142, 1) !important;"&gt;
+&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(44, 114, 142, 1) !important;"&gt; 18.1 &lt;/a&gt;
+&lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 225.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 105 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: rgba(68, 1, 84, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 0"&gt; 2.76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Duster 360 &lt;/td&gt;
+   &lt;td style="text-align:right;color: rgba(68, 1, 84, 1) !important;"&gt;
+&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(68, 1, 84, 1) !important;"&gt; 14.3 &lt;/a&gt;
+&lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 360.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 245 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: rgba(55, 90, 140, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 0"&gt; 3.21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.570 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Merc 240D &lt;/td&gt;
+   &lt;td style="text-align:right;color: rgba(253, 231, 37, 1) !important;"&gt;
+&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(253, 231, 37, 1) !important;"&gt; 24.4 &lt;/a&gt;
+&lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 146.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 62 &lt;/td&gt;
+   &lt;td style="text-align:right;color: white !important;background-color: rgba(31, 161, 135, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 0"&gt; 3.69 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.190 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
 
 
 
@@ -103,7 +774,8 @@ background-size: auto
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "highlightLines": true,
-"countIncrementalSlides": false
+"countIncrementalSlides": false,
+"ratio": "16:9"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

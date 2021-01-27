@@ -1,6 +1,6 @@
 ---
-title: "The R Environment"
-subtitle: "Installation & Environment Configuration"
+title: "R Markdown"
+subtitle: "Efficient Data Communication"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -11,6 +11,7 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+      ratio: "16:9"
 ---
 
 class: left, bottom
@@ -19,9 +20,9 @@ background-position: right
 background-size: auto
 
 
-# Data Containers
+# Markdown
 
-### vectors - data.frame - list - matrix
+### Merging Data, Verbiage, Analyses, & Results
 
 
 
@@ -36,7 +37,69 @@ background-size: auto
 
 class: sectionTitle
 
-# Vectors
+# But WHY?
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50880814503_4efb8e1b8e_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881637532_84832f6ab5_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881533096_6773eb1ffc_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881532926_6a4b11ef29_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881637242_2679ab5371_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881674822_fa6bcb2acd_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881658837_8729965515_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+
+
+
+
+
 
 
 
@@ -45,7 +108,120 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Data Frames
+# Markdown
+
+
+---
+# Textual Representations
+
+> Text is text, nothing more, nothing less.
+
+--
+
+.pull-left[ 
+### Markdown 
+`This is text`
+]
+.pull-right[
+### Shows As
+This is text
+]
+
+
+--
+
+.pull-left[ 
+`*Homo sapien*`
+]
+.pull-right[
+*Homo sapien*
+]
+
+--
+
+.pull-left[ 
+`**Stuff**`
+]
+.pull-right[
+**Stuff**
+]
+
+
+--
+
+.pull-left[ 
+`> To be, or not to be...`
+]
+.pull-right[
+> To be, or not to be...
+]
+
+
+
+---
+# Lists Representations
+
+> Just type them out
+
+--
+
+.pull-left[ 
+### Markdown 
+<pre>
+- Thing
+- Other Thing
+</pre>
+]
+.pull-right[
+### Shows As
+- Thing  
+- Other Thing
+]
+
+
+.pull-left[ 
+<pre>
+1. First thing in ordered list
+2. Next thing
+</pre>
+]
+.pull-right[
+1. First thing in ordered list  
+2. Next thing  
+]
+
+
+
+---
+# Links
+
+--
+
+.pull-left[ 
+### Markdown 
+`This is [my email](rjdyer@vcu.edu)` 
+]
+.pull-right[
+### Shows As
+This is [my email](rjdyer@vcu.edu)
+]
+
+--
+
+.pull-left[ 
+`![Mr. Snuggles](https://bit.ly/3colMKu)` 
+]
+.pull-right[
+![Mr. Snuggles](https://live.staticflickr.com/65535/50881616521_464293dcb8_w_d.jpg)
+]
+
+
+
+
+---
+# Imbeds
+
+
 
 
 

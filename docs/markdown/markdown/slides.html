@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>R Markdown</title>
+    <title>The R Environment</title>
     <meta charset="utf-8" />
     <link href="libs/remark-css-0.0.1/middlebury.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/middlebury-fonts.css" rel="stylesheet" />
@@ -17,9 +17,9 @@ background-position: right
 background-size: auto
 
 
-# Markdown
+# Data Containers
 
-### Merging Data, Verbiage, Analyses, &amp; Results
+### vectors - data.frame - list - matrix
 
 
 
@@ -34,69 +34,7 @@ background-size: auto
 
 class: sectionTitle
 
-# But WHY?
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50880814503_4efb8e1b8e_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50881637532_84832f6ab5_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50881533096_6773eb1ffc_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50881532926_6a4b11ef29_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
----
-background-image: url("https://live.staticflickr.com/65535/50881637242_2679ab5371_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
----
-background-image: url("https://live.staticflickr.com/65535/50881674822_fa6bcb2acd_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
----
-background-image: url("https://live.staticflickr.com/65535/50881658837_8729965515_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
-
-
-
-
-
+# Vectors
 
 
 
@@ -105,120 +43,7 @@ background-size: auto
 
 class: sectionTitle
 
-# Markdown
-
-
----
-# Textual Representations
-
-&gt; Text is text, nothing more, nothing less.
-
---
-
-.pull-left[ 
-### Markdown 
-`This is text`
-]
-.pull-right[
-### Shows As
-This is text
-]
-
-
---
-
-.pull-left[ 
-`*Homo sapien*`
-]
-.pull-right[
-*Homo sapien*
-]
-
---
-
-.pull-left[ 
-`**Stuff**`
-]
-.pull-right[
-**Stuff**
-]
-
-
---
-
-.pull-left[ 
-`&gt; To be, or not to be...`
-]
-.pull-right[
-&gt; To be, or not to be...
-]
-
-
-
----
-# Lists Representations
-
-&gt; Just type them out
-
---
-
-.pull-left[ 
-### Markdown 
-&lt;pre&gt;
-- Thing
-- Other Thing
-&lt;/pre&gt;
-]
-.pull-right[
-### Shows As
-- Thing  
-- Other Thing
-]
-
-
-.pull-left[ 
-&lt;pre&gt;
-1. First thing in ordered list
-2. Next thing
-&lt;/pre&gt;
-]
-.pull-right[
-1. First thing in ordered list  
-2. Next thing  
-]
-
-
-
----
-# Links
-
---
-
-.pull-left[ 
-### Markdown 
-`This is [my email](rjdyer@vcu.edu)` 
-]
-.pull-right[
-### Shows As
-This is [my email](rjdyer@vcu.edu)
-]
-
---
-
-.pull-left[ 
-`![Mr. Snuggles](https://bit.ly/3colMKu)` 
-]
-.pull-right[
-![Mr. Snuggles](https://live.staticflickr.com/65535/50881616521_464293dcb8_w_d.jpg)
-]
-
-
-
-
----
-# Imbeds
-
-
+# Data Frames
 
 
 
@@ -278,8 +103,7 @@ background-size: auto
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "highlightLines": true,
-"countIncrementalSlides": false,
-"ratio": "16:9"
+"countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

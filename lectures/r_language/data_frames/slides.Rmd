@@ -387,9 +387,9 @@ Total  | 42 | 255.55
 You can embed content as raw HTML into R Markdown and it will convert it.
 
 ### `&copy;` $\to$ &copy;  
-- `&beta;` $\to$ &beta;
-- ` &#128169;` $\to$  &#128169; 
-- `&#x1F37A;` $\to$ &#x1F37A;
+### - `&beta;` $\to$ &beta;
+### - ` &#128169;` $\to$  &#128169; 
+### - `&#x1F37A;` $\to$ &#x1F37A;
 
 
 

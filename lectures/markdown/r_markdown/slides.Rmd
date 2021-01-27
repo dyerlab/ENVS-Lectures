@@ -20,10 +20,17 @@ background-position: right
 background-size: auto
 
 
+```{r setup, include=FALSE}
+library(tidyverse)
+library(kableExtra)
+```
+
+
+
+
 # Markdown & Notebooks
 
 ### Merging Data, Verbiage, Analyses, & Results
-
 
 
 

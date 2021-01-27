@@ -216,7 +216,6 @@ class: sectionTitle
 # Textual Representations
 
 > Text is text, nothing more, nothing less.
-
 --
 
 .pull-left[ 
@@ -256,7 +255,6 @@ This is text
 .pull-right[
 > To be, or not to be...
 ]
-
 
 
 
@@ -306,7 +304,6 @@ This is text
 # Lists Representations
 
 > Just type them out
-
 --
 
 .pull-left[ 
@@ -409,9 +406,9 @@ Total  | 42 | 255.55
 You can embed content as raw HTML into R Markdown and it will convert it.
 
 ### `&copy;` $\to$ &copy;  
-### - `&beta;` $\to$ &beta;
-### - ` &#128169;` $\to$  &#128169; 
-### - `&#x1F37A;` $\to$ &#x1F37A;
+### `&beta;` $\to$ &beta;
+### `&#128169;` $\to$  &#128169; 
+### `&#x1F37A;` $\to$ &#x1F37A;
 
 
 
@@ -579,7 +576,6 @@ mtcars[1:8, 1:8] %>%
 library(tidyverse)
 library(knitr)
 library(kableExtra)
-
 mtcars[1:8, 1:8] %>%
   kable(caption = "Table X: Data from the first eight cars in the `mtcars` data set that is included in the base `R` install.") %>%
   kable_paper(full_width = F) %>%
@@ -617,5 +613,4 @@ background-size: auto
 <p>&nbsp;</p>
 
 .bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
-
 

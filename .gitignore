@@ -8,3 +8,7 @@ lectures/*/*.html
 lectures/*/libs/*
 lectures/*/slides_files/*
 lectures/index.html
+
+lectures/*/lecture.Rmd
+lectures/*/lecture.nb.html
+

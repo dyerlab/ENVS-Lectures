@@ -1761,37 +1761,14 @@ summary {
 <p>For these questions, we will be using the data set from the <a href="https://ricerivers.vcu.edu">Rice Rivers Center</a> and is loaded in as raw data from the code below.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSggcmVhZHIgKVxubGlicmFyeSggdGlkeXZlcnNlIClcbmxpYnJhcnkoIGx1YnJpZGF0ZSApXG5cblxudXJsIDwtIFxcaHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvMU1rMVlHSDlMcWpGN2RySkUtdGQxR19Ka2RBRE9VMGVNbHJQMDFXRkJUOHMvcHViP2dpZD0wJnNpbmdsZT10cnVlJm91dHB1dD1jc3ZcXFxucmljZSA8LSByZWFkX2NzdiggdXJsIClcblxuXG5pZihGQUxTRSl7XG4gIFxuICBmb3JtYXQgPC0gXFwlbS8lZC8lWSAlSTolTTolUyAlcFxcXG4gIGRheXMgPC0gYyhcXFN1bmRheVxcLFxcTW9uZGF5XFwsXFxUdWVzZGF5XFwsXFxXZWRuZXNkYXlcXCxcXFRodXJzZGF5XFwsXFxGcmlkYXlcXCxcXFNhdHVyZGF5XFwpXG4gIFxuICByaWNlICU+JSBcbiAgICBtdXRhdGUoIERhdGUgPSBwYXJzZV9kYXRlX3RpbWUoIERhdGVUaW1lLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb3JkZXJzPWZvcm1hdCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR6PVxcRVNUXFwpKSAlPiVcbiAgICBtdXRhdGUoIFdlZWtkYXkgPSBmYWN0b3IoIHdlZWtkYXlzKERhdGUpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb3JkZXJlZD1UUlVFLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzID0gZGF5cykpICU+JVxuICAgIG11dGF0ZSggTW9udGggPSBtb250aCggRGF0ZSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVsPVRSVUUsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICBhYmJyID0gRkFMU0UpICkgJT4lIFxuICAgIG11dGF0ZSggSG91ciA9IGhvdXIoIERhdGUgKSxcbiAgICAgICAgICAgIE1pbnV0ZSA9IG1pbnV0ZSggRGF0ZSApICApIC0+IHJpY2UgXG4gIFxufVxuXG5cblxuc3VtbWFyeSggcmljZSApXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbImxpYnJhcnkoIHJlYWRyICkiLCJsaWJyYXJ5KCB0aWR5dmVyc2UgKSIsImxpYnJhcnkoIGx1YnJpZGF0ZSApIiwiIiwiIiwidXJsIDwtIFwiaHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvMU1rMVlHSDlMcWpGN2RySkUtdGQxR19Ka2RBRE9VMGVNbHJQMDFXRkJUOHMvcHViP2dpZD0wJnNpbmdsZT10cnVlJm91dHB1dD1jc3ZcIiIsInJpY2UgPC0gcmVhZF9jc3YoIHVybCApIiwiIiwic3VtbWFyeSggcmljZSApIl19 -->
 <pre class="r"><code>library( readr )
 library( tidyverse )
 library( lubridate )
 
 
-url &lt;- \https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&amp;single=true&amp;output=csv\
+url &lt;- &quot;https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&amp;single=true&amp;output=csv&quot;
 rice &lt;- read_csv( url )
-
-
-if(FALSE){
-  
-  format &lt;- \%m/%d/%Y %I:%M:%S %p\
-  days &lt;- c(\Sunday\,\Monday\,\Tuesday\,\Wednesday\,\Thursday\,\Friday\,\Saturday\)
-  
-  rice %&gt;% 
-    mutate( Date = parse_date_time( DateTime,
-                                    orders=format,
-                                    tz=\EST\)) %&gt;%
-    mutate( Weekday = factor( weekdays(Date),
-                              ordered=TRUE,
-                              levels = days)) %&gt;%
-    mutate( Month = month( Date,
-                           label=TRUE,
-                           abbr = FALSE) ) %&gt;% 
-    mutate( Hour = hour( Date ),
-            Minute = minute( Date )  ) -&gt; rice 
-  
-}
-
-
 
 summary( rice )</code></pre>
 <!-- rnb-source-end -->

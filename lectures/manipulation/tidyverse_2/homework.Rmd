@@ -19,7 +19,7 @@ $=$
 
 ## Impetus
 
-This homework focuses on how we can use <tt>tidyverse</tt> routines to answer the exact same set of questions we addressed in the previous homework.  The operative *verbs* include:
+This homework focuses on how we can use <tt>tidyverse</tt> routines to become more effective in our pre-treatment of data.  As a removner, the operative *verbs* we use in data preparation include:
 
 - *Select*  
 - *Filter*  
@@ -31,9 +31,6 @@ This homework focuses on how we can use <tt>tidyverse</tt> routines to answer th
 These can be combined in various ways to gain inferences from the raw data.  
 
 ![Figure 1: Generalized processes of data workflow](https://live.staticflickr.com/65535/50367634341_454e5c0e80_c_d.jpg)
-Using built-in routines, this amounts to using a lot of logical indices and making intermediate `data.frame` objects.  However, using <tt>tidyverse</tt> foundations, it becomes a much easier process.
-
-
 ## The Data
 
 For these questions, we will be using the data set from the [Rice Rivers Center](https://ricerivers.vcu.edu) and is loaded in as raw data from the code below.
@@ -47,36 +44,13 @@ library( lubridate )
 url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
 rice <- read_csv( url )
 
-
-if(FALSE){
-  
-  format <- "%m/%d/%Y %I:%M:%S %p"
-  days <- c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
-  
-  rice %>% 
-    mutate( Date = parse_date_time( DateTime,
-                                    orders=format,
-                                    tz="EST")) %>%
-    mutate( Weekday = factor( weekdays(Date),
-                              ordered=TRUE,
-                              levels = days)) %>%
-    mutate( Month = month( Date,
-                           label=TRUE,
-                           abbr = FALSE) ) %>% 
-    mutate( Hour = hour( Date ),
-            Minute = minute( Date )  ) -> rice 
-  
-}
-
-
-
 summary( rice )
 ```
 
 
 ## The Questions
 
-Just like before, we will be answering the same set of questions as before.  However, you should be using tidyverse approaches (pipes and such) to find the answers.  Just like before, you should provide your answers as text (e.g., using complete sentences, etc.) and include visual output in tabular or graphical form to support your assertions.  The *key point here* is that **you** need to develop an *evidence-based* narrative to address these questions.
+Provide your answers as text (e.g., using complete sentences, etc.) and include visual output in tabular or graphical form to support your assertions.  The *key point here* is that **you** need to develop an *evidence-based* narrative to address these questions.
 
 1. On average, is there more rain on Mondays, at daytime, or at night?
 
@@ -89,7 +63,7 @@ Just like before, we will be answering the same set of questions as before.  How
 
 
 
-2. What is the overall trend in salinity and pH?  Does this pattern hold when considering each month individually?
+2. What is the overall relationship between salinity and pH?  Does this pattern hold when considering each month individually?
 
 
 ```{r}
@@ -113,8 +87,8 @@ Just like before, we will be answering the same set of questions as before.  How
 
 
 
-4. Show the pattern of tides during the work week that includes Valentines Day in 2004.
 
+4. Show the pattern of tides during the work week that includes Valentines Day in 2004.
 
 
 ```{r}
@@ -124,8 +98,8 @@ Just like before, we will be answering the same set of questions as before.  How
 
 
 
-5. Summarize estimates of Wind direction for February.  Pay close attention to what this variable is actually measuring and how you want to display its underlying patterns.
 
+5. Summarize estimates of Wind direction for February.  Pay close attention to what this variable is actually measuring and how you want to display its underlying patterns.
 
 
 ```{r}

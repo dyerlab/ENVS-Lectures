@@ -27,8 +27,12 @@ options(knitr.table.format = "html")
 library( tidyverse )
 library( fontawesome )
 library(DiagrammeR)
+library(DiagrammeRsvg)
 library( ggplot2 )
 theme_set( theme_classic( base_size = 20) )
+
+
+options(htmltools.preserve.raw = FALSE)
 ```
 
 
@@ -87,6 +91,7 @@ graph <-
 
 # View the graph in the Viewer
 graph %>% render_graph()
+#widgetframe::frameableWidget( graph )
 ```
 
 --
@@ -366,8 +371,7 @@ summary( df5 )
 # Just to Make Sure
 
 ```{r}
-# Check
-df5[21:30,]
+df5[18:24,]
 ```
 
 &nbsp; 

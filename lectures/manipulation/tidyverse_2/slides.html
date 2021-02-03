@@ -4,7 +4,7 @@
     <title>Workflow Judo🥋</title>
     <meta charset="utf-8" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+    <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
     <script src="libs/viz-1.8.2/viz.js"></script>
     <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
     <script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
@@ -46,8 +46,8 @@ background-size: cover
 
 To do this, we need to perform the following sequence of general *verb* actions on the data.
 
-<div id="htmlwidget-d09b92a09407589381d1" style="width:90%;height:40%;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d09b92a09407589381d1">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\",\n       rankdir = \"LR\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Load\\nData\", shape = \"square\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#61acf0\"] \n  \"2\" [label = \"Make\\nDates\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"3\" [label = \"Select\\nColumns\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"4\" [label = \"Filter\\nRows\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"5\" [label = \"Summarize\\nSomehow\", shape = \"rectangle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#cbd20a\"] \n\"1\"->\"2\" [color = \"#3C3C3C\"] \n\"2\"->\"3\" [color = \"#3C3C3C\"] \n\"3\"->\"4\" [color = \"#3C3C3C\"] \n\"4\"->\"5\" [color = \"#3C3C3C\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-d48b12e420ca45912193" style="width:90%;height:40%;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d48b12e420ca45912193">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\",\n       rankdir = \"LR\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Load\\nData\", shape = \"square\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#61acf0\"] \n  \"2\" [label = \"Make\\nDates\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"3\" [label = \"Select\\nColumns\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"4\" [label = \"Filter\\nRows\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"5\" [label = \"Summarize\\nSomehow\", shape = \"rectangle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#cbd20a\"] \n\"1\"->\"2\" [color = \"#3C3C3C\"] \n\"2\"->\"3\" [color = \"#3C3C3C\"] \n\"3\"->\"4\" [color = \"#3C3C3C\"] \n\"4\"->\"5\" [color = \"#3C3C3C\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 --
 
@@ -529,24 +529,20 @@ summary( df5 )
 
 
 ```r
-# Check
-df5[21:30,]
+df5[18:24,]
 ```
 
 ```
-## # A tibble: 10 x 6
-##    Date                Weekday  AirTemp    PAR  Hour Minute
-##    &lt;dttm&gt;              &lt;ord&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;int&gt;
-##  1 2014-02-01 17:15:00 Saturday   10.7  124.      17     15
-##  2 2014-02-01 17:30:00 Saturday   10.4  133.      17     30
-##  3 2014-02-02 07:15:00 Sunday      6.62   0        7     15
-##  4 2014-02-02 07:30:00 Sunday      5.97   0        7     30
-##  5 2014-02-02 08:15:00 Sunday      6.87   4.97     8     15
-##  6 2014-02-02 08:30:00 Sunday      6.64  26.0      8     30
-##  7 2014-02-02 09:15:00 Sunday      6.94 186        9     15
-##  8 2014-02-02 09:30:00 Sunday      7.09 227.       9     30
-##  9 2014-02-02 10:15:00 Sunday      7.43 540.      10     15
-## 10 2014-02-02 10:30:00 Sunday      7.81 625.      10     30
+## # A tibble: 7 x 6
+##   Date                Weekday  AirTemp   PAR  Hour Minute
+##   &lt;dttm&gt;              &lt;ord&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;int&gt;
+## 1 2014-02-01 15:30:00 Saturday   11.3   827     15     30
+## 2 2014-02-01 16:15:00 Saturday   11.1   399     16     15
+## 3 2014-02-01 16:30:00 Saturday   11.0   341.    16     30
+## 4 2014-02-01 17:15:00 Saturday   10.7   124.    17     15
+## 5 2014-02-01 17:30:00 Saturday   10.4   133.    17     30
+## 6 2014-02-02 07:15:00 Sunday      6.62    0      7     15
+## 7 2014-02-02 07:30:00 Sunday      5.97    0      7     30
 ```
 
 &amp;nbsp; 
@@ -1332,7 +1328,7 @@ rice %&gt;%
 ```
 ## # A tibble: 7 x 2
 ##   Weekday    Rain
-##   &lt;ord&gt;     &lt;dbl&gt;
+## * &lt;ord&gt;     &lt;dbl&gt;
 ## 1 Monday    1.96 
 ## 2 Tuesday   1.31 
 ## 3 Wednesday 0.327

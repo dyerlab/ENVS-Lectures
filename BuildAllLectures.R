@@ -2,6 +2,7 @@ rm( list=ls() )
 library(tidyverse)
 
 
+options(htmltools.preserve.raw = FALSE)
 
 if( FALSE ) {
   # clean out all html files

@@ -1,5 +1,5 @@
 ---
-title: "Spatial Points Activity"
+title: "Spatial Points Homework"
 output: html_notebook
 ---
 
@@ -8,10 +8,10 @@ output: html_notebook
 </center>
 
 
-This *in-class activity* has two purposes:
+This homework is a bit quick but is designed to make sure that:
 
 1. To make sure everyone can get their computer up-to-date with the proper set of libraries so that we can work with geospatial data, and
-2. Give you some practice turning normal numerical data into geospatial coordiantes and performing basic opertions.
+2. Give you some practice turning normal numerical data into geospatial coordinates and performing basic operations.
 
 ## Spatial Libraries
 
@@ -36,6 +36,7 @@ needed_libraries <- c("sf",
 need_inst <- setdiff( needed_libraries, 
                       rownames( installed.packages()) )
 
+# Instrall the neccessary ones.
 if( length( need_inst ) ) {
   install.packages( need_inst, dependencies = TRUE )
 }
@@ -43,15 +44,13 @@ if( length( need_inst ) ) {
 
 
 
-## In Class Activities
+## The Data - Preprocessing
 
-
-The data for this is some site-level data from the Sonoran Desert bark beetle.  In the next chunck, add the appropriate code to load the data from the [Github repository](https://github.com/dyerlab/ENVS-Lectures).  
+The data for this is some site-level data from the Sonoran Desert bark beetle.  The URL is in the next chunk, and is currently being hosted on my class [Github repository](https://github.com/dyerlab/ENVS-Lectures).  Load it in.
 
 ```{r}
 url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
 ```
-
 
 
 ### Interactive Map
@@ -61,11 +60,8 @@ Use the `leaflet` library and make an interactive map.  If you can, add a label 
 There is a great tutorial [here](https://rstudio.github.io/leaflet/map_widget.html) on how to customize the leaflet display.  You may want to go look at it and see what you can use to make a better display.
 
 ```{r}
-# make leaflet map here
+# make a quick leaflet map here to get an idea of 
 ```
-
-
-
 
 ### Converting to `sf` Objects
 
@@ -73,16 +69,17 @@ Convert the spatial data in the beetle data.frame into an `sf` object.  Make sur
 
 
 ```{r}
-# convert 
+# convert raw data to simple features in your data.frame
 ```
 
 
 ### Questions
 
 1. How far apart (in km) are the sites Constitución (`const`) and San Francisquito (`sfran`)?  
+
 2. Is there a correlation between habitat suitability and the ratio of males to female beetles?  
 
-3. Make a plot using ggplot of the data with suitability as the size of the points and the sex ratio as the fill color.
+3. Make a plot using `ggplot` of the data with suitability as the size of the points and the sex ratio as the fill color.
 
 4. Reproject the data and plot it again using an EPSG code defined for Mexico UTM zone 12N.
 

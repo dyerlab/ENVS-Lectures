@@ -1,0 +1,186 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r setup, include=FALSE}
+library( tidyverse )
+```
+
+
+
+# Loading In the Data
+
+
+
+
+```{r}
+
+library( readr )
+
+url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
+
+rice <- read_csv( url )
+
+names( rice )
+```
+
+
+# Date Objects
+
+```{r}
+rice$DateTime[6300] -> x
+
+library( lubridate )
+format <- "%m/%d/%Y %I:%M:%S %p"
+
+rice$Date <- parse_date_time( rice$DateTime, 
+                              orders=format, 
+                              tz = "EST" )
+
+rice$Weekday <- factor( weekdays( rice$Date), 
+                        ordered=TRUE,
+                        levels = c("Monday", "Tuesday", "Wednesday", 
+                                   "Thursday", "Friday", 
+                                   "Saturday", "Sunday") )
+
+
+summary( rice$AirTempF )
+
+rice$AirTemp <- ( rice$AirTempF - 32 ) * 5/9 
+
+df <- rice[ , c("Date","AirTemp" )]
+
+summary(df)
+
+```
+
+
+# Daytimes & Dates -- Filtering 
+
+```{r}
+
+df$Hours <- hour( df$Date )
+df$Minutes <-  minute( df$Date )
+summary( df )
+
+df1 <- df[ (df$Hours >= 7 & df$Hours <= 17) , ]
+
+df2 <- df1[ (month(df1$Date) == 2 & day( df1$Date) <= 7) , ]
+
+summary( df2 )
+nrow( df2 )
+
+mean( df2$AirTemp )
+
+df2$AirTemp 
+
+
+```
+
+
+# Tidyverse Version
+
+
+
+```{r}
+rice %>%
+  
+  ggplot( aes(Depth_m, Depth_ft) ) + geom_point() 
+
+```
+
+## Select 
+
+choose columns
+
+```{r}
+rice %>%
+  select( DateTime, AirTempF ) %>%
+  class()
+```
+
+
+```{r}
+rice %>%
+  select( DateTime, `Air Temp (°F)` = AirTempF ) %>%
+  summary() 
+```
+
+
+
+```{r}
+rice %>%
+  select( BP_HG, WindDir, everything()  ) %>%
+  names() 
+```
+
+
+
+## Mutate 
+
+
+```{r}
+rice %>%
+  mutate( `Air Temp (°C)` = (AirTempF - 32)*5/9) %>%
+  mutate( Date  = parse_date_time( DateTime, orders= format, tz="EST") ) %>% 
+  mutate( Weekday = weekdays( Date), Hour = hour(Date ) ) %>% 
+  select( Date, `Air Temp (°C)`, Weekday, Hour )
+```
+
+
+
+## Filter
+
+choose rows of data 
+
+```{r}
+
+rice %>%
+  mutate( `Air Temp (°C)` = (AirTempF - 32)*5/9) %>%
+  mutate( Date  = parse_date_time( DateTime, orders= format, tz="EST") ) %>% 
+  mutate( Weekday = weekdays( Date), 
+          Hour = hour( Date ), 
+          Month = month(Date ),
+          Day = day( Date )) %>%
+  select( Date, Month, Day, `Air Temp (°C)`, Weekday, Hour ) %>%
+  filter( Hour >= 7 & Hour <= 17 ) %>%
+  filter( Month == 2 ) %>%
+  filter( Day < 8 ) 
+
+
+```
+
+
+
+## Group & Sumarize
+
+
+
+
+
+```{r}
+rice %>%
+  mutate( `Air Temp (°C)` = (AirTempF - 32)*5/9) %>%
+  mutate( Date  = parse_date_time( DateTime, orders= format, tz="EST") ) %>% 
+  mutate( Weekday = weekdays( Date), 
+          Hour = hour( Date ), 
+          Month = month(Date ),
+          Day = day( Date )) %>%
+  select( Date, Month, Day, `Air Temp (°C)`, Weekday, Hour ) %>%
+  filter( Hour >= 7 & Hour <= 17 ) %>%
+  filter( Month == 2 ) %>%
+  filter( Day < 8 ) %>%
+  group_by( Weekday )  %>%
+  summarise( Minimum = min( `Air Temp (°C)` ), 
+             Mean = mean( `Air Temp (°C)` ), 
+             Max = max( `Air Temp (°C)` )) %>%
+  arrange( Mean ) %>% 
+  knitr::kable( digits=2 ) %>%
+  kableExtra::kable_material_dark()
+```
+
+
+
+

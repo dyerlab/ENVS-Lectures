@@ -1,9 +1,9 @@
 ---
-title: "Spatial Data Homework"
+title: "Raster + Point Data Homework"
 output: html_notebook
 ---
 
-Here is the homework for the geospatial data content.
+Here is the homework for the content we covered using raster and point data to date.
 
 ## The Raw Data
 
@@ -15,42 +15,38 @@ Here are the coordinates and other data for the sample sites in Baja California.
 beetle_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
 ```
 
-And here are links to the rasters.
+And here are links to the rasters, They are individually hosted on Github.
 
 ```{r}
 precip_total_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Annual_Precip_22.tif"
 minimum_precip_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Minimum_Precip_22.tif"
 maximum_precip_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Maximum_Precip.tif"
-
 minimum_temp_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Minimum_Temp_22.tif"
 mean_temp_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Mean_Temp_22.tif"
 maximum_temp_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Maximum_Temp_22.tif"
-
 elevation_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
 ```
 
-
 ## Questions
 
-1. Is there any correlation between the environmental variables represented in the rasters above and the sex ratio sampled at each site?  Present your results in tabular format and make appropriate caption.
-
+1. Create a function that takes the raw beetle data set and loads in the rasters above and crops them to the appropriate extent (like the one in lecture but more inclusive).  It should have the signature of:
 
 ```{r}
-library( raster )
+load_and_crop <- function( data, list_of_urls ) {
+  # stuff here.
+}
 ```
-
-
 
 2. Create a plot of all populations in the data set with the size of the plot symbol representing the sex ratio and the fill color representing the habitat suitability.
 
 
-3. The sites in the Cape Region (that bottom part of the peninsula, are of particular interest).  Contrast these sites by creating plots for all the environmental features in these "Cape" populations and compare them to the same features sampled from the remaining "Peninsular" populations.  Contrast by feature.
+3. The sites in the Cape Region (that bottom part of the peninsula) are of particular interest.  Contrast these sites by creating plots for all the environmental features sampled at each study site in these "Cape" populations and compare them to the same set of environmental features (e.g., the values extracted from the rasters) sampled from the remaining "Peninsular" populations.  Contrast by feature using a bar or violin plot.
 
 
-4. Crop all the rasters to show the peninsular sites between 27° and 28° North Latitude.  Show a plot for each feature.
+4. Crop all the rasters to show *only the peninsular sites* between 27° and 28° North Latitude.  Make a table of the minimum, mean, and maximum for temperature and precipitation at all sites in this latitudinal band.
 
 
-5. Of all the environmental features as well as the data within the `beetles` data set, which set of predictor variables best describes the observed sex ratios?  Support your argument with data, graphs, or tables.
+5. Of all the environmental features represented on those rasters, as well as the data already contained within the `beetles` data set, which set of predictor variables best describe the observed sex ratios?  Use a statistical approach to answering this quesion and provide your response verbially with support from graphical and/or tablular output.
 
 
 

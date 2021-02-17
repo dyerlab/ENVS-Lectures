@@ -659,7 +659,7 @@ background-size: auto
 
 .center[
 
-# ️ Questions?
+# Questions?
 
 
 ![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)

@@ -3,6 +3,7 @@
   <head>
     <title>Functions in R 📜</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.6.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <script src="libs/kePrint-0.0.1/kePrint.js"></script>
     <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
@@ -160,7 +161,12 @@ ls()
 ```
 
 ```
-## [1] "foo" "x"
+##  [1] "bounds"                 "Day_Or_Night"           "directory"              "favorite"              
+##  [5] "file"                   "files"                  "foo"                    "freezing"              
+##  [9] "grade"                  "hour"                   "i"                      "is_even"               
+## [13] "item"                   "l"                      "loadAndCropMyRasterMan" "my_func"               
+## [17] "r"                      "square_it"              "summarize_levels"       "who_is_in_the_house"   
+## [21] "x"                      "x2"
 ```
 
 
@@ -389,7 +395,7 @@ hour
 ```
 
 ```
-##  [1]  3 23 20 20 23  4  3 16  8 12  7  2  2 21 22 14  8 21
+##  [1] 17  1  3 22  2  7  8 11  8  3  7  3  5 10 21  5 19  4
 ```
 
 --
@@ -401,9 +407,641 @@ Day_Or_Night
 ```
 
 ```
-##  [1] "Night" "Night" "Night" "Night" "Night" "Night" "Night" "Day"   "Day"  
-## [10] "Day"   "Day"   "Night" "Night" "Night" "Night" "Day"   "Day"   "Night"
+##  [1] "Day"   "Night" "Night" "Night" "Night" "Day"   "Day"   "Day"   "Day"   "Night" "Day"   "Night" "Night" "Day"  
+## [15] "Night" "Night" "Day"   "Night"
 ```
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Looping] ➿
+
+
+---
+
+# Looping 
+
+There are times when it is very helpful if we can loop over a collection of things.  These may be elements in a `vector`, rows in a `data.frame`, cycling through files on your computer to load in different data components, or to manipulate and analyze tweets harvested from the internet.
+
+--
+
+&amp;nbsp;
+
+**Use Case:** Determine which values are odd using the modulus operator `%%`  
+
+.pull-left[
+
+```r
+x &lt;- c(2, 4, 5, 7)
+x[1] %% 2 == 0
+```
+
+```
+## [1] TRUE
+```
+
+```r
+x[2] %% 2 == 0
+```
+
+```
+## [1] TRUE
+```
+
+```r
+x[3] %% 2 == 0
+```
+
+```
+## [1] FALSE
+```
+
+```r
+x[4] %% 2 == 0
+```
+
+```
+## [1] FALSE
+```
+
+]
+
+.pull-right[
+Notice how the index used on `x` is simply a number that is incremented by `1` for each successive entry.  
+
+&gt; It sure would be nice if there were **some** method to do this automatically.
+
+]
+
+
+
+
+
+---
+
+# The `for` Loop
+
+The for loop is a function that iterates across items.  These can be sequences such as `1:10` or as enumerated items in a vector.
+
+
+
+```r
+for( i in 1:4) {
+  cat(i, x[i] %% 2 == 0, "\n")
+}
+```
+
+```
+## 1 TRUE 
+## 2 TRUE 
+## 3 FALSE 
+## 4 FALSE
+```
+
+--
+
+&amp;nbsp;
+
+.red[Notice: index variable `i` changes each time through the loop!]
+
+
+---
+
+# The `for` Loop
+
+The for loop is a function that iterates across items.  These can be sequences such as `1:10` or as enumerated items in a vector.
+
+
+
+```r
+for( item in x) {
+  cat(item, item %% 2 == 0, "\n")
+}
+```
+
+```
+## 2 TRUE 
+## 4 TRUE 
+## 5 FALSE 
+## 7 FALSE
+```
+
+--
+
+&amp;nbsp;
+
+.red[Notice: the value passed is the actual item in the vector!]
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+# Applying Functions to Values
+
+Sometimes it helps to apply a single function to each element in a vector.  This is the basis for what we call `\(functional \; programming\)`, a kind of approach to working with objects that `R` supports.
+
+--
+
+
+```r
+is_even &lt;- function( x ) { return(x %% 2 == 0) }
+
+lapply(x, is_even )
+```
+
+```
+## [[1]]
+## [1] TRUE
+## 
+## [[2]]
+## [1] TRUE
+## 
+## [[3]]
+## [1] FALSE
+## 
+## [[4]]
+## [1] FALSE
+```
+
+---
+
+# Simplifying the `lapply` Function
+
+The output from `lapply()` is a list, whose length is the same as that of the original data.  However, it is sometimes necessary to just get back a vector of values for the results instead of futzing around with a list.&lt;sup&gt;1&lt;/sup&gt;.footnote[&lt;sup&gt;1&lt;/sup&gt;.small[`lapply(x,FUN,simplify=TRUE)`]]
+
+
+```r
+sapply( x, is_even )
+```
+
+```
+## [1]  TRUE  TRUE FALSE FALSE
+```
+
+--
+
+You can also define the function right in the call itself.  Here is an example for finding odd values.
+
+
+```r
+sapply( x, function( x ) { return( x %% 2 == 1) } )
+```
+
+```
+## [1] FALSE FALSE  TRUE  TRUE
+```
+
+
+
+---
+
+# Mapping a Function
+
+There are some other ways to do the same kinds of operations that are a bit more verbose.
+
+
+.pull-left[
+![Mapping](https://live.staticflickr.com/65535/50953686326_50a2e2a5bd_o_d.png)
+]
+
+--
+
+.pull-right[
+
+```r
+square_it &lt;- function( x ) { return( x*x ) }
+x2 &lt;- Map( square_it, x) 
+x2
+```
+
+```
+## [[1]]
+## [1] 4
+## 
+## [[2]]
+## [1] 16
+## 
+## [[3]]
+## [1] 25
+## 
+## [[4]]
+## [1] 49
+```
+
+```r
+unlist( x2 )
+```
+
+```
+## [1]  4 16 25 49
+```
+
+
+]
+
+---
+
+# Using Filter (just like in tidyverse 👍)
+
+.pull-left[![Filtering Based Upon Logical](https://live.staticflickr.com/65535/50952984478_e51d070077_o_d.png)]
+
+.pull-right[
+
+
+```r
+x
+```
+
+```
+## [1] 2 4 5 7
+```
+
+```r
+Filter(is_even, x )
+```
+
+```
+## [1] 2 4
+```
+
+]
+
+
+---
+
+# Reduce 
+
+This allows us to use some function to accumulate the values of elements along a vector.
+
+.pull-left[![Reduce operations](https://live.staticflickr.com/65535/50953791807_0685201446_o_d.png)]
+.pull-right[
+
+```r
+my_func &lt;- function( x, y ) { return( x + y ) }
+Reduce(my_func, x, init=10 )
+```
+
+```
+## [1] 28
+```
+
+Can check it like this: 
+
+
+```r
+sum( x ) + 10
+```
+
+```
+## [1] 28
+```
+
+]
+
+
+
+---
+
+# A Non-Trivial Example
+
+Problem: Load all the Baja GEOTiff files in the data directory and then go through them and crop them to the area where *Araptus attenuatus* is found and save them locally as an R object.
+
+--
+
+### Process
+
+1) Find the Data Directory
+
+2) Iterate through the files.  
+
+3) Determine if each file is a GEOTiff  
+
+4) Process each GEOTiff  
+
+
+---
+
+# Download the Data Directory
+
+For this class (and the other ones that teach using R) I have a bunch of different data sets that we use.  I've made an archive of them and put them on GoogleDrive (~57.3 MB in size).
+
+
+.pull-left[
+- Download it from [here](https://drive.google.com/file/d/1jJUqPaho9TyltAYyGqlwG7G565tQqK5j/view?usp=sharing).
+
+- Open the folder where your R Project is located.
+
+- Put the director of data (appropriately called 'data' in that same folder)
+
+- When you access it, it will be at the *root* of your project directory.
+]
+
+--
+
+.pull-right[
+Here is my Project Directory with the data file.
+
+![The Data File in My Root Project Directory](https://live.staticflickr.com/65535/50953012413_3f5dea05bc_o_d.png)
+]
+
+
+---
+
+# Traversing the Filesystem
+
+So, assuming it is downloaded and in place, we can ask your operating system to give us a list of all the files in a particular folder using the `list.files()` function.  At a minimum, you need to give it a starting path to begin the search.
+
+Your .green[Home] directory is .green[~] (`/Users/Rodney` **or** `C:\Users\Rodney`)
+
+
+```r
+list.files("~")
+```
+
+```
+## [1] "Applications" "Desktop"      "Documents"    "Downloads"    "Library"      "Movies"       "Music"       
+## [8] "Pictures"     "Public"
+```
+
+
+---
+
+# Other Path Components
+
+The .green[Current] directory is .green[.]
+
+
+```r
+list.files( ".")
+```
+
+```
+##  [1] "alt_22.tif"            "Annual_Precip_22.tif"  "homework.nb.html"      "homework.Rmd"         
+##  [5] "libs"                  "Maximum_Precip.tif"    "Maximum_Temp_22.tif"   "Mean_Temp_22.tif"     
+##  [9] "Minimum_Precip_22.tif" "Minimum_Temp_22.tif"   "narrative.nb.html"     "narrative.Rmd"        
+## [13] "slides_files"          "slides.html"           "slides.Rmd"            "summarize_levels.R"   
+## [17] "summarize_levels1.R"
+```
+
+The .green[Parent] directory to the .green[Current] one is .green[../]
+
+
+```r
+list.files( "../" )
+```
+
+```
+## [1] "functions"         "iteration"         "Manipulations.key" "relational_data"   "scraping_websites"
+## [6] "tidyverse_1"       "tidyverse_2"
+```
+
+```r
+list.files( "../../" )
+```
+
+```
+##  [1] "css"           "exams"         "index.html"    "index.Rmd"     "manipulation"  "markdown"      "models"       
+##  [8] "r_language"    "spatial"       "visualization"
+```
+
+---
+
+# Subdirectories
+
+The directory for this lecture is 3-levels below the root directory for this 
+
+
+```r
+list.files("../../../data/", recursive = TRUE)
+```
+
+```
+##  [1] "alt_22.tif"                "alt.rda"                   "Annual_Precip_22.tif"      "arapat.csv"               
+##  [5] "Araptus_Disperal_Bias.csv" "Beer_Styles.csv"           "Centerlines-shp.zip"       "DistrictCodes.csv"        
+##  [9] "EconomistData.csv"         "Maximum_Precip.tif"        "Maximum_Temp_22.tif"       "Mean_Temp_22.tif"         
+## [13] "Minimum_Precip_22.tif"     "Minimum_Temp_22.tif"       "Roads.zip"                 "rps_schools.zip"          
+## [17] "VDOT_Main_Roads.zip"       "virginia_county_fips.csv"  "Zoning_Districts-shp.zip"
+```
+
+---
+
+# Pattern Matching
+
+The `list.files` function can also support pattern matching.
+
+
+```r
+list.files("../../../data/", recursive = TRUE, pattern = "*.tif")
+```
+
+```
+## [1] "alt_22.tif"            "Annual_Precip_22.tif"  "Maximum_Precip.tif"    "Maximum_Temp_22.tif"  
+## [5] "Mean_Temp_22.tif"      "Minimum_Precip_22.tif" "Minimum_Temp_22.tif"
+```
+
+--
+
+And providing the whole path to the file.
+
+
+```r
+list.files("../../../data/", recursive = TRUE, pattern = "*.tif", full.names = TRUE)
+```
+
+```
+## [1] "../../../data//alt_22.tif"            "../../../data//Annual_Precip_22.tif" 
+## [3] "../../../data//Maximum_Precip.tif"    "../../../data//Maximum_Temp_22.tif"  
+## [5] "../../../data//Mean_Temp_22.tif"      "../../../data//Minimum_Precip_22.tif"
+## [7] "../../../data//Minimum_Temp_22.tif"
+```
+
+
+
+
+---
+
+# Back to the Problem
+
+.pull-left[
+
+### Process
+
+1) Find the Data Directory
+
+2) Iterate through the files.  
+
+3) Determine if each file is a GEOTiff  
+
+4) Process each GEOTiff - crop &amp; save locally
+]
+
+.pull-right[ 
+
+
+```r
+library( sf )
+library( tidyverse )
+
+read_csv("https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv") %&gt;% 
+  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) %&gt;%
+  st_union() %&gt;%
+  st_buffer(dist = 1) %&gt;%
+  st_bbox() -&gt; bounds 
+
+bounds 
+```
+
+```
+##       xmin       ymin       xmax       ymax 
+## -115.29353   22.28550 -108.32700   30.32541
+```
+
+]
+
+
+---
+
+# Processing Files
+
+Let's step through the process.
+
+
+```r
+files &lt;- list.files("../../../data/", 
+                    recursive = TRUE, 
+                    pattern = "*.tif", 
+                    full.names = TRUE)
+files
+```
+
+```
+## [1] "../../../data//alt_22.tif"            "../../../data//Annual_Precip_22.tif" 
+## [3] "../../../data//Maximum_Precip.tif"    "../../../data//Maximum_Temp_22.tif"  
+## [5] "../../../data//Mean_Temp_22.tif"      "../../../data//Minimum_Precip_22.tif"
+## [7] "../../../data//Minimum_Temp_22.tif"
+```
+
+Here is the basic code.
+
+
+```r
+library( raster )
+l &lt;- list() 
+
+for( file in files) {
+  r &lt;- raster( file ) 
+  r &lt;- crop( r, bounds )
+  l[[basename(file)]] &lt;- r
+  writeRaster( r, filename = basename( file ), overwrite=TRUE )
+}
+```
+
+---
+
+# Did it work?
+
+We can see if it worked by looking in the current directory for all *.tif files
+
+
+```r
+list.files(".", pattern="tif")
+```
+
+```
+## [1] "alt_22.tif"            "Annual_Precip_22.tif"  "Maximum_Precip.tif"    "Maximum_Temp_22.tif"  
+## [5] "Mean_Temp_22.tif"      "Minimum_Precip_22.tif" "Minimum_Temp_22.tif"
+```
+
+
+--
+
+
+.pull-left[
+
+&amp;nbsp; 
+
+To delete a file you can use the `unlink()` function but .
+
+
+
+```r
+for( file in files ) { 
+  unlink(basename(file)) 
+}
+list.files(".", pattern="tif")
+```
+
+```
+## character(0)
+```
+]
+
+.pull-right[
+.center[.red[CAUTION]]
+![](https://live.staticflickr.com/65535/50954000847_804aeefabf_w_d.jpg)
+]
+
+
+
+
+
+
+---
+
+# Putting it All Together.
+
+We can put this all together as a function that loads all the GEOTiff files in a particular directory, crops them and saves them locally.
+
+
+```r
+loadAndCropMyRasterMan &lt;- function( directory, bounds ) {
+  
+  files &lt;- list.files( path=directory, 
+                       pattern = "*tif",
+                       full.names = TRUE )
+  for( file in files ) { 
+    r &lt;- raster( file ) 
+    r &lt;- crop( r, bounds )
+    writeRaster( r, 
+                 filename = basename( file ), 
+                 overwrite = TRUE )
+    cat("Saved", basename( file ), "\n")
+  }
+}
+
+loadAndCropMyRasterMan( "../../../data", bounds)
+```
+
+```
+## Saved alt_22.tif 
+## Saved Annual_Precip_22.tif 
+## Saved Maximum_Precip.tif 
+## Saved Maximum_Temp_22.tif 
+## Saved Mean_Temp_22.tif 
+## Saved Minimum_Precip_22.tif 
+## Saved Minimum_Temp_22.tif
+```
+
+
+
+
+
+
+
+
+
 
 
 
@@ -483,13 +1121,16 @@ summarize_levels
 ```
 
 ```
-## function (x, dataCol, groupCol, fun) 
-## {
-##     vals &lt;- by(x[[dataCol]], x[[groupCol]], fun)
-##     ret &lt;- data.frame(names(vals))
-##     names(ret)[1] &lt;- groupCol
-##     ret[[dataCol]] &lt;- as.numeric(vals)
-##     return(ret)
+## function( x, dataCol, groupCol, fun ) {
+##   
+##   vals &lt;- by( x[[dataCol]], x[[groupCol]], fun)
+##   
+##   ret &lt;- data.frame( names(vals) )
+##   names( ret )[1] &lt;- groupCol 
+##   
+##   ret[[dataCol]] &lt;- as.numeric( vals )
+##   
+##   return( ret )
 ## }
 ```
 
@@ -514,9 +1155,12 @@ ls()
 ```
 
 ```
-## [1] "Day_Or_Night"        "favorite"            "foo"                
-## [4] "freezing"            "grade"               "hour"               
-## [7] "who_is_in_the_house" "x"
+##  [1] "bounds"                 "Day_Or_Night"           "directory"              "favorite"              
+##  [5] "file"                   "files"                  "foo"                    "freezing"              
+##  [9] "grade"                  "hour"                   "i"                      "is_even"               
+## [13] "item"                   "l"                      "loadAndCropMyRasterMan" "my_func"               
+## [17] "r"                      "square_it"              "who_is_in_the_house"    "x"                     
+## [21] "x2"
 ```
 
 --
@@ -530,9 +1174,12 @@ ls()
 ```
 
 ```
-## [1] "Day_Or_Night"        "favorite"            "foo"                
-## [4] "freezing"            "grade"               "hour"               
-## [7] "summarize_levels"    "who_is_in_the_house" "x"
+##  [1] "bounds"                 "Day_Or_Night"           "directory"              "favorite"              
+##  [5] "file"                   "files"                  "foo"                    "freezing"              
+##  [9] "grade"                  "hour"                   "i"                      "is_even"               
+## [13] "item"                   "l"                      "loadAndCropMyRasterMan" "my_func"               
+## [17] "r"                      "square_it"              "summarize_levels"       "who_is_in_the_house"   
+## [21] "x"                      "x2"
 ```
 
 
@@ -629,6 +1276,8 @@ background-size: auto
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
 .bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

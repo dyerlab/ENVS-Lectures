@@ -3,6 +3,7 @@
   <head>
     <title>Rasters</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.6.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="../../css/slide_styles.css" type="text/css" />
     <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
@@ -58,9 +59,8 @@ values
 ```
 
 ```
-##  [1] 14 18 12  9  6 14 15  7 13 17 14 20 16  9 12 11 11
-## [18] 12  5 25 12 22 18  9  5 12  6 13  7 16  7 10 12  9
-## [35] 10  9
+##  [1] 16 16 12 10 11 14 15  5 11 15 11 11 10 13  9 14 23 16  8  7 13 15 16 13 12
+## [26] 12  6 16 15  9  7 17  9 16 10 18
 ```
 
 --
@@ -73,12 +73,12 @@ x
 
 ```
 ##      [,1] [,2] [,3] [,4] [,5] [,6]
-## [1,]   14   15   16    5    5    7
-## [2,]   18    7    9   25   12   10
-## [3,]   12   13   12   12    6   12
-## [4,]    9   17   11   22   13    9
-## [5,]    6   14   11   18    7   10
-## [6,]   14   20   12    9   16    9
+## [1,]   16   15   10    8   12    7
+## [2,]   16    5   13    7   12   17
+## [3,]   12   11    9   13    6    9
+## [4,]   10   15   14   15   16   16
+## [5,]   11   11   23   16   15   10
+## [6,]   14   11   16   13    9   18
 ```
 
 
@@ -117,7 +117,7 @@ r
 ## crs        : NA 
 ## source     : memory
 ## names      : layer 
-## values     : 5, 25  (min, max)
+## values     : 5, 23  (min, max)
 ```
 
 --
@@ -359,7 +359,7 @@ alt
 ## resolution : 0.008333333, 0.008333333  (x, y)
 ## extent     : -116, -109, 22, 30  (xmin, xmax, ymin, ymax)
 ## crs        : +proj=longlat +datum=WGS84 +no_defs 
-## source     : /private/var/folders/5p/lkjbxz7j0236drfl_mgt511c0000gn/T/Rtmp5v42Pj/raster/r_tmp_2020-10-20_201534_44471_31107.grd 
+## source     : memory
 ## names      : alt_22 
 ## values     : -202, 2263  (min, max)
 ```
@@ -694,8 +694,7 @@ raster::extract( alt, as(sfran,"Spatial") )
 ```
 
 ```
-##     
-## 305
+## [1] 305
 ```
 
 
@@ -778,7 +777,7 @@ background-size: auto
 
 .center[
 
-# ️ Questions?
+# Questions?
 
 
 ![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
@@ -787,6 +786,8 @@ background-size: auto
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
 .bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

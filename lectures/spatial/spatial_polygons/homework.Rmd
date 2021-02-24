@@ -1,7 +1,9 @@
 ---
-title: "In-Class: Lines & Polygons"
+title: "Homeworks: Lines & Polygons"
 output: html_notebook
 ---
+
+</center>![Zoning Districts in the Fan](https://live.staticflickr.com/65535/50977272671_8656337587_c_d.jpg)</center>
 
 For this activity, we will focus on loading and manipulating `LINESTRING` and `POLYGON` objects derived from the City of Richmond, GIS Department.
 
@@ -21,7 +23,7 @@ zone_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data
 
 ## Questions
 
-For these questions, you may want to 
+Use the information from all the above sources to answer the following questions.
 
 1. In which Zoning District is Monroe Park located and what is the area of that district.
 
@@ -31,10 +33,7 @@ For these questions, you may want to
 
 4. Download the Richmond School shapefile above and make a table of all the schools that are within 1000 ft of any highways in Richmond, Virginia.
 
-```{r}
-
-```
-
+5. How many zoning districts are enclosed within the boundaries of the Monroe Park Campus?  Give the area of each.
 
 
 

@@ -2,6 +2,18 @@ rm( list=ls() )
 library(tidyverse)
 
 
+
+#
+#  Open the "Terminal"
+# 
+#  git add -A
+#  git commit -m 'put a message in here to explain what you are doing'
+#  git push
+
+
+
+
+
 options(htmltools.preserve.raw = FALSE)
 
 if( FALSE ) {

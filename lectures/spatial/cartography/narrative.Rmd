@@ -1,5 +1,545 @@
 ---
-title: "Choropleth Maps"
+title: "Cartography"
+author: "Charis Deadwyler"
+date: "2/10/2021"
 output: html_notebook
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+library(sf)
+library(maps)
+library(units)
+library(rgdal)
+library(rgeos)
+library(GGally)
+library(raster)
+library(mapproj)
+library(leaflet)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library( readr )
+library( tidyverse )
+library( lubridate )
+library(knitr)
+library(htmltools)
+
+library(scales)
+library(tidycensus)
+library(tigris)
+```
+
+```{r}
+RVA <- readOGR("City_Boundary")
+RVA <- st_as_sf(RVA)
+
+VA <- readOGR("Virginia_City_County_Census_Boundaries.shp")
+VA <- st_as_sf(VA)
+
+
+VA <- VA %>%
+  filter(NAMELSAD != "Bedford city") %>%
+  arrange(COUNTYFP)
+
+data <- read_csv("VA_pop_income.csv")
+
+data <- data %>%
+  mutate(COUNTYFP = substr(FIPS, 3,5))
+
+VA <-merge(VA, data)
+
+VA<- VA %>%
+  select(FIPS, Jurisdict, Income, Population, INTPTLAT, INTPTLON) %>%
+  rename(Longitude = INTPTLON) %>%
+  rename(Latitude = INTPTLAT) %>%
+  relocate(Latitude, .after = Longitude)
+```
+
+
+
+# Cartography
+
+"The art or technique of making maps"
+
+### Factors that effect design
+- Objective
+- Audience
+- Reality and generalization
+- Map scale
+- Technical limits
+
+### Basic elements of a Map
+
+- Title
+- Legend
+- Scale
+- North arrow
+- Additional information
+
+
+### Effective Maps
+
+- Communicates a clear message
+- Appropriate projection
+- Data at appropriate level of generalization
+- Clear symbology
+- Symbols that match the data
+- Good figure-ground organization
+- Good visual hierarchy
+
+
+# Common Types of Maps
+
+### Dot-Density
+- Spatial distribution and quantity
+https://github.com/tarakc02/tarakc02.github.io/blob/master/dot-density/index.md
+
+```{r}
+
+options(tigris_use_cache = TRUE)
+
+
+v19 <- load_variables(2019, "acs5", cache = TRUE)
+
+v19 %>%
+  mutate(table = str_extract(name, "^.+_")) %>%
+  filter(str_detect(concept, "EDUCATIONAL ATTAINMENT")) %>%
+  select(table, concept) %>%
+  distinct() %>%
+  print(n = Inf)
+
+
+#census_api_key("21cac509ab0c7c0ac7b33b020b91a9a4efe40c74", install = TRUE)
+
+acs <- get_acs("tract", table = "B15003", cache_table = TRUE,
+               geometry = TRUE, state = "51", county = "760",
+               year = 2019, output = "tidy")
+
+
+acs <- acs %>%
+  mutate(
+    id = str_extract(variable, "[0-9]{3}$") %>% as.integer
+  ) %>%
+  filter(id > 1) %>%
+  mutate(education = case_when(
+    id %>% between(2, 16) ~ "No HS diploma",
+    id %>% between(17, 21) ~ "HS, no Bachelors",
+    id == 22 ~ "Bachelors",
+    id > 22 ~ "Post-Bachelors"
+  )) %>%
+  group_by(GEOID, education) %>%
+  summarise(estimate = sum(estimate))
+
+
+```
+
+Creating Dots
+
+```{r}
+acs_split <- acs %>%
+  filter(estimate > 50) %>%
+  split(.$education)
+
+
+generate_samples <- function(data)
+  suppressMessages(st_sample(data, size = round(data$estimate / 10)))
+
+points <- map(acs_split, generate_samples)
+points <- imap(points,
+               ~st_sf(data_frame(education = rep(.y, length(.x))),
+                      geometry = .x))
+points <- do.call(rbind, points)
+
+
+```
+
+
+```{r}
+
+points <- points %>%
+  group_by(education) %>%
+  summarise()
+
+points <- points %>%
+  mutate(education = factor(
+    education,
+    levels = c("No HS diploma", "HS, no Bachelors",
+               "Bachelors", "Post-Bachelors")))
+
+points <- points %>%
+  mutate(n_points = map_int(geometry, nrow))
+```
+
+Plotting
+
+```{r}
+
+water <- tigris::area_water("51", "760")
+roads <- tigris::roads("51", "760")
+counties <- tigris::counties(state = "51") 
+rva <- counties %>%
+  filter(COUNTYFP == 760)
+```
+
+
+```{r, out.width= '100%'}
+ggplot() +
+  geom_sf(data = rva, fill = "white", lwd = 1) +
+  geom_sf(data = water, fill = "lightblue", colour = "lightblue") +
+  geom_sf(data = roads, colour = "grey") +
+  geom_sf(data = points,
+          aes(colour = education,
+              fill = education),
+          size = .5) +
+  scale_color_brewer(type = "div", palette = 4,
+                     name = "Education") +
+  scale_fill_brewer(type = "div", palette = 4) +
+  theme_minimal() +
+  ggtitle("Distribution of educational attainment in Richmond, Virginia (2019)",
+            "1 dot equals 10 people") +
+  guides(fill = "none")
+
+#ggsave("DotDensity.png")
+```
+### Proportional Symbols
+- Size of symbols is related to the value of phenomenon represented
+
+```{r}
+v19 %>%
+  mutate(table = str_extract(name, "^.+_")) %>%
+  filter(str_detect(concept, "TOTAL POPULATION")) %>%
+  select(table, concept) %>%
+  distinct() %>%
+  print(n = Inf)
+
+acs <- get_acs("county", table = "B01003", cache_table = TRUE,
+               geometry = TRUE, state = "51",
+               year = 2019, output = "tidy")
+points <- acs %>%
+  st_centroid(of_largest_polygon = TRUE)
+```
+
+
+
+```{r}
+
+
+ggplot() +
+  geom_sf(data = counties, fill = "lightblue", color = "lightblue") +
+  geom_sf(data = acs, fill = "grey95") +
+  geom_sf(data = points, aes(size = estimate), color = "lightsalmon2") +
+  theme_minimal() +
+  ggtitle("Population of Virginia Counties",
+          "2019") +
+  labs( size = "Population") +
+  scale_size_continuous(labels = comma)
+
+#ggsave("ProportionalSymbols.png")
+ 
+```
+
+
+### Choropleth
+- Data is colored or shaded base on an attribute
+
+```{r}
+
+acs <- acs %>%
+  mutate(quant = cut(estimate, quantile(estimate, seq(0,1, len = 10)),
+                     include.lowest = TRUE))
+
+acs$population <- log(acs$estimate)
+
+#ggplot() +
+  geom_sf(data = counties, fill = "lightblue", color = "lightblue") +
+  geom_sf(data = acs, aes(fill = quant), color = "black", lwd = .5) +
+  scale_fill_brewer(type = "seq", palette = 4)
+
+
+
+
+ggplot() +
+  geom_sf(data = counties, fill = "lightblue", color = "lightblue") +
+  geom_sf(data = acs, aes(fill = population), color = "black", lwd = .5) +
+  scale_fill_continuous(type = "viridis", 
+                        name = "Population (log transformed)")+
+  theme_minimal() +
+  ggtitle("Population Density of Virginia Counties",
+          "2019")
+#ggsave("Choropleth.png")
+```
+
+
+### Isoline
+- Lines connect points knows or estimated to have equal vales
+- Used in maps of temperature, precipitation, air pressure, climate classifications, ect
+- Topographic maps: type of isoline map depicting elevation
+
+```{r}
+library(ggisoband)
+
+class(volcano)
+names(volcano)
+
+volcano3d <- reshape2::melt(volcano)
+names(volcano3d) <- c("x", "y", "z")
+
+ggplot(volcano3d, aes(x,y, z=z)) +
+  geom_isobands(aes(fill = stat(zmin)), color = NA) +
+  scale_fill_viridis_c() +
+  coord_cartesian(expand = FALSE) +
+  theme_minimal()
+
+```
+
+```{r}
+#DEM <- raster("USGS_one_meter_x28y416_VA_Sandy_2014.tif")
+
+#DEM_5m <- aggregate(DEM, fact = 5)
+
+#DEM_5m <- writeRaster(DEM_5m, filename = file.path("DEM_5m.tif"))
+
+DEM_5m <- raster("DEM_5m.tif")
+
+DEM_pts <- rasterToPoints(DEM_5m, spatial = TRUE)
+DEM_df <- data.frame(DEM_pts)
+DEM_df$DEM_5m <- ifelse(DEM_df$DEM_5m <0, 0, DEM_df$DEM_5m)
+
+
+ggplot(DEM_df, aes(x=x, y=y, z=DEM_5m)) +
+  geom_isobands(aes(fill = stat(zmin)), color = NA) +
+  scale_fill_viridis_c()
+
+#ggsave("Isoline.png")
+
+ggplot(DEM_df, aes(x=x, y=y, z=DEM_5m)) +
+  geom_isobands(aes(color = stat(zmin)), fill = NA) +
+  scale_color_viridis_c() +
+  theme_minimal()
+
+#ggsave("Isoline_lines.png")
+```
+
+
+
+
+# Basic Map Making
+
+```{r}
+library("ggplot2")
+theme_set(theme_bw())
+library("sf")
+
+library("rnaturalearth")
+library("rnaturalearthdata")
+
+```
+
+
+note - `returnclass` default is `sp`
+```{r}
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+class(world)
+
+```
+
+
+```{r}
+ggplot(world) +
+  geom_sf() -> p
+```
+
+### Title, subtitle & axis labels
+
+```{r}
+p +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("World Map",
+          subtitle = paste0("(" ,length(unique(world$name)), "countries)" )) -> p
+
+
+```
+* `paste()` vs `paste0()`
+
+### Color
+
+```{r}
+
+p +
+  geom_sf(color = "black", fill = "paleturquoise") ->
+
+```
+
+`color` -> outline
+`fill` -> filled color
+
+
+```{r}
+
+p +
+  geom_sf(aes(fill = pop_est)) +
+  scale_fill_viridis_c( trans = "sqrt")
+
+scale_fill_v
+
+
+```
+
+`trans = ` transformation of data, in this case square root
+
+`option = ` A-E, default is D
+
+```{r}
+
+beetle_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+
+read_csv(beetle_url) %>%
+  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) %>%
+  st_union() %>%
+  st_buffer(dist = 1) %>%
+  st_bbox() -> bounds
+
+read_csv(beetle_url) %>%
+  st_as_sf(coords=c("Longitude","Latitude"), crs = 4326) -> beetle
+
+bounds
+ggplot(world) +
+  geom_sf() +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Beetles") +
+  coord_sf( xlim = c(-116, -108), ylim = c(22, 31), expand = FALSE) -> p
+
+```
+
+
+Scale bar and North arrow
+package `ggspatial`
+
+```{r}
+library(ggspatial)
+p
+
+p+
+  annotation_scale(location = "br", style = "bar") +
+  annotation_north_arrow(location = "br", width = unit(.5, "cm"),
+                         height = unit(.75, "cm"),
+                         pad_y = unit(0.75, "cm"),
+                         pad_x = unit(0.5, "cm"),
+                         style = north_arrow_orienteering(
+                           text_size = 8
+                         )) 
+```
+
+
+
+```{r}
+ggplot(world) +
+  geom_sf() +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Beetles") +
+  coord_sf( xlim = c(-118, -85), 
+            ylim = c(10, 35), 
+            expand = FALSE) +
+  annotation_scale(location = "bl", 
+                   style = "bar") +
+  annotation_north_arrow(location = "bl", width = unit(.5, "cm"),
+                         height = unit(.75, "cm"),
+                         pad_y = unit(0.75, "cm"),
+                         pad_x = unit(0.5, "cm"),
+                         style = north_arrow_orienteering(
+                           text_size = 8
+                         )) -> p
+
+p
+```
+
+
+changed extent to see more countries
+
+
+### Adding names
+```{r}
+world_points<- st_centroid(world)
+world_points <- cbind(world, st_coordinates(st_centroid(world$geometry)))
+
+my_points <- world_points %>%
+  filter( X > -118 & X < -85) %>%
+  filter( Y > 10 & Y < 35)
+
+nrow(my_points)
+summary(world_points$Y)
+
+ggplot() +
+  geom_sf(data=world, fill = "seashell") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Mexico", subtitle = "& Friends") +
+  coord_sf( xlim = c(-118, -85), 
+            ylim = c(10, 35), 
+            expand = FALSE) +
+  annotation_scale(location = "bl", 
+                   style = "bar") +
+  annotation_north_arrow(location = "bl", width = unit(.5, "cm"),
+                         height = unit(.75, "cm"),
+                         pad_y = unit(0.75, "cm"),
+                         pad_x = unit(0.5, "cm"),
+                         style = north_arrow_orienteering(
+                           text_size = 8
+                         )) +
+  geom_text_repel(data= my_points,aes(x=X, y=Y, label=name), 
+                  color = "royalblue4", fontface = "bold",
+                  size = 3.5,
+                  point.padding = 0,
+                  box.padding = unit(.5, "cm"))   +
+  annotate(geom = "text",
+               x = -90, y = 26, 
+               label = "Gulf of Mexico", 
+               fontface = "italic", 
+               color = "grey22", 
+               size = 4) +
+    annotate(geom = "text",
+               x = -113, y = 21, 
+               label = "Pacific Ocean", 
+               fontface = "italic", 
+               color = "grey22", 
+               size = 4) +
+  theme(panel.background = element_rect(fill = "azure")) -> Mexico_map
+
+ggsave("Mexico.png")
+  
+```
+
+
+
+```{r}
+mexico <- ne_countries(scale = "medium", type = "countries", country = "Mexico", returnclass = c("sf"))
+
+ggplot() +
+  geom_sf(data = mexico,  aes(fill = "subunit")) +
+  geom_sf(data = beetle, color = "darkred") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Beetles") +
+  coord_sf( xlim = c(-116, -108), ylim = c(22, 31), expand = FALSE) +
+  theme(panel.background = element_rect(fill = "azure"))
+
+names(mexico)
+
+```
+
+
+
+
+
+
+
 

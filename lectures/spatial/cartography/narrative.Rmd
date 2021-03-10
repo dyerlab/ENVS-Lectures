@@ -34,33 +34,6 @@ library(tidycensus)
 library(tigris)
 ```
 
-```{r}
-RVA <- readOGR("City_Boundary")
-RVA <- st_as_sf(RVA)
-
-VA <- readOGR("Virginia_City_County_Census_Boundaries.shp")
-VA <- st_as_sf(VA)
-
-
-VA <- VA %>%
-  filter(NAMELSAD != "Bedford city") %>%
-  arrange(COUNTYFP)
-
-data <- read_csv("VA_pop_income.csv")
-
-data <- data %>%
-  mutate(COUNTYFP = substr(FIPS, 3,5))
-
-VA <-merge(VA, data)
-
-VA<- VA %>%
-  select(FIPS, Jurisdict, Income, Population, INTPTLAT, INTPTLON) %>%
-  rename(Longitude = INTPTLON) %>%
-  rename(Latitude = INTPTLAT) %>%
-  relocate(Latitude, .after = Longitude)
-```
-
-
 
 # Cartography
 
@@ -255,13 +228,10 @@ acs <- acs %>%
 
 acs$population <- log(acs$estimate)
 
-#ggplot() +
+ggplot() +
   geom_sf(data = counties, fill = "lightblue", color = "lightblue") +
   geom_sf(data = acs, aes(fill = quant), color = "black", lwd = .5) +
   scale_fill_brewer(type = "seq", palette = 4)
-
-
-
 
 ggplot() +
   geom_sf(data = counties, fill = "lightblue", color = "lightblue") +
@@ -353,28 +323,44 @@ class(world)
 ```{r}
 ggplot(world) +
   geom_sf() -> p
+
+p
+
+setwd("C:/Users/Charis/Documents/Spring2021/GISinR/GISinR")
+
+#ggsave("world.png")
 ```
 
 ### Title, subtitle & axis labels
 
 ```{r}
+setwd("C:/Users/Charis/Documents/Spring2021/GISinR/GISinR")
+
 p +
   xlab("Longitude") +
   ylab("Latitude") +
   ggtitle("World Map",
           subtitle = paste0("(" ,length(unique(world$name)), "countries)" )) -> p
 
+p
 
+
+
+ggsave("world_title.png")
 ```
 * `paste()` vs `paste0()`
 
 ### Color
 
 ```{r}
+setwd("C:/Users/Charis/Documents/Spring2021/GISinR/GISinR")
 
 p +
-  geom_sf(color = "black", fill = "paleturquoise") ->
+  geom_sf(color = "black", fill = "paleturquoise") -> p
 
+p
+
+ggsave("color.png")
 ```
 
 `color` -> outline
@@ -383,13 +369,16 @@ p +
 
 ```{r}
 
+setwd("C:/Users/Charis/Documents/Spring2021/GISinR/GISinR")
+
 p +
   geom_sf(aes(fill = pop_est)) +
-  scale_fill_viridis_c( trans = "sqrt")
+  scale_fill_viridis_c( trans = "sqrt") -> p
 
-scale_fill_v
+p
 
 
+ggsave("palette.png")
 ```
 
 `trans = ` transformation of data, in this case square root
@@ -397,6 +386,8 @@ scale_fill_v
 `option = ` A-E, default is D
 
 ```{r}
+
+setwd("C:/Users/Charis/Documents/Spring2021/GISinR/GISinR")
 
 beetle_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
 
@@ -409,13 +400,16 @@ read_csv(beetle_url) %>%
 read_csv(beetle_url) %>%
   st_as_sf(coords=c("Longitude","Latitude"), crs = 4326) -> beetle
 
-bounds
 ggplot(world) +
   geom_sf() +
   xlab("Longitude") +
   ylab("Latitude") +
   ggtitle("Beetles") +
   coord_sf( xlim = c(-116, -108), ylim = c(22, 31), expand = FALSE) -> p
+
+p
+
+ggsave("arrow.png")
 
 ```
 
@@ -424,8 +418,9 @@ Scale bar and North arrow
 package `ggspatial`
 
 ```{r}
+setwd("C:/Users/Charis/Documents/Spring2021/GISinR/GISinR")
+
 library(ggspatial)
-p
 
 p+
   annotation_scale(location = "br", style = "bar") +
@@ -435,7 +430,11 @@ p+
                          pad_x = unit(0.5, "cm"),
                          style = north_arrow_orienteering(
                            text_size = 8
-                         )) 
+                         )) -> p
+
+p
+
+ggsave("arrow2.png")
 ```
 
 
@@ -468,6 +467,8 @@ changed extent to see more countries
 
 ### Adding names
 ```{r}
+library(ggrepel)
+
 world_points<- st_centroid(world)
 world_points <- cbind(world, st_coordinates(st_centroid(world$geometry)))
 
@@ -514,8 +515,10 @@ ggplot() +
                size = 4) +
   theme(panel.background = element_rect(fill = "azure")) -> Mexico_map
 
-ggsave("Mexico.png")
-  
+#ggsave("Mexico.png")
+
+
+Mexico_map
 ```
 
 
@@ -537,9 +540,131 @@ names(mexico)
 ```
 
 
+### Layouts
+
+Side-by-Side  
+```{r}
+library(ggthemes)
+
+ggplot(data = world) +
+  geom_sf(aes(fill = region_wb)) +
+  ggtitle("World") +
+  labs(fill = "Region", size = 2) +
+  geom_rect(xmin = -116, xmax = -108, ymin = 22, ymax = 31, 
+     fill = NA, colour = "black", size = 1) +
+  scale_fill_viridis_d() +
+  theme(panel.background = element_rect(fill = "azure"),
+     panel.border = element_rect(fill = NA)) -> world_map
+
+world_map
 
 
 
+```
+
+```{r}
+ggplot() +
+  geom_sf(data=world, fill = "seashell") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Mexico") +
+  coord_sf( xlim = c(-118, -85), 
+            ylim = c(10, 35), 
+            expand = FALSE) +
+  annotate(geom = "text",
+               x = -90, y = 26, 
+               label = "Gulf of Mexico", 
+               fontface = "italic", 
+               color = "grey22", 
+               size = 1) +
+    annotate(geom = "text",
+               x = -113, y = 21, 
+               label = "Pacific Ocean", 
+               fontface = "italic", 
+               color = "grey22", 
+               size = 1) +
+  theme(panel.background = element_rect(fill = "azure")) -> Mexico
+```
+
+
+
+```{r}
+setwd("C:/Users/Charis/Documents/Spring2021/GISinR/GISinR")
+
+library(cowplot)
+
+plot_grid(world_map, Mexico, nrow = 1, rel_widths = c(2.3, 1)) -> p
+p
+
+ggsave("grid_plot2.png")
+```
+
+Inset Map
+
+```{r}
+VA_map 
+ggplot(counties) +
+  geom_sf()
+
+ggplot() +
+  geom_sf(data = counties, fill = "lightblue", color = "lightblue") +
+  geom_sf(data = acs, fill = "grey95") +
+  theme_minimal() -> VA_map
+
+ggplot() +
+  geom_sf(data = rva, fill = "grey95", lwd = 1) +
+  geom_sf(data = water, fill = "lightblue", colour = "lightblue") +
+  geom_sf(data = roads, colour = "grey")+
+  coord_sf(datum = NA) -> RVA_map
+
+VA_map +
+  annotation_custom(
+    grob = ggplotGrob(RVA_map), 
+      xmin = -83.6,
+      xmax = -75 + (-77.4 - (-75))/2.5,
+      ymin = -77.3,
+      ymax = -37.6 + (-75.1 - 37)/2.5
+  )
+
+
+st_bbox(counties)
+st_bbox(rva)
+
+(ratioRVA <- (37.60281 - 37.44655) / (-77.38551 - (-77.60117)))
+
+ggdraw(VA_map) +
+  draw_plot(RVA_map,
+            width = 0.25, height = 0.25* 10/4 * ratioRVA, 
+        x = .15, y = .5)
+
+```
+
+```{r}
+
+arrowA <- data.frame(x1 = 18, x2 = 25, y1 = 3.45, y2 = 3.55)
+
+ggplot() +
+  geom_sf(data = rva, fill = "grey95", lwd = 1) +
+  geom_sf(data = water, fill = "lightblue", colour = "lightblue") +
+  geom_sf(data = roads, colour = "grey")+
+  annotate("text", x = -77.575, y = 37.62, label= "Richmond", size = 3)+
+  theme_void() +
+  theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed", 
+         size = 0.5), panel.background = element_rect(fill = "white"), 
+         panel.border = element_rect(fill = NA)) +
+  coord_sf(datum = NA) -> RVA_map
+
+ggdraw(xlim = c(0, 35), ylim = c(0, 7.5)) +
+  draw_plot(VA_map, x = 0, y = 0, width = 25, height = 7.5) +
+  draw_plot(RVA_map, x = 24, y = .5, width = 10, height = 7)+
+  geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), data = arrowA, 
+        arrow = arrow(), lineend = "round") -> arrow_box
+
+
+#ggsave("arrow_box.png")
+
+
+```
 
 
 

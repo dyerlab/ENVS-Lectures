@@ -1,5 +1,5 @@
 ---
-title: "Rasters"
+title: "Cartography"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -31,10 +31,9 @@ knitr::opts_chunk$set( fig.retina = 3,
 theme_set( theme_minimal( base_size = 22) )
 ```
 
-
 # .green[Cartography]
 
-### .fancy[Continuously Distributed Data `r fa("th", fill='limegreen'  )`]
+### .fancy[The Art or Technique of Making Maps `r fa("map", fill='limegreen'  )`]
 
 
 
@@ -42,235 +41,365 @@ theme_set( theme_minimal( base_size = 22) )
 
 ---
 
-# Rasters
+# Factors that affect design
+
+.pull-left[
+.red[- Objective
+
+- Audience
+- Reality and generalization
+
+- Map scale
+- Technical limits]
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51021699777_928b6fd4c5_o.png)]
+---
+
+# Basic elements of a Map
+
+.pull-left[.red[- Title
+- Legend
+
+- Scale
+
+- North arrow
+- Additional information]]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51021699777_928b6fd4c5_o.png)]
+
+
+
+ 
+---
+
+
+# Effective Maps
+.pull-left[.red[- Communicates a clear message
+- Appropriate projection
+
+- Data at appropriate level of generalization
+- Clear symbology
+]]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51021699777_928b6fd4c5_o.png)
+]
+
+---
+class: sectionTitle, inverse
+
+# .green[Common Types of Maps]
+
+
+
+---
+.left[.red[Dot Density] ]
+ 
+
+ 
+.left-column[
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+- Spatial distribution and quantity]
+
+ 
+.right[
+![](https://live.staticflickr.com/65535/51021633697_3c0b753abc_z.jpg)]
+
+
+---
+.red[Proportional Symbols]
+
+
+.left[
+- Size of symbols is related to the value of phenomenon represented]
+
+.right[
+![](https://live.staticflickr.com/65535/51020804313_b88b158267_b.jpg)
+]
+
+---
+.red[Choropleth]
+
+<p>&nbsp;</p>
+.top[
+- Data is colored or shaded base on an attribute]
+ <p>&nbsp;</p>
+.center[
+![](https://live.staticflickr.com/65535/51021633662_7c8cdcd623_b.jpg)]
+
+
+---
+
+.red[Isoline]
+
+.pull-left[
+
+<p>&nbsp;</p>
+- Lines connect points knows or estimated to have equal vales
+
+- Used in maps of temperature, precipitation, air pressure, climate classifications, ect
+
+- Topographic maps: type of isoline map depicting elevation]
+
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51021531891_7a2ba3767e_b.jpg)]
+
+---
+class: sectionTitle, inverse
+
+# .green[Map Making]
+
+---
+.red[Basic Plotting]
+
+
+
+.left-column[
+
+<p>&nbsp;</p>
+
+####Packages:
+
+`ggplot`
+
+`naturalearth`
+
+`naturalearthdata`
+]
+
+.right-column[
+
+
+```{r eval=FALSE, echo=TRUE}
+ggplot(world) + geom_sf()
+```
+
+![](https://live.staticflickr.com/65535/51021633622_e25253c196_b.jpg)
+
+]
+---
+
+.red[Add Title, Subtitle, Axes Labels]
+
+
 
 .center[
-.red[Rasters represent data distributed continuously across a spatial extent]
+![](https://live.staticflickr.com/65535/51021633627_87a9a86d0b_z.jpg)
 ]
 
---
-### Examples:
+.bottom[
+```{r eval=FALSE, echo=TRUE}
 
-- Elevation (continuous)  
-- Habitat Type (discrete)
-- Precipitation (continuous)  
-- Imperviable Surfaces (discrete)  
-
-
-
-
----
-
-# What is the Structure of a Raster?
-
-A Raster is simply a `matrix` of values with some additional decorations on it that allow it to have a spatial context.  
-
-```{r}
-values <- rpois( n = 36, lambda=12)
-values
+p +
+  xlab("Longitude") + ylab("Latitude") +
+  ggtitle("World Map", subtitle = paste0("(" ,length(unique(world$name)), "countries)" ))
 ```
+]
 
---
+---
+.red[Color Palettes]
 
-```{r}
-x <- matrix( values, nrow=6)
-x
+.top[
+```{r eval = FALSE, echo=TRUE}
+p +
+  geom_sf(aes(fill = pop_est)) +
+  scale_fill_viridis_c( trans = "sqrt")
 ```
+]
 
 
----
-
-# Spatial Designations
-
-For each value in the `matrix`, when it is turned into a `raster` object: 
-
-- The `cell` (pixel) has a defined spatial extent (width, height, & origin).
-
-- All the physical space represented by that cell has *exactly the same value*
-
-- The *courseness* of the raster is question dependent:
-
-  - 3x5 matrix for Continental US may not adequately capture elevation trends.
-  
-  - 1m<sup>2</sup> matrix for elevation may be *a bit* too big.
+.center[
+![](https://live.staticflickr.com/65535/51020804303_d77450ab68_c.jpg)
+]
 
 ---
 
-# Matrix $\to$ Raster
-
-```{r}
-library( raster )
-r <- raster( x )
-r
-```
-
---
-
-Notice that when I plot it out, it does not show the data, but a summary of the data along with some key data about the contents, including:  
-- A class definition  
-- The dimensions of the underlying data matrix,  
-- The resolution (e.g., the spatial extent of the sides of each pixel).  Since we have no CRS here, it is equal to $nrows(x)^{-1}$ and $ncols(x)^{-1}$.  
-- The extent (the bounding box) and again since we do not have a CRS defined it just goes from $0$ to $1$.
-- The `crs` (missing)
-- The source can be either `memory` if the raster is not that big or `out of memory` if it is just referencing.
+.red[Scale Bar & North Arrow]
 
 
----
-
-# Loading A Raster
-
-By far, you will most commonly working with pre-existing raster data.  
-
-- Several file formats including GeoTIFF, BIL, & ASC.
-- All can be loaded from filesystem or internet with address.
-
-```{r cache=TRUE}
-url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
-r <- raster( url )
-r
-```
-
-Notice that this raster has a defined CRS and as such it is projected and the extent relates to the units of the datum (e.g., from -120 to -90 degrees longitude and 0 to 30 degrees latitude).
-
-
----
-class: sectionTitle, inverse
-
-# .blue[Visualizing Rasters]
-
-## .fancy[What good are they if we cannot look at them?]
-
-
----
-
-# Built-in Plotting
-
-Just like all things in `R`, `raster` objects can be visualized using built-in functions as well as functions from external libraries.
 
 .pull-left[
 
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-```{r eval=FALSE}
-plot( r, 
-      xlab="Longitude", 
-      ylab="Latitude" )
-```
-]
-.pull-right[
-![](https://live.staticflickr.com/65535/50510331198_2a2c5bfe76_c_d.jpg)
-]
-
-
----
-
-# Raster Sizes
-
-This particular raster is quite large (in terms of the number of cells)
-
-.pull-left[
-```{r echo=FALSE}
-r
+`library(ggspatial)`
+```{r, eval=FALSE, echo=TRUE}
+p+
+  annotation_scale(location = "br", style = "bar") +
+  annotation_north_arrow(location = "br", 
+                width = unit(.5, "cm"),
+                height = unit(.75, "cm"),
+                pad_y = unit(0.75, "cm"),
+                pad_x = unit(0.5, "cm"),
+                style = north_arrow_orienteering(
+                           text_size = 8
+                         )) 
 ```
 ]
 
---
 
 .pull-right[
-
-These data only represent the elevation of the land.  Where there is water, the value in the underlying matrix is `NA`.  
-
-Cell Type | Count 
-----------|-------:
-Land      | `r format( sum( !is.na( values(r) ) ), big.mark = "," )`  
-Water     | `r format( sum( is.na( values(r) ) ), big.mark = "," )`
-
-]
-
+![](https://live.staticflickr.com/65535/51021633642_b3a4c5c2c5_b.jpg)]
 
 
 ---
 
-# Cropping
+.red[Adding Names & Labels]
 
-One of the first things to do is to crop the data down to represent the size and extent of our study area.  If we over 10 million missing data points (the ocean) and most of Mexico in this raster above but we are only working with sites in Baja California (Norte y Sur), we would do well to excise (or crop) the raster to only include the area we are interested in working with.  
+.pull-left[
+
+.green[`library(ggrepel)`]
+
+
+```{r, eval=FALSE, echo=TRUE}
++ geom_text_repel(data= my_points,
+        aes(x=X, y=Y, label=name), 
+        color = "royalblue4", 
+        fontface = "bold",
+        size = 3.5,
+        point.padding = 0,
+        box.padding = unit(.5, "cm"))
+ 
+```
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51020804198_06087d7679_b.jpg)
+]
+
+---
+.red[Annotate]
+
+.push-right[
+```{r, eval=FALSE, echo=TRUE}
++ annotate(geom = "text",x = -90, y = 26, 
+               label = "Gulf of Mexico", fontface = "italic", 
+               color = "grey22",  size = 4) 
+```
+]
+
+
+.center[
+![](https://live.staticflickr.com/65535/51020804288_f1f8f3f623.jpg)]
+
+---
+
+class: sectionTitle, inverse
+
+# .green[Layouts]
+
+---
+.red[Side by side]
+
+.green[`library(cowplot)`]
+
+```{r, eval=FALSE, echo=TRUE}
+plot_grid(world_map, Mexico, nrow = 1, rel_widths = c(2.3, 1))
+```
+
+
+
+.right[
+![](https://live.staticflickr.com/65535/51021531841_e233e75ed5_b.jpg)]
+
+
+
+---
+.red[Inset Maps]
+
+.pull-left[`VA_map`
+
+
+![](https://live.staticflickr.com/65535/51021531936_d8f9753a8e_b.jpg)
+]
 
 --
 
-Workflow:  
 
-1. Define a bounding box (the spatial extent of the region of interest)  
-2. Expand it a bit so that points are not **on the edges** of the box.
-3. Create an `extent`
-4. Crop the original matrix to represent the boundaries defined in the `extent`
+.pull-right[`RVA_map`
+
+![](https://live.staticflickr.com/65535/51020804333_8441117c50_b.jpg)
+]
+
 
 
 ---
+.red[Inset Maps]
 
-# Cropping 1: Bounding Box
 
-Let's use the beetle data from the [Spatial Points Lecture](https://dyerlab.github.io/ENVS-Lectures/spatial/spatial_points/slides.html#1) as the data we will be working with.  
+```{r, eval=FALSE, echo=TRUE}
+ggdraw(VA_map) +
+  draw_plot(RVA_map,width = 0.25, height = 0.25* 10/4 * ratioRVA, x = .15, y = .5)
+```
 
-```{r}
-library( sf )
-library( tidyverse )
-beetle_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
 
-read_csv( beetle_url ) %>% 
-  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) -> beetles
+![](https://live.staticflickr.com/65535/51020804223_abbdb227a0_b.jpg)
 
-beetles %>% 
-  st_bbox()
+
+
+
+
+---
+.red[Now with Arrows!]
+
+
+```{r, eval = FALSE, echo=TRUE}
+arrowA <- data.frame(x1 = 18, x2 = 25, y1 = 3.45, y2 = 3.55)
 ```
 
 
 
+```{r, eval=FALSE, echo=TRUE}
+ggdraw(xlim = c(0, 35), ylim = c(0, 7.5)) +
+  draw_plot(VA_map, x = 0, y = 0, width = 25, height = 7.5) +
+  draw_plot(RVA_map, x = 24, y = .5, width = 10, height = 7)+
+  geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), data = arrowA, 
+    arrow = arrow(), lineend = "round")
+```
+
+--- 
+
+.center[
+![](https://live.staticflickr.com/65535/51021533596_df37bc5cee_c.jpg)]
+
 ---
-class: sectionTitle, inverse
+.blue[Resources]
 
-# .orange[Raster Manipulations]
-
-## .fancy[Getting Data From the Map]
-
-
-
-
-
----
-
-# Map Interactivity
-
-You can work with raster data interactively (I just cannot do it here on this presentation because it has to be in real time).  
 
 
 .pull-left[
-```{r, eval=FALSE}
-plot( alt )
-click( alt, 
-       xy=TRUE, 
-       value=TRUE, 
-       n=3 ) -> points
-```
+[Drawing maps in ggplot2](https://www.r-spatial.org/r/2018/10/25/ggplot2-sf.html)
+
+![](https://live.staticflickr.com/65535/51022629192_4d62718ced_o.jpg)
+<p>&nbsp;</p>
+
+--- 
+
+<p>&nbsp;</p>
+
+[ggplot2 cheat sheet](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+
+![](https://live.staticflickr.com/65535/51022531071_d532cf2aab_o.jpg)]
+
+.pull-right[
+
+[Making maps in R](https://geocompr.robinlovelace.net/adv-map.html)
+
+![](https://live.staticflickr.com/65535/51022763791_5f44f6df33_o.jpg)
+
+--- 
+
+
+[cowplot package](https://wilkelab.org/cowplot/articles/index.html)
+
+![](https://live.staticflickr.com/65535/51022067998_9325be84f3_m.jpg)
+
 ]
-
-.pull.right[
-![](https://live.staticflickr.com/65535/50505505948_08e3e91dfb_w_d.jpg)
-]
-
-
-
-
-
-
-
-
-
-
-
-
 
 ---
 
@@ -281,14 +410,14 @@ background-size: auto
 
 .center[
 
-# Questions?
+.red[Questions?]
 
 
-![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+![Dog](https://i.redd.it/opy67ug150541.jpg)
 ]
 
 <p>&nbsp;</p>
 
-.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://deadwylerm@vcu.edu) and I'll get back to you as soon as possible.]
 
 

@@ -31,8 +31,10 @@ background-size: cover
 
 .pull-left[
 .red[- Objective
+
 - Audience
 - Reality and generalization
+
 - Map scale
 - Technical limits]
 ]
@@ -45,7 +47,9 @@ background-size: cover
 
 .pull-left[.red[- Title
 - Legend
+
 - Scale
+
 - North arrow
 - Additional information]]
 
@@ -70,116 +74,126 @@ background-size: cover
 ![](https://live.staticflickr.com/65535/51021699777_928b6fd4c5_o.png)
 ]
 
+---
+class: sectionTitle, inverse
+
+# .green[Common Types of Maps]
+
 
 
 ---
+.left[.red[Dot Density] ]
+ 
 
-# Common Types of Maps
+ 
+.left-column[
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
-.pull-left[.red[
-Dot Density]
+- Spatial distribution and quantity]
 
-- Spatial distribution and quantity
-]
+ 
+.right[
+![](https://live.staticflickr.com/65535/51021633697_3c0b753abc_z.jpg)]
 
-.pull-right[
-![](https://live.staticflickr.com/65535/51021633697_3c0b753abc_c.jpg)
-]
 
 ---
-# Common Types of Maps
+.red[Proportional Symbols]
 
 
-.pull-left[.red[
-Proportional Symbols
-]
+.left[
 - Size of symbols is related to the value of phenomenon represented]
 
-.pull-right[
-![](https://live.staticflickr.com/65535/51020804313_8e63cef1e6_b.jpg)
+.right[
+![](https://live.staticflickr.com/65535/51020804313_b88b158267_b.jpg)
 ]
 
 ---
-# Common Types of Maps
+.red[Choropleth]
 
-
-.pull-left[.red[Choropleth
-
-]
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+.top[
 - Data is colored or shaded base on an attribute]
-
-.pull-right[
-![](https://live.staticflickr.com/65535/51021633662_3fbb73b886_b.jpg)]
+ &lt;p&gt;&amp;nbsp;&lt;/p&gt;
+.center[
+![](https://live.staticflickr.com/65535/51021633662_7c8cdcd623_b.jpg)]
 
 
 ---
-# Common Types of Maps
 
-.pull-left[.red[
-Isoline
-]
+.red[Isoline]
+
+.pull-left[
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 - Lines connect points knows or estimated to have equal vales
+
 - Used in maps of temperature, precipitation, air pressure, climate classifications, ect
+
 - Topographic maps: type of isoline map depicting elevation]
 
 
 .pull-right[
 ![](https://live.staticflickr.com/65535/51021531891_7a2ba3767e_b.jpg)]
 
+---
+class: sectionTitle, inverse
+
+# .green[Map Making]
 
 ---
-
-#  Basic Map Making
-
+.red[Basic Plotting]
 
 
-.pull-left[`ggplot`
+
+.left-column[
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+####Packages:
+
+`ggplot`
 
 `naturalearth`
 
 `naturalearthdata`
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-```r
-ggplot(world) +
-  geom_sf()
-```
 ]
 
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-.pull-right[
-![](https://live.staticflickr.com/65535/51021633622_e25253c196_b.jpg)]
+.right-column[
 
 
 
+```r
+ggplot(world) + geom_sf()
+```
 
+![](https://live.staticflickr.com/65535/51021633622_e25253c196_b.jpg)
+
+]
 ---
 
-# Add Title, Subtitle, Axes Labels
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-.pull-left[
+.red[Add Title, Subtitle, Axes Labels]
+
+
+
+.center[
+![](https://live.staticflickr.com/65535/51021633627_87a9a86d0b_z.jpg)
+]
+
+.bottom[
 
 ```r
 p +
-  xlab("Longitude") +
-  ylab("Latitude") +
-  ggtitle("World Map",
-    subtitle =
-    paste0("(" ,length(unique(world$name)),
-           "countries)" ))
+  xlab("Longitude") + ylab("Latitude") +
+  ggtitle("World Map", subtitle = paste0("(" ,length(unique(world$name)), "countries)" ))
 ```
 ]
 
-.pull-right[
-![](https://live.staticflickr.com/65535/51021633627_87a9a86d0b_b.jpg)
-]
-
 ---
-# Color
+.red[Color Palettes]
 
-.red[palettes]
-
-.pull-left[
+.top[
 
 ```r
 p +
@@ -189,20 +203,19 @@ p +
 ]
 
 
-.pull-right[
-![](https://live.staticflickr.com/65535/51020804303_d77450ab68_b.jpg)
+.center[
+![](https://live.staticflickr.com/65535/51020804303_d77450ab68_c.jpg)
 ]
 
 ---
 
-# Scale Bar &amp; North Arrow
-
-`library(ggspatial)`
-
+.red[Scale Bar &amp; North Arrow]
 
 
 
 .pull-left[
+
+`library(ggspatial)`
 
 ```r
 p+
@@ -218,19 +231,23 @@ p+
 ```
 ]
 
+
 .pull-right[
-![](https://live.staticflickr.com/65535/51021633642_2940586b27_b.jpg)]
+![](https://live.staticflickr.com/65535/51021633642_b3a4c5c2c5_b.jpg)]
+
+
 ---
 
-# Adding Names &amp; Labels
-.pull-left[.red[ggrepel]
+.red[Adding Names &amp; Labels]
 
-`library(ggrepel)`
+.pull-left[
+
+.green[`library(ggrepel)`]
 
 
 
 ```r
-geom_text_repel(data= my_points,
++ geom_text_repel(data= my_points,
         aes(x=X, y=Y, label=name), 
         color = "royalblue4", 
         fontface = "bold",
@@ -245,51 +262,45 @@ geom_text_repel(data= my_points,
 ]
 
 ---
+.red[Annotate]
 
-#Adding Names &amp; Labels
-.pull-left[.red[annotate]
-
-
-
-
+.push-right[
 
 ```r
-annotate(geom = "text",
-               x = -90, y = 26, 
-               label = "Gulf of Mexico", 
-               fontface = "italic", 
-               color = "grey22", 
-               size = 4) 
-```
-]
-
-.pull-right[
-![](https://live.staticflickr.com/65535/51020804288_0f68a1f6c9_b.jpg)]
-
----
-
-#Layout
-
-.pull-left[.red[Side by side]
-
-`library(cowplot)`
-
-
-
-
-```r
-plot_grid(world_map, Mexico, nrow = 1, 
-          rel_widths = c(2.3, 1))
++ annotate(geom = "text",x = -90, y = 26, 
+               label = "Gulf of Mexico", fontface = "italic", 
+               color = "grey22",  size = 4) 
 ```
 ]
 
 
-.pull-right[
-![](https://live.staticflickr.com/65535/51021531841_1efc547486_b.jpg)]
+.center[
+![](https://live.staticflickr.com/65535/51020804288_f1f8f3f623.jpg)]
 
 ---
 
-# Layout
+class: sectionTitle, inverse
+
+# .green[Layouts]
+
+---
+.red[Side by side]
+
+.green[`library(cowplot)`]
+
+
+```r
+plot_grid(world_map, Mexico, nrow = 1, rel_widths = c(2.3, 1))
+```
+
+
+
+.right[
+![](https://live.staticflickr.com/65535/51021531841_e233e75ed5_b.jpg)]
+
+
+
+---
 .red[Inset Maps]
 
 .pull-left[`VA_map`
@@ -309,52 +320,78 @@ plot_grid(world_map, Mexico, nrow = 1,
 
 
 ---
-# Layout
-.pull-left[.red[Inset Maps]
+.red[Inset Maps]
 
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
 
 ```r
 ggdraw(VA_map) +
   draw_plot(RVA_map,width = 0.25, height = 0.25* 10/4 * ratioRVA, x = .15, y = .5)
 ```
-]
 
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
-.pull-right[
-![](https://live.staticflickr.com/65535/51020804223_5b4739b90d_b.jpg)]
+![](https://live.staticflickr.com/65535/51020804223_abbdb227a0_b.jpg)
+
+
+
 
 
 ---
-#Layout
-.red[Arrows]
+.red[Now with Arrows!]
 
-.pull-left[
+
 
 ```r
-arrowA &lt;- data.frame(x1 = 18, x2 = 25,
-                y1 = 3.45, y2 = 3.55)
+arrowA &lt;- data.frame(x1 = 18, x2 = 25, y1 = 3.45, y2 = 3.55)
 ```
 
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
 
 
 ```r
 ggdraw(xlim = c(0, 35), ylim = c(0, 7.5)) +
-  draw_plot(VA_map, x = 0, y = 0, 
-    width = 25, height = 7.5) +
-  draw_plot(RVA_map, x = 24, y = .5, 
-    width = 10, height = 7)+
-  geom_segment(aes(x = x1, y = y1, 
-    xend = x2, yend = y2), data = arrowA, 
+  draw_plot(VA_map, x = 0, y = 0, width = 25, height = 7.5) +
+  draw_plot(RVA_map, x = 24, y = .5, width = 10, height = 7)+
+  geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), data = arrowA, 
     arrow = arrow(), lineend = "round")
 ```
-]
+
+--- 
+
+.center[
+![](https://live.staticflickr.com/65535/51021533596_df37bc5cee_c.jpg)]
+
+---
+# Resources
+
+.pull-left[
+[Drawing maps in ggplot2](https://www.r-spatial.org/r/2018/10/25/ggplot2-sf.html)
+
+![](https://live.staticflickr.com/65535/51022629192_4d62718ced_o.jpg)
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+--- 
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+[ggplot2 cheat sheet](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+
+![](https://live.staticflickr.com/65535/51022531071_d532cf2aab_o.jpg)]
 
 .pull-right[
-![](https://live.staticflickr.com/65535/51021533596_3bf81e69d9_b.jpg)]
+
+[Making maps in R](https://geocompr.robinlovelace.net/adv-map.html)
+
+![](https://live.staticflickr.com/65535/51022763791_5f44f6df33_o.jpg)
+
+--- 
+
+
+[cowplot package](https://wilkelab.org/cowplot/articles/index.html)
+
+![](https://live.staticflickr.com/65535/51022067998_9325be84f3_m.jpg)
+
+]
 
 ---
 
@@ -373,7 +410,7 @@ background-size: auto
 
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
-.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://deadwylerm@vcu.edu) and I'll get back to you as soon as possible.]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

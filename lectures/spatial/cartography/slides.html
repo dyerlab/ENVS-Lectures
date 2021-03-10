@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Rasters</title>
+    <title>Cartography</title>
     <meta charset="utf-8" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="../../css/slide_styles.css" type="text/css" />
@@ -17,10 +17,9 @@ background-size: cover
 
 
 
-
 # .green[Cartography]
 
-### .fancy[Continuously Distributed Data &lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="rfa" style="height:0.75em;fill:limegreen;position:relative;"&gt;&lt;path d="M149.333 56v80c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V56c0-13.255 10.745-24 24-24h101.333c13.255 0 24 10.745 24 24zm181.334 240v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm32-240v80c0 13.255 10.745 24 24 24H488c13.255 0 24-10.745 24-24V56c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24zm-32 80V56c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm-205.334 56H24c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24zM0 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H24c-13.255 0-24 10.745-24 24zm386.667-56H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zm0 160H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zM181.333 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24z"/&gt;&lt;/svg&gt;]
+### .fancy[The Art or Technique of Making Maps &lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="rfa" style="height:0.75em;fill:limegreen;position:relative;"&gt;&lt;path d="M0 117.66v346.32c0 11.32 11.43 19.06 21.94 14.86L160 416V32L20.12 87.95A32.006 32.006 0 0 0 0 117.66zM192 416l192 64V96L192 32v384zM554.06 33.16L416 96v384l139.88-55.95A31.996 31.996 0 0 0 576 394.34V48.02c0-11.32-11.43-19.06-21.94-14.86z"/&gt;&lt;/svg&gt;]
 
 
 
@@ -28,292 +27,334 @@ background-size: cover
 
 ---
 
-# Rasters
-
-.center[
-.red[Rasters represent data distributed continuously across a spatial extent]
-]
-
---
-### Examples:
-
-- Elevation (continuous)  
-- Habitat Type (discrete)
-- Precipitation (continuous)  
-- Imperviable Surfaces (discrete)  
-
-
-
-
----
-
-# What is the Structure of a Raster?
-
-A Raster is simply a `matrix` of values with some additional decorations on it that allow it to have a spatial context.  
-
-
-```r
-values &lt;- rpois( n = 36, lambda=12)
-values
-```
-
-```
-##  [1] 19  6  7  8  7 11 10  6 15 17  9 12 14 10 17 11 14 17 11  7  6  9 13 11  7
-## [26]  5 12 16 14 14 15 11  8 16 14 16
-```
-
---
-
-
-```r
-x &lt;- matrix( values, nrow=6)
-x
-```
-
-```
-##      [,1] [,2] [,3] [,4] [,5] [,6]
-## [1,]   19   10   14   11    7   15
-## [2,]    6    6   10    7    5   11
-## [3,]    7   15   17    6   12    8
-## [4,]    8   17   11    9   16   16
-## [5,]    7    9   14   13   14   14
-## [6,]   11   12   17   11   14   16
-```
-
-
----
-
-# Spatial Designations
-
-For each value in the `matrix`, when it is turned into a `raster` object: 
-
-- The `cell` (pixel) has a defined spatial extent (width, height, &amp; origin).
-
-- All the physical space represented by that cell has *exactly the same value*
-
-- The *courseness* of the raster is question dependent:
-
-  - 3x5 matrix for Continental US may not adequately capture elevation trends.
-  
-  - 1m&lt;sup&gt;2&lt;/sup&gt; matrix for elevation may be *a bit* too big.
-
----
-
-# Matrix `\(\to\)` Raster
-
-
-```r
-library( raster )
-r &lt;- raster( x )
-r
-```
-
-```
-## class      : RasterLayer 
-## dimensions : 6, 6, 36  (nrow, ncol, ncell)
-## resolution : 0.1666667, 0.1666667  (x, y)
-## extent     : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
-## crs        : NA 
-## source     : memory
-## names      : layer 
-## values     : 5, 19  (min, max)
-```
-
---
-
-Notice that when I plot it out, it does not show the data, but a summary of the data along with some key data about the contents, including:  
-- A class definition  
-- The dimensions of the underlying data matrix,  
-- The resolution (e.g., the spatial extent of the sides of each pixel).  Since we have no CRS here, it is equal to `\(nrows(x)^{-1}\)` and `\(ncols(x)^{-1}\)`.  
-- The extent (the bounding box) and again since we do not have a CRS defined it just goes from `\(0\)` to `\(1\)`.
-- The `crs` (missing)
-- The source can be either `memory` if the raster is not that big or `out of memory` if it is just referencing.
-
-
----
-
-# Loading A Raster
-
-By far, you will most commonly working with pre-existing raster data.  
-
-- Several file formats including GeoTIFF, BIL, &amp; ASC.
-- All can be loaded from filesystem or internet with address.
-
-
-```r
-url &lt;- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
-r &lt;- raster( url )
-r
-```
-
-```
-## class      : RasterLayer 
-## dimensions : 3600, 3600, 12960000  (nrow, ncol, ncell)
-## resolution : 0.008333333, 0.008333333  (x, y)
-## extent     : -120, -90, 0, 30  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +no_defs 
-## source     : https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif 
-## names      : alt_22 
-## values     : -202, 5469  (min, max)
-```
-
-Notice that this raster has a defined CRS and as such it is projected and the extent relates to the units of the datum (e.g., from -120 to -90 degrees longitude and 0 to 30 degrees latitude).
-
-
----
-class: sectionTitle, inverse
-
-# .blue[Visualizing Rasters]
-
-## .fancy[What good are they if we cannot look at them?]
-
-
----
-
-# Built-in Plotting
-
-Just like all things in `R`, `raster` objects can be visualized using built-in functions as well as functions from external libraries.
+# Factors that affect design
 
 .pull-left[
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-```r
-plot( r, 
-      xlab="Longitude", 
-      ylab="Latitude" )
-```
+.red[- Objective
+- Audience
+- Reality and generalization
+- Map scale
+- Technical limits]
 ]
-.pull-right[
-![](https://live.staticflickr.com/65535/50510331198_2a2c5bfe76_c_d.jpg)
-]
-
-
----
-
-# Raster Sizes
-
-This particular raster is quite large (in terms of the number of cells)
-
-.pull-left[
-
-```
-## class      : RasterLayer 
-## dimensions : 3600, 3600, 12960000  (nrow, ncol, ncell)
-## resolution : 0.008333333, 0.008333333  (x, y)
-## extent     : -120, -90, 0, 30  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +no_defs 
-## source     : https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif 
-## names      : alt_22 
-## values     : -202, 5469  (min, max)
-```
-]
-
---
 
 .pull-right[
+![](https://live.staticflickr.com/65535/51021699777_928b6fd4c5_o.png)]
+---
 
-These data only represent the elevation of the land.  Where there is water, the value in the underlying matrix is `NA`.  
+# Basic elements of a Map
 
-Cell Type | Count 
-----------|-------:
-Land      | 2,469,350  
-Water     | 10,490,650
+.pull-left[.red[- Title
+- Legend
+- Scale
+- North arrow
+- Additional information]]
 
+.pull-right[
+![](https://live.staticflickr.com/65535/51021699777_928b6fd4c5_o.png)]
+
+
+
+ 
+---
+
+
+# Effective Maps
+.pull-left[.red[- Communicates a clear message
+- Appropriate projection
+
+- Data at appropriate level of generalization
+- Clear symbology
+]]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51021699777_928b6fd4c5_o.png)
 ]
 
 
 
 ---
 
-# Cropping
+# Common Types of Maps
 
-One of the first things to do is to crop the data down to represent the size and extent of our study area.  If we over 10 million missing data points (the ocean) and most of Mexico in this raster above but we are only working with sites in Baja California (Norte y Sur), we would do well to excise (or crop) the raster to only include the area we are interested in working with.  
+.pull-left[.red[
+Dot Density]
 
---
+- Spatial distribution and quantity
+]
 
-Workflow:  
+.pull-right[
+![](https://live.staticflickr.com/65535/51021633697_3c0b753abc_c.jpg)
+]
 
-1. Define a bounding box (the spatial extent of the region of interest)  
-2. Expand it a bit so that points are not **on the edges** of the box.
-3. Create an `extent`
-4. Crop the original matrix to represent the boundaries defined in the `extent`
+---
+# Common Types of Maps
+
+
+.pull-left[.red[
+Proportional Symbols
+]
+- Size of symbols is related to the value of phenomenon represented]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51020804313_8e63cef1e6_b.jpg)
+]
+
+---
+# Common Types of Maps
+
+
+.pull-left[.red[Choropleth
+
+]
+- Data is colored or shaded base on an attribute]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51021633662_3fbb73b886_b.jpg)]
+
+
+---
+# Common Types of Maps
+
+.pull-left[.red[
+Isoline
+]
+- Lines connect points knows or estimated to have equal vales
+- Used in maps of temperature, precipitation, air pressure, climate classifications, ect
+- Topographic maps: type of isoline map depicting elevation]
+
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51021531891_7a2ba3767e_b.jpg)]
 
 
 ---
 
-# Cropping 1: Bounding Box
+#  Basic Map Making
 
-Let's use the beetle data from the [Spatial Points Lecture](https://dyerlab.github.io/ENVS-Lectures/spatial/spatial_points/slides.html#1) as the data we will be working with.  
 
+
+.pull-left[`ggplot`
+
+`naturalearth`
+
+`naturalearthdata`
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
 ```r
-library( sf )
-library( tidyverse )
-beetle_url &lt;- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
-
-read_csv( beetle_url ) %&gt;% 
-  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) -&gt; beetles
-
-beetles %&gt;% 
-  st_bbox()
+ggplot(world) +
+  geom_sf()
 ```
+]
 
-```
-##       xmin       ymin       xmax       ymax 
-## -114.29353   23.28550 -109.32700   29.32541
-```
-
-
-
----
-class: sectionTitle, inverse
-
-# .orange[Raster Manipulations]
-
-## .fancy[Getting Data From the Map]
-
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+.pull-right[
+![](https://live.staticflickr.com/65535/51021633622_e25253c196_b.jpg)]
 
 
 
 
 ---
 
-# Map Interactivity
+# Add Title, Subtitle, Axes Labels
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+.pull-left[
 
-You can work with raster data interactively (I just cannot do it here on this presentation because it has to be in real time).  
+```r
+p +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("World Map",
+    subtitle =
+    paste0("(" ,length(unique(world$name)),
+           "countries)" ))
+```
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51021633627_87a9a86d0b_b.jpg)
+]
+
+---
+# Color
+
+.red[palettes]
+
+.pull-left[
+
+```r
+p +
+  geom_sf(aes(fill = pop_est)) +
+  scale_fill_viridis_c( trans = "sqrt")
+```
+]
+
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51020804303_d77450ab68_b.jpg)
+]
+
+---
+
+# Scale Bar &amp; North Arrow
+
+`library(ggspatial)`
+
+
 
 
 .pull-left[
 
 ```r
-plot( alt )
-click( alt, 
-       xy=TRUE, 
-       value=TRUE, 
-       n=3 ) -&gt; points
+p+
+  annotation_scale(location = "br", style = "bar") +
+  annotation_north_arrow(location = "br", 
+                width = unit(.5, "cm"),
+                height = unit(.75, "cm"),
+                pad_y = unit(0.75, "cm"),
+                pad_x = unit(0.5, "cm"),
+                style = north_arrow_orienteering(
+                           text_size = 8
+                         )) 
 ```
 ]
 
-.pull.right[
-![](https://live.staticflickr.com/65535/50505505948_08e3e91dfb_w_d.jpg)
+.pull-right[
+![](https://live.staticflickr.com/65535/51021633642_2940586b27_b.jpg)]
+---
+
+# Adding Names &amp; Labels
+.pull-left[.red[ggrepel]
+
+`library(ggrepel)`
+
+
+
+```r
+geom_text_repel(data= my_points,
+        aes(x=X, y=Y, label=name), 
+        color = "royalblue4", 
+        fontface = "bold",
+        size = 3.5,
+        point.padding = 0,
+        box.padding = unit(.5, "cm"))
+```
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51020804198_06087d7679_b.jpg)
+]
+
+---
+
+#Adding Names &amp; Labels
+.pull-left[.red[annotate]
+
+
+
+
+
+```r
+annotate(geom = "text",
+               x = -90, y = 26, 
+               label = "Gulf of Mexico", 
+               fontface = "italic", 
+               color = "grey22", 
+               size = 4) 
+```
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51020804288_0f68a1f6c9_b.jpg)]
+
+---
+
+#Layout
+
+.pull-left[.red[Side by side]
+
+`library(cowplot)`
+
+
+
+
+```r
+plot_grid(world_map, Mexico, nrow = 1, 
+          rel_widths = c(2.3, 1))
+```
+]
+
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51021531841_1efc547486_b.jpg)]
+
+---
+
+# Layout
+.red[Inset Maps]
+
+.pull-left[`VA_map`
+
+
+![](https://live.staticflickr.com/65535/51021531936_d8f9753a8e_b.jpg)
+]
+
+--
+
+
+.pull-right[`RVA_map`
+
+![](https://live.staticflickr.com/65535/51020804333_8441117c50_b.jpg)
 ]
 
 
 
+---
+# Layout
+.pull-left[.red[Inset Maps]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+```r
+ggdraw(VA_map) +
+  draw_plot(RVA_map,width = 0.25, height = 0.25* 10/4 * ratioRVA, x = .15, y = .5)
+```
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51020804223_5b4739b90d_b.jpg)]
 
 
+---
+#Layout
+.red[Arrows]
+
+.pull-left[
+
+```r
+arrowA &lt;- data.frame(x1 = 18, x2 = 25,
+                y1 = 3.45, y2 = 3.55)
+```
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
 
+```r
+ggdraw(xlim = c(0, 35), ylim = c(0, 7.5)) +
+  draw_plot(VA_map, x = 0, y = 0, 
+    width = 25, height = 7.5) +
+  draw_plot(RVA_map, x = 24, y = .5, 
+    width = 10, height = 7)+
+  geom_segment(aes(x = x1, y = y1, 
+    xend = x2, yend = y2), data = arrowA, 
+    arrow = arrow(), lineend = "round")
+```
+]
 
-
-
-
-
+.pull-right[
+![](https://live.staticflickr.com/65535/51021533596_3bf81e69d9_b.jpg)]
 
 ---
 

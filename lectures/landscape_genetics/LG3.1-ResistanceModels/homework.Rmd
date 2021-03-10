@@ -1,13 +1,15 @@
 ---
-title: "Activity for `TOPIC`"
+title: "Activity for Resistance Models"
 output: html_notebook
 ---
-![](https://live.staticflickr.com/65535/51022901556_a26d260297_o_d.png)
+![](https://live.staticflickr.com/65535/51022996357_911af17a70_k_d.jpg)
 
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook and contains the activities associated with `{INSERT TOPIC HERE}`.
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook and contains the activities associated with the development of Resistance Models.
 
 ```{r setup, include=FALSE}
+library( raster )
+library( gdistance )
 library( tidyverse )
 library( DiagrammeR )
 knitr::opts_chunk$set( echo = TRUE,

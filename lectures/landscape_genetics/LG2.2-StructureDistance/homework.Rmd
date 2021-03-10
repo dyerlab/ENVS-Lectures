@@ -2,7 +2,7 @@
 title: "Activity for `TOPIC`"
 output: html_notebook
 ---
-![](https://live.staticflickr.com/65535/51022901556_a26d260297_o_d.png)
+![](https://live.staticflickr.com/65535/51022993832_c07ddb5e7a_o_d.jpg)
 
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook and contains the activities associated with `{INSERT TOPIC HERE}`.

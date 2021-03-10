@@ -2,7 +2,7 @@
 title: "Narrative for `TOPIC`"
 output: html_notebook
 ---
-![](https://live.staticflickr.com/65535/51022901556_a26d260297_o_d.png)
+![](https://live.staticflickr.com/65535/51022901036_7285939ab3_k_d.jpg)
 
 ## Background
 

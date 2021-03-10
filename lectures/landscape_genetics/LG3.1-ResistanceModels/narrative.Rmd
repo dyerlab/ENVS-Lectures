@@ -1,8 +1,8 @@
 ---
-title: "Narrative for `TOPIC`"
+title: "Narrative for Resistance Models"
 output: html_notebook
 ---
-![](https://live.staticflickr.com/65535/51022901556_a26d260297_o_d.png)
+![](https://live.staticflickr.com/65535/51022996357_911af17a70_k_d.jpg)
 
 ## Background
 

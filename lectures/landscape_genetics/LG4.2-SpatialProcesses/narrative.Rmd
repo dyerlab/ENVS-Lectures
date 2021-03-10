@@ -1,8 +1,8 @@
 ---
-title: "Narrative for `TOPIC`"
+title: "Narrative for Spatial Process"
 output: html_notebook
 ---
-![](https://live.staticflickr.com/65535/51022901556_a26d260297_o_d.png)
+![](https://live.staticflickr.com/65535/51022898286_99e0c6cd11_h_d.jpg)
 
 ## Background
 

@@ -1,9 +1,9 @@
 ---
-title: "Projections & Point Data"
+title: "Introduction"
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: ["default", "../../css/slide_styles.css", "../../css/slide_fonts.css"]
+    css: ["default", "https://dyerlab.github.io/ENVS-Lectures/css/slide_styles.css", "https://dyerlab.github.io/ENVS-Lectures/css/slide_fonts.css"]
     seal: false
     nature:
       titleSlideClass: ["center","middle"]
@@ -12,9 +12,10 @@ output:
       ratio: "16:9"
       countIncrementalSlides: false
 ---
-class: left, middle, inverse
-background-image: url("https://live.staticflickr.com/65535/50362989122_a8ee154fea_k_d.jpg")
-background-size: cover
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
 
 
 ```{r setup, include=FALSE}
@@ -31,690 +32,44 @@ theme_set( theme_classic( base_size = 20) )
 ```
 
 
-# .orange[Spatial Data]
+# .orange[Rasters & Vector Data]
 
-### .fancy[Projections & Points `r fa("map-marker-alt", fill='orange'  )`]
-
-
-
-
----
-class: bottom
-background-image: url("https://live.staticflickr.com/65535/50437121667_ac9c3e7f84_c_d.jpg")
-background-size: 55%
-
-
-.footnote[ [Knight *et al.* (2005) *Nature*.  **437**, 880-883.](https://www.researchgate.net/deref/http%3A%2F%2Fdx.doi.org%2F10.1038%2Fnature03962)]
-
-
-
----
-
-# Toblers First Law of Geography
-
-.blue[
-> Everything is related to everything else, but near things are more related to each other.
-]
-
---
-
-.pull-left[
-### Physical Measurements
-- Location  
-
-- Distance  
-
-- Network  
-
-- Neighborhoods & Regions
-]
-
-.pull-right[
-### Emerging Properties 
-
-- Spatial Heterogeneity
-
-- Spatial Dependence  
-
-- Objects & Fields
-
-]
-
-.footnote[[Tobler, W. R. 1970. *Economic Geography*, **46**, 234–240.](https://doi.org/10.1002/9781118786352.wbieg1011)]
-
-
-
-
+### .fancy[Representing points, lines, polygons, and surfaces in R ⧉]
 
 
 
 
 ---
-class: sectionTitle, inverse
-
-# .orange[Projections]
-
-## .fancy[Representing Location On .redinline[*This*] Planet.]
-
-
-
----
-
-# A Projection
-
-A projection is a mathematical mapping of points measured on this surface of this earth that can be represented on things like computer screens.
-
-.center[![Example](https://live.staticflickr.com/65535/50437002623_e8df5b3c9f_c_d.jpg) ]
-
-
-
-
-
-
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50437046573_20efc64bdb_o_d.png")
+class: inverse, middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
 background-position: right
 background-size: auto
-background-color: #00013B
 
-# .blueinline[Earth == Lumpy <br>Bumpy Potato?]
+# .blue[Section Title]
 
-
-&nbsp;
-
-&nbsp;
-
-
-## .redinline[Yes!    
-&nbsp; &nbsp; &nbsp; - J. Ciminelli]
-
+## Subsection Title
 
 
 ---
+class: inverse, middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
 
-# Ellipsoids
+# .red[Section Title]
 
-Models of the physical structure of the surface of the planet.  
-
-- NAD83/GRS80 - Satellite measurements of distance from core to surface of earth.  
-
-- WGS84 - Model built on global GPS system.
-
-
+## Subsection Title
 
 
 ---
+class: inverse, middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
 
-# Example Data - Maps
+# .green[Section Title]
 
-For these examples, I'm going to be using the `maps` library<sup>1</sup>. .footnote[<sup>1</sup>If you do not have it, install it by `install.packages("maps")`.]For
-
-```{r}
-library( ggplot2 )
-library( maps )
-states <- map_data( "state" )
-head(states, n=3)
-```
-
-
---
-
-A basic map, notice the use of `group`.
-
-```{r}
-ggplot( states, aes(x=long, y=lat, group=group) ) + 
-  geom_polygon( fill="lightgray", color="black", lwd=0.25) + 
-  theme_void() -> p
-```
-
-
----
-
-# Azimuth Projections
-
-
-.pull-left[
-
-Projected onto a 2-dimensional plane that is tangential to a single point on the surface of the earth (commonly  a pole, though not a necessity).
-
-![Azequidistant](https://live.staticflickr.com/65535/50437120363_d8e0686d38_w_d.jpg)
-]
-.pull-right[
-```{r}
-p + coord_map( "azequalarea")
-```
-
-]
-
----
-
-# Cylindrical Projections
-
-.pull-left[
-```{r}
-p + coord_map( "cylindrical" )
-```
-]
-.pull-right[
-Parallels are straight lines and horizontal up and down the plot from latitude = 0
-
-.center[
-![](https://live.staticflickr.com/65535/50437120498_8dd67df3f1_w_d.jpg)
-]
-]
-
-
----
-
-# Conic Projections
-
-
-.pull-left[
-
-Symmetric around the Prime Meridian and parallels are segments of concentric circles.
-
-![](https://live.staticflickr.com/65535/50437120428_6da48bed81_w_d.jpg)
-
-]
-.pull-right[
-```{r}
-p + coord_map( "conic", lat0 = 30)
-```
-
-]
-
-
-
-
-
-
----
-class: sectionTitle, inverse
-
-# .green[Datum]
-
-
----
-
-# Coordinate Systems
-
-The *Datum* are the coordinate system used on the ellipsoid.  Common types include:
-
-- Longitude & Latitude - The East/West & North/South position on the surface of the earth.
-
-  - Prime Meridian (0° Longitude) passes thorugh the [Royal Observatory](https://en.wikipedia.org/wiki/Royal_Observatory,_Greenwich) in Greenwich England, with positive values of longitude to the east and negative to the west.
-  
-  - Equator (0° Latitude) and is defined as the point on the planet where both northern and southern hemisphers have equal amounts of day and night at the [equinox](https://en.wikipedia.org/wiki/Equinox) (Sept. 21 & March 21).
-  
-  - Richmond, Virginia: 37.533333 Latitude, -77.466667 Longitude
-  
---
-
-
-- Universal Trans Mercator - A division of the earth into 60 zones (~6°longitude each, labeled 01 - 60) and 20 bands each of which is ~8° latitude (labeled C-X excluding I & O with A & B dividing up Antartica).  See image [here](https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system#/media/File:Universal_Transverse_Mercator_zones.svg).
-
-  - Coordinates include Zone & band designation as well as coordinates in Easting and Northing (planar coordinates within the zone) measured in meters.
-  
-  - Richmond, Virginia: 18S 282051 4156899
-
-
-
-
-
-
----
-
-# Functional Consequences
-
-
-&nbsp;
-
---
-
-&nbsp;
-
-.center[ 
-.red[DATA NEED TO BE IN THE SAME ELLIPSOID & DATUM 
-
-.red[FROM the BEGINNING]]
-]
-
-
-
-
----
-class: sectionTitle, inverse
-
-
-# .blue[Points]
-
-
-
-
-
----
-
-# Beetle Data
-
-The Bark Beetle, *Araptus attenuatus*, is a Sonoran Desert endemic parasite that lives on within the plant *Euphorbia lomelii*.
-
-
-
-.pull-left[
-
-&nbsp;
-
-![Araptus attenuatus](https://live.staticflickr.com/65535/50441339417_74e04216fa_w_d.jpg)
-]
-
-.pull-right[
-.center[![Euphorbia lomelii](https://live.staticflickr.com/65535/50441175211_ba3b9df2ea_w_d.jpg)]
-]
-
----
-
-# Sampling Sites
-
-
-```{r}
-library( readr )
-url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
-read_csv( url ) %>%
-  select( Site, Longitude, Latitude, everything() ) %>%
-  arrange( Latitude ) -> data 
-summary( data )
-```
-
-
----
-
-# A Simple Map - Leaflet
-
-
-.pull-left[
-The `leaflet` library allows you to make quick, interactive maps.
-
-```{r eval=FALSE}
-library( leaflet )
-data %>%
-  mutate( Label = paste( "Site:", Site, 
-                         "<hr>\nFemales:", Females, 
-                         "<br>Males: ", Males,
-                         "<br>Suitability:", Suitability) ) %>%
-  leaflet() %>%
-  addMarkers( ~Longitude, ~Latitude, popup = ~Label ) %>%
-  addProviderTiles( "OpenTopoMap" )
-```
-
-]
-
-.pull-right[
-```{r echo=FALSE}
-library( tidyverse )
-library( leaflet )
-data %>%
-  mutate( Label = paste( "Site:", Site, 
-                         "<hr>\nFemales:", Females, 
-                         "<br>Males: ", Males,
-                         "<br>Suitability:", Suitability) ) %>%
-  leaflet() %>%
-  addMarkers( ~Longitude, ~Latitude, popup = ~Label ) %>%
-  addProviderTiles( "OpenTopoMap" )
-```
-]
-
-
-
-
-
-
----
-
-# The Simple Features (`sf`) library.
-
-
-.orangeinline[Simple Features] are an open standard developed by the Open Geospatial Consortium ([OGC](https://ogc.org)).  They define the following basic types:
-
-.pull-left[
-
-### Basic Geometry Types
-
-- POINT  
-
-- LINESTRING
-
-- POLYGON  
-]
-
-
---
-
-.pull-right[
-### Corresponding 'multi' versions
-
--  MULTIPOINT
-
-- MULTILINESTRING
-
-- MULTIPOLYGON
-
-- GEOMETRYCOLLECTION
-
-]
-
-
-Each of these basic types can be represented within a column of a `data.frame`.
-
-
-
-
----
-
-# Setting `sf` objects
-
-To convert from a normal `data.frame` with columns of numerical values to an `sf` object, you .redinline[**must**] indicate:  
-- Names of the `x` and `y` coordinates, and   
-- A reference to the Coordinate Reference System
-
-```{r}
-data %>% 
-  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) -> data
-head( data )
-```
-
-
-
-
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50445538736_bc1c3456e5_k_d.jpg)
-background-size: cover
-
-
-
-
----
-
-# Reprojecting Points
-
-We can reproject data (that **already** has a coordinate reference system) into any other projection.
-
-```{r}
-data %>%
-  st_transform( 6372 ) %>%
-  st_bbox()
-```
-
-
-
-
-
-
-
-
----
-class: sectionTitle, inverse
-
-# .red[Plotting `sf` Objects]
-
-
-
----
-
-.pull-left[
-# Plotting `sf` Objects
-
-Eash of the data columns are associated with the `geometry` column we made.  If we plot the whole `data.frame`, it makes replicate plots of each data column displayed in the coordinate space of the `geometry`.
-
-- Color will represent gradient in values for each plot.
-
-- Normal `plot()` parameters can be used to customize.
-]
-
---
-
-.pull-right[
-```{r}
-plot( data , pch=16, cex=2)
-```
-]
-
----
-
-# Linked data and `geometry`
-
-.pull-left[
-```{r, fig.width=6, fig.height=6}
-plot( data$Suitability, pch=16, cex=2, bty="n" )
-```
-]
-
-.pull-right[
-```{r, fig.width=6, fig.height=6}
-plot( data["Suitability"], pch=16, cex=2)
-```
-]
-
-
-
-
----
-
-# Hello `ggplot` My Old Friend
-
-```{r fig.width=6, fig.height=6}
-ggplot( data ) + geom_sf( aes(size=Suitability) ) 
-```
-
----
-
-.pull-left[
-# GGPlot and Labels
-
-
-```{r eval=FALSE}
-ggplot( data ) + 
-  geom_sf_label( aes(label=Site)) + 
-  theme_void() + 
-  coord_map()
-```
-]
-
-.pull-right[
-```{r echo=FALSE}
-ggplot( data ) + 
-  geom_sf_text( aes(label=Site)) + 
-  theme_void() + 
-  coord_map()
-```
-]
-
-
-
----
-class: sectionTitle, inverse
-
-# .blue[ Map Overlays 🗺]
-
-## .fancy[Making it look better]
-
----
-
-# Maps
-
-
-As with other `ggplot` activities, we can mix the data being plot by changing `data` and `aes` mappings.
-
-.pull-left[
-
-Grab the Mexico map data like before.
-
-```{r eval=FALSE}
-map_data("world") %>%
-  filter( region == "Mexico") -> map
-
-ggplot( ) + 
-  geom_polygon( aes( x=long, 
-                     y=lat, 
-                     group=group ), 
-                data=map, 
-                fill="grey" ) + 
-  geom_sf( data=data, 
-           aes(color=Suitability), 
-           size=2) +
-  xlab("Longitude") + 
-  ylab("Latitude") + 
-  theme_bw( base_size = 12 ) +
-  coord_sf( xlim = c(-115, -105),
-            ylim = c(20, 30) )
-```
-
-
-]
-
-.pull-right[ 
-```{r echo=FALSE, fig.width=6, fig.height=6}
-bbox <- st_bbox( data )
-map_data("world") %>%
-  filter( region == "Mexico") -> map
-ggplot( ) + 
-  geom_polygon( aes(x=long, y=lat, group=group), 
-                data=map, 
-                fill="grey" ) + 
-  geom_sf( data=data, 
-           aes(color=Suitability), 
-           size=2) +
-  xlab("Longitude") + 
-  ylab("Latitude") + 
-  theme_bw( base_size = 12 ) +
-  coord_sf( xlim = c(-115, -105),
-            ylim = c(20, 30) )
-```
-]
-
-
-
-
-
-
-
----
-
-# Natural Earth
-
-.pull-left[
-```{r echo=FALSE}
-library( rnaturalearth )
-library( rnaturalearthdata )
-world <- ne_countries( scale = "medium", returnclass = "sf")
-ggplot() + 
-  geom_sf( data=world ) + 
-  geom_sf( data=data, aes(color=Suitability), size=2) +
-  coord_sf( xlim = c(-115, -105),
-            ylim = c(20, 30) )  + 
-  xlab("Longitude") + 
-  ylab("Latitude")
-
-  
-```
-]
-
-.pull-right[
-
-Loading `sf` object for background map from `naturalearth` libraries and then plotting.  *Notice:* `xlim` and `ylim` are configured withing `coord_sf()`.
-
-```{r eval=FALSE}
-library( rnaturalearth )
-library( rnaturalearthdata )
-
-world <- ne_countries( scale = "medium", returnclass = "sf")
-
-ggplot() + 
-  geom_sf( data=world ) + 
-  geom_sf( data=data, 
-           aes(color=Suitability)) +
-  coord_sf( xlim = c(-115, -105),
-            ylim = c(20, 30) ) + 
-  xlab("Longitude") + 
-  ylab("Latitude")
-```
-]
-
-
-
-
-
-
-
-
-
----
-class: sectionTitle, inverse
-
-# .green[Spatial Operations]
-
-## .fancy[What can we do with this now?]
-
-
-
-
----
-
-# Geospatial Operations 
-
-### aka the `Spatial Toolbox`
-
-Once the data are in `sf` features, there are a lot of different spatial operations that we can use, including:
-
-.pull-left[
-- Finding the bounding box 
-
-```{r}
-data %>% 
-  st_bbox()
-```
-
-- Finding the convex hull
-
-```{r}
-data %>% 
-  st_union() %>% 
-  st_convex_hull() -> hull
-```
-
-]
-
---
-
-.pull-right[
-- Estimating its centroid & and area.
-
-```{r}
-hull %>%
-  st_centroid()
-```
-
-```{r}
-library( units )
-hull %>%
-  st_area() %>%
-  set_units( km^2 )
-```
-
-
-]
-
-
-
-
-
-
-
-
-
+## Subsection Title
 
 
 
@@ -723,20 +78,19 @@ hull %>%
 ---
 
 class: middle
-background-image: url("images/contour.png")
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
 background-position: right
 background-size: auto
 
-.center[
 
-# 🙋🏻‍♀️ Questions?
+.pull-left[ ![Moira](https://media.giphy.com/media/7OVR6nwR6CTh2onJq2/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
 
+If you have any questions for about the content presented herein now is your time.  
 
-![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+If you think of something later though, feel free to [as me via email](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.
 ]
 
-<p>&nbsp;</p>
 
-.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
 
 

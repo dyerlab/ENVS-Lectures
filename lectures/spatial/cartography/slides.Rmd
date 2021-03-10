@@ -368,7 +368,9 @@ ggdraw(xlim = c(0, 35), ylim = c(0, 7.5)) +
 ![](https://live.staticflickr.com/65535/51021533596_df37bc5cee_c.jpg)]
 
 ---
-# Resources
+.blue[Resources]
+
+
 
 .pull-left[
 [Drawing maps in ggplot2](https://www.r-spatial.org/r/2018/10/25/ggplot2-sf.html)
@@ -408,10 +410,10 @@ background-size: auto
 
 .center[
 
-# Questions?
+.red[Questions?]
 
 
-![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+![Dog](https://i.redd.it/opy67ug150541.jpg)
 ]
 
 <p>&nbsp;</p>

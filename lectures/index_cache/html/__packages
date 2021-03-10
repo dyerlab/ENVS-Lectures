@@ -29,3 +29,6 @@ tidycensus
 tigris
 cowplot
 ggisoband
+ggspatial
+ggrepel
+ggthemes

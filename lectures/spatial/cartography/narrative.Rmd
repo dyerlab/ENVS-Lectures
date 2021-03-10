@@ -284,7 +284,9 @@ ggplot() +
 
 ```
 
-![Choropleth](https://live.staticflickr.com/65535/51021633662_7c8cdcd623_b.jpg)]
+![Choropleth](https://live.staticflickr.com/65535/51021633662_7c8cdcd623_b.jpg)
+
+
 
 ### Isoline
 - Lines connect points knows or estimated to have equal vales
@@ -295,7 +297,7 @@ The package `ggisobands` can be used to plot isobands into `ggplot2`.
 x, y, and z values are required in `aes()`
 The scaled colors are achieved in `aes(fill =)`
 
-```{r}
+```{r, eval=FALSE, echo=TRUE}
 
 
 #DEM <- raster("USGS_one_meter_x28y416_VA_Sandy_2014.tif")
@@ -316,20 +318,23 @@ ggplot(DEM_df, aes(x=x, y=y, z=DEM_5m)) +             #You need an x, y, and z i
   scale_fill_viridis_c()
 ```
 
+![](https://live.staticflickr.com/65535/51021531891_7a2ba3767e_b.jpg)]
+
 There is a package, `isoband` that generates contour lines that can be used with `grid.path()` or `grid.polyline()` from the `grid` library. To use this data in ggplot it must be converted to an `sf` object. A vignette of that package is available [here](https://github.com/wilkelab/isoband).
 
 [Robin Lovelace](https://geocompr.robinlovelace.net/geometric-operations.html#raster-vector) explain spatial vectorization and shows how to use the `rasterToContour()` function
 
 
 Here is the same map using `color=` instead of `fill=`
-```{r}
+```{r, eval=FALSE, echo=FALSE}
+
+#Here is the same map using `color=` instead of `fill=`
+
 ggplot(DEM_df, aes(x=x, y=y, z=DEM_5m)) +
   geom_isobands(aes(color = stat(zmin)), fill = NA) +
   scale_color_viridis_c() +
   theme_minimal()
 ```
-
-
 
 
 # Basic Map Making

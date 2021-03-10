@@ -1,8 +1,8 @@
 ---
-title: "Narrative for `TOPIC`"
+title: "Narrative for Genetic Data"
 output: html_notebook
 ---
-![](https://live.staticflickr.com/65535/51022993832_c07ddb5e7a_o_d.jpg)
+![](https://live.staticflickr.com/65535/51022898606_826b8ed709_c_d.jpg)
 
 ## Background
 

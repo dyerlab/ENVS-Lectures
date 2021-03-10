@@ -1,8 +1,8 @@
 ---
-title: "Activity for `TOPIC`"
+title: "Activity for Genetic Data"
 output: html_notebook
 ---
-![](https://live.staticflickr.com/65535/51022993832_c07ddb5e7a_o_d.jpg)
+![](https://live.staticflickr.com/65535/51022898606_826b8ed709_c_d.jpg)
 
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook and contains the activities associated with `{INSERT TOPIC HERE}`.

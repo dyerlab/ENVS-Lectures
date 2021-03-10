@@ -2,7 +2,7 @@
 title: "Narrative for Resistance Models"
 output: html_notebook
 ---
-![](https://live.staticflickr.com/65535/51022996357_911af17a70_k_d.jpg)
+![](https://live.staticflickr.com/65535/51022993832_c07ddb5e7a_o_d.jpg)
 
 ## Background
 

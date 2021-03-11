@@ -1,0 +1,37 @@
+---
+title: "Narrative for Analysis of Distance-based Data"
+output: html_notebook
+---
+![](https://live.staticflickr.com/65535/51022165983_590727798b_k_d.jpg)
+
+## Background
+
+
+
+
+## Research Example
+
+
+
+
+## Data Requirements
+
+
+
+
+## Analyses & Interpretations
+
+
+
+
+## Challenges
+
+
+
+
+## Cheatsheets & Other External Resources
+
+
+
+
+---

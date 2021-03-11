@@ -297,16 +297,14 @@ The package `ggisobands` can be used to plot isobands into `ggplot2`.
 x, y, and z values are required in `aes()`
 The scaled colors are achieved in `aes(fill =)`
 
+[link to download data](https://github.com/dyerlab/ENVS-Lectures/blob/1809f76b91c434f84f416bce7cd3aaf7033c2996/data/DEM_5m.tif)
+
+In this example the starting data is a Digital Elevation Model (DEM) raster of Downtown Richmond. `geom_isobands` creates isobands from point data, so we must convert our raster to points and then put them in a data frame. After that, they're ready to go!
+
 ```{r, eval=FALSE, echo=TRUE}
+library(ggisoband)
 
-
-#DEM <- raster("USGS_one_meter_x28y416_VA_Sandy_2014.tif")
-
-#DEM_5m <- aggregate(DEM, fact = 5)
-
-#DEM_5m <- writeRaster(DEM_5m, filename = file.path("DEM_5m.tif"))
-
-DEM_5m <- raster("DEM_5m.tif")
+DEM_5m <- raster("C:/Users/Charis/Documents/Spring2021/GISinR/GISinR/ENVS-Lectures/data/DEM_5m.tif")
 
 DEM_pts <- rasterToPoints(DEM_5m, spatial = TRUE)       #I transformed my raster data into a data frame of points, each with an x, y, and z column (z being elevation)
 DEM_df <- data.frame(DEM_pts)
@@ -328,7 +326,7 @@ There is a package, `isoband` that generates contour lines that can be used with
 Here is the same map using `color=` instead of `fill=`
 ```{r, eval=FALSE, echo=FALSE}
 
-#Here is the same map using `color=` instead of `fill=`
+#Here is the same map using `color=` instead of `fill=`to get isolines instead of isobands
 
 ggplot(DEM_df, aes(x=x, y=y, z=DEM_5m)) +
   geom_isobands(aes(color = stat(zmin)), fill = NA) +
@@ -339,9 +337,11 @@ ggplot(DEM_df, aes(x=x, y=y, z=DEM_5m)) +
 
 # Basic Map Making
 
+
+This is what we started working through during class. The data is from the `rnaturalearth` library
 ```{r}
 library("ggplot2")
-theme_set(theme_bw())
+theme_set(theme_bw())  #if you have a theme you know you like, stick it here so you don't have to keep typing it in
 library("sf")
 
 library("rnaturalearth")
@@ -356,57 +356,125 @@ note - `returnclass` default is `sp`
 world <- ne_countries(scale = "medium", returnclass = "sf")
 class(world)
 
+world <- world %>%
+  select(income_grp, subregion, name, name_long, name_alt, pop_est, level, subunit, type, economy)
+
 ```
 
-
+This is a plain old ggplot, no bells or whistles
 ```{r}
+
 ggplot(world) +
   geom_sf() -> p
 
 p
+
 ```
 
 ### Title, subtitle & axis labels
 
-```{r}
+Title is added using `ggtitle()`
+Subtitle is added using `subtitle =` within the `ggtitle()` function
+axis labels are added with `xlab` and `ylab`
 
+```{r}
 p +
   xlab("Longitude") +
   ylab("Latitude") +
   ggtitle("World Map",
-          subtitle = paste0("(" ,length(unique(world$name)), "countries)" )) -> p
+          subtitle = paste0("(" ,length(unique(world$name)), "countries)" )) -> p #note that I'm using the `paste0()` function to insert information from my data into my subtitle
 
 p
+
+
 ```
-* `paste()` vs `paste0()`
 
-### Color
 
-`color` -> outline
-`fill` -> filled color
+## Color
 
+**Custom palette**
+
+You can design your own custom palette using hex codes or the assigned color names built into R
 
 ```{r}
+ggplot(world) +
+  geom_sf(aes(fill = economy)) -> plot
+```
+
+```{r}
+plot +
+  scale_fill_manual(values = c("darkred","red","tomato", "orange", "gold", "yellow", "limegreen"))
+```
+
+  
+```{r}
+my_colors <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
+          "#F0E442", "#0072B2", "#D55E00")
+
+ggplot(world) +
+  geom_sf(aes(fill = economy))+
+  scale_fill_manual(values = my_colors)
+
+```
+
+
+```{r echo=TRUE}
+my_colors <- c("darkred","tomato","orange","limegreen","blue","mediumpurple2","pink")
+
+plot + scale_fill_manual(values = my_colors)
+```
+
+It may be helpful to use a website like [coolors](https://coolors.co/palettes/trending) to choose colors for your palette
+
+
+
+**Built-it color palettes**
+
+[Color Palette Cheat Sheet](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf)
+
+There are many packages with pre-defined colors and palettes
+
+- `viridis`
+![](https://www.datanovia.com/en/wp-content/uploads/dn-tutorials/ggplot2/figures/029-r-color-palettes-viridis-color-scales-1.png){width=50%}
+
+
+
+- `RColorBrewer`
+
+![](https://www.datanovia.com/en/wp-content/uploads/dn-tutorials/ggplot2/figures/029-r-color-palettes-rcolorbrewer-palettes-1.png){width=50%}
+
+
+Into Wes Anderson's color schemes? There's a library for that
+
+- `wesanderson`
+
+![](https://www.datanovia.com/en/wp-content/uploads/dn-tutorials/ggplot2/figures/029-r-color-palettes-wes-anderson-color-palettes-r-1.png){width=50%}
+
+
+I chose the `viridis_c` palette
+
+- `trans = ` transformation of data, in this case square root
+
+- `option = ` different color palettes: A-E, default is D
+```{r echo=TRUE}
 
 p +
   geom_sf(aes(fill = pop_est)) +
-  scale_fill_viridis_c( trans = "sqrt") -> p
+  scale_fill_viridis_c( option = "D", trans = "sqrt") -> p  # note that the data is transformed
 
 p
 ```
 
-`trans = ` transformation of data, in this case square root
+Let's switch over to the all-too-familiar beetle dataset
 
-`option = ` A-E, default is D
-
-```{r}
+```{r echo=TRUE}
 beetle_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
 
 read_csv(beetle_url) %>%
-  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) %>%
+  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) %>%    #transform to sf
   st_union() %>%
   st_buffer(dist = 1) %>%
-  st_bbox() -> bounds
+  st_bbox() -> bounds #will use bounds to crop our world data to the beetle area
 
 read_csv(beetle_url) %>%
   st_as_sf(coords=c("Longitude","Latitude"), crs = 4326) -> beetle
@@ -414,31 +482,33 @@ read_csv(beetle_url) %>%
 ggplot(world) +
   geom_sf() +
   xlab("Longitude") +
-  ylab("Latitude") +
+  ylab("Latitude") +            #note that the xlim and ylim values are from `bounds`
   ggtitle("Beetles") +
-  coord_sf( xlim = c(-116, -108), ylim = c(22, 31), expand = FALSE) -> p
+  coord_sf( xlim = c(-116, -108), ylim = c(22, 31), expand = FALSE) -> b
 
-p
+b
 ```
+The result is the world dataset cropped to the bettle dataset
 
+## Scale bar and North arrow
 
-Scale bar and North arrow
-package `ggspatial`
+Both the scale bar and north arrow come from package `ggspatial`
 
 ```{r}
 library(ggspatial)
 
-p+
-  annotation_scale(location = "br", style = "bar") +
-  annotation_north_arrow(location = "br", width = unit(.5, "cm"),
-                         height = unit(.75, "cm"),
-                         pad_y = unit(0.75, "cm"),
-                         pad_x = unit(0.5, "cm"),
-                         style = north_arrow_orienteering(
+b+
+  annotation_scale(location = "br", style = "bar") +  #put a bar style scale bar in the bottom right
+  annotation_north_arrow(location = "br",             #put the north arrow also in the bottom right
+                         width = unit(.5, "cm"), 
+                         height = unit(.75, "cm"),    #assign arrow height and width
+                         pad_y = unit(0.75, "cm"),    
+                         pad_x = unit(0.5, "cm"),     #give the arrow some padding between it and the axes
+                         style = north_arrow_orienteering(  #define the style & size
                            text_size = 8
-                         )) -> p
+                         )) -> b
 
-p
+b
 ```
 
 

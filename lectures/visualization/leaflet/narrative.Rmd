@@ -68,6 +68,8 @@ Both `leaflet()` and each map layer have a `data =` parameter. Spatial data can 
 - `sf` objects
 - `maps` package `map()` objects
 
+Leaflet only uses **WGS84** for displaying data. Leaflet can project coordinates automatically, but projecting your data to WGS84 (crs = 4326) is a good habit to get into.
+
 
 Data can be passed through the `leaflet()` function or through the map layers.
 
@@ -88,7 +90,7 @@ leaflet() %>%
 ```
 
 
-## Point Data
+## Markers
 
 Points can be plotted using `addMarkers()` or `addCircles()`
 
@@ -96,15 +98,18 @@ Points can be plotted using `addMarkers()` or `addCircles()`
 
 - Circles scale with the map
 
-### Markers
 
-Default marker:
+**Default markers**
 ```{r}
 leaflet(beetle) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addMarkers()
 ```
 zoom in/out and notice that the markers stay the same size
+
+Makers can be customize using `options = markerOptions()`
+
+
 
 
 **Custom Markers**
@@ -193,15 +198,28 @@ leaflet(beetle) %>%
 
 Labels and Popups can be customized using the `labelOptions = labelOptions()` function. You can define the text size, color, font, box border, box shadow, ect.
 
-`addCircles()`
+## Adding Circles, Lines and Polygons
+
+- `addCircles()`
+
+- `addLines()`
+
+- `addPolygons()`
+
+Circles, lines and polygons behave very similarly in leaflet. For this lecture we will continue using our beetle point data. There is an example using polygons at the end of the lecture.
+
+
+### `addCircles()`
 ```{r}
 leaflet(beetle) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addCircles()
 ```
+If you zoom in far enough you will see that the size of the circles changes with the zoom level. This feature will become more apparent in later examples.
 
+**Change the size** (`radius`)
 
-Change radius:
+In this example the size of the circles is proportional to the number of males at each site. The value is multiplied by 500 so the different sizes can be easily visualized when zoomed out.
 ```{r}
 leaflet(beetle) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
@@ -209,38 +227,53 @@ leaflet(beetle) %>%
 
 ```
 
-Change color:
+**Change color**
+
+`color` will define the stroke and the fill color unless `fillColor` is specified
+
+In this example the color of the circles is now proportional to the male to female ratio (`beetle$MFRatio`) of each site. Our palette is defined before hand using `colorNumeric()` and stored as `pal`.
 ```{r}
 pal <- colorNumeric(
-  palette = "RdBu",
-  domain = beetle$MFRatio,
-  reverse = TRUE
+  palette = "RdBu", # Red to Blue palette
+  domain = beetle$MFRatio
 )
 
 
 leaflet(beetle) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
-  addCircles(color = ~pal(MFRatio), fillOpacity = .7, radius = 15000, stroke = FALSE)
+  addCircles(color = ~pal(MFRatio), fillOpacity = .7, radius = 15000, stroke = FALSE,
+             label = paste0(beetle$MFRatio))
 ```
+Darker blue circles represent sites with a larger male to female ratio. Darker red circles represent sites with a smaller male to female ratio. We will see how to add a legend later in the lecture.
 
-Highlight
 
+**Highlight**
+
+Individual shapes can be highlighted when hovered over using `highlightOptions` within the shape layer.
 ```{r}
 leaflet(beetle) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
-  addCircles(fillColor = ~rev(pal(MFRatio)), fillOpacity = .7, radius = 15000, 
-             weight = 1, color = "grey",
-  highlightOptions = highlightOptions(color = "green", weight = 2,
+  addCircles(fillColor = pal(beetle$MFRatio), fillOpacity = .7, radius = 15000, 
+             weight = 1, color = "black",
+  highlightOptions = highlightOptions(color = "yellow", weight = 4,
       bringToFront = TRUE))
 ```
+Hover your mouse over different circles and notice the the stroke color changes from black to yellow and becomes thicker. If circles overlap, hovering now brings that circle in front of the others.
 
-
-Map Groups
+## Map Groups
 
 Assign layers to groups using `group = `. Assigning groups allows you to show/hide layers or control the visibility of layers through the function `addLayersControl()`
 
 A group can be made up a a single layer or multiple layers, but each layer can only belong to one group.
 
+### Layer Controls
+
+Once your data layers have been assigned to groups you can use `addLayersControl()` to control individual layers
+
+
+In this example site with more males than females are blue and sites with more females than males is pink. Because we want to control the two different types of circles individually, the need to be added as separate layers. Inside each `addCircles()` layer the `group =` is defined. 
+
+Under the `addLayersControl()` layer we can select which groups we would like to control. In this case I want to be able to turn the layers on/off
 ```{r}
 leaflet() %>%
   addProviderTiles(providers$CartoDB.Positron) %>%

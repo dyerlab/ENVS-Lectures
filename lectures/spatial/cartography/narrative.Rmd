@@ -81,20 +81,23 @@ library(tigris)
     [Here](https://github.com/walkerke/tigris/blob/master/README.md) is a helpful guide if you are interested in learning more about the `tigris` package. 
 
 ```{r warning=FALSE, include=FALSE}
+library(tidycensus)
+library(tigris)
+library(tidyverse)
+library(sf)
 
-options(tigris_use_cache = TRUE) #cache data so you don't have to redownload evertime you run this chunk
+
+options(tigris_use_cache = TRUE) #cache data so you don't have to redownload everytime you run this chunk
 
 
 v19 <- load_variables(2019, "acs5", cache = TRUE) #load in 2019 data, acs5 refers to the 5 year American Community Survey
                   
 v19 %>%
-  mutate(table = str_extract(name, "^.+_")) %>%
-  filter(str_detect(concept, "EDUCATIONAL ATTAINMENT")) %>% 
-  select(table, concept) %>%            #call a table so you can sort through census tables directly through R
-  distinct() %>%
-  print(n = Inf)
+    mutate(table = str_extract(name, "^.+_")) %>%
+    filter(str_detect(concept, "EDUCATIONAL ATTAINMENT")) %>%
+    dplyr::select(table, concept) %>% distinct %>% print(n = Inf)
 
-
+ #call a table so you can sort through census tables directly through R
 #census_api_key("key#", install = TRUE)  #you will need to download a census api key. This is done the the US Census Website
 
 acs <- get_acs("tract", table = "B15003", cache_table = TRUE,  #select the table you want
@@ -304,7 +307,7 @@ In this example the starting data is a Digital Elevation Model (DEM) raster of D
 ```{r, eval=FALSE, echo=TRUE}
 library(ggisoband)
 
-DEM_5m <- raster("C:/Users/Charis/Documents/Spring2021/GISinR/GISinR/ENVS-Lectures/data/DEM_5m.tif")
+DEM_5m <- raster("C:/Users/Charis/Documents/Spring2021/GISinR/GISinR/DEM_5m.tif")
 
 DEM_pts <- rasterToPoints(DEM_5m, spatial = TRUE)       #I transformed my raster data into a data frame of points, each with an x, y, and z column (z being elevation)
 DEM_df <- data.frame(DEM_pts)

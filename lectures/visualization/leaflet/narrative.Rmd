@@ -1,6 +1,246 @@
 ---
-title: "Leaflet Graphics"
+title: "Leaflet"
+author: "Charis Deadwyler"
+date: "3/15/2021"
 output: html_notebook
 ---
 
-https://dominicroye.github.io/en/2018/accessing-openstreetmap-data-with-r/
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Leaflet
+
+[Introduction to Leaflet in R](https://rstudio.github.io/leaflet/)
+
+### Basic Usage
+
+Create map widget with `leaflet()`
+
+```{r}
+library(leaflet)
+library(sf)
+
+beetle_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+beetle <- read.csv(beetle_url)
+
+beetle <- beetle %>%
+   st_as_sf( coords=c("Longitude","Latitude"), crs=4326 )
+```
+
+Add a basemap with `addTiles()`. By default OpenStreetMap tiles are used. 
+
+```{r}
+leaflet() %>%
+  setView(lng = -77.5, lat = 37.5, zoom = 10) %>% #not necessary to set your view
+  addTiles()
+
+#blank map because we haven't added any layers
+```
+
+### Third party tiles
+
+Use `addProviderTiles()` function to use a different basemap. 
+
+[See here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html) for all options
+
+```{r}
+leaflet() %>%
+  setView(lng = -77.5, lat = 37.5, zoom = 10) %>% #not necessary to set your view
+  addProviderTiles(providers$CartoDB.Positron)
+```
+
+### Data Objects
+
+- dataframe with lat/lng columns
+- `sp` objects
+- `sf` objects
+- `maps` package `map()` objects
+
+
+Data can be passed through the `leaflet()` function or through the map layers. 
+```{r}
+#These make the same map
+
+leaflet(beetle) %>%
+  addTiles() %>%
+  addCircles()
+
+leaflet() %>%
+  addTiles() %>%
+  addCircles(data = beetle)
+```
+
+
+### Points, lines and Polygons
+
+Points can be plotted using `addMarkers()` or `addCircles()`
+- Markers stay the same size regardless of zoom level
+- Circles scale with the map
+
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addMarkers()
+```
+
+Custom Markers
+- Custom markers can be made using a url/image file or from libraries 
+
+```{r}
+bug <- icons(
+  iconUrl = "https://www.pngfind.com/pngs/m/14-144860_beetle-bug-png-transparent-image-bug-png-png.png",
+  iconWidth = 20,
+  iconHeight = 20
+)
+```
+
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addMarkers(icon = bug)
+```
+
+[link to Font Awesome library](https://fontawesome.com/icons?d=gallery&p=2&m=free)
+
+```{r}
+fa_bug <- makeAwesomeIcon(icon = "bug", library = "fa", 
+                          markerColor = "cadetblue", iconColor = "beige")
+
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug)
+
+```
+
+Popups can be added as a stand-alone feature using `addPopups()`, or add to appear when a shape is clicked
+
+```{r}
+#stand-alone
+
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -111, lat = 25, zoom = 7) %>%
+  addPopups(lng = -111, lat = 25, paste0("beetles live here"))
+
+
+```
+
+```{r}
+#as a part of a marker
+
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug, popup = paste0("Site:", beetle$Site))
+
+```
+
+
+Labels
+
+Use `label = ` to add a label displayed on a mouse over
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug, label = paste0("Site:", beetle$Site))
+```
+
+
+`addCircles()`
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles()
+```
+
+
+Change radius:
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(radius = ~Males *500, stroke = FALSE, fillOpacity = .5)
+
+```
+
+Change color:
+```{r}
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = beetle$MFRatio
+)
+
+
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(color = ~rev(pal(MFRatio)), fillOpacity = .7, radius = 15000, stroke = FALSE)
+```
+
+Highlight
+
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(fillColor = ~rev(pal(MFRatio)), fillOpacity = .7, radius = 15000, 
+             weight = 1, color = "grey",
+  highlightOptions = highlightOptions(color = "green", weight = 2,
+      bringToFront = TRUE))
+```
+
+Polygons
+```{r}
+library(tidyverse)
+library(tigris)
+options(tigris_use_cache = TRUE)
+
+tracts <- tracts("VA", "Richmond city") %>%
+  st_transform(4326)
+
+leaflet(tracts) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons()
+
+```
+
+
+Add scale bar with `addScaleBar()`
+```{r}
+
+pal <- colorNumeric(palette = "Blues",
+                    domain = tracts$ALAND/2.59e+6)
+
+leaflet(tracts) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(ALAND/2.59e+6),  fillOpacity = 1, smoothFactor = .2,
+              color = "darkgrey", weight = 1,
+                highlightOptions = highlightOptions(color = "white", weight = 2, opacity = 1,
+                bringToFront = TRUE),
+              label = paste(round(tracts$ALAND/2.59e+6, digits = 2), "sq. mi.")
+              ) %>%
+  addLegend(pal = pal, values = ~ALAND/2.59e+6, title = "Area (sq. miles)") %>%
+  addScaleBar(position = "bottomright")
+
+```
+
+
+Leaflet Extras
+
+`addDrawToolbar()`
+```{r}
+library(leaflet.extras)
+
+leaflet(tracts) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(ALAND/2.59e+6),  fillOpacity = 1, smoothFactor = .2,
+              color = "darkgrey", weight = 1,
+                highlightOptions = highlightOptions(color = "white", weight = 2, opacity = 1,
+                bringToFront = TRUE),
+              label = paste(round(tracts$ALAND/2.59e+6, digits = 2), "sq. mi.")
+              ) %>%
+  addLegend(pal = pal, values = ~ALAND/2.59e+6, title = "Area (sq. miles)") %>%
+  addScaleBar(position = "bottomright") %>%
+  addDrawToolbar()
+```
+
+
+
+

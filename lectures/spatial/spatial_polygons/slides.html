@@ -3,6 +3,7 @@
   <head>
     <title>POlygons</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.7.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="../../css/slide_styles.css" type="text/css" />
     <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
@@ -68,17 +69,17 @@ df
 ```
 
 ```
-##        id        Data Longitude Latitude
-## 1  Rodney   7.7098853 -77.24044 37.72115
-## 2  Rodney 140.5872480 -78.87841 36.08019
-## 3  Rodney 105.5834017 -78.34874 38.65113
-## 4  Rodney 160.0507106 -76.82953 36.70568
-## 5  Rodney  70.3536915 -78.31326 36.94401
-## 6   Sarah  63.1428276 -79.45600 37.80456
-## 7   Sarah   3.1124177 -75.69337 36.87047
-## 8   Sarah   0.8336506 -77.30683 37.00506
-## 9   Sarah  58.2608388 -79.06691 36.79925
-## 10  Sarah  76.9387549 -76.00842 38.33105
+##        id       Data Longitude Latitude
+## 1  Rodney  48.692540 -77.61316 38.60222
+## 2  Rodney  17.418585 -76.51469 36.46820
+## 3  Rodney -15.416593 -77.84600 35.92128
+## 4  Rodney  52.846328 -78.17813 36.91184
+## 5  Rodney -12.350596 -77.49683 38.35502
+## 6   Sarah   7.175368 -77.16956 38.04888
+## 7   Sarah  21.013859 -75.95531 36.37788
+## 8   Sarah  20.233248 -78.62658 36.26965
+## 9   Sarah  73.728392 -75.95117 38.86707
+## 10  Sarah  17.330654 -78.31971 38.01433
 ```
 
 ---
@@ -98,19 +99,19 @@ pts
 ## Simple feature collection with 10 features and 2 fields
 ## geometry type:  POINT
 ## dimension:      XY
-## bbox:           xmin: -79.456 ymin: 36.08019 xmax: -75.69337 ymax: 38.65113
+## bbox:           xmin: -78.62658 ymin: 35.92128 xmax: -75.95117 ymax: 38.86707
 ## geographic CRS: WGS 84
-##        id        Data                   geometry
-## 1  Rodney   7.7098853 POINT (-77.24044 37.72115)
-## 2  Rodney 140.5872480 POINT (-78.87841 36.08019)
-## 3  Rodney 105.5834017 POINT (-78.34874 38.65113)
-## 4  Rodney 160.0507106 POINT (-76.82953 36.70568)
-## 5  Rodney  70.3536915 POINT (-78.31326 36.94401)
-## 6   Sarah  63.1428276   POINT (-79.456 37.80456)
-## 7   Sarah   3.1124177 POINT (-75.69337 36.87047)
-## 8   Sarah   0.8336506 POINT (-77.30683 37.00506)
-## 9   Sarah  58.2608388 POINT (-79.06691 36.79925)
-## 10  Sarah  76.9387549 POINT (-76.00842 38.33105)
+##        id       Data                   geometry
+## 1  Rodney  48.692540 POINT (-77.61316 38.60222)
+## 2  Rodney  17.418585  POINT (-76.51469 36.4682)
+## 3  Rodney -15.416593   POINT (-77.846 35.92128)
+## 4  Rodney  52.846328 POINT (-78.17813 36.91184)
+## 5  Rodney -12.350596 POINT (-77.49683 38.35502)
+## 6   Sarah   7.175368 POINT (-77.16956 38.04888)
+## 7   Sarah  21.013859 POINT (-75.95531 36.37788)
+## 8   Sarah  20.233248 POINT (-78.62658 36.26965)
+## 9   Sarah  73.728392 POINT (-75.95117 38.86707)
+## 10  Sarah  17.330654 POINT (-78.31971 38.01433)
 ```
 
 
@@ -158,13 +159,13 @@ lines
 ## Simple feature collection with 2 features and 2 fields
 ## geometry type:  LINESTRING
 ## dimension:      XY
-## bbox:           xmin: -79.456 ymin: 36.08019 xmax: -75.69337 ymax: 38.65113
+## bbox:           xmin: -78.62658 ymin: 35.92128 xmax: -75.95117 ymax: 38.86707
 ## geographic CRS: WGS 84
 ## # A tibble: 2 x 3
 ##   id      Data                                                          geometry
 ##   &lt;chr&gt;  &lt;dbl&gt;                                                  &lt;LINESTRING [°]&gt;
-## 1 Rodney  96.9 (-78.87841 36.08019, -78.34874 38.65113, -78.31326 36.94401, -77…
-## 2 Sarah   40.5 (-79.456 37.80456, -79.06691 36.79925, -77.30683 37.00506, -76.0…
+## 1 Rodney  18.2 (-78.17813 36.91184, -77.846 35.92128, -77.61316 38.60222, -77.4…
+## 2 Sarah   27.9 (-78.62658 36.26965, -78.31971 38.01433, -77.16956 38.04888, -75…
 ```
 
 
@@ -203,7 +204,7 @@ st_length( lines )
 
 ```
 ## Units: [m]
-## [1] 725488.3 626277.0
+## [1] 668132.3 787347.3
 ```
 
 
@@ -214,7 +215,7 @@ st_bbox( lines )
 
 ```
 ##      xmin      ymin      xmax      ymax 
-## -79.45600  36.08019 -75.69337  38.65113
+## -78.62658  35.92128 -75.95117  38.86707
 ```
 
 
@@ -228,7 +229,7 @@ lines %&gt;%
 ```
 
 ```
-## 66053.05 [km^2]
+## 60594.98 [km^2]
 ```
 
 
@@ -245,7 +246,7 @@ lines$geometry[1] %&gt;% st_as_text()
 ```
 
 ```
-## [1] "LINESTRING (-78.87841 36.08019, -78.34874 38.65113, -78.31326 36.94401, -77.24044 37.72115, -76.82953 36.70568)"
+## [1] "LINESTRING (-78.17813 36.91184, -77.846 35.92128, -77.61316 38.60222, -77.49683 38.35502, -76.51469 36.4682)"
 ```
 
 
@@ -274,19 +275,19 @@ df.p
 ```
 
 ```
-##         id        Data Longitude Latitude
-## 1   Rodney   7.7098853 -77.24044 37.72115
-## 2   Rodney 140.5872480 -78.87841 36.08019
-## 3   Rodney 105.5834017 -78.34874 38.65113
-## 4   Rodney 160.0507106 -76.82953 36.70568
-## 5   Rodney  70.3536915 -78.31326 36.94401
-## 1.1 Rodney   7.7098853 -77.24044 37.72115
-## 6    Sarah  63.1428276 -79.45600 37.80456
-## 7    Sarah   3.1124177 -75.69337 36.87047
-## 8    Sarah   0.8336506 -77.30683 37.00506
-## 9    Sarah  58.2608388 -79.06691 36.79925
-## 10   Sarah  76.9387549 -76.00842 38.33105
-## 6.1  Sarah  63.1428276 -79.45600 37.80456
+##         id       Data Longitude Latitude
+## 1   Rodney  48.692540 -77.61316 38.60222
+## 2   Rodney  17.418585 -76.51469 36.46820
+## 3   Rodney -15.416593 -77.84600 35.92128
+## 4   Rodney  52.846328 -78.17813 36.91184
+## 5   Rodney -12.350596 -77.49683 38.35502
+## 1.1 Rodney  48.692540 -77.61316 38.60222
+## 6    Sarah   7.175368 -77.16956 38.04888
+## 7    Sarah  21.013859 -75.95531 36.37788
+## 8    Sarah  20.233248 -78.62658 36.26965
+## 9    Sarah  73.728392 -75.95117 38.86707
+## 10   Sarah  17.330654 -78.31971 38.01433
+## 6.1  Sarah   7.175368 -77.16956 38.04888
 ```
 
 
@@ -308,13 +309,13 @@ polygons
 ## Simple feature collection with 2 features and 2 fields
 ## geometry type:  POLYGON
 ## dimension:      XY
-## bbox:           xmin: -79.456 ymin: 36.08019 xmax: -75.69337 ymax: 38.65113
+## bbox:           xmin: -78.62658 ymin: 35.92128 xmax: -75.95117 ymax: 38.86707
 ## geographic CRS: WGS 84
 ## # A tibble: 2 x 3
 ##   id      Data                                                          geometry
 ##   &lt;chr&gt;  &lt;dbl&gt;                                                     &lt;POLYGON [°]&gt;
-## 1 Rodney  96.9 ((-78.87841 36.08019, -78.34874 38.65113, -78.31326 36.94401, -7…
-## 2 Sarah   40.5 ((-79.456 37.80456, -79.06691 36.79925, -77.30683 37.00506, -76.…
+## 1 Rodney  18.2 ((-78.17813 36.91184, -77.846 35.92128, -77.61316 38.60222, -77.…
+## 2 Sarah   27.9 ((-78.62658 36.26965, -78.31971 38.01433, -77.16956 38.04888, -7…
 ```
 
 ---
@@ -506,7 +507,7 @@ st_read("Zoning_Districts.shp") -&gt; districts
 ```
 
 ```
-## Reading layer `Zoning_Districts' from data source `/Users/rodney/Public/ENVS-Lectures/lectures/spatial/spatial_polygons/Zoning_Districts.shp' using driver `ESRI Shapefile'
+## Reading layer `Zoning_Districts' from data source `/Users/rodney/Documents/github/classes/ENVS-Lectures/lectures/spatial/spatial_polygons/Zoning_Districts.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 634 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -664,7 +665,7 @@ road.shapefile &lt;- st_read("Centerlines-shp/tran_Carriageway.shp")
 ```
 
 ```
-## Reading layer `tran_Carriageway' from data source `/Users/rodney/Public/ENVS-Lectures/lectures/spatial/spatial_polygons/Centerlines-shp/tran_Carriageway.shp' using driver `ESRI Shapefile'
+## Reading layer `tran_Carriageway' from data source `/Users/rodney/Documents/github/classes/ENVS-Lectures/lectures/spatial/spatial_polygons/Centerlines-shp/tran_Carriageway.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 29081 features and 25 fields
 ## geometry type:  LINESTRING
 ## dimension:      XY
@@ -983,6 +984,8 @@ background-size: auto
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
 .bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

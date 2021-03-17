@@ -1,0 +1,234 @@
+---
+title: "Leaflet Homework Key"
+author: "Charis Deadwyler"
+date: "3/15/2021"
+output: html_notebook
+---
+
+```{r}
+library(dplyr)
+library(sf)
+library(tidyverse)
+library(leaflet)
+library(sf)
+library(leaflet.providers)
+library(RColorBrewer)
+library(tigris)
+```
+
+### Dot Density Plot
+```{r}
+education_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/edu_attainment-shp.zip"
+
+file <- tempfile(pattern = "edu", tmpdir = ".", fileext = ".zip")
+file
+
+download.file(education_url, destfile = file)
+unzip(file, exdir = ".")
+
+
+points <- st_read("edu_attainment-shp")
+```
+
+Convert education levels to factor - this allows us to use `colorFactor()` to create our color palette
+```{r}
+points$education <- factor(points$education, levels = c("No HS diploma", "HS, no Bachelors", "Bachelors" , "Post-Bachelors"  )) 
+```
+
+Create color palette
+```{r}
+factpal <- colorFactor(brewer.pal(n = 4, name = "RdBu"), points$education) #used to color categorical data
+```
+
+
+Create dot density plot
+```{r}
+leaflet(points) %>% 
+  addProviderTiles(providers$CartoDB.Positron)%>% #add provider tiles
+  addCircles(stroke = FALSE,  fillOpacity = 1, #add points
+              color = ~factpal(education)) %>% #color based on educational attainment
+  addLegend(pal = factpal, values = ~education, title = "Education Attainment")%>% #add legend
+  addScaleBar(position = "bottomright") #add scale bar
+```
+
+### Choropleth plot
+
+load in the census tract data
+```{r}
+tracts <- tracts("VA", "Richmond city") %>%
+  st_transform(4326)
+```
+
+Data Prep
+```{r message=FALSE, warning=FALSE}
+edu_tracts <- tracts %>%
+  st_buffer(dist = 0) %>% # buffer by 0 to avoid error message
+  st_intersection(points) # intersect the two data sets
+```
+
+```{r message=FALSE, warning=FALSE}
+edu_tracts %>%
+  group_by(NAME, education) %>% # group by tract name and education level
+  tally() -> tally # tally() counts the number of rows for the groups, so output is one row for every attainment level for each tract (so if a tract has all 4 attainment levels, there are 4 rows of data for that tract)
+
+tally
+```
+
+```{r}
+tally <- as.data.frame(tally) # converted to data.frame to be able to drop the geometry because the `pivot_wider()` function would not work the way I wanted it to when the geometry was present
+
+tally <- tally %>%
+  select(NAME, education, n)%>% # do not want the geometry 
+  pivot_wider(names_from = education, values_from = n) # pivot the table so that instead of having multiple rows per tract, you have one row per tract with a column for each attainment level
+
+tally[is.na(tally)] <- 0 # define NA values as zero
+```
+
+Create attainment metric for choropleth
+
+```{r}
+tally <- tally %>%
+  mutate(edu = (((`No HS diploma` * 1) + (`HS, no Bachelors` * 2) + (`Bachelors` * 3) + (`Post-Bachelors` * 4))/
+                  (`No HS diploma`  + `HS, no Bachelors` + `Bachelors` + `Post-Bachelors`)))
+
+# I created a column, edu, and did a weighted average for each row. So 'No HS diploma' was weighted as 1, 'HS, no Bachelors' as 2, ect. 
+
+# I used this new column as my average education attainment value to color my polygons
+```
+
+```{r}
+tally %>%
+  select(NAME, edu) -> tally # no longer need the individual count data
+```
+
+Join the education data back with the tract data
+
+```{r}
+tracts %>%
+  left_join(tally, by = "NAME") -> tracts
+```
+
+Create the palette
+
+```{r}
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = tracts$edu) # This time I want a continuos palatte, so I used `colorNumeric()`
+```
+
+Make the choropleth map
+
+```{r}
+leaflet(tracts) %>%
+  addProviderTiles(providers$CartoDB.Positron)%>% # add provider tiles
+  addPolygons( fillOpacity = 1, # add tract polygons
+               fillColor = ~pal(edu), smoothFactor = 0.2, # fill color based on the calculated 'edu' metric
+               color = "grey", 
+               opacity = 1,
+               weight = 1) %>%
+  addLegend(pal = pal, values = ~edu, title = "Education Attainment") # add legend
+```
+
+I did not like this legend, as it's unclear what the numbers mean. With some googling I found a solution
+
+```{r}
+labels <-c("No HS diploma (1)", "HS, no Bachelors (2)",
+           "Bachelors (3)" , "Post-Bachelors (4)"  ) # define the labels for the legend
+```
+
+```{r}
+leaflet(tracts) %>%
+  addProviderTiles(providers$CartoDB.Positron)%>% # add provider tiles
+  addPolygons( fillOpacity = 1, # add tract polygons
+               fillColor = ~pal(edu), smoothFactor = 0.2, # fill color based on the calculated 'edu' metric
+               color = "grey", 
+               opacity = 1,
+               weight = 1) %>%
+  addLegend(pal = pal, values = ~edu, 
+            opacity = 1,
+            title = "Education Attainment",
+            labFormat = function(type, cuts, p) {  # Here's the trick
+              paste0(labels)
+            })
+```
+That looks better, I think
+
+### Combine the maps
+
+```{r}
+
+leaflet() %>% # I decided to define by data by layer because I have multiple data sets
+  addProviderTiles(providers$CartoDB.Positron) %>% # Add provider tiles
+  addPolygons(data = tracts, # I decided to plot the tracts on the dot density map
+              color = "black",
+              weight = 1,
+              fillOpacity = 0,
+              group = "Circle" # Need to groups, 1 for density plot and 1 for choropleth
+              )  %>%
+  addCircles(data = points,
+             stroke = FALSE,  fillOpacity = 1, #plot the circles on top of the tracts
+             color = ~factpal(education),
+             group = "Circle" # Define group
+             ) %>%
+  addLegend(data = points,
+            pal = factpal, # Add legend for dot density plot
+            values = ~education,
+            opacity = 1,
+            title = "Educational Attainment",
+            group = "Circle" # Define group for legend
+            ) %>%
+  groupOptions("Circle", zoomLevels = 1:12 # Define the zoom levels for the dot density plot (dots will only by visible between zoom levels 1 and 12)
+               ) %>%
+  addPolygons( data = tracts, # First layer of the choropleth map, tract polygons
+               fillOpacity = .75,
+               fillColor = ~pal(edu), smoothFactor = 0.2, # Color defined by attainment metric
+               color = "grey",
+               opacity = 1,
+               weight = 1,
+               group = "Choro" # Called my second group "Choro"
+               ) %>%
+  addLegend(data = tracts,
+            pal = pal, # Add legend for choropleth plot
+            values = ~edu,
+            opacity = .75,
+            title = "Educational Attainment",
+            labFormat = function(type, cuts, p) {  # Here's the trick again
+              paste0(labels)
+            },
+            group = "Choro" # Add to choropleth group
+            ) %>%
+ groupOptions("Choro", zoomLevels = 13:20  # Define levels for the choropleth map (choropleth polygons will only be visble between zoom levls 13 and 20)
+              ) %>%
+  addScaleBar(position = "bottomright") # Add scale bar. Scale bar does not need a group because I want it visible at all zoom levels
+ 
+
+
+```
+
+Final map
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

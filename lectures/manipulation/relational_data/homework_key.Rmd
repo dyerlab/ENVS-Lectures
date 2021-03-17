@@ -1,0 +1,192 @@
+---
+title: "Relational Data Homework"
+author: YOUR_NAME_HERE
+output: html_notebook
+---
+
+
+```{r setup, include=FALSE}
+library( knitr )
+library( chron )
+library( lubridate )
+library( tidyverse )
+
+knitr::opts_chunk$set( warning = FALSE, 
+                       error = FALSE,
+                       fig.retina = 3)
+```
+
+This homework is going to play around with relational joins.  We will use some flight data from 2013 in New York City[^1].
+
+```{r}
+library( nycflights13 )
+```
+
+This library has five different data frames.  Here is an overview of the raw data.
+
+
+## The Data 
+
+A table of airline carrier abbreviations (N = `r nrow(airlines)` different carriers).
+
+```{r}
+head( airlines )
+```
+
+Information on the airports (N = `r nrow(airports)` airports).
+
+```{r}
+head( airports )
+```
+Mostly in the US.
+
+```{r echo=FALSE, fig.cap="Airportts in continental United States.", message=FALSE, warning=FALSE}
+if(!require(leaflet)){
+  install.packages("leaflet")
+}
+
+library( leaflet )
+airports %>%
+  filter( lon < 0,
+          lon > -130,
+          lat < 54) %>%
+  leaflet( ) %>%
+  addMarkers( lat = ~lat,
+              lng = ~lon,
+              popup = ~faa) %>%
+  addProviderTiles( provider="OpenTopoMap")
+```
+
+Weather conditions at each airport (a total of `r nrow(weather)` of them!)
+
+```{r}
+head(weather)
+```
+And a list of airplanes (N = `r nrow( planes )`).
+
+```{r}
+head( planes )
+```
+
+From all of these auxiliary data, we can construct a series of flights which has the following variables in it.
+
+```{r}
+names( flights )
+```
+
+If you look at the flight table, you will see that several columns of data here are *connected* to the other data frames described above.
+
+`flights` Foreign Key | Data From 
+----------------------|----------------
+carrier               | airlines
+dest                  | airports
+origin                | airport
+tailnum               | planes 
+time_hour             | weather
+
+The reason that these tables have *keys* connecting one to the other is that there is an economy of scale for very large data sets if we partition it into realtional components such as this.
+
+
+# Questions
+
+Use the tables above to answer the following questions.
+
+1. Which carriers have planes with over 100 flights in 2013 (and how many)?  
+
+```{r}
+flights %>%
+  group_by(carrier, tailnum ) %>%
+  summarize( flights = length( distance) ) %>%
+  filter( flights >= 100 ) %>%
+  left_join(airlines, by="carrier") %>%
+  group_by( carrier ) %>%
+  summarize( Planes = length(tailnum) ) %>%
+  left_join( airlines, by="carrier" ) %>%
+  arrange( -Planes ) %>%
+  select( Carrier = name, `Number of Flights` = Planes) %>%
+  knitr::kable( caption="Number of planes by carrier that have over 100 flights in 2013.") %>%
+  kableExtra::kable_styling(full_width = FALSE)
+
+  
+```
+
+
+
+
+2. During what 48 hour period were the worst delays?  Is there any connection with weather?
+
+```{r}
+flights %>% 
+  arrange( time_hour ) %>%
+  mutate( Julian = yday(time_hour) ) %>%
+  select( Julian, arr_delay ) %>%
+  group_by( Julian ) %>%
+  summarize( Delay = mean( arr_delay, na.rm=TRUE ) ) %>%
+  mutate( WindowAve = data.table::frollmean( Delay, n=2 ) ) %>%
+  mutate( Maximum = ifelse( WindowAve == max(WindowAve, na.rm=TRUE), TRUE, FALSE)) %>%
+  filter( !is.na(Maximum) ) -> delays
+
+
+most_delay <- month.day.year( delays$Julian[ delays$Maximum == TRUE],
+                              origin = c(month=1,day=1,year=2013))
+
+
+delays %>%
+  ggplot( aes(Julian, WindowAve) ) + 
+  geom_line() + geom_point( aes(color=Maximum) ) 
+```
+
+The 48-hour period with the highest average delay was `r most_delay$month`/`r most_delay$day`.
+
+
+3. What are the five best and five worst airlines for keeping on schedule?
+
+```{r}
+flights %>%
+  group_by( carrier ) %>%
+  summarize( Delay = mean( arr_delay, na.rm=TRUE) ) %>%
+  arrange( -Delay ) %>%
+  left_join( airlines, by="carrier") %>%
+  select( Carrier = name, Delay) %>%
+  knitr::kable( digits=3, caption = "Average delay by carrier in 2013.") %>%
+  kableExtra::kable_styling( full_width = FALSE )
+```
+
+4. Independent of the length of the flight, are you more likely to be delayed by taking a large plane or a small plane? 
+
+```{r}
+flights %>%
+  group_by( tailnum ) %>%
+  summarize( AveDelay = mean( arr_delay, na.rm=TRUE) ) %>% 
+  left_join( planes, by="tailnum" ) %>%
+  select( seats, AveDelay ) %>%
+  group_by( seats ) %>%
+  summarize( Delay = mean( AveDelay) ) %>%
+  mutate( Seats = as.numeric( seats ) ) %>%
+  ggplot( aes(Seats,Delay) ) + 
+  geom_point()  + 
+  stat_smooth()
+```
+
+
+
+
+5. Do all planes have tail numbers?
+
+```{r}
+
+flights %>%
+  filter( is.na(tailnum)) %>%
+  select( arr_time ) -> missing_tailnums
+
+any(!is.na(missing_tailnums)  )
+
+```
+
+It looks like all flights with no `tailnum` are canceled flights
+
+
+
+
+
+[^1]: If you get an error when attempting to load this library in, install it with `install.packages("nycflights13")` and then load it in again. 

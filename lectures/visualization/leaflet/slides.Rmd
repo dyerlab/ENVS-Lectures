@@ -302,8 +302,24 @@ leaflet() %>%
 ---
 
 # Example Provider Tiles - Combining Tiles
+.pull-left[ 
 
-```{r}
+```{r, eval=FALSE}
+provider <- providers$Stamen.Watercolor
+
+labels <- providers$CartoDB.VoyagerOnlyLabels
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles(provider) %>%
+  addProviderTiles(labels)
+```
+]
+
+.pull-right[
+```{r, echo = FALSE}
 provider <- providers$Stamen.Watercolor
 
 labels <- providers$CartoDB.VoyagerOnlyLabels
@@ -316,12 +332,12 @@ leaflet() %>%
   addProviderTiles(labels)
 ```
 
-
+]
 
 ---
 class: sectionTitle, inverse
 
-# .green[Adding Data Poitns]
+# .green[Adding Data]
 
 ### .fancy[Increasing Information Content]
 
@@ -366,13 +382,15 @@ Data can be passed through the `leaflet()` function or through the map layers.
 ---
 
 .pull-left[
-# Map Circles
+# Shapes (Circles, Lines & Polygons)
 
 ```{r eval=FALSE}
 leaflet() %>%
   addTiles() %>%
   addCircles( data=beetles )
 ```
+
+Note: Circles scale with the map
 
 ]
 .pull-right[
@@ -394,7 +412,7 @@ leaflet() %>%
 ---
 
 .pull-left[
-# Map Circles
+# Map Circles - size
 
 ```{r eval=FALSE}
 leaflet(beetles) %>%
@@ -426,17 +444,22 @@ leaflet(beetles) %>%
 ---
 
 .pull-left[
-# Map Circles
+# Map Circles - color
 
 ```{r eval=FALSE}
+pal <- colorNumeric( palette = "RdBu",
+                     domain = beetles$MFRatio,
+                     reverse = TRUE )
+
 leaflet(beetles) %>%
   addTiles() %>%
-  addCircles( radius = ~Males *500, 
-              stroke = FALSE, 
-              fillOpacity = .5)
+  addCircles(color = ~pal(MFRatio), 
+             fillOpacity = .7, 
+             radius = 15000, 
+             stroke = FALSE)
 ```
 
-Note: The `beetles` are put in the `leaflet` call (just like `ggplot()`) so that we can access the `Males` column of data.
+Note: Our palette is defined before hand using `colorNumeric()` and stored as `pal`
 ]
 .pull-right[
 
@@ -456,10 +479,12 @@ leaflet(beetles) %>%
              radius = 15000, 
              stroke = FALSE)
 ```
-
+]
 
 ---
 # Legends 
+
+`addLegend()`
 
 .pull-left[
 
@@ -511,12 +536,15 @@ leaflet(beetles) %>%
 .pull-left[
 # Map Markers
 
+
+
 ```{r eval=FALSE}
 leaflet() %>%
   addTiles() %>%
   addMarkers( data=beetles )
 ```
 
+Note: Markers stay the same size regardless of zoom level
 ]
 .pull-right[
 
@@ -547,6 +575,7 @@ bug <- icons(
 )
 ```
 
+- You can you images from a url or from your computer
 
 
 ---
@@ -565,7 +594,7 @@ Notice:
 
 - Data added to the `leaflet()` function call  
 - Custom provider tiles
-- Icon set in the `addMarkers()`[^1]
+- Icon set in the `addMarkers()`[^1] [^2]
 - Can also use [fontawesome icons](https://fontawesome.com/icons?d=gallery&p=2&m=free)
 
 ]
@@ -573,7 +602,7 @@ Notice:
 
 &nbsp;
 
-&nbsp;
+
 
 
 ```{r echo=FALSE}
@@ -584,6 +613,8 @@ leaflet(beetles) %>%
 ]
 
 ^[1:] Technically, beetles .redinline[**are not**] bugs... Charis
+
+^[2:] Sorry!🤦
 
 
 
@@ -598,7 +629,7 @@ leaflet(beetles) %>%
 
 .pull-left[
 
-In addition to the symbology, we can define a wide range of conntent to be associated with each marker.
+In addition to the symbology, we can define a wide range of content to be associated with each marker.
 
 ```{r eval=FALSE}
 leaflet(beetles) %>%
@@ -619,6 +650,7 @@ leaflet(beetles) %>%
 ]
 
 ---
+# Pop-ups
 
 .pull-left[
 ```{r eval=FALSE}
@@ -639,8 +671,24 @@ leaflet(beetles) %>%
 ```
 ]
 
+---
+# Labels
+.pull-left[
+```{r, eval = FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug, 
+              label = paste0("Site:", beetles$Site))
+```
+]
 
-
+.pull-right[
+```{r, echo = FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug, label = paste0("Site:", beetles$Site))
+```
+]
 ---
 class: sectionTitle, inverse
 

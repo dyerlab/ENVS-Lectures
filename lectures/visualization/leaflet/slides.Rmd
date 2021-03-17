@@ -958,6 +958,86 @@ leaflet(beetles) %>%
 ```
 
 
+
+
+---
+
+# Additional Layer Options
+
+So we've covered some items here but there are many more available.  Here is a list of some common ones:
+
+- `addControl`: Add arbitrary HTML controls to the map
+- `addTiles`: Add a tile layer to the map
+- `addWMSTiles`: Add a WMS tile layer to the map
+- `addPopups`: Add popups to the map
+- `addMarkers`: Add markers to the map
+- `addLabelOnlyMarkers`: Add Label only markers to the map
+- `addCircleMarkers`: Add circle markers to the map
+- `highlightOptions`: Options to highlight a shape on hover
+- `addCircles`: Add circles to the map
+- `addPolylines`: Add polylines to the map
+- `addRectangles`: Add rectangles to the map
+- `addPolygons`: Add polygons to the map
+- `addGeoJSON`: Add GeoJSON layers to the map
+- `addTopoJSON`: Add TopoJSON layers to the map
+
+
+---
+
+# Web Mapping Services
+
+A Web Mapping Service is a some geospatial information that is provided to you as the user from some server on the web.  You can use these as data input in ESRI ArcMap as a data sources, as a data provider for `R` or as an overlay for this leaflet.  To do this, we use the `addWMSTiles()` function and we need to give it the following parameters:
+
+- Where to get the WMS tiles from  
+- What layer to use (these are often shape-file like things).
+- Some options
+- Add some attributions to your map as text at the bottom.
+
+
+---
+
+# Real-Time Weather Overlay
+
+.pull-left[
+
+This service is provided by the Iowa Environmental Mesonet servers at Iowa State University.
+
+```{r eval = FALSE}
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 4) %>%
+  addProviderTiles( providers$Esri.WorldShadedRelief ) %>%
+  addWMSTiles(
+    "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
+    layers = "nexrad-n0r-900913",
+    options = WMSTileOptions(format = "image/png", transparent = TRUE),
+    attribution = "Weather data © 2012 IEM Nexrad"
+  )
+
+```
+]
+
+.pull-right[
+```{r echo = FALSE}
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 4) %>%
+  addProviderTiles( providers$Esri.WorldShadedRelief ) %>%
+  addWMSTiles(
+    "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
+    layers = "nexrad-n0r-900913",
+    options = WMSTileOptions(format = "image/png", transparent = TRUE),
+    attribution = "Weather data © 2012 IEM Nexrad"
+  )
+
+```
+]
+
+
+
+
 ---
 class: middle 
 

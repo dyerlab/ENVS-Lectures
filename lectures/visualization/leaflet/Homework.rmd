@@ -1,6 +1,6 @@
 ---
 title: "Leaflet Homework"
-author: "Charis Deadwyler"
+author: "YOUR NAME HERE"
 date: "3/15/2021"
 output: html_notebook
 ---
@@ -10,11 +10,16 @@ output: html_notebook
 Create a map similar to [this map from the Washington Post](https://www.washingtonpost.com/sf/local/2013/11/09/washington-a-world-apart/) (open the link in an incognito window to avoid the paywall if you need) for Richmond using the educational attainment data linked below and census tracts that you will download with the `tigris` package
 
 ```{r}
-education_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/edu_attainment-shp.zip"
+library( sf )
 
 # Download the tigris package if necessary
+if( !require( tigris) ) {
+  install.packages("tigris")
+  library( tigris)
+}
 
-library(tigris)
+education_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/edu_attainment-shp.zip"
+
 tracts <- tracts("VA", "Richmond city") %>%
   st_transform(4326)
 

@@ -319,6 +319,8 @@ Notice the difference between overlay groups (circles) and base groups (basemaps
 
 Want to display more detail when the map in zoomed in and less detail when the map is zoomed out? This is done with `zoomLevels` in the `groupOptions()`
 ```{r}
+beetle
+
 leaflet(beetle) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addCircles(fillColor = "lightblue", fillOpacity = 1, 
@@ -474,6 +476,18 @@ Try drawing and then deleting a shape from your map
 
 `addStlyeEditor()` allows you to edit the appearance of shapes
 
+### Pulsing Icon
+
+Create pulsing icons using `pulseIcons()` and add them to your map using `addPulseMarkers()`
+```{r}
+icon <- pulseIcons(color = "#ff0000", iconSize = 12, animate = TRUE,
+  heartbeat = 1)
+
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -111, lat = 25, zoom = 7) %>%
+  addPulseMarkers(lng = -111, lat = 25, icon = icon)
+```
 
 
 ## Making a Choropleth Map

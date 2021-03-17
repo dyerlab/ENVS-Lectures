@@ -125,24 +125,6 @@ leaflet()
 
 ---
 
-# Setting a Boundary ViewPort
-
-.pull-left[
-```{r eval=FALSE}
-leaflet() %>%
-  setView(lng = -77.5, lat = 37.5, zoom = 10) 
-```
-
-]
-.pull-right[
-```{r echo=FALSE}
-leaflet() %>%
-  setView(lng = -77.5, lat = 37.5, zoom = 10) 
-```
-]
-
-
----
 
 # Adding Default Tiles
 Open Street Map
@@ -160,11 +142,29 @@ leaflet() %>%
 .pull-right[
 ```{r echo=FALSE}
 leaflet() %>%
-  setView(lng = -77.5, lat = 37.5, zoom = 10) %>% #not necessary to set your view
   addTiles()
 ```
 ]
 
+---
+
+# Setting a Boundary ViewPort
+
+.pull-left[
+```{r eval=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -77.5, lat = 37.5, zoom = 10) 
+```
+
+]
+.pull-right[
+```{r echo=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -77.5, lat = 37.5, zoom = 10) 
+```
+]
 
 
 ---
@@ -959,19 +959,17 @@ leaflet(beetles) %>%
 
 
 ---
+class: middle 
+
+##`leaflet.extras`
 
 There are more interactive components you can add to the map from the `leaflet.extras` package including:
 
-- Scale Bars
 - Geocoded search fields
 - Interactive drawing components
+- Pulsing icons
 
 Examples are found in the [narrative](narrative.nb.html) associated with this lecture topic.
-
-
-
-
-
 
 ---
 

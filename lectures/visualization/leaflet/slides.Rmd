@@ -697,10 +697,6 @@ class: sectionTitle, inverse
 ### .fancy[Making Maps Fun Since 2021!]
 
 
-
-<!-- CHARIS: I'm going to switch to pairs of slides for the very long ones -->
-
-
 ---
 
 # Interactivity
@@ -722,7 +718,7 @@ leaflet(beetles) %>%
 --
 
 - Setting colors by previous palette  
-- Defining fixed size (units?)
+- Defining fixed size (units defined by projection - in this case `crs = 4326` has its length unit in meters)
 - Interactive context is defined by `hightlightOptions`
 
 
@@ -737,8 +733,8 @@ leaflet(beetles) %>%
               radius = 15000, 
               weight = 1, 
               color = "grey",
-              highlightOptions = highlightOptions( color = "green", 
-                                                   weight = 2,
+              highlightOptions = highlightOptions( color = "yellow", 
+                                                   weight = 4,
                                                    bringToFront = TRUE))
 ```
 
@@ -751,10 +747,6 @@ leaflet(beetles) %>%
 
 Items on the map may be grouped together and added (layer by layer) using their own data sets.
 
-<!-- 
-    I pulled out the data to make it a bit more explicit for them, it is the first time
-    they are going through this.
--->
 
 ```{r eval=FALSE}
 males <- beetles %>% filter( Males > Females)
@@ -798,7 +790,6 @@ leaflet() %>%
                    options = layersControlOptions(collapsed = FALSE))
 ```
 
-
 ---
 
 # Interactivity in Map Tile Provider
@@ -822,6 +813,9 @@ leaflet() %>%
 ```
 
 ---
+
+.pull-left[
+&nbsp;
 ```{r echo=FALSE}
 leaflet() %>%
   addProviderTiles(providers$CartoDB.Positron, group = "Default") %>%
@@ -839,9 +833,17 @@ leaflet() %>%
                    options = layersControlOptions(collapsed = FALSE),
                    baseGroups = c("Default", "Open Street Maps", "Stamen Toner"))
 ```
+]
 
+.pull-right[
+&nbsp;
 
+&nbsp;
 
+&nbsp;
+- Note the difference between `overlayGroups` and `baseGroups`
+
+]
 
 ---
 
@@ -867,7 +869,9 @@ Notice that the behavior of the `group` defined in `addCircles` can have it's ow
 
 
 ---
-```{r eval=FALSE}
+&nbsp;
+
+```{r echo=FALSE}
 leaflet(beetles) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addCircles( fillColor = "lightblue", 
@@ -880,7 +884,7 @@ leaflet(beetles) %>%
                 zoomLevels = 5:8)
 ```
 
-
+Zoom in/out to see may layer appear/disappear
 ---
 
 # Clustering 
@@ -889,15 +893,12 @@ There are times when you may want to *coalesce* markers together when you zoom o
 
 ```{r eval=FALSE}
 leaflet(beetles) %>%
-  addProviderTiles( providers$CartoDB.Positron ) %>%
-  addCircleMarkers( fillColor = "lightblue", 
-                    fillOpacity = 1, 
-                    color = "blue",
-                    weight = 1,
-                    group = "beetles",
-                    clusterOptions = markerClusterOptions( showCoverageOnHover = FALSE,
-                                                           freezeAtZoom = 6
-             )) 
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", weight = 1,
+             group = "beetles",
+             clusterOptions = markerClusterOptions(
+               showCoverageOnHover = FALSE,))
 ```
 
 
@@ -908,27 +909,56 @@ leaflet(beetles) %>%
 
 ```{r echo=FALSE}
 leaflet(beetles) %>%
-  addProviderTiles( providers$CartoDB.Positron ) %>%
-  addCircleMarkers( fillColor = "lightblue", 
-                    fillOpacity = 1, 
-                    color = "blue",
-                    weight = 1,
-                    group = "beetles",
-                    clusterOptions = markerClusterOptions( showCoverageOnHover = FALSE,
-                                                           freezeAtZoom = 6
-             )) 
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", weight = 1,
+             group = "beetles",
+             clusterOptions = markerClusterOptions(
+               showCoverageOnHover = FALSE,))
 ```
-
-
-
-
-
-
 
 
 ---
 
-# Additional Interactivity 
+# Legends & Scale Bars
+
+`addLegend()`
+
+`addScaleBar()`
+
+```{r, eval = FALSE}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(fillColor = ~pal(MFRatio), fillOpacity = .7, radius = 15000, 
+             weight = 1, color = "grey") %>%
+  addLegend(pal = pal, values = ~MFRatio,
+            title = "Male to Female Ratio") %>%
+  addScaleBar(position = "bottomright")
+```
+
+---
+
+&nbsp;
+
+```{r, echo= FALSE}
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = beetles$MFRatio)
+```
+
+
+```{r, echo = FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(fillColor = ~pal(MFRatio), fillOpacity = .7, radius = 15000, 
+             weight = 1, color = "grey") %>%
+  addLegend(pal = pal, values = ~MFRatio,
+            title = "Male to Female Ratio") %>%
+  addScaleBar(position = "bottomright")
+```
+
+
+---
 
 There are more interactive components you can add to the map from the `leaflet.extras` package including:
 

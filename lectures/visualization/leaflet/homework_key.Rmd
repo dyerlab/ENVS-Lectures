@@ -18,16 +18,16 @@ library(tigris)
 
 ### Dot Density Plot
 ```{r}
-education_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/edu_attainment-shp.zip"
-
-file <- tempfile(pattern = "edu", tmpdir = ".", fileext = ".zip")
-file
-
-download.file(education_url, destfile = file)
-unzip(file, exdir = ".")
-
-
-points <- st_read("edu_attainment-shp")
+# education_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/edu_attainment-shp.zip"
+# 
+# file <- tempfile(pattern = "edu", tmpdir = ".", fileext = ".zip")
+# file
+# 
+# download.file(education_url, destfile = file)
+# unzip(file, exdir = ".")
+# 
+# 
+# points <- st_read("edu_attainment-shp")
 ```
 
 Convert education levels to factor - this allows us to use `colorFactor()` to create our color palette
@@ -63,7 +63,7 @@ Data Prep
 ```{r message=FALSE, warning=FALSE}
 edu_tracts <- tracts %>%
   st_buffer(dist = 0) %>% # buffer by 0 to avoid error message
-  st_intersection(points) # intersect the two data sets
+  st_intersection(points) # intersect the point data with the tract polygons
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -71,7 +71,6 @@ edu_tracts %>%
   group_by(NAME, education) %>% # group by tract name and education level
   tally() -> tally # tally() counts the number of rows for the groups, so output is one row for every attainment level for each tract (so if a tract has all 4 attainment levels, there are 4 rows of data for that tract)
 
-tally
 ```
 
 ```{r}
@@ -82,6 +81,8 @@ tally <- tally %>%
   pivot_wider(names_from = education, values_from = n) # pivot the table so that instead of having multiple rows per tract, you have one row per tract with a column for each attainment level
 
 tally[is.na(tally)] <- 0 # define NA values as zero
+
+tally
 ```
 
 Create attainment metric for choropleth
@@ -185,6 +186,7 @@ leaflet() %>% # I decided to define by data by layer because I have multiple dat
                color = "grey",
                opacity = 1,
                weight = 1,
+               label = ~paste("Attainment:", round(edu, digits = 2)), # Adding a label with the attainment metric, rounding to 2 digits after the decimal
                group = "Choro" # Called my second group "Choro"
                ) %>%
   addLegend(data = tracts,

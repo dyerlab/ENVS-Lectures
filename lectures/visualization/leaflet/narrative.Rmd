@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(leaflet)
 library(sf)
+library(tidyverse)
 ```
 
 [Introduction to Leaflet in R](https://rstudio.github.io/leaflet/)
@@ -272,6 +273,7 @@ In this example sites with more males than females are blue and sites with more 
 
 Under the `addLayersControl()` layer we can select which groups to control. In this case I want to be able to turn the layers on/off. `overlayGroups` can be individually checked or unchecked.
 ```{r}
+
 leaflet() %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addCircles(data = (beetle %>% filter(Males > Females)), 
@@ -384,7 +386,7 @@ leaflet() %>%
              color = "red", radius = 10000, weight = 1,
              group = "females") %>%
   addLegend( colors = c("lightblue", "pink"),
-             labels = c("Males", "Females"),
+             labels = c("More Males", "More Females"),
              opacity = 1)
 ```
    
@@ -392,8 +394,7 @@ The next example shows a legend with continuous data. Notice that `pal` is used 
 ```{r}
 pal <- colorNumeric(
   palette = "RdBu",
-  domain = beetle$MFRatio,
-  reverse = TRUE)
+  domain = beetle$MFRatio)
 
 leaflet(beetle) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
@@ -428,6 +429,8 @@ The `leaflet.extras` package allows for additional functionality via leaflet plu
 
 `addResetMapButton()` resets you map to the original view and zoom level
 ```{r}
+library(leaflet.extras)
+
 leaflet(beetle) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
@@ -441,8 +444,6 @@ Move the map and zoom in/out, then press the reset button to make the map return
 
 `addSearchOSM()` and `addSearchGoogle()` allow you to search for locations on the map
 ```{r}
-library(leaflet.extras)
-
 leaflet(beetle) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 

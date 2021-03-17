@@ -25,7 +25,7 @@ tracts <- tracts("VA", "Richmond city") %>%
 
 - Dot density map of education attainment when zoomed out, with dot color based on attainment level
 
-- Choropleth map of education attainment by census tracts when zoomed in
+- Choropleth map of education attainment level by census tracts when zoomed in
   
   - [`pivot_wider()`](https://cran.r-project.org/web/packages/tidyr/vignettes/pivot.html) and [`tally()`](https://dplyr.tidyverse.org/reference/tally.html) were helpful for me to combine the point data and the tracts polygons
 

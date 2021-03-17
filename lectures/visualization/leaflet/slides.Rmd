@@ -48,11 +48,6 @@ knitr::opts_chunk$set( fig.retina = 3,
 knitr::include_graphics("https://live.staticflickr.com/65535/51044006107_a029ef7cbd_o_d.png")
 ```
 
-
----
-
-
-
 ---
 
 .center[ ![](https://live.staticflickr.com/65535/51043197628_2d1f0578db_o_d.png)]
@@ -150,11 +145,16 @@ leaflet() %>%
 ---
 
 # Adding Default Tiles
+Open Street Map
 
 .pull-left[
 ```{r eval=FALSE}
-leaflet() 
+leaflet() %>%
+  setView(lng = -77.5, lat = 37.5,
+          zoom = 10) %>%
+  addTiles() 
 ```
+
 
 ]
 .pull-right[
@@ -180,10 +180,10 @@ addTiles()
 with 
 
 ```{r eval=FALSE}
-addProviderTiles( providerName )
+addProviderTiles( providers$Name )
 ```
 
-where `providerName` can be any of the items found [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html)  .redinline[  <-- click on this]
+where `Name` can be any of the items found [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html)  .redinline[  <-- click on this]
 
 
 
@@ -254,7 +254,7 @@ leaflet() %>%
 
 ---
 
-# Example Provider Tiles - ESRI World Topo
+# Example Provider Tiles - ESRI World Shaded Relief
 
 ```{r echo=FALSE}
 provider <- providers$Esri.WorldShadedRelief
@@ -299,6 +299,22 @@ leaflet() %>%
   addProviderTiles( provider)
 ```
 
+---
+
+# Example Provider Tiles - Combining Tiles
+
+```{r}
+provider <- providers$Stamen.Watercolor
+
+labels <- providers$CartoDB.VoyagerOnlyLabels
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles(provider) %>%
+  addProviderTiles(labels)
+```
 
 
 

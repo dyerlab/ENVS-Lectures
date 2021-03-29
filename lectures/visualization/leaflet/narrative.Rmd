@@ -1,6 +1,540 @@
 ---
-title: "Leaflet Graphics"
+title: "Leaflet"
+author: "Charis Deadwyler"
+date: "3/15/2021"
 output: html_notebook
 ---
 
-https://dominicroye.github.io/en/2018/accessing-openstreetmap-data-with-r/
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(leaflet)
+library(sf)
+library(tidyverse)
+```
+
+[Introduction to Leaflet in R](https://rstudio.github.io/leaflet/)
+
+## Basic Usage
+
+### Map Widget
+
+**create map widget with `leaflet()`**
+
+
+load in the data. We'll use the beetle data again.
+```{r}
+beetle_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+beetle <- read.csv(beetle_url)
+
+beetle <- beetle %>%
+   st_as_sf( coords=c("Longitude","Latitude"), crs=4326 )
+```
+
+### Basemaps
+
+Add a basemap with `addTiles()`. By default OpenStreetMap tiles are used. 
+
+Base maps are not required. Without a basemap your map will be floating in space. Using a basemap adds context, especially for point data
+
+```{r}
+leaflet() %>%
+  setView(lng = -77.5, lat = 37.5, zoom = 10) %>% #not necessary to set your view
+  addTiles()
+```
+This is a blank map because we haven't added any layers
+
+
+### Third party tiles
+
+Use `addProviderTiles()` function to use a different basemap.  Think about what information you are trying to convey when choosing a basemap. Will extra detail be helpful or will it distract from your data? Most third party base map styles have a labeled and an unlabeled option. 
+
+Base maps can be combined if, for example, you like the style of one basemap but the labels of another basemap. You can also include multiple basemap layers and let the viewer select their prefered map. We'll see how to do this later.
+
+[See here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html) for all options
+
+```{r}
+leaflet() %>%
+  setView(lng = -77.5, lat = 37.5, zoom = 10) %>% #not necessary to set your view
+  addProviderTiles(providers$CartoDB.Positron)
+```
+   
+
+### Data Objects
+
+Both `leaflet()` and each map layer have a `data =` parameter. Spatial data can be in the form of:
+
+- dataframe with lat/lng columns
+- `sp` objects
+- `sf` objects
+- `maps` package `map()` objects
+
+Leaflet only uses **WGS84** for displaying data. Leaflet can project coordinates automatically, but projecting your data to WGS84 (crs = 4326) is a good habit to get into.
+
+
+Data can be passed through the `leaflet()` function or through the map layers.
+
+Here we define our data in the `leaflet()` function
+```{r}
+leaflet(beetle) %>%
+  addTiles() %>%
+  addCircles()
+```
+   
+
+Here we define the data in the map layer (`addCircles()`)
+```{r}
+leaflet() %>%
+  addTiles() %>%
+  addCircles(data = beetle)
+```
+
+
+## Markers
+
+Points can be plotted using `addMarkers()` or `addCircles()`
+
+- Markers stay the same size regardless of zoom level
+
+- Circles scale with the map
+
+
+**Default markers**
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addMarkers()
+```
+zoom in/out and notice that the markers stay the same size
+
+Makers can be customize using `options = markerOptions()`
+
+
+
+
+**Custom Markers**
+
+- Custom markers can be made using a url/image file or from libraries 
+
+- It is important to define the height and width (in pixels) of your icons
+
+```{r}
+bug <- icons(
+  iconUrl = "https://www.pngfind.com/pngs/m/14-144860_beetle-bug-png-transparent-image-bug-png-png.png",
+  iconWidth = 20,
+  iconHeight = 20
+)
+```
+
+Use your custom marker in the `icons =` of the `addMarkers()` function
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addMarkers(icon = bug)
+```
+
+**Marker from a library**
+
+[link to Font Awesome library](https://fontawesome.com/icons?d=gallery&p=2&m=free)
+
+`makeAwesomeIcon()` allows you to select your icon and edit its color ect.
+
+`addAwesomeMarkers()` allows you to add your custom icon to the map
+```{r}
+fa_bug <- makeAwesomeIcon(icon = "bug", library = "fa", 
+                          markerColor = "cadetblue", iconColor = "beige")
+
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug)
+
+```
+   
+Notice that our custom icon using `makeAwesomeIcon()` and `addAwsomeMarkers()` displays the icon on top of a marker. The custom icon using `addMarkers()` displays directly on the map
+
+
+## Pop-ups and Labels
+
+- Pop-ups appear/disappear when clicked
+
+- Labels appear/disappear when you mouse hovers on the object
+
+
+### Pop-ups
+
+Pop-ups can be added as a stand-alone feature using `addPopups()`, or add to appear when a shape is clicked
+
+
+**Stand-alone**
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -111, lat = 25, zoom = 7) %>%
+  addPopups(lng = -111, lat = 25, paste0("beetles live here"))
+```
+Notice that the pop-up is its own leaflet layer
+ 
+ 
+
+**As a marker option**
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug, popup = paste0("Site:", beetle$Site))
+```
+Notice that this time we define our pop-up inside the maker layer, not as its own layer
+
+### Labels
+
+Use `label = ` to add a label displayed on a mouse over
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug, label = paste0("Site:", beetle$Site))
+```
+
+
+Labels and Pop-ups can be customized using the `labelOptions = labelOptions()` function. You can define the text size, color, font, box border, box shadow, ect.
+
+## Adding Circles, Lines and Polygons
+
+- `addCircles()`
+
+- `addLines()`
+
+- `addPolygons()`
+
+Circles, lines and polygons behave very similarly in leaflet. For this lecture we will continue using our beetle point data. There is an example using polygons at the end of the lecture.
+
+
+### `addCircles()`
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles()
+```
+If you zoom in far enough you will see that the size of the circles changes with the zoom level. This feature will become more apparent in later examples.
+
+### Change the size (`radius`)
+
+In this example the size of the circles is proportional to the number of males at each site. The value is multiplied by 500 so the different sizes can be easily visualized when zoomed out.
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(radius = ~Males *500, stroke = FALSE, fillOpacity = .5)
+```
+
+
+### Color
+
+`color` will define the stroke and the fill color unless `fillColor` is specified
+
+In this example the color of the circles is now proportional to the male to female ratio (`beetle$MFRatio`) of each site. Our palette is defined before hand using `colorNumeric()` and stored as `pal`.
+```{r}
+pal <- colorNumeric(
+  palette = "RdBu", # Red to Blue palette
+  domain = beetle$MFRatio
+)
+
+
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(color = ~pal(MFRatio), fillOpacity = .7, radius = 15000, stroke = FALSE,
+             label = paste0(beetle$MFRatio))
+```
+Darker blue circles represent sites with a larger male to female ratio. Darker red circles represent sites with a smaller male to female ratio. We will see how to add a legend later in the lecture.
+
+
+### Highlight
+
+Individual shapes can be highlighted when hovered over using `highlightOptions` within the shape layer.
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(fillColor = pal(beetle$MFRatio), fillOpacity = .7, radius = 15000, 
+             weight = 1, color = "black",
+  highlightOptions = highlightOptions(color = "yellow", weight = 4,
+      bringToFront = TRUE))
+```
+Hover your mouse over different circles and notice the the stroke color changes from black to yellow and becomes thicker. If circles overlap, hovering now brings that circle in front of the others.
+
+## Map Groups
+
+Assign layers to groups using `group = `. Assigning groups allows you to show/hide layers or control the visibility of layers through the function `addLayersControl()`
+
+A group can be made up a a single layer or multiple layers, but each layer can only belong to one group.
+
+### Layer Controls
+
+Once your data layers have been assigned to groups you can use `addLayersControl()` to control individual layers
+
+
+In this example sites with more males than females are blue and sites with more females than males are pink. Because we want to control the two different types of circles separately, they need to be added as individual layers. The `group =` is defined inside each `addCircles()` layer. 
+
+Under the `addLayersControl()` layer we can select which groups to control. In this case I want to be able to turn the layers on/off. `overlayGroups` can be individually checked or unchecked.
+```{r}
+
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(data = (beetle %>% filter(Males > Females)), 
+             fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", radius = 10000, weight = 1,
+             group = "males") %>%
+  addCircles(data = (beetle %>% filter(Males < Females)), 
+             fillColor = "pink", fillOpacity = 1, 
+             color = "red", radius = 10000, weight = 1,
+             group = "females") %>%
+  addLayersControl(overlayGroups = c("males", "females"),
+                   options = layersControlOptions(collapsed = FALSE))
+
+```
+   
+### Base Groups
+
+`baseGroups` can only be viewed one group at a time and one group is always selected (can't turn them all off)
+
+Base groups are useful when providing viewers a choice of basemaps. In the example below, three different tile layers are added, each their own group. Now in `addLayersControl()` we can include these basemap groups in the `baseGroups`.
+```{r}
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron, group = "Default") %>%
+  addProviderTiles(providers$OpenStreetMap, group = "Open Street Maps") %>%
+  addProviderTiles(providers$Stamen.Toner, group = "Stamen Toner") %>%
+  addCircles(data = (beetle %>% filter(Males > Females)), 
+             fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", radius = 10000, weight = 1,
+             group = "males") %>%
+  addCircles(data = (beetle %>% filter(Males < Females)), 
+             fillColor = "pink", fillOpacity = 1, 
+             color = "red", radius = 10000, weight = 1,
+             group = "females") %>%
+  addLayersControl(overlayGroups = c("males", "females"),
+                   options = layersControlOptions(collapsed = FALSE),
+                   baseGroups = c("Default", "Open Street Maps", "Stamen Toner"))
+```
+
+Notice the difference between overlay groups (circles) and base groups (basemaps)
+
+
+### Zoom Levels
+
+Want to display more detail when the map in zoomed in and less detail when the map is zoomed out? This is done with `zoomLevels` in the `groupOptions()`
+```{r}
+beetle
+
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", radius = 10000, weight = 1,
+             group = "beetles") %>%
+  groupOptions("beetles", zoomLevels = 5:8)
+```
+Zoom in and out to watch the layer turn on/off
+
+
+### Clustering
+
+
+When there are a larger number of makers on a map you can cluster them using `clusterOpions =`
+
+A common example of clustering is the [Dominion Power outage map](https://outagemap.dominionenergy.com/external/default.html).
+
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", weight = 1,
+             group = "beetles",
+             clusterOptions = markerClusterOptions()) 
+```
+Hovering over a cluster marker with your mouse allows you to see the coverage of the cluster
+
+Click on a cluster to zoom in to the cluster bounds
+
+All of these features can be changed `markerClusterOptions`. `markerClusterOptions` also allows you to freeze the clustering at a defined zoom level with `freezeAtZoom = `
+
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", weight = 1,
+             group = "beetles",
+             clusterOptions = markerClusterOptions(
+               showCoverageOnHover = FALSE,
+               freezeAtZoom = 6)) 
+```
+Now the clusters stay the same regardless of zoom level. When the cluster is clicked you can see each point included in the cluster
+
+## Legends
+
+Legends are added using `addLegend()`
+
+- You must provide color information
+  
+  - `pal =` if using a palette, or `color = ` if using custom defined colors
+
+- You must provide the values used to generate colors from the palette or the labels for each corresponding color
+
+
+The example below shows a legend with categorical data
+```{r}
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(data = (beetle %>% filter(Males > Females)), 
+             fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", radius = 10000, weight = 1,
+             group = "males") %>%
+  addCircles(data = (beetle %>% filter(Males < Females)), 
+             fillColor = "pink", fillOpacity = 1, 
+             color = "red", radius = 10000, weight = 1,
+             group = "females") %>%
+  addLegend( colors = c("lightblue", "pink"),
+             labels = c("More Males", "More Females"),
+             opacity = 1)
+```
+   
+The next example shows a legend with continuous data. Notice that `pal` is used this time instead of `color` and `values` instead of `labels`
+```{r}
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = beetle$MFRatio)
+
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(fillColor = ~pal(MFRatio), fillOpacity = .7, radius = 15000, 
+             weight = 1, color = "grey") %>%
+  addLegend(pal = pal, values = ~MFRatio,
+            title = "Male to Female Ratio")
+```
+
+
+
+## Scale Bars
+
+Scale bars are added using `addScaleBar()`. The scale bar will adjust itself as you zoom in and out
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", weight = 1) %>%
+  addScaleBar(position = "bottomright")
+```
+
+
+You can choose to use metric and/or imperial units and adjust the scale bar width using `options = scaleBarOptions`. 
+
+
+## Leaflet Extras Package
+
+The `leaflet.extras` package allows for additional functionality via leaflet plugins. We'll take a look at three examples here, but there are [tons of plugins](https://bhaskarvk.github.io/leaflet.extras/) to choose from 
+
+### Reset
+
+`addResetMapButton()` resets you map to the original view and zoom level
+```{r}
+library(leaflet.extras)
+
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", weight = 1) %>%
+  addResetMapButton()
+```
+Move the map and zoom in/out, then press the reset button to make the map return to its starting view and zoom level
+
+
+### Search Bars
+
+`addSearchOSM()` and `addSearchGoogle()` allow you to search for locations on the map
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", weight = 1) %>%
+  addSearchOSM(options = searchOptions(
+    zoom = 8,
+    hideMarkerOnCollapse = TRUE,
+    autoCollapse = FALSE))
+```
+   
+
+Try searching for "Cabo San Lucas"
+
+### Draw Toolbar
+
+`addDrawToolbar()` allows you to draw points, lines and polygons on map
+```{r}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", weight = 1) %>%
+  addDrawToolbar(
+    editOptions = editToolbarOptions(
+      selectedPathOptions = selectedPathOptions() )) %>%
+  removeDrawToolbar()
+```
+Try drawing and then deleting a shape from your map
+
+`addStlyeEditor()` allows you to edit the appearance of shapes
+
+### Pulsing Icon
+
+Create pulsing icons using `pulseIcons()` and add them to your map using `addPulseMarkers()`
+```{r}
+icon <- pulseIcons(color = "#ff0000", iconSize = 12, animate = TRUE,
+  heartbeat = 1)
+
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -111, lat = 25, zoom = 7) %>%
+  addPulseMarkers(lng = -111, lat = 25, icon = icon)
+```
+
+
+## Making a Choropleth Map
+
+Lines and Polygons work in a very similar manner to circles
+
+For this example we'll use census tracts from the `tigris` package
+```{r message=FALSE}
+library(tidyverse)
+library(tigris)
+options(tigris_use_cache = TRUE)
+
+tracts <- tracts("VA", "Richmond city") %>%
+  st_transform(4326)
+```
+
+Defining the color palette using the land area of each tract. Area is given in square meters. To convert to square miles we divide our area by 2.59e+6
+```{r}
+pal <- colorNumeric(palette = "Blues",
+                    domain = tracts$ALAND/2.59e+6) 
+```
+
+The polygon colors are assigned using `fillColor = ~pal(ALAND/2.59e+6)`
+
+Labels, legend and scale bar are added to give the map a more polished finish
+```{r echo=TRUE}
+leaflet(tracts) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(ALAND/2.59e+6),  fillOpacity = 1, smoothFactor = .2,
+              color = "darkgrey", weight = 1,
+                highlightOptions = highlightOptions(color = "white", weight = 2, opacity = 1,
+                bringToFront = TRUE),
+              label = paste(round(tracts$ALAND/2.59e+6, digits = 2), "sq. mi.")
+              ) %>%
+  addLegend(pal = pal, values = ~ALAND/2.59e+6, title = "Area (sq. miles)") %>%
+  addScaleBar(position = "bottomright")
+```
+The map is now shaded so that the larger census tracts are darker blue and the smallest tracts are lighter blue
+
+
+
+
+
+
+
+
+
+
+
+

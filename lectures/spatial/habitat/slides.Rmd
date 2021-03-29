@@ -1,0 +1,99 @@
+---
+title: "Projections & Point Data"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "../../css/slide_styles.css", "../../css/slide_fonts.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: left, middle, inverse
+background-image: url("https://live.staticflickr.com/65535/50362989122_a8ee154fea_k_d.jpg")
+background-size: cover
+
+
+```{r setup, include=FALSE}
+library( sf )
+library( ggplot2 )
+library( tidyverse )
+library( fontawesome )
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+
+theme_set( theme_classic( base_size = 20) )
+```
+
+
+# .orange[Spatial Data]
+
+### .fancy[Projections & Points `r fa("map-marker-alt", fill='orange'  )`]
+
+
+
+
+---
+class: bottom
+background-image: url("https://live.staticflickr.com/65535/50437121667_ac9c3e7f84_c_d.jpg")
+background-size: 55%
+
+
+.footnote[ [Knight *et al.* (2005) *Nature*.  **437**, 880-883.](https://www.researchgate.net/deref/http%3A%2F%2Fdx.doi.org%2F10.1038%2Fnature03962)]
+
+
+
+---
+
+# Toblers First Law of Geography
+
+.blue[
+> Everything is related to everything else, but near things are more related to each other.
+]
+
+--
+
+.pull-left[
+### Physical Measurements
+- Location  
+
+- Distance  
+
+- Network  
+
+- Neighborhoods & Regions
+]
+
+.pull-right[
+### Emerging Properties 
+
+- Spatial Heterogeneity
+
+- Spatial Dependence  
+
+- Objects & Fields
+
+]
+
+.footnote[[Tobler, W. R. 1970. *Economic Geography*, **46**, 234–240.](https://doi.org/10.1002/9781118786352.wbieg1011)]
+
+
+
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .orange[Projections]
+
+## .fancy[Representing Location On .redinline[*This*] Planet.]
+
+

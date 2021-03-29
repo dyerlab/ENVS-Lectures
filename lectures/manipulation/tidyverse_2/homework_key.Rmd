@@ -1,0 +1,179 @@
+---
+title: "Data Workflows II - Tidyverse - KEY"
+output: html_notebook
+---
+
+
+
+<center>
+![](https://live.staticflickr.com/65535/50382551848_e170d17b46_m_d.jpg)+
+
+$+$
+
+![](https://live.staticflickr.com/65535/50383334422_50bd19859d_w_d.jpg)
+
+$=$
+
+![](https://media.giphy.com/media/SU3SECsWxuH3AsfGpj/giphy.gif)
+</center>
+
+## Impetus
+
+This homework focuses on how we can use <tt>tidyverse</tt> routines to become more effective in our pre-treatment of data.  As a removner, the operative *verbs* we use in data preparation include:
+
+- *Select*  
+- *Filter*  
+- *Mutating*  
+- *Arranging* 
+- *Grouping*  
+- *Summarizing*  
+
+These can be combined in various ways to gain inferences from the raw data.  
+
+![Figure 1: Generalized processes of data workflow](https://live.staticflickr.com/65535/50367634341_454e5c0e80_c_d.jpg)
+## The Data
+
+For these questions, we will be using the data set from the [Rice Rivers Center](https://ricerivers.vcu.edu) and is loaded in as raw data from the code below.
+
+```{r message=FALSE, warnings=FALSE}
+library( readr )
+library( tidyverse )
+library( lubridate )
+
+format <- "%m/%d/%Y %I:%M:%S %p"
+url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
+read_csv( url ) %>%
+  mutate( Date = parse_date_time( DateTime, 
+                                  orders=format,
+                                  tz="EST") ) %>%
+  mutate( Weekday = factor( weekdays( Date ),
+                            levels=c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"),
+                            ordered=TRUE) ) -> rice 
+
+summary( rice )
+```
+
+
+## The Questions
+
+Provide your answers as text (e.g., using complete sentences, etc.) and include visual output in tabular or graphical form to support your assertions.  The *key point here* is that **you** need to develop an *evidence-based* narrative to address these questions.
+
+1. On average, is there more rain on Mondays, at daytime, or at night?
+
+
+```{r}
+rice %>% 
+  filter( Weekday == "Monday") %>%
+  mutate( Period = factor( ifelse( hour(Date) < 7, 
+                                    "Night", 
+                                    ifelse( hour(Date) > 17, 
+                                            "Night", 
+                                            "Day"))) ) %>%
+  group_by( Period ) %>%
+  summarise( Rain = mean( Rain_in ) * 2.54,
+             SD = sd( Rain_in * 2.54) ) %>%
+  knitr::kable( digits=4, caption="Mean and standard deviation of rain on Mondays at the Rice Center.") %>%
+  kableExtra::kable_styling( full_width = FALSE)
+
+```
+
+
+
+
+
+2. What is the overall relationship between salinity and pH?  Does this pattern hold when considering each month individually?
+
+```{r}
+rice %>% 
+  ggplot( aes(Salinity_ppt, PH) ) + 
+  geom_point() + 
+  stat_smooth()
+```
+So overall, there seems to be a slightly positive relationship at levels. A non-parametric correlation concurs.
+
+```{r}
+cor.test( rice$Salinity_ppt, rice$PH, method = "spearman")
+```
+We can now look at the data by month
+
+
+```{r}
+rice %>% 
+  mutate( Month = month(Date,
+                        abbr=FALSE,
+                        label = TRUE ) ) %>%
+  ggplot( aes(Salinity_ppt, PH) ) + 
+  geom_point() + 
+  stat_smooth() + 
+  facet_grid(Month ~ .)
+```
+
+You could grab the correlations as:
+
+```{r, warning=FALSE}
+rice %>% 
+  mutate( Month = month(Date,
+                        abbr=FALSE,
+                        label = TRUE ) ) %>%
+  group_by( Month ) %>%
+  summarize( Correlation = cor.test( Salinity_ppt, PH, method="spearman")$estimate,
+             P = cor.test( Salinity_ppt, PH, method="spearman")$p.value ) %>%
+  knitr::kable( digits=4, 
+                caption="Rank correlation of salinity and pH by month at the Rice Rivers Center.") %>%
+  kableExtra::kable_styling( full_width = FALSE)
+  
+```
+And interpret it.
+
+
+
+
+3. Turbidity is a measurement of the opaqueness of water.  In the rice data, we have a measure of Chlorophyll A in the water.  For estimates where there is more than 200 $µg*l^{-1}$, describe the relationship between these two variables.
+
+
+```{r}
+rice %>%
+  filter( Chla_ugl > 200 ) %>%
+  ggplot( aes( Turbidity_ntu, Chla_ugl )) +
+  geom_point() + 
+  stat_smooth( col="red", se = FALSE)
+
+```
+
+
+
+
+
+4. Show the pattern of tides during the work week that includes Valentines Day in 2004.
+
+
+```{r}
+rice %>%
+  filter( Date < ymd("2014-02-17"),
+          Date >= ymd("2014-02-10")) %>%
+  ggplot( aes(Weekday, Depth_m) ) + 
+  geom_violin() + 
+  theme(axis.text.x = element_text( angle = 45,
+                                    hjust = 1)) +
+  ylab("Water Depth") + 
+  xlab("Day of the Week") + 
+  ggtitle("Tide depths for the week of Valentines Day")
+  
+
+```
+
+
+
+
+
+5. Summarize estimates of Wind direction for February.  Pay close attention to what this variable is actually measuring and how you want to display its underlying patterns.
+
+
+```{r}
+rice %>%
+  ggplot( aes(WindDir) ) + 
+  geom_histogram() +
+  coord_polar( start=0) + 
+  theme_bw()
+```
+Here I show the histogram density as in polar coordinates.

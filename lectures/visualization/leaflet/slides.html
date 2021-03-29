@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Leaflet Maps</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.7.3/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+    <script src="libs/jquery-1.12.4/jquery.min.js"></script>
+    <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-1.3.1/leaflet.js"></script>
+    <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+    <script src="libs/proj4-2.6.2/proj4.min.js"></script>
+    <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+    <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+    <script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+    <link href="libs/leaflet-awesomemarkers-2.0.3/leaflet.awesome-markers.css" rel="stylesheet" />
+    <script src="libs/leaflet-awesomemarkers-2.0.3/leaflet.awesome-markers.min.js"></script>
+    <link href="libs/fontawesome-4.7.0/font-awesome.min.css" rel="stylesheet" />
+    <link href="libs/leaflet-markercluster-1.0.5/MarkerCluster.css" rel="stylesheet" />
+    <link href="libs/leaflet-markercluster-1.0.5/MarkerCluster.Default.css" rel="stylesheet" />
+    <script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.js"></script>
+    <script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.freezable.js"></script>
+    <script src="libs/leaflet-markercluster-1.0.5/leaflet.markercluster.layersupport.js"></script>
+    <link rel="stylesheet" href="https://dyerlab.github.io/ENVS-Lectures/css/slide_styles.css" type="text/css" />
+    <link rel="stylesheet" href="https://dyerlab.github.io/ENVS-Lectures/css/slide_fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: left, bottom, inverse, overlay
+background-image: url("https://live.staticflickr.com/65535/51043989197_987f4c2af0_k_d.jpg")
+background-size: cover
+
+
+
+
+# .orange[Leaflet]
+
+### .fancy[Making Interactive Maps that Don't Suck &lt;svg style="height:0.8em;top:.04em;position:relative;fill:orange;" viewBox="0 0 576 512"&gt;&lt;path d="M0 117.66v346.32c0 11.32 11.43 19.06 21.94 14.86L160 416V32L20.12 87.95A32.006 32.006 0 0 0 0 117.66zM192 416l192 64V96L192 32v384zM554.06 33.16L416 96v384l139.88-55.95A31.996 31.996 0 0 0 576 394.34V48.02c0-11.32-11.43-19.06-21.94-14.86z"/&gt;&lt;/svg&gt;]
+
+
+ &amp;nbsp;
+ 
+ &amp;nbsp;
+ 
+&lt;img src="https://live.staticflickr.com/65535/51044006107_a029ef7cbd_o_d.png" width="640px" style="display: block; margin: auto auto auto 0;" /&gt;
+
+---
+
+.center[ ![](https://live.staticflickr.com/65535/51043197628_2d1f0578db_o_d.png)]
+
+
+
+.pull-left[ 
+
+### Provides:
+
+- Uniform interface 
+
+- Many entry points (R, JavaScript, Python, HTML, etc.)
+
+- Variety of Map Types
+
+- Completely User Interactive
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+![](https://live.staticflickr.com/65535/51044028622_5fa998274c_z_d.jpg)
+
+]
+
+
+---
+
+# Map Making Workflow
+
+I'd make flow diagram here to go through basic steps. Define what each does in the background.
+
+1. Get data - 
+2. Make base map  -  `leaflet()` function creates widget for map and all javascript
+3. Define Region -   `setVeiw()` can be used to define the `bbox()`
+4. Add Tiles  -      `addTiles()` or `addProviderTiles()` downloads map tiles
+5. Overlay Markers -   `addMarkers()` make your points
+6. Overlay Rasters - 
+7. Set Fancy Stuff - 
+--
+8. There is no step 8 🎉 !!!!!
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Basic Map Parts]
+
+### .fancy[The foundation parts &lt;svg style="height:0.8em;top:.04em;position:relative;fill:limegreen;" viewBox="0 0 320 512"&gt;&lt;path d="M313.553 392.331L209.587 504.334c-9.485 10.214-25.676 10.229-35.174 0L70.438 392.331C56.232 377.031 67.062 352 88.025 352H152V80H68.024a11.996 11.996 0 0 1-8.485-3.515l-56-56C-4.021 12.926 1.333 0 12.024 0H208c13.255 0 24 10.745 24 24v328h63.966c20.878 0 31.851 24.969 17.587 40.331z"/&gt;&lt;/svg&gt;]
+
+
+
+
+
+---
+
+# The Base Map
+
+.pull-left[
+
+```r
+leaflet() 
+```
+
+]
+.pull-right[
+<div id="htmlwidget-0ae7ee04289a273aad9e" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0ae7ee04289a273aad9e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}}},"evals":[],"jsHooks":[]}</script>
+]
+
+
+---
+
+
+# Adding Default Tiles
+Open Street Map
+
+.pull-left[
+
+```r
+leaflet() %&gt;%
+  setView(lng = -77.5, lat = 37.5,
+          zoom = 10) %&gt;%
+  addTiles() 
+```
+
+
+]
+.pull-right[
+<div id="htmlwidget-0cd281dcb0a4c3fa8d62" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0cd281dcb0a4c3fa8d62">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}]},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+# Setting a Boundary ViewPort
+
+.pull-left[
+
+```r
+leaflet() %&gt;%
+  addTiles() %&gt;%
+  setView(lng = -77.5, lat = 37.5, zoom = 10) 
+```
+
+]
+.pull-right[
+<div id="htmlwidget-4f308424322a746d6366" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4f308424322a746d6366">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[37.5,-77.5],10,[]]},"evals":[],"jsHooks":[]}</script>
+]
+
+
+---
+
+# Tile Providers
+
+There are some really interesting Tile Providers that we can use by replacing 
+
+
+```r
+addTiles()
+```
+
+with 
+
+
+```r
+addProviderTiles( providers$Name )
+```
+
+where `Name` can be any of the items found [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html)  .redinline[  &lt;-- click on this]
+
+
+
+---
+
+# Example Provider Tiles - OpenTopoMap
+
+<div id="htmlwidget-9c3dd7cb77fed178373e" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9c3dd7cb77fed178373e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["OpenTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+ 
+
+---
+
+# Example Provider Tiles - ESRI World Topo
+
+<div id="htmlwidget-b6d82599c571032ab920" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b6d82599c571032ab920">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+
+---
+
+# Example Provider Tiles - Watercolor
+
+<div id="htmlwidget-05178975731ad9f08685" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-05178975731ad9f08685">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Stamen.Watercolor",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+---
+
+# Example Provider Tiles - ESRI Satelite
+
+<div id="htmlwidget-4565c8eacb883a9fd69d" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4565c8eacb883a9fd69d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Esri.WorldImagery",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Example Provider Tiles - ESRI World Shaded Relief
+
+<div id="htmlwidget-7cca0149d2914bb480da" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7cca0149d2914bb480da">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Esri.WorldShadedRelief",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+
+
+
+---
+
+# Example Provider Tiles - Earth At Night
+
+<div id="htmlwidget-0711be59ce014e1fc8e6" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0711be59ce014e1fc8e6">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["NASAGIBS.ViirsEarthAtNight2012",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+---
+
+# Example Provider Tiles - NASA Daily Composite Imagry
+
+<div id="htmlwidget-2a02b9435c0c89397dd7" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2a02b9435c0c89397dd7">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["NASAGIBS.ModisTerraTrueColorCR",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# Example Provider Tiles - Combining Tiles
+.pull-left[ 
+
+
+```r
+provider &lt;- providers$Stamen.Watercolor
+
+labels &lt;- providers$CartoDB.VoyagerOnlyLabels
+
+leaflet() %&gt;% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %&gt;% 
+  addProviderTiles(provider) %&gt;%
+  addProviderTiles(labels)
+```
+]
+
+.pull-right[
+<div id="htmlwidget-56dc8c728e1a398184fb" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-56dc8c728e1a398184fb">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Stamen.Watercolor",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["CartoDB.VoyagerOnlyLabels",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+
+]
+
+---
+class: sectionTitle, inverse
+
+# .green[Adding Data]
+
+### .fancy[Increasing Information Content]
+
+
+
+
+---
+
+# The Data
+
+To add components to the leaflet map, you need to get the data up and ready. For this, we'll go back to the enigmatic Bark Beetle data set.
+
+
+```r
+library( sf )
+library( tidyverse ) 
+
+url &lt;- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+
+read.csv(url) %&gt;%
+   st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) -&gt; beetles
+
+head( beetles )
+```
+
+```
+## Simple feature collection with 6 features and 7 fields
+## geometry type:  POINT
+## dimension:      XY
+## bbox:           xmin: -114.2935 ymin: 24.00789 xmax: -109.327 ymax: 29.32541
+## geographic CRS: WGS 84
+##    Site Males Females Suitability MFRatio GenVarArapat GenVarEuphli
+## 1    32    40      27      0.0563  1.4815    0.1436067   0.21851990
+## 2    73    11       5      0.1455  2.2000    0.1373044   0.25346790
+## 3    93    25      21      0.1627  1.1905    0.1630808   0.13252030
+## 4 const    18      11      0.1744  1.6364    0.2803589   0.23475780
+## 5   159    22      15      0.1880  1.4667    0.1598019   0.08087207
+## 6    88    23      18      0.2186  1.2778    0.2661293   0.17557170
+##                     geometry
+## 1  POINT (-109.327 26.63783)
+## 2 POINT (-109.8507 24.00789)
+## 3 POINT (-112.0461 26.94589)
+## 4   POINT (-111.675 25.0247)
+## 5 POINT (-113.3161 27.52944)
+## 6 POINT (-114.2935 29.32541)
+```
+
+
+---
+# Data for `leaflet`
+
+
+Both `leaflet()` and each map layer have a data = parameter. Spatial data can be in the form of:
+
+- `dataframe` with lat/lng columns
+- `sp` objects
+- `sf` objects
+- `maps` package `map()` objects
+
+
+Data can be passed through the `leaflet()` function or through the map layers.
+
+
+
+---
+
+.pull-left[
+# Shapes (Circles, Lines &amp; Polygons)
+
+
+```r
+leaflet() %&gt;%
+  addTiles() %&gt;%
+  addCircles( data=beetles )
+```
+
+Note: Circles scale with the map
+
+]
+.pull-right[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+<div id="htmlwidget-0aa936b8717905b0da94" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0aa936b8717905b0da94">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+]
+
+
+
+---
+
+.pull-left[
+# Map Circles - size
+
+
+```r
+leaflet(beetles) %&gt;%
+  addTiles() %&gt;%
+  addCircles( radius = ~Males *500, 
+              stroke = FALSE, 
+              fillOpacity = .5)
+```
+
+Note: The `beetles` are put in the `leaflet` call (just like `ggplot()`) so that we can access the `Males` column of data.
+]
+.pull-right[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+<div id="htmlwidget-2baabbbe34b05792b959" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2baabbbe34b05792b959">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],[20000,5500,12500,9000,11000,11500,24500,9500,32000,8000,23500,13000,12000,24000,6500,9000,4500,6500,9500,10500,19000,14000,9500,5500,28500,9000,6000,17500,8000,13000,5500],null,null,{"interactive":true,"className":"","stroke":false,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.5},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+]
+
+
+---
+
+.pull-left[
+# Map Circles - color
+
+
+```r
+pal &lt;- colorNumeric( palette = "RdBu",
+                     domain = beetles$MFRatio,
+                     reverse = TRUE )
+
+leaflet(beetles) %&gt;%
+  addTiles() %&gt;%
+  addCircles(color = ~pal(MFRatio), 
+             fillOpacity = .7, 
+             radius = 15000, 
+             stroke = FALSE)
+```
+
+Note: Our palette is defined before hand using `colorNumeric()` and stored as `pal`
+]
+.pull-right[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+<div id="htmlwidget-88c6924ec5f95dbc27e2" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-88c6924ec5f95dbc27e2">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],15000,null,null,{"interactive":true,"className":"","stroke":false,"color":["#FBE8DE","#67001F","#C0DCEB","#FAC0A5","#FAEBE2","#DBEAF2","#66A7CE","#1D5EA1","#77B2D4","#367EB9","#F7B293","#FAC4AA","#ADD2E6","#E8F0F4","#2469AD","#569DC8","#3178B5","#FAC4AA","#BEDBEB","#70ADD1","#64A5CD","#A4CEE3","#053061","#9CCAE1","#F5F6F7","#124882","#E8F0F4","#3881BA","#3E8BBF","#3A85BC","#CCE2EE"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#FBE8DE","#67001F","#C0DCEB","#FAC0A5","#FAEBE2","#DBEAF2","#66A7CE","#1D5EA1","#77B2D4","#367EB9","#F7B293","#FAC4AA","#ADD2E6","#E8F0F4","#2469AD","#569DC8","#3178B5","#FAC4AA","#BEDBEB","#70ADD1","#64A5CD","#A4CEE3","#053061","#9CCAE1","#F5F6F7","#124882","#E8F0F4","#3881BA","#3E8BBF","#3A85BC","#CCE2EE"],"fillOpacity":0.7},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+# Legends 
+
+`addLegend()`
+
+.pull-left[
+
+
+
+```r
+pal &lt;- colorNumeric(
+  palette = "RdBu",
+  domain = beetles$MFRatio,
+  reverse = TRUE)
+
+leaflet(beetles) %&gt;%
+  addProviderTiles(providers$CartoDB.Positron) %&gt;%
+  addCircles( fillColor = ~pal(MFRatio), 
+              fillOpacity = .7, 
+              radius = 15000, 
+              weight = 1, 
+              color = "grey") %&gt;%
+  addLegend(pal = pal, 
+            values = ~MFRatio,
+            title = "Male to Female Ratio")
+```
+
+]
+
+.pull-right[
+<div id="htmlwidget-8edaa74077afe79bff03" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8edaa74077afe79bff03">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],15000,null,null,{"interactive":true,"className":"","stroke":true,"color":"grey","weight":1,"opacity":0.5,"fill":true,"fillColor":["#FBE8DE","#67001F","#C0DCEB","#FAC0A5","#FAEBE2","#DBEAF2","#66A7CE","#1D5EA1","#77B2D4","#367EB9","#F7B293","#FAC4AA","#ADD2E6","#E8F0F4","#2469AD","#569DC8","#3178B5","#FAC4AA","#BEDBEB","#70ADD1","#64A5CD","#A4CEE3","#053061","#9CCAE1","#F5F6F7","#124882","#E8F0F4","#3881BA","#3E8BBF","#3A85BC","#CCE2EE"],"fillOpacity":0.7},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addLegend","args":[{"colors":["#053061 , #063264 0.386004233594826%, #2D72B3 12.8377537043955%, #70ADD1 25.2895031751961%, #C3DEEC 37.7412526459968%, #F7F6F6 50.1930021167974%, #FCCDB4 62.6447515875981%, #E58266 75.0965010583987%, #BB2F33 87.5482505291994%, #67001F 100%, #67001F "],"labels":["0.6","0.8","1.0","1.2","1.4","1.6","1.8","2.0","2.2"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"numeric","title":"Male to Female Ratio","extra":{"p_1":0.00386004233594826,"p_n":1},"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+]
+
+
+---
+
+.pull-left[
+# Map Markers
+
+
+
+
+```r
+leaflet() %&gt;%
+  addTiles() %&gt;%
+  addMarkers( data=beetles )
+```
+
+Note: Markers stay the same size regardless of zoom level
+]
+.pull-right[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+<div id="htmlwidget-6e79f639de872660c23d" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6e79f639de872660c23d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+]
+
+
+
+---
+# Custom Markers
+
+We can put any custom image onto the `leaflet` map.
+
+
+```r
+bug &lt;- icons(
+  iconUrl = "https://www.pngfind.com/pngs/m/14-144860_beetle-bug-png-transparent-image-bug-png-png.png",
+  iconWidth = 20,
+  iconHeight = 20
+)
+```
+
+- You can you images from a url or from your computer
+
+
+---
+
+.pull-left[
+# Bugs!
+
+
+```r
+leaflet(beetles) %&gt;%
+  addProviderTiles(providers$CartoDB.Positron) %&gt;%
+  addMarkers(icon = bug)
+```
+
+
+Notice:  
+
+- Data added to the `leaflet()` function call  
+- Custom provider tiles
+- Icon set in the `addMarkers()`[^1] [^2]
+- Can also use [fontawesome icons](https://fontawesome.com/icons?d=gallery&amp;p=2&amp;m=free)
+
+]
+.pull-right[
+
+&amp;nbsp;
+
+
+
+
+<div id="htmlwidget-a8c0e513812268b8fc06" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a8c0e513812268b8fc06">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldShadedRelief",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],{"iconUrl":{"data":"https://www.pngfind.com/pngs/m/14-144860_beetle-bug-png-transparent-image-bug-png-png.png","index":0},"iconWidth":20,"iconHeight":20},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+]
+
+^[1:] Technically, beetles .redinline[**are not**] bugs... Charis
+
+^[2:] Sorry!🤦
+
+
+
+
+
+---
+
+# Lables &amp; Annotations
+
+
+
+
+.pull-left[
+
+In addition to the symbology, we can define a wide range of content to be associated with each marker.
+
+
+```r
+leaflet(beetles) %&gt;%
+  addProviderTiles(providers$CartoDB.Positron) %&gt;%
+  setView(lng = -111, lat = 25, zoom = 7) %&gt;%
+  addPopups(lng = -111, lat = 25, paste0("beetles live here"))
+```
+]
+
+.pull-right[
+<div id="htmlwidget-b4bfcd3bbbb51a6992c4" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b4bfcd3bbbb51a6992c4">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addPopups","args":[25,-111,"beetles live here",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"className":""}]}],"setView":[[25,-111],7,[]],"limits":{"lat":[25,25],"lng":[-111,-111]}},"evals":[],"jsHooks":[]}</script>
+
+]
+
+---
+# Pop-ups
+
+.pull-left[
+
+```r
+fa_bug &lt;- makeAwesomeIcon(icon = "bug", library = "fa", 
+                          markerColor = "cadetblue", iconColor = "beige")
+leaflet(beetle) %&gt;%
+  addProviderTiles(providers$CartoDB.Positron) %&gt;%
+  addAwesomeMarkers(icon = fa_bug, popup = paste0("Site:", beetle$Site))
+```
+]
+.pull-right[
+<div id="htmlwidget-c58afb50fdd5f3b732df" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c58afb50fdd5f3b732df">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addAwesomeMarkers","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],{"icon":"bug","markerColor":"cadetblue","iconColor":"beige","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Site:32","Site:73","Site:93","Site:const","Site:159","Site:88","Site:177","Site:166","Site:161","Site:64","Site:169","Site:sfran","Site:12","Site:160","Site:84","Site:89","Site:51","Site:175","Site:77","Site:163","Site:171","Site:168","Site:173","Site:9","Site:162","Site:48","Site:Aqu","Site:153","Site:75","Site:157","Site:58"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+# Labels
+.pull-left[
+
+```r
+leaflet(beetles) %&gt;%
+  addProviderTiles(providers$CartoDB.Positron) %&gt;%
+  addAwesomeMarkers(icon = fa_bug, 
+              label = paste0("Site:", beetles$Site))
+```
+]
+
+.pull-right[
+<div id="htmlwidget-33590ed525bd59b3da8d" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-33590ed525bd59b3da8d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addAwesomeMarkers","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],{"icon":"bug","markerColor":"cadetblue","iconColor":"beige","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["Site:32","Site:73","Site:93","Site:const","Site:159","Site:88","Site:177","Site:166","Site:161","Site:64","Site:169","Site:sfran","Site:12","Site:160","Site:84","Site:89","Site:51","Site:175","Site:77","Site:163","Site:171","Site:168","Site:173","Site:9","Site:162","Site:48","Site:Aqu","Site:153","Site:75","Site:157","Site:58"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+]
+---
+class: sectionTitle, inverse
+
+# .green[Interactivity]
+
+### .fancy[Making Maps Fun Since 2021!]
+
+
+---
+
+# Interactivity
+
+
+
+```r
+leaflet(beetles) %&gt;%
+  addProviderTiles(providers$CartoDB.Positron) %&gt;%
+  addCircles( fillColor = ~rev(pal(MFRatio)), 
+              fillOpacity = .7, 
+              radius = 15000, 
+              weight = 1, 
+              color = "grey",
+              highlightOptions = highlightOptions( color = "green", 
+                                                   weight = 2,
+                                                   bringToFront = TRUE))
+```
+
+--
+
+- Setting colors by previous palette  
+- Defining fixed size (units defined by projection - in this case `crs = 4326` has its length unit in meters)
+- Interactive context is defined by `hightlightOptions`
+
+
+---
+class: center, middle 
+
+<div id="htmlwidget-e0878e8259a52426ab0c" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e0878e8259a52426ab0c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],15000,null,null,{"interactive":true,"className":"","stroke":true,"color":"grey","weight":1,"opacity":0.5,"fill":true,"fillColor":["#CCE2EE","#3A85BC","#3E8BBF","#3881BA","#E8F0F4","#124882","#F5F6F7","#9CCAE1","#053061","#A4CEE3","#64A5CD","#70ADD1","#BEDBEB","#FAC4AA","#3178B5","#569DC8","#2469AD","#E8F0F4","#ADD2E6","#FAC4AA","#F7B293","#367EB9","#77B2D4","#1D5EA1","#66A7CE","#DBEAF2","#FAEBE2","#FAC0A5","#C0DCEB","#67001F","#FBE8DE"],"fillOpacity":0.7},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},{"color":"yellow","weight":4,"bringToFront":true},null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+---
+
+# Map Groups
+
+Items on the map may be grouped together and added (layer by layer) using their own data sets.
+
+
+
+```r
+males &lt;- beetles %&gt;% filter( Males &gt; Females)
+females &lt;- beetles %&gt;% filter( Females &gt; Males)
+
+leaflet() %&gt;%
+  addProviderTiles( providers$CartoDB.Positron) %&gt;%
+  addCircles(data = males, 
+             fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", radius = 10000, weight = 1,
+             group = "males") %&gt;%
+  addCircles(data = females, 
+             fillColor = "pink", fillOpacity = 1, 
+             color = "red", radius = 10000, weight = 1,
+             group = "females") %&gt;%
+  addLayersControl(overlayGroups = c("males", "females"),
+                   options = layersControlOptions(collapsed = FALSE))
+```
+
+
+
+---
+
+# Clickable Goodness
+
+<div id="htmlwidget-1daf342d0189d55a3b96" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1daf342d0189d55a3b96">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,27.0367,26.20876,27.3632,27.18232,27.40498,28.72796,24.87611,25.55757,29.01457,27.2028,23.2855,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-112.986,-111.37833,-112.964,-112.66552,-112.52959,-113.48973,-110.69175,-111.21563,-113.94486,-112.408,-110.10429,-111.35475],10000,null,"males",{"interactive":true,"className":"","stroke":true,"color":"blue","weight":1,"opacity":0.5,"fill":true,"fillColor":"lightblue","fillOpacity":1},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircles","args":[[28.66056,25.91409,25.60521,28.96651,28.03661,25.34819,28.22308,28.40846,24.21441,24.13389,24.58843,24.0195],[-113.99141,-112.08062,-111.32638,-113.66787,-113.39991,-111.60056,-113.18263,-112.86985,-110.27252,-110.46236,-110.74599,-110.096],10000,null,"females",{"interactive":true,"className":"","stroke":true,"color":"red","weight":1,"opacity":0.5,"fill":true,"fillColor":"pink","fillOpacity":1},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addLayersControl","args":[[],["males","females"],{"collapsed":false,"autoZIndex":true,"position":"topright"}]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# Interactivity in Map Tile Provider
+
+
+```r
+leaflet() %&gt;%
+  addProviderTiles(providers$CartoDB.Positron, group = "Default") %&gt;%
+  addProviderTiles(providers$OpenStreetMap, group = "Open Street Maps") %&gt;%
+  addProviderTiles(providers$Stamen.Toner, group = "Stamen Toner") %&gt;%
+  addCircles(data = males, 
+             fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", radius = 10000, weight = 1,
+             group = "males") %&gt;%
+  addCircles(data = females, 
+             fillColor = "pink", fillOpacity = 1, 
+             color = "red", radius = 10000, weight = 1,
+             group = "females") %&gt;%
+  addLayersControl(overlayGroups = c("males", "females"),
+                   options = layersControlOptions(collapsed = FALSE),
+                   baseGroups = c("Default", "Open Street Maps", "Stamen Toner"))
+```
+
+---
+
+.pull-left[
+&amp;nbsp;
+<div id="htmlwidget-a0831fa1a61e29d06621" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a0831fa1a61e29d06621">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,"Default",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"Open Street Maps",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["Stamen.Toner",null,"Stamen Toner",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,27.0367,26.20876,27.3632,27.18232,27.40498,28.72796,24.87611,25.55757,29.01457,27.2028,23.2855,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-112.986,-111.37833,-112.964,-112.66552,-112.52959,-113.48973,-110.69175,-111.21563,-113.94486,-112.408,-110.10429,-111.35475],10000,null,"males",{"interactive":true,"className":"","stroke":true,"color":"blue","weight":1,"opacity":0.5,"fill":true,"fillColor":"lightblue","fillOpacity":1},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircles","args":[[28.66056,25.91409,25.60521,28.96651,28.03661,25.34819,28.22308,28.40846,24.21441,24.13389,24.58843,24.0195],[-113.99141,-112.08062,-111.32638,-113.66787,-113.39991,-111.60056,-113.18263,-112.86985,-110.27252,-110.46236,-110.74599,-110.096],10000,null,"females",{"interactive":true,"className":"","stroke":true,"color":"red","weight":1,"opacity":0.5,"fill":true,"fillColor":"pink","fillOpacity":1},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addLayersControl","args":[["Default","Open Street Maps","Stamen Toner"],["males","females"],{"collapsed":false,"autoZIndex":true,"position":"topright"}]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+]
+
+.pull-right[
+&amp;nbsp;
+
+&amp;nbsp;
+
+&amp;nbsp;
+- Note the difference between `overlayGroups` and `baseGroups`
+
+]
+
+---
+
+# On and Off By Zoom
+
+We can also have components of the map be active at different `zoom` levels.
+
+
+```r
+leaflet(beetles) %&gt;%
+  addProviderTiles(providers$CartoDB.Positron) %&gt;%
+  addCircles( fillColor = "lightblue", 
+              fillOpacity = 1, 
+              color = "blue", 
+              radius = 10000, 
+              weight = 1,
+              group = "beetles") %&gt;%
+  groupOptions( "beetles", 
+                zoomLevels = 5:8)
+```
+
+
+Notice that the behavior of the `group` defined in `addCircles` can have it's own options set.  Here the visibility is defined by the zoom levels.
+
+
+---
+&amp;nbsp;
+
+<div id="htmlwidget-5476bc4f1244b623dd5d" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5476bc4f1244b623dd5d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],10000,null,"beetles",{"interactive":true,"className":"","stroke":true,"color":"blue","weight":1,"opacity":0.5,"fill":true,"fillColor":"lightblue","fillOpacity":1},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"setGroupOptions","args":["beetles",{"zoomLevels":[5,6,7,8]}]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+
+Zoom in/out to see may layer appear/disappear
+---
+
+# Clustering 
+
+There are times when you may want to *coalesce* markers together when you zoom out.  You can do this 
+
+
+```r
+leaflet(beetles) %&gt;%
+  addProviderTiles(providers$CartoDB.Positron) %&gt;%
+  addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", weight = 1,
+             group = "beetles",
+             clusterOptions = markerClusterOptions(
+               showCoverageOnHover = FALSE,))
+```
+
+
+
+---
+
+# Clustering 
+
+<div id="htmlwidget-a07853ddcf3498b45d7a" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a07853ddcf3498b45d7a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],10,null,"beetles",{"interactive":true,"className":"","stroke":true,"color":"blue","weight":1,"opacity":0.5,"fill":true,"fillColor":"lightblue","fillOpacity":1},{"showCoverageOnHover":false,"zoomToBoundsOnClick":true,"spiderfyOnMaxZoom":true,"removeOutsideVisibleBounds":true,"spiderLegPolylineOptions":{"weight":1.5,"color":"#222","opacity":0.5},"freezeAtZoom":false},null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Legends &amp; Scale Bars
+
+`addLegend()`
+
+`addScaleBar()`
+
+
+```r
+leaflet(beetle) %&gt;%
+  addProviderTiles(providers$CartoDB.Positron) %&gt;%
+  addCircles(fillColor = ~pal(MFRatio), fillOpacity = .7, radius = 15000, 
+             weight = 1, color = "grey") %&gt;%
+  addLegend(pal = pal, values = ~MFRatio,
+            title = "Male to Female Ratio") %&gt;%
+  addScaleBar(position = "bottomright")
+```
+
+---
+
+&amp;nbsp;
+
+
+
+
+<div id="htmlwidget-90060a4e56f7bca0c806" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-90060a4e56f7bca0c806">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],15000,null,null,{"interactive":true,"className":"","stroke":true,"color":"grey","weight":1,"opacity":0.5,"fill":true,"fillColor":["#E3EDF3","#053061","#FBCCB3","#B3D5E7","#E7EFF4","#FCE2D3","#E37C62","#A71429","#EA8C6E","#C6443D","#A2CDE2","#B7D7E8","#F9BC9E","#FAECE4","#B41F2D","#DD6E57","#C13A38","#B7D7E8","#FBCBB2","#E78568","#E27A60","#F7B495","#67001F","#F6AD8C","#F7F6F5","#880925","#FAECE4","#C94940","#D05647","#CB4E42","#FDD6C1"],"fillOpacity":0.7},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addLegend","args":[{"colors":["#67001F , #6A011F 0.386004233594826%, #BC3234 12.8377537043955%, #E78568 25.2895031751961%, #FCCFB7 37.7412526459968%, #F6F7F7 50.1930021167974%, #C1DCEB 62.6447515875981%, #6DABD0 75.0965010583987%, #2B71B2 87.5482505291994%, #053061 100%, #053061 "],"labels":["0.6","0.8","1.0","1.2","1.4","1.6","1.8","2.0","2.2"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"numeric","title":"Male to Female Ratio","extra":{"p_1":0.00386004233594826,"p_n":1},"layerId":null,"className":"info legend","group":null}]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomright"}]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+---
+
+# Additional Layer Options
+
+So we've covered some items here but there are many more available.  Here is a list of some common ones:
+
+- `addControl`: Add arbitrary HTML controls to the map
+- `addTiles`: Add a tile layer to the map
+- `addWMSTiles`: Add a WMS tile layer to the map
+- `addPopups`: Add popups to the map
+- `addMarkers`: Add markers to the map
+- `addLabelOnlyMarkers`: Add Label only markers to the map
+- `addCircleMarkers`: Add circle markers to the map
+- `highlightOptions`: Options to highlight a shape on hover
+- `addCircles`: Add circles to the map
+- `addPolylines`: Add polylines to the map
+- `addRectangles`: Add rectangles to the map
+- `addPolygons`: Add polygons to the map
+- `addGeoJSON`: Add GeoJSON layers to the map
+- `addTopoJSON`: Add TopoJSON layers to the map
+
+
+---
+
+# Web Mapping Services
+
+A Web Mapping Service is a some geospatial information that is provided to you as the user from some server on the web.  You can use these as data input in ESRI ArcMap as a data sources, as a data provider for `R` or as an overlay for this leaflet.  To do this, we use the `addWMSTiles()` function and we need to give it the following parameters:
+
+- Where to get the WMS tiles from  
+- What layer to use (these are often shape-file like things).
+- Some options
+- Add some attributions to your map as text at the bottom.
+
+
+---
+
+# Real-Time Weather Overlay
+
+.pull-left[
+
+This service is provided by the Iowa Environmental Mesonet servers at Iowa State University.
+
+
+```r
+leaflet() %&gt;% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 4) %&gt;%
+  addProviderTiles( providers$Esri.WorldShadedRelief ) %&gt;%
+  addWMSTiles(
+    "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
+    layers = "nexrad-n0r-900913",
+    options = WMSTileOptions(format = "image/png", transparent = TRUE),
+    attribution = "Weather data © 2012 IEM Nexrad"
+  )
+```
+]
+
+.pull-right[
+<div id="htmlwidget-3edeb07c18b6ef016b5c" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3edeb07c18b6ef016b5c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],4,[]],"calls":[{"method":"addProviderTiles","args":["Esri.WorldShadedRelief",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addWMSTiles","args":["http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",null,null,{"styles":"","format":"image/png","transparent":true,"version":"1.1.1","attribution":"Weather data © 2012 IEM Nexrad","layers":"nexrad-n0r-900913"}]}]},"evals":[],"jsHooks":[]}</script>
+]
+
+
+
+
+---
+class: middle 
+
+##`leaflet.extras`
+
+There are more interactive components you can add to the map from the `leaflet.extras` package including:
+
+- Geocoded search fields
+- Interactive drawing components
+- Pulsing icons
+
+Examples are found in the [narrative](narrative.nb.html) associated with this lecture topic.
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+.red[Questions?]
+
+
+![Dog](https://i.redd.it/opy67ug150541.jpg)
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://deadwylerm@vcu.edu) and I'll get back to you as soon as possible.]
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

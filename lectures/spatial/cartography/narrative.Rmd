@@ -1,5 +1,739 @@
 ---
-title: "Choropleth Maps"
+title: "Cartography"
+author: "Charis Deadwyler"
+date: "3/10/2021"
 output: html_notebook
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+library(sf)
+library(maps)
+library(units)
+library(rgdal)
+library(rgeos)
+library(GGally)
+library(raster)
+library(mapproj)
+library(leaflet)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library( readr )
+library( tidyverse )
+library( lubridate )
+library(knitr)
+library(htmltools)
+
+library(scales)
+library(tidycensus)
+library(tigris)
+```
+
+
+# Cartography
+
+*"The art or technique of making maps"*
+
+### Factors that affect design
+- **Objective:** what information do you want to convey?
+- **Audience:** who will be using your map? Is your map easily understood by your target audience?
+- **Reality and generalization:** when making a small map using data with a high level of detail, how much of this detail do you want/need to retain? What information can be generalized?
+- **Map scale:** is your data better visualized on a small-scale or a large-scale?
+- **Technical limits:** are you constrained by printer capability? Does your map need to load quickly if being view online?
+
+### Basic elements of a Map
+
+- Title
+- Legend
+- Scale
+- North arrow
+- Additional information: this could be a brief desciption of your map,  data sources, projection information, author information ect
+
+
+### Effective Maps
+
+- Communicates a clear message
+- Appropriate projection
+- Data at appropriate level of generalization
+- Clear symbology: symbols match the data and are easy to distinguish from one another
+- Good figure-ground organization (layout)
+- Good visual hierarchy: is the reader's eye drawn to the most important information? This can be achieved through size, color, placement on map layout
+
+
+# Common Types of Maps
+
+### Dot-Density
+- Uses point symbology to visualize a geographic distribution 
+- Rely on visual scatter to show spatial patterns 
+- Each dot represents a constant number of things (people, things, any quanifiable phenomena)
+
+
+[This link provides a walk through of making dot density maps from census data](https://github.com/tarakc02/tarakc02.github.io/blob/master/dot-density/index.md)
+
+`tidycensus` package is used to download population data from the US Census Bureau 
+
+`tigris` package is used to download shapefiles from the US Census and load them into R as `sf` objects
+    [Here](https://github.com/walkerke/tigris/blob/master/README.md) is a helpful guide if you are interested in learning more about the `tigris` package. 
+
+```{r warning=FALSE, include=FALSE}
+library(tidycensus)
+library(tigris)
+library(tidyverse)
+library(sf)
+
+
+options(tigris_use_cache = TRUE) #cache data so you don't have to redownload everytime you run this chunk
+
+
+v19 <- load_variables(2019, "acs5", cache = TRUE) #load in 2019 data, acs5 refers to the 5 year American Community Survey
+                  
+v19 %>%
+    mutate(table = str_extract(name, "^.+_")) %>%
+    filter(str_detect(concept, "EDUCATIONAL ATTAINMENT")) %>%
+    dplyr::select(table, concept) %>% distinct %>% print(n = Inf)
+
+ #call a table so you can sort through census tables directly through R
+#census_api_key("key#", install = TRUE)  #you will need to download a census api key. This is done the the US Census Website
+
+acs <- get_acs("tract", table = "B15003", cache_table = TRUE,  #select the table you want
+               geometry = TRUE, state = "51", county = "760",  #Virginia is state 51, city of Richmond is county 760
+               year = 2019, output = "tidy")
+
+
+acs <- acs %>%
+  mutate(
+    id = str_extract(variable, "[0-9]{3}$") %>% as.integer    #use tidyverse commands to classify data
+  ) %>%
+  filter(id > 1) %>%
+  mutate(education = case_when(
+    id %>% between(2, 16) ~ "No HS diploma",
+    id %>% between(17, 21) ~ "HS, no Bachelors",
+    id == 22 ~ "Bachelors",
+    id > 22 ~ "Post-Bachelors"
+  )) %>%
+  group_by(GEOID, education) %>%
+  summarise(estimate = sum(estimate))
+
+
+```
+
+
+
+```{r eval=FALSE, include=FALSE}
+#Creating Dots
+
+#this code creates the dots for the plot. I used the link posted above to walk myself through this step
+
+acs_split <- acs %>%
+  filter(estimate > 50) %>%
+  split(.$education)
+
+
+generate_samples <- function(data)
+  suppressMessages(st_sample(data, size = round(data$estimate / 10)))
+
+points <- map(acs_split, generate_samples)
+points <- imap(points,
+               ~st_sf(data_frame(education = rep(.y, length(.x))),
+                      geometry = .x))
+points <- do.call(rbind, points)
+
+
+points <- points %>%
+  group_by(education) %>%
+  summarise()
+
+points <- points %>%
+  mutate(education = factor(
+    education,
+    levels = c("No HS diploma", "HS, no Bachelors",
+               "Bachelors", "Post-Bachelors")))
+
+points <- points %>%
+  mutate(n_points = map_int(geometry, nrow))
+```
+**Examples of available datasets**
+
+| Function | Datasets available | Years available |
+|------------------------------------------|------------------------------------------------|------------------------------|
+| `nation()` | cartographic (1:5m; 1:20m) | 2013-2019 |
+| `divisions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2019 |
+| `regions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2019 |
+| `states()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010-2019 |
+| `counties()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010-2019 |
+| `tracts()` | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010-2019 |
+| `block_groups()` | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010-2019 |
+| `blocks()` | TIGER/Line | 2000, 2010-2019 |
+| `places()` | TIGER/Line; cartographic (1:500k) | 2011-2019 |
+| `pumas()` | TIGER/Line; cartographic (1:500k) | 2012-2019 |
+| `school_districts()` | TIGER/Line; cartographic | 2011-2019 |
+| `zctas()` | TIGER/Line; cartographic (1:500k) | 2000, 2010, 2012-2019 |
+| `congressional_districts()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011-2019 |
+| `state_legislative_districts()` | TIGER/Line; cartographic (1:500k) | 2011-2019 |
+| `voting_districts()` | TIGER/Line | 2012 |
+| `area_water()` | TIGER/Line | 2011-2019 |
+| `linear_water()` | TIGER/Line | 2011-2019 |
+```{r}
+library(tigris)
+
+water <- tigris::area_water("51", "760")  # VA is state 51, RVA is county 760
+roads <- tigris::roads("51", "760")
+counties <- tigris::counties(state = "51") #filter VA data to get a map of Richmond
+rva <- counties %>%
+  filter(COUNTYFP == 760)
+```
+
+
+```{r, out.width= '100%', eval= FALSE, echo=TRUE}
+ggplot() +
+  geom_sf(data = rva, fill = "white", lwd = 1) +
+  geom_sf(data = water, fill = "lightblue", colour = "lightblue") +
+  geom_sf(data = roads, colour = "grey") +
+  geom_sf(data = points,          #the creation of the points data is shown in a chunk not included in the published document, but is included if you download this markdown file
+          aes(colour = education,
+              fill = education),
+          size = .5) +
+  scale_color_brewer(type = "div", palette = 4,
+                     name = "Education") +
+  scale_fill_brewer(type = "div", palette = 4) +
+  theme_minimal() +
+  ggtitle("Distribution of educational attainment in Richmond, Virginia (2019)",
+            "1 dot equals 10 people") +
+  guides(fill = "none")
+
+```
+
+![](https://live.staticflickr.com/65535/51021633697_3c0b753abc_z.jpg)
+
+
+### Proportional Symbols
+- Size of symbols is related to the value of phenomenon represented -- the larger the symbol the "more" of something exists at that location
+- Most basic method is to scale circles directly proportionate to the data
+- Can be used with both numeric or ordered catagorical data
+
+For this example I again used data from `tidycensus` and `tigris`. The code for processing this data is availble in the markdown document
+
+```{r, eval=FALSE, include=FALSE}
+v19 %>%
+  mutate(table = str_extract(name, "^.+_")) %>%
+  filter(str_detect(concept, "TOTAL POPULATION")) %>%   #very similar process to the education data above
+  select(table, concept) %>%
+  distinct() %>%
+  print(n = Inf)
+
+acs <- get_acs("county", table = "B01003", cache_table = TRUE,  #asking for data from the American community survey at the county level. table = "B01003" selects total population data
+               geometry = TRUE, state = "51", #Virginia is state 51
+               year = 2019, output = "tidy")
+points <- acs %>%
+  st_centroid(of_largest_polygon = TRUE)  # create points using centroids of polygons
+```
+
+Note that the circles are plotted as points, not polygons. Proportionate circle sizes are made using `aes(size = data$attribute)`
+
+```{r, eval=FALSE, echo=TRUE}
+
+#proportionate circle sizes are made
+
+ggplot() +
+  geom_sf(data = counties, fill = "lightblue", color = "lightblue") +
+  geom_sf(data = acs, fill = "grey95") +
+  geom_sf(data = points, aes(size = estimate), color = "lightsalmon2") +  #data processing for the points data is shown in the previous chunk (visible in the markdown document). Points are created using centroids of county polygons
+  theme_minimal() +
+  ggtitle("Population of Virginia Counties",
+          "2019") +
+  labs( size = "Population") +
+  scale_size_continuous(labels = comma)
+
+ 
+```
+
+![](https://live.staticflickr.com/65535/51020804313_b88b158267_b.jpg)
+
+
+### Choropleth
+- Represent data through shading or symbols on polygons
+- Popular because they easily represent variability data across a region
+
+For this example I again used data from `tidycensus` and `tigris`. The code for processing this data is availble in the markdown document
+
+```{r, eval=FALSE, include=FALSE}
+
+acs <- acs %>%
+  mutate(quant = cut(estimate, quantile(estimate, seq(0,1, len = 10)),  #using same population data as above
+                     include.lowest = TRUE))
+
+acs$population <- log(acs$estimate)
+
+```
+
+
+The scaling of color is made by `aes(fill = data$attribute)`
+
+```{r, eval=FALSE, include=FALSE}
+
+ggplot() +
+  geom_sf(data = counties, fill = "lightblue", color = "lightblue") +        #this first step is only for aesthetics (makes the areas of water blue)
+  geom_sf(data = acs, aes(fill = population), color = "black", lwd = .5) +  #this step controls the color for the choropleth map
+  scale_fill_continuous(type = "viridis", 
+                        name = "Population (log transformed)")+     #I log transformed this data because Northern Virginia is so much more densely populated than the rest of the state
+  theme_minimal() +
+  ggtitle("Population Density of Virginia Counties",
+          "2019")
+
+```
+
+![Choropleth](https://live.staticflickr.com/65535/51021633662_7c8cdcd623_b.jpg)
+
+
+
+### Isoline
+- Lines connect points knows or estimated to have equal vales
+- Used in maps of temperature, precipitation, air pressure, climate classifications, ect
+- Topographic maps: type of isoline map depicting elevation
+
+The package `ggisobands` can be used to plot isobands into `ggplot2`.
+x, y, and z values are required in `aes()`
+The scaled colors are achieved in `aes(fill =)`
+
+[link to download data](https://github.com/dyerlab/ENVS-Lectures/blob/1809f76b91c434f84f416bce7cd3aaf7033c2996/data/DEM_5m.tif)
+
+In this example the starting data is a Digital Elevation Model (DEM) raster of Downtown Richmond. `geom_isobands` creates isobands from point data, so we must convert our raster to points and then put them in a data frame. After that, they're ready to go!
+
+```{r, eval=FALSE, echo=TRUE}
+library(ggisoband)
+
+DEM_5m <- raster("C:/Users/Charis/Documents/Spring2021/GISinR/GISinR/DEM_5m.tif")
+
+DEM_pts <- rasterToPoints(DEM_5m, spatial = TRUE)       #I transformed my raster data into a data frame of points, each with an x, y, and z column (z being elevation)
+DEM_df <- data.frame(DEM_pts)
+DEM_df$DEM_5m <- ifelse(DEM_df$DEM_5m <0, 0, DEM_df$DEM_5m) #There was a section with very negative numbers that I assumed to be a defect in the data, so I made any negative values 0 to clean it up
+
+
+ggplot(DEM_df, aes(x=x, y=y, z=DEM_5m)) +             #You need an x, y, and z in the aes()
+  geom_isobands(aes(fill = stat(zmin)), color = NA) + #the stat function is used to tell ggplot that you want it to use a calculated aesthetic produced by the statistic 
+  scale_fill_viridis_c()
+```
+
+![](https://live.staticflickr.com/65535/51021531891_7a2ba3767e_b.jpg)]
+
+There is a package, `isoband` that generates contour lines that can be used with `grid.path()` or `grid.polyline()` from the `grid` library. To use this data in ggplot it must be converted to an `sf` object. A vignette of that package is available [here](https://github.com/wilkelab/isoband).
+
+[Robin Lovelace](https://geocompr.robinlovelace.net/geometric-operations.html#raster-vector) explain spatial vectorization and shows how to use the `rasterToContour()` function
+
+
+Here is the same map using `color=` instead of `fill=`
+```{r, eval=FALSE, echo=FALSE}
+
+#Here is the same map using `color=` instead of `fill=`to get isolines instead of isobands
+
+ggplot(DEM_df, aes(x=x, y=y, z=DEM_5m)) +
+  geom_isobands(aes(color = stat(zmin)), fill = NA) +
+  scale_color_viridis_c() +
+  theme_minimal()
+```
+
+
+# Basic Map Making
+
+
+This is what we started working through during class. The data is from the `rnaturalearth` library
+```{r}
+library("ggplot2")
+theme_set(theme_bw())  #if you have a theme you know you like, stick it here so you don't have to keep typing it in
+library("sf")
+
+library("rnaturalearth")
+library("rnaturalearthdata")
+
+```
+
+
+note - `returnclass` default is `sp`
+```{r}
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+class(world)
+
+world <- world %>%
+  select(income_grp, subregion, name, name_long, name_alt, pop_est, level, subunit, type, economy)
+
+```
+
+This is a plain old ggplot, no bells or whistles
+```{r}
+
+ggplot(world) +
+  geom_sf() -> p
+
+p
+
+```
+
+### Title, subtitle & axis labels
+
+Title is added using `ggtitle()`
+Subtitle is added using `subtitle =` within the `ggtitle()` function
+axis labels are added with `xlab` and `ylab`
+
+```{r}
+p +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("World Map",
+          subtitle = paste0("(" ,length(unique(world$name)), "countries)" )) -> p #note that I'm using the `paste0()` function to insert information from my data into my subtitle
+
+p
+
+
+```
+
+
+## Color
+
+**Custom palette**
+
+You can design your own custom palette using hex codes or the assigned color names built into R
+
+```{r}
+ggplot(world) +
+  geom_sf(aes(fill = economy)) -> plot
+```
+
+```{r}
+plot +
+  scale_fill_manual(values = c("darkred","red","tomato", "orange", "gold", "yellow", "limegreen"))
+```
+
+  
+```{r}
+my_colors <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
+          "#F0E442", "#0072B2", "#D55E00")
+
+ggplot(world) +
+  geom_sf(aes(fill = economy))+
+  scale_fill_manual(values = my_colors)
+
+```
+
+
+```{r echo=TRUE}
+my_colors <- c("darkred","tomato","orange","limegreen","blue","mediumpurple2","pink")
+
+plot + scale_fill_manual(values = my_colors)
+```
+
+It may be helpful to use a website like [coolors](https://coolors.co/palettes/trending) to choose colors for your palette
+
+
+
+**Built-it color palettes**
+
+[Color Palette Cheat Sheet](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf)
+
+There are many packages with pre-defined colors and palettes
+
+- `viridis`
+![](https://www.datanovia.com/en/wp-content/uploads/dn-tutorials/ggplot2/figures/029-r-color-palettes-viridis-color-scales-1.png){width=50%}
+
+
+
+- `RColorBrewer`
+
+![](https://www.datanovia.com/en/wp-content/uploads/dn-tutorials/ggplot2/figures/029-r-color-palettes-rcolorbrewer-palettes-1.png){width=50%}
+
+
+Into Wes Anderson's color schemes? There's a library for that
+
+- `wesanderson`
+
+![](https://www.datanovia.com/en/wp-content/uploads/dn-tutorials/ggplot2/figures/029-r-color-palettes-wes-anderson-color-palettes-r-1.png){width=50%}
+
+
+I chose the `viridis_c` palette
+
+- `trans = ` transformation of data, in this case square root
+
+- `option = ` different color palettes: A-E, default is D
+```{r echo=TRUE}
+
+p +
+  geom_sf(aes(fill = pop_est)) +
+  scale_fill_viridis_c( option = "D", trans = "sqrt") -> p  # note that the data is transformed
+
+p
+```
+
+Let's switch over to the all-too-familiar beetle dataset
+
+```{r echo=TRUE}
+beetle_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+
+read_csv(beetle_url) %>%
+  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) %>%    #transform to sf
+  st_union() %>%
+  st_buffer(dist = 1) %>%
+  st_bbox() -> bounds #will use bounds to crop our world data to the beetle area
+
+read_csv(beetle_url) %>%
+  st_as_sf(coords=c("Longitude","Latitude"), crs = 4326) -> beetle
+
+ggplot(world) +
+  geom_sf() +
+  xlab("Longitude") +
+  ylab("Latitude") +            #note that the xlim and ylim values are from `bounds`
+  ggtitle("Beetles") +
+  coord_sf( xlim = c(-116, -108), ylim = c(22, 31), expand = FALSE) -> b
+
+b
+```
+The result is the world dataset cropped to the bettle dataset
+
+## Scale bar and North arrow
+
+Both the scale bar and north arrow come from package `ggspatial`
+
+```{r}
+library(ggspatial)
+
+b+
+  annotation_scale(location = "br", style = "bar") +  #put a bar style scale bar in the bottom right
+  annotation_north_arrow(location = "br",             #put the north arrow also in the bottom right
+                         width = unit(.5, "cm"), 
+                         height = unit(.75, "cm"),    #assign arrow height and width
+                         pad_y = unit(0.75, "cm"),    
+                         pad_x = unit(0.5, "cm"),     #give the arrow some padding between it and the axes
+                         style = north_arrow_orienteering(  #define the style & size
+                           text_size = 8
+                         )) -> b
+
+b
+```
+
+
+
+```{r}
+ggplot(world) +
+  geom_sf() +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Beetles") +
+  coord_sf( xlim = c(-118, -85), 
+            ylim = c(10, 35), 
+            expand = FALSE) +
+  annotation_scale(location = "bl", 
+                   style = "bar") +
+  annotation_north_arrow(location = "bl", width = unit(.5, "cm"),
+                         height = unit(.75, "cm"),
+                         pad_y = unit(0.75, "cm"),
+                         pad_x = unit(0.5, "cm"),
+                         style = north_arrow_orienteering(
+                           text_size = 8
+                         )) -> p
+
+p
+```
+
+
+changed extent to see more countries
+
+
+### Adding names
+```{r}
+library(ggrepel)
+
+world_points<- st_centroid(world)
+world_points <- cbind(world, st_coordinates(st_centroid(world$geometry)))
+
+my_points <- world_points %>%
+  filter( X > -118 & X < -85) %>%
+  filter( Y > 10 & Y < 35)
+
+nrow(my_points)
+summary(world_points$Y)
+
+ggplot() +
+  geom_sf(data=world, fill = "seashell") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Mexico", subtitle = "& Friends") +
+  coord_sf( xlim = c(-118, -85), 
+            ylim = c(10, 35), 
+            expand = FALSE) +
+  annotation_scale(location = "bl", 
+                   style = "bar") +
+  annotation_north_arrow(location = "bl", width = unit(.5, "cm"),
+                         height = unit(.75, "cm"),
+                         pad_y = unit(0.75, "cm"),
+                         pad_x = unit(0.5, "cm"),
+                         style = north_arrow_orienteering(
+                           text_size = 8
+                         )) +
+  geom_text_repel(data= my_points,aes(x=X, y=Y, label=name), 
+                  color = "royalblue4", fontface = "bold",
+                  size = 3.5,
+                  point.padding = 0,
+                  box.padding = unit(.5, "cm"))   +
+  annotate(geom = "text",
+               x = -90, y = 26, 
+               label = "Gulf of Mexico", 
+               fontface = "italic", 
+               color = "grey22", 
+               size = 4) +
+    annotate(geom = "text",
+               x = -113, y = 21, 
+               label = "Pacific Ocean", 
+               fontface = "italic", 
+               color = "grey22", 
+               size = 4) +
+  theme(panel.background = element_rect(fill = "azure")) -> Mexico_map
+
+Mexico_map
+```
+
+
+
+```{r}
+mexico <- ne_countries(scale = "medium", type = "countries", country = "Mexico", returnclass = c("sf"))
+
+ggplot() +
+  geom_sf(data = mexico,  aes(fill = "subunit")) +
+  geom_sf(data = beetle, color = "darkred") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Beetles") +
+  coord_sf( xlim = c(-116, -108), ylim = c(22, 31), expand = FALSE) +
+  theme(panel.background = element_rect(fill = "azure"))
+
+```
+
+
+### Layouts
+
+Side-by-Side  
+```{r}
+library(ggthemes)
+
+ggplot(data = world) +
+  geom_sf(aes(fill = region_wb)) +
+  ggtitle("World") +
+  labs(fill = "Region", size = 2) +
+  geom_rect(xmin = -116, xmax = -108, ymin = 22, ymax = 31, 
+     fill = NA, colour = "black", size = 1) +
+  scale_fill_viridis_d() +
+  theme(panel.background = element_rect(fill = "azure"),
+     panel.border = element_rect(fill = NA)) -> world_map
+
+world_map
+
+
+
+```
+
+```{r}
+ggplot() +
+  geom_sf(data=world, fill = "seashell") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Mexico") +
+  coord_sf( xlim = c(-118, -85), 
+            ylim = c(10, 35), 
+            expand = FALSE) +
+  annotate(geom = "text",
+               x = -90, y = 26, 
+               label = "Gulf of Mexico", 
+               fontface = "italic", 
+               color = "grey22", 
+               size = 1) +
+    annotate(geom = "text",
+               x = -113, y = 21, 
+               label = "Pacific Ocean", 
+               fontface = "italic", 
+               color = "grey22", 
+               size = 1) +
+  theme(panel.background = element_rect(fill = "azure")) -> Mexico
+```
+
+
+
+```{r}
+library(cowplot)
+
+plot_grid(world_map, Mexico, nrow = 1, rel_widths = c(2.3, 1)) -> p
+p
+
+```
+
+Inset Map
+
+```{r}
+
+ggplot() +
+  geom_sf(data = counties, fill = "lightblue", color = "lightblue") +
+  geom_sf(data = acs, fill = "grey") +
+  theme_minimal() -> VA_map
+
+VA_map
+
+
+ggplot() +
+  geom_sf(data = rva, fill = "grey95", lwd = 1) +
+  geom_sf(data = water, fill = "lightblue", colour = "lightblue") +
+  geom_sf(data = roads, colour = "grey")+
+  annotate("text", x = -77.57, y = 37.62, label= "Richmond", size = 3) +
+  theme_void() +
+  coord_sf(datum = NA) -> RVA_map
+
+RVA_map
+
+```
+
+```{r}
+
+st_bbox(counties)
+st_bbox(rva)
+
+ggdraw(VA_map) +
+  draw_plot(RVA_map,
+            width = 0.25, height = 0.25* 5/2, 
+        x = .15, y = .35) -> p
+p
+
+```
+
+
+
+
+Adding arrows
+
+```{r}
+
+arrowA <- data.frame(x1 = 18, x2 = 25, y1 = 3.45, y2 = 3.55)
+
+ggplot() +
+  geom_sf(data = rva, fill = "grey95", lwd = 1) +
+  geom_sf(data = water, fill = "lightblue", colour = "lightblue") +
+  geom_sf(data = roads, colour = "grey")+
+  annotate("text", x = -77.575, y = 37.62, label= "Richmond", size = 3)+
+  theme_void() +
+  theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed", 
+         size = 0.5), panel.background = element_rect(fill = "white"), 
+         panel.border = element_rect(fill = NA)) +
+  coord_sf(datum = NA) -> RVA_map
+
+ggdraw(xlim = c(0, 35), ylim = c(0, 7.5)) +
+  draw_plot(VA_map, x = 0, y = 0, width = 25, height = 7.5) +
+  draw_plot(RVA_map, x = 24, y = .5, width = 10, height = 7)+
+  geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), data = arrowA, 
+        arrow = arrow(), lineend = "round") -> arrow_box
+
+arrow_box
+
+```
+
+
 

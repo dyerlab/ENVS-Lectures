@@ -1,0 +1,1073 @@
+---
+title: "Leaflet Maps"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", 
+          "https://dyerlab.github.io/ENVS-Lectures/css/slide_styles.css",
+          "https://dyerlab.github.io/ENVS-Lectures/css/slide_fonts.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: left, bottom, inverse, overlay
+background-image: url("https://live.staticflickr.com/65535/51043989197_987f4c2af0_k_d.jpg")
+background-size: cover
+
+
+```{r setup, include=FALSE}
+library( sf )
+library( leaflet )
+library( tidyverse ) 
+library( DiagrammeR )
+library( htmlwidgets )
+library( widgetframe )
+library( fontawesome )
+library( leaflet.providers )
+options(htmltools.preserve.raw = FALSE)
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+```
+
+# .orange[Leaflet]
+
+### .fancy[Making Interactive Maps that Don't Suck `r fa("map", fill='orange'  )`]
+
+
+ &nbsp;
+ 
+ &nbsp;
+ 
+```{r echo=FALSE, dpi=144, out.width="640px", fig.align="left"}
+knitr::include_graphics("https://live.staticflickr.com/65535/51044006107_a029ef7cbd_o_d.png")
+```
+
+---
+
+.center[ ![](https://live.staticflickr.com/65535/51043197628_2d1f0578db_o_d.png)]
+
+
+
+.pull-left[ 
+
+### Provides:
+
+- Uniform interface 
+
+- Many entry points (R, JavaScript, Python, HTML, etc.)
+
+- Variety of Map Types
+
+- Completely User Interactive
+]
+
+.pull-right[
+
+&nbsp;
+
+![](https://live.staticflickr.com/65535/51044028622_5fa998274c_z_d.jpg)
+
+]
+
+
+---
+
+# Map Making Workflow
+
+I'd make flow diagram here to go through basic steps. Define what each does in the background.
+
+1. Get data - 
+2. Make base map  -  `leaflet()` function creates widget for map and all javascript
+3. Define Region -   `setVeiw()` can be used to define the `bbox()`
+4. Add Tiles  -      `addTiles()` or `addProviderTiles()` downloads map tiles
+5. Overlay Markers -   `addMarkers()` make your points
+6. Overlay Rasters - 
+7. Set Fancy Stuff - 
+--
+8. There is no step 8 🎉 !!!!!
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Basic Map Parts]
+
+### .fancy[The foundation parts `r fa("level-down-alt", fill='limegreen')`]
+
+
+
+
+
+---
+
+# The Base Map
+
+.pull-left[
+```{r eval=FALSE}
+leaflet() 
+```
+
+]
+.pull-right[
+```{r echo=FALSE}
+leaflet() 
+```
+]
+
+
+---
+
+
+# Adding Default Tiles
+Open Street Map
+
+.pull-left[
+```{r eval=FALSE}
+leaflet() %>%
+  setView(lng = -77.5, lat = 37.5,
+          zoom = 10) %>%
+  addTiles() 
+```
+
+
+]
+.pull-right[
+```{r echo=FALSE}
+leaflet() %>%
+  addTiles()
+```
+]
+
+---
+
+# Setting a Boundary ViewPort
+
+.pull-left[
+```{r eval=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -77.5, lat = 37.5, zoom = 10) 
+```
+
+]
+.pull-right[
+```{r echo=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -77.5, lat = 37.5, zoom = 10) 
+```
+]
+
+
+---
+
+# Tile Providers
+
+There are some really interesting Tile Providers that we can use by replacing 
+
+```{r eval=FALSE}
+addTiles()
+```
+
+with 
+
+```{r eval=FALSE}
+addProviderTiles( providers$Name )
+```
+
+where `Name` can be any of the items found [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html)  .redinline[  <-- click on this]
+
+
+
+---
+
+# Example Provider Tiles - OpenTopoMap
+
+```{r echo=FALSE}
+provider <- providers$OpenTopoMap
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+ 
+
+---
+
+# Example Provider Tiles - ESRI World Topo
+
+```{r echo=FALSE}
+provider <- providers$Esri.WorldTopoMap
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+
+
+
+
+---
+
+# Example Provider Tiles - Watercolor
+
+```{r echo=FALSE}
+provider <- providers$Stamen.Watercolor
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+
+
+
+---
+
+# Example Provider Tiles - ESRI Satelite
+
+```{r echo=FALSE}
+provider <- providers$Esri.WorldImagery
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+
+---
+
+# Example Provider Tiles - ESRI World Shaded Relief
+
+```{r echo=FALSE}
+provider <- providers$Esri.WorldShadedRelief
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+
+
+---
+
+# Example Provider Tiles - Earth At Night
+
+```{r echo=FALSE}
+provider <- providers$NASAGIBS.ViirsEarthAtNight2012
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+
+
+
+---
+
+# Example Provider Tiles - NASA Daily Composite Imagry
+
+```{r echo=FALSE}
+provider <- providers$NASAGIBS.ModisTerraTrueColorCR
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+---
+
+# Example Provider Tiles - Combining Tiles
+.pull-left[ 
+
+```{r, eval=FALSE}
+provider <- providers$Stamen.Watercolor
+
+labels <- providers$CartoDB.VoyagerOnlyLabels
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles(provider) %>%
+  addProviderTiles(labels)
+```
+]
+
+.pull-right[
+```{r, echo = FALSE}
+provider <- providers$Stamen.Watercolor
+
+labels <- providers$CartoDB.VoyagerOnlyLabels
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles(provider) %>%
+  addProviderTiles(labels)
+```
+
+]
+
+---
+class: sectionTitle, inverse
+
+# .green[Adding Data]
+
+### .fancy[Increasing Information Content]
+
+
+
+
+---
+
+# The Data
+
+To add components to the leaflet map, you need to get the data up and ready. For this, we'll go back to the enigmatic Bark Beetle data set.
+
+```{r}
+library( sf )
+library( tidyverse ) 
+
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+
+read.csv(url) %>%
+   st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) -> beetles
+
+head( beetles )
+```
+
+
+---
+# Data for `leaflet`
+
+
+Both `leaflet()` and each map layer have a data = parameter. Spatial data can be in the form of:
+
+- `dataframe` with lat/lng columns
+- `sp` objects
+- `sf` objects
+- `maps` package `map()` objects
+
+
+Data can be passed through the `leaflet()` function or through the map layers.
+
+
+
+---
+
+.pull-left[
+# Shapes (Circles, Lines & Polygons)
+
+```{r eval=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  addCircles( data=beetles )
+```
+
+Note: Circles scale with the map
+
+]
+.pull-right[
+
+&nbsp;
+
+&nbsp;
+
+
+```{r echo=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  addCircles( data=beetles )
+```
+]
+
+
+
+---
+
+.pull-left[
+# Map Circles - size
+
+```{r eval=FALSE}
+leaflet(beetles) %>%
+  addTiles() %>%
+  addCircles( radius = ~Males *500, 
+              stroke = FALSE, 
+              fillOpacity = .5)
+```
+
+Note: The `beetles` are put in the `leaflet` call (just like `ggplot()`) so that we can access the `Males` column of data.
+]
+.pull-right[
+
+&nbsp;
+
+&nbsp;
+
+
+```{r echo=FALSE}
+leaflet(beetles) %>%
+  addTiles() %>%
+  addCircles( radius = ~Males *500, 
+              stroke = FALSE, 
+              fillOpacity = .5)
+```
+]
+
+
+---
+
+.pull-left[
+# Map Circles - color
+
+```{r eval=FALSE}
+pal <- colorNumeric( palette = "RdBu",
+                     domain = beetles$MFRatio,
+                     reverse = TRUE )
+
+leaflet(beetles) %>%
+  addTiles() %>%
+  addCircles(color = ~pal(MFRatio), 
+             fillOpacity = .7, 
+             radius = 15000, 
+             stroke = FALSE)
+```
+
+Note: Our palette is defined before hand using `colorNumeric()` and stored as `pal`
+]
+.pull-right[
+
+&nbsp;
+
+&nbsp;
+
+
+```{r echo=FALSE}
+pal <- colorNumeric( palette = "RdBu",
+                     domain = beetles$MFRatio,
+                     reverse = TRUE )
+leaflet(beetles) %>%
+  addTiles() %>%
+  addCircles(color = ~pal(MFRatio), 
+             fillOpacity = .7, 
+             radius = 15000, 
+             stroke = FALSE)
+```
+]
+
+---
+# Legends 
+
+`addLegend()`
+
+.pull-left[
+
+
+```{r eval=FALSE}
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = beetles$MFRatio,
+  reverse = TRUE)
+
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles( fillColor = ~pal(MFRatio), 
+              fillOpacity = .7, 
+              radius = 15000, 
+              weight = 1, 
+              color = "grey") %>%
+  addLegend(pal = pal, 
+            values = ~MFRatio,
+            title = "Male to Female Ratio")
+
+```
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = beetles$MFRatio,
+  reverse = TRUE)
+
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles( fillColor = ~pal(MFRatio), 
+              fillOpacity = .7, 
+              radius = 15000, 
+              weight = 1, 
+              color = "grey") %>%
+  addLegend(pal = pal, 
+            values = ~MFRatio,
+            title = "Male to Female Ratio")
+```
+]
+
+
+---
+
+.pull-left[
+# Map Markers
+
+
+
+```{r eval=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  addMarkers( data=beetles )
+```
+
+Note: Markers stay the same size regardless of zoom level
+]
+.pull-right[
+
+&nbsp;
+
+&nbsp;
+
+
+```{r echo=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  addMarkers( data=beetles )
+```
+]
+
+
+
+---
+# Custom Markers
+
+We can put any custom image onto the `leaflet` map.
+
+```{r}
+bug <- icons(
+  iconUrl = "https://www.pngfind.com/pngs/m/14-144860_beetle-bug-png-transparent-image-bug-png-png.png",
+  iconWidth = 20,
+  iconHeight = 20
+)
+```
+
+- You can you images from a url or from your computer
+
+
+---
+
+.pull-left[
+# Bugs!
+
+```{r eval=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addMarkers(icon = bug)
+```
+
+
+Notice:  
+
+- Data added to the `leaflet()` function call  
+- Custom provider tiles
+- Icon set in the `addMarkers()`[^1] [^2]
+- Can also use [fontawesome icons](https://fontawesome.com/icons?d=gallery&p=2&m=free)
+
+]
+.pull-right[
+
+&nbsp;
+
+
+
+
+```{r echo=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$Esri.WorldShadedRelief) %>%
+  addMarkers(icon = bug)
+```
+]
+
+^[1:] Technically, beetles .redinline[**are not**] bugs... Charis
+
+^[2:] Sorry!🤦
+
+
+
+
+
+---
+
+# Lables & Annotations
+
+
+
+
+.pull-left[
+
+In addition to the symbology, we can define a wide range of content to be associated with each marker.
+
+```{r eval=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -111, lat = 25, zoom = 7) %>%
+  addPopups(lng = -111, lat = 25, paste0("beetles live here"))
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -111, lat = 25, zoom = 7) %>%
+  addPopups(lng = -111, lat = 25, paste0("beetles live here"))
+```
+
+]
+
+---
+# Pop-ups
+
+.pull-left[
+```{r eval=FALSE}
+fa_bug <- makeAwesomeIcon(icon = "bug", library = "fa", 
+                          markerColor = "cadetblue", iconColor = "beige")
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug, popup = paste0("Site:", beetle$Site))
+```
+]
+.pull-right[
+```{r echo=FALSE}
+fa_bug <- makeAwesomeIcon(icon = "bug", library = "fa", 
+                          markerColor = "cadetblue", iconColor = "beige")
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug, popup = paste0("Site:", beetles$Site))
+```
+]
+
+---
+# Labels
+.pull-left[
+```{r, eval = FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug, 
+              label = paste0("Site:", beetles$Site))
+```
+]
+
+.pull-right[
+```{r, echo = FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(icon = fa_bug, label = paste0("Site:", beetles$Site))
+```
+]
+---
+class: sectionTitle, inverse
+
+# .green[Interactivity]
+
+### .fancy[Making Maps Fun Since 2021!]
+
+
+---
+
+# Interactivity
+
+
+```{r eval=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles( fillColor = ~rev(pal(MFRatio)), 
+              fillOpacity = .7, 
+              radius = 15000, 
+              weight = 1, 
+              color = "grey",
+              highlightOptions = highlightOptions( color = "green", 
+                                                   weight = 2,
+                                                   bringToFront = TRUE))
+```
+
+--
+
+- Setting colors by previous palette  
+- Defining fixed size (units defined by projection - in this case `crs = 4326` has its length unit in meters)
+- Interactive context is defined by `hightlightOptions`
+
+
+---
+class: center, middle 
+
+```{r echo=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles( fillColor = ~rev(pal(MFRatio)), 
+              fillOpacity = .7, 
+              radius = 15000, 
+              weight = 1, 
+              color = "grey",
+              highlightOptions = highlightOptions( color = "yellow", 
+                                                   weight = 4,
+                                                   bringToFront = TRUE))
+```
+
+
+
+
+---
+
+# Map Groups
+
+Items on the map may be grouped together and added (layer by layer) using their own data sets.
+
+
+```{r eval=FALSE}
+males <- beetles %>% filter( Males > Females)
+females <- beetles %>% filter( Females > Males)
+
+leaflet() %>%
+  addProviderTiles( providers$CartoDB.Positron) %>%
+  addCircles(data = males, 
+             fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", radius = 10000, weight = 1,
+             group = "males") %>%
+  addCircles(data = females, 
+             fillColor = "pink", fillOpacity = 1, 
+             color = "red", radius = 10000, weight = 1,
+             group = "females") %>%
+  addLayersControl(overlayGroups = c("males", "females"),
+                   options = layersControlOptions(collapsed = FALSE))
+```
+
+
+
+---
+
+# Clickable Goodness
+
+```{r echo=FALSE}
+males <- beetles %>% filter( Males > Females)
+females <- beetles %>% filter( Females > Males)
+
+leaflet() %>%
+  addProviderTiles( providers$CartoDB.Positron) %>%
+  addCircles(data = males, 
+             fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", radius = 10000, weight = 1,
+             group = "males") %>%
+  addCircles(data = females, 
+             fillColor = "pink", fillOpacity = 1, 
+             color = "red", radius = 10000, weight = 1,
+             group = "females") %>%
+  addLayersControl(overlayGroups = c("males", "females"),
+                   options = layersControlOptions(collapsed = FALSE))
+```
+
+---
+
+# Interactivity in Map Tile Provider
+
+```{r eval=FALSE}
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron, group = "Default") %>%
+  addProviderTiles(providers$OpenStreetMap, group = "Open Street Maps") %>%
+  addProviderTiles(providers$Stamen.Toner, group = "Stamen Toner") %>%
+  addCircles(data = males, 
+             fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", radius = 10000, weight = 1,
+             group = "males") %>%
+  addCircles(data = females, 
+             fillColor = "pink", fillOpacity = 1, 
+             color = "red", radius = 10000, weight = 1,
+             group = "females") %>%
+  addLayersControl(overlayGroups = c("males", "females"),
+                   options = layersControlOptions(collapsed = FALSE),
+                   baseGroups = c("Default", "Open Street Maps", "Stamen Toner"))
+```
+
+---
+
+.pull-left[
+&nbsp;
+```{r echo=FALSE}
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron, group = "Default") %>%
+  addProviderTiles(providers$OpenStreetMap, group = "Open Street Maps") %>%
+  addProviderTiles(providers$Stamen.Toner, group = "Stamen Toner") %>%
+  addCircles(data = males, 
+             fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", radius = 10000, weight = 1,
+             group = "males") %>%
+  addCircles(data = females, 
+             fillColor = "pink", fillOpacity = 1, 
+             color = "red", radius = 10000, weight = 1,
+             group = "females") %>%
+  addLayersControl(overlayGroups = c("males", "females"),
+                   options = layersControlOptions(collapsed = FALSE),
+                   baseGroups = c("Default", "Open Street Maps", "Stamen Toner"))
+```
+]
+
+.pull-right[
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+- Note the difference between `overlayGroups` and `baseGroups`
+
+]
+
+---
+
+# On and Off By Zoom
+
+We can also have components of the map be active at different `zoom` levels.
+
+```{r eval=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles( fillColor = "lightblue", 
+              fillOpacity = 1, 
+              color = "blue", 
+              radius = 10000, 
+              weight = 1,
+              group = "beetles") %>%
+  groupOptions( "beetles", 
+                zoomLevels = 5:8)
+```
+
+
+Notice that the behavior of the `group` defined in `addCircles` can have it's own options set.  Here the visibility is defined by the zoom levels.
+
+
+---
+&nbsp;
+
+```{r echo=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles( fillColor = "lightblue", 
+              fillOpacity = 1, 
+              color = "blue", 
+              radius = 10000, 
+              weight = 1,
+              group = "beetles") %>%
+  groupOptions( "beetles", 
+                zoomLevels = 5:8)
+```
+
+Zoom in/out to see may layer appear/disappear
+---
+
+# Clustering 
+
+There are times when you may want to *coalesce* markers together when you zoom out.  You can do this 
+
+```{r eval=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", weight = 1,
+             group = "beetles",
+             clusterOptions = markerClusterOptions(
+               showCoverageOnHover = FALSE,))
+```
+
+
+
+---
+
+# Clustering 
+
+```{r echo=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(fillColor = "lightblue", fillOpacity = 1, 
+             color = "blue", weight = 1,
+             group = "beetles",
+             clusterOptions = markerClusterOptions(
+               showCoverageOnHover = FALSE,))
+```
+
+
+---
+
+# Legends & Scale Bars
+
+`addLegend()`
+
+`addScaleBar()`
+
+```{r, eval = FALSE}
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(fillColor = ~pal(MFRatio), fillOpacity = .7, radius = 15000, 
+             weight = 1, color = "grey") %>%
+  addLegend(pal = pal, values = ~MFRatio,
+            title = "Male to Female Ratio") %>%
+  addScaleBar(position = "bottomright")
+```
+
+---
+
+&nbsp;
+
+```{r, echo= FALSE}
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = beetles$MFRatio)
+```
+
+
+```{r, echo = FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(fillColor = ~pal(MFRatio), fillOpacity = .7, radius = 15000, 
+             weight = 1, color = "grey") %>%
+  addLegend(pal = pal, values = ~MFRatio,
+            title = "Male to Female Ratio") %>%
+  addScaleBar(position = "bottomright")
+```
+
+
+
+
+---
+
+# Additional Layer Options
+
+So we've covered some items here but there are many more available.  Here is a list of some common ones:
+
+- `addControl`: Add arbitrary HTML controls to the map
+- `addTiles`: Add a tile layer to the map
+- `addWMSTiles`: Add a WMS tile layer to the map
+- `addPopups`: Add popups to the map
+- `addMarkers`: Add markers to the map
+- `addLabelOnlyMarkers`: Add Label only markers to the map
+- `addCircleMarkers`: Add circle markers to the map
+- `highlightOptions`: Options to highlight a shape on hover
+- `addCircles`: Add circles to the map
+- `addPolylines`: Add polylines to the map
+- `addRectangles`: Add rectangles to the map
+- `addPolygons`: Add polygons to the map
+- `addGeoJSON`: Add GeoJSON layers to the map
+- `addTopoJSON`: Add TopoJSON layers to the map
+
+
+---
+
+# Web Mapping Services
+
+A Web Mapping Service is a some geospatial information that is provided to you as the user from some server on the web.  You can use these as data input in ESRI ArcMap as a data sources, as a data provider for `R` or as an overlay for this leaflet.  To do this, we use the `addWMSTiles()` function and we need to give it the following parameters:
+
+- Where to get the WMS tiles from  
+- What layer to use (these are often shape-file like things).
+- Some options
+- Add some attributions to your map as text at the bottom.
+
+
+---
+
+# Real-Time Weather Overlay
+
+.pull-left[
+
+This service is provided by the Iowa Environmental Mesonet servers at Iowa State University.
+
+```{r eval = FALSE}
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 4) %>%
+  addProviderTiles( providers$Esri.WorldShadedRelief ) %>%
+  addWMSTiles(
+    "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
+    layers = "nexrad-n0r-900913",
+    options = WMSTileOptions(format = "image/png", transparent = TRUE),
+    attribution = "Weather data © 2012 IEM Nexrad"
+  )
+
+```
+]
+
+.pull-right[
+```{r echo = FALSE}
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 4) %>%
+  addProviderTiles( providers$Esri.WorldShadedRelief ) %>%
+  addWMSTiles(
+    "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
+    layers = "nexrad-n0r-900913",
+    options = WMSTileOptions(format = "image/png", transparent = TRUE),
+    attribution = "Weather data © 2012 IEM Nexrad"
+  )
+
+```
+]
+
+
+
+
+---
+class: middle 
+
+##`leaflet.extras`
+
+There are more interactive components you can add to the map from the `leaflet.extras` package including:
+
+- Geocoded search fields
+- Interactive drawing components
+- Pulsing icons
+
+Examples are found in the [narrative](narrative.nb.html) associated with this lecture topic.
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+.red[Questions?]
+
+
+![Dog](https://i.redd.it/opy67ug150541.jpg)
+]
+
+<p>&nbsp;</p>
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://deadwylerm@vcu.edu) and I'll get back to you as soon as possible.]
+
+

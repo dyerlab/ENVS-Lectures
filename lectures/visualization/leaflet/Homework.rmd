@@ -9,7 +9,7 @@ output: html_notebook
 
 Create a map similar to [this map from the Washington Post](https://www.washingtonpost.com/sf/local/2013/11/09/washington-a-world-apart/) (open the link in an incognito window to avoid the paywall if you need) for Richmond using the educational attainment data linked below and census tracts that you will download with the `tigris` package
 
-```{r}
+```{r eval=FALSE}
 library( sf )
 
 # Download the tigris package if necessary

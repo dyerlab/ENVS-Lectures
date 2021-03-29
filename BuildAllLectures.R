@@ -9,32 +9,33 @@ library(tidyverse)
 #  git push
 
 
-
-
 # Fix to break in rmarkdown and HTMLWidgets
 options(htmltools.preserve.raw = FALSE)
 
 
-
-# look to make sure all the libraries are installed
-allRmd <- list.files("lectures",pattern = ".Rmd",recursive = TRUE,full.names = TRUE)
-all_libs <- c("tidyverse","readtext", "stringr")
-df.files <- readtext::readtext(allRmd, verbosity = 0)
-pull_libraries <- function( file ) { 
-  lines <- strsplit(file, split="\n")[[1]]
-  idx <- grep( pattern = "^library\\(", x=lines)
-  libs <- lines[idx]
-  libs <- stringr::str_remove_all(libs,"library\\(")
-  libs <- stringr::str_remove_all(libs, "\\)")
-  libs <- stringr::str_remove_all(libs, " ")
-  all_libs <- c( all_libs, libs )
-  return( unique( all_libs ) ) 
-}
-
-for( line in df.files$text) { 
+if ( 0 ) {
   
+  # look to make sure all the libraries are installed
+  allRmd <- list.files("lectures",pattern = ".Rmd",recursive = TRUE,full.names = TRUE)
+  all_libs <- c("tidyverse","readtext", "stringr")
+  df.files <- readtext::readtext(allRmd, verbosity = 0)
+  pull_libraries <- function( file ) { 
+    lines <- strsplit(file, split="\n")[[1]]
+    idx <- grep( pattern = "^library\\(", x=lines)
+    libs <- lines[idx]
+    libs <- stringr::str_remove_all(libs,"library\\(")
+    libs <- stringr::str_remove_all(libs, "\\)")
+    libs <- stringr::str_remove_all(libs, " ")
+    all_libs <- c( all_libs, libs )
+    return( unique( all_libs ) ) 
   }
-
+  
+  for( line in df.files$text) { 
+    
+  }
+  
+  
+}
 
 
 

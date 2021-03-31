@@ -137,15 +137,36 @@ knitr::include_graphics("https://live.staticflickr.com/65535/51084723036_85b4910
 ]
 
 ---
-# Granularity
+class: top
+# Granularity - Proper Pixel Size
 
-What is the appropriate .redinline[pixel size] that the organism recognizes?
+```{r echo=FALSE, out.height=600}
+r1 <- raster("https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/pines.asc")
+r2 <- raster::aggregate(r1, fact=10, fun=sum)
+r3 <- raster::aggregate(r2, fact=10, fun=sum)
+opar <- par()
+par( mar = c(0.1, 0.1, 0.1, 0.1), 
+     mfrow = c(1,3))
+plot(r1, bty="n", box=F, axes=F, legend=F)
+plot(r2, bty="n", box=F, axes=F, legend=F)
+plot(r3, bty="n", box=F, axes=F, legend=F)
+par( opar )
+```
+
 
 ---
+
+.left-column[
 # Intensity
 
-How much does the feature influence the organism.
+How .redinline[much] does the feature influence the organism.
+]
 
+.right-column[
+```{r echo=FALSE, out.height=500}
+knitr::include_graphics("https://live.staticflickr.com/65535/51016826740_ee1cf72271_c_d.jpg")
+```
+]
 
 
 ---

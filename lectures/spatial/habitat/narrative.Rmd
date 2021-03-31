@@ -3,5 +3,277 @@ title: "Spatial Habitat Analysis in R"
 output: html_notebook
 ---
 
+```{r setup, include=FALSE}
+library( tidyverse )
+library( raster )
+ggplot2::theme_set( theme_bw( ))
+```
 
 
+
+## Habitat Configuration
+
+The spatial distribution of habitat features can have many direct impacts on the way organisms occupy and move across a landscape.  In this topic, we will provide a brief overview of how we can quantify habitat types and insert their metrics into our data workflows.
+
+
+
+
+
+### What is a Landscape?
+
+Ecologists Perspective
+
+> A landscape is a mosaic of interacting ecosystems which are heterogeneous in at least one factor of interest.
+
+Organism Perspective
+
+> The spatial distribution of suitable habitat^[A particular section of land may represent many differnt 'landscapes' when taken from the perspective of different organisms.].
+
+
+
+We can think of landscapes being described in the following categories of increasing complexity
+
+- Landscape Type - Categories of landscape features (binary)
+- Landscape Composition - Relative abundance of landscape features (continuous)
+- Landscape Configuration - Spatial arrangement of of landscape features (raster)
+
+So let's grab some raw data and look at it 
+
+### Raw Data
+
+
+<center>
+![The Rice Center](https://live.staticflickr.com/65535/50998498169_0e502bc7ba_c_d.jpg)
+</center>
+
+For this exercise we are going to be looking at the area around the Rice Rivers Center using the national 
+
+
+
+The Multi-Resolution Land Characteristics Consortium [mrlc.gov](https://www.mrlc.gov) maintains a spatial database of land cover types for the US.  If you were to download these in their entirety, they are **huge** and you'd spend quite a bit of time doing the "download $\to$ open in R $\to$ define boundary box $\to$ crop and save" kind of stuff.  Fortunately, there is an interactive viewer and download tool at https://www.mrlc.gov/viewer/ that works just fine for us.  
+
+![mrlc interactive vierwer](https://live.staticflickr.com/65535/51014241625_f0894ec432_c_d.jpg)
+
+Here we are going to work with land-cover types and for this, I'm taking a 25km$^2$ box that includes the [Rice Rivers Center](https://ricerivers.vcu.edu).  The data we get are in the form of a GeoTIFF, which we've used before in the [rasters](https://dyerlab.github.io/ENVS-Lectures/spatial/rasters/slides.html#1) lecture.  The interface to get the data is one that has you specify the are and then submit a request with your email to get a download.  Depending upon the size of your request and the current traffic, it may take a while to get the rasters.  When you do they'll send you a link to a zip file you can grab.
+
+For our purposes, I uploaded the land cover data from 2016 to Github and it can be found at the following url.
+
+
+```{r}
+library( raster )
+
+land_2016_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land_2016 <- raster( land_2016_url )
+land_2016
+```
+
+Notice the following from the output:  
+- The raster has 6806 pixels (almost square...)  
+- The CRS has units of meters  
+- The resolution of each pixel is 30x30.
+
+and it looks like:
+
+```{r}
+plot( land_2016 )
+```
+
+
+The actual values of the raster include the following categories.
+
+```{r}
+values( land_2016 ) %>%
+  table() 
+```
+
+This is not uncommon. Whomever decided to make this raster has defined some kind of numbering scheme for each pixel.  In the Zip file that you get form NLCD, there is a CSV file that has the legend.  I've also uploaded that one, so lets go grab this and do a `left_join()` on this baby!
+
+```{r}
+legend_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/NLCD_landcover_legend_2018_12_17_qn2B1f8ganicJNKnJN0e.csv"
+legend <- read_csv( legend_url )
+```
+
+If you look at the data you'll see that out of the `r nrow(legend)` entries, `r sum(is.na(legend$Legend))` of them are `NA`.  Again, I'm sure there is some good reason why this is the case, it is just not obvious to me at this time what that may be other than historic reasons^[In the very old days of computing, like when I started, we had so little memory on the computers that we had to pack information as tightly as possible, which is why things like numbrer naming schemes and look-up tables were necessary].
+
+```{r}
+legend %>%
+  filter( !is.na(Legend))
+
+```
+
+## Describing Landscapes - Feature Types
+
+From above, we defined three kinds of landscape analyses, the first of which was a listing of the types of features on landscape.  
+
+
+```{r}
+values( land_2016 ) %>%
+  table() %>% 
+  as_tibble() -> landscape_types
+landscape_types
+```
+
+So the `table()` function does not really do much in the way of naming stuff, so let's fix these.
+
+```{r}
+names( landscape_types ) <- c("Value", "Frequency")
+landscape_types
+```
+
+Now we can reach back to our relational data and use the `Value` column as the foreign key into the data from the legend where `Value` is the `Primary Key`.
+
+```{r}
+legend %>%
+  left_join( landscape_types, by="Value")
+```
+
+Ah yesss.  If we look at the `Value` in the landscape types, it is (for some reason) a `character` representation!  Let's fix that and then make another run at it.
+
+
+```{r}
+landscape_types$Value <- as.numeric(landscape_types$Value)
+legend %>%
+  left_join( landscape_types, by="Value") %>%
+  filter( !is.na(Frequency) ) -> landscape_types
+unique(landscape_types$Legend)
+```
+
+
+
+## Describing Landscapes - Feature Composition
+
+The next level of description is to examine the relative frequency of each of these habitat types on the landscape.  Let's grab the data and summarize it by the relative frequencies of the present types.
+
+
+```{r}
+landscape_types %>%
+  mutate( Cover = Frequency / sum(!is.na(values(land_2016))) ) %>%
+  select( Legend, Value, Frequency, Cover) %>%
+  arrange( -Cover ) %>%
+  knitr::kable() %>%
+  kableExtra::kable_material_dark(full_width = FALSE )
+```
+
+## Describing Landscapes - Spatial Configuration
+
+There are *a lot* more metrics that we can estimate from landscape features than just identity and frequency and what we will be covering here is just a bit off the top.  We can loosely categorize the kinds of metrics into the following groups:  
+
+- Aggregation metrics  
+- Area & Edge metrics  
+- Contrast metrics  
+- Core area metrics  
+- Diversity metrics  
+- Isolation metrics  
+- Shape metrics  
+- Subdivision metrics
+
+We are mostly going to focus on Area & Edge as well as Diversity metrics here for simplicity.  If you take a course in Landscape Ecology, you can get into the other types. I'm going to use the `landscapemetrics` library (if you do not have it, then install it using `install.packages()`).
+
+There are some requirements for your raster to use this library:  
+
+1. The distance units of your projection are meter, as the package converts units internally and returns results in either meters, square meters or hectares. For more information see the help file of each function.  
+
+2. Your raster encodes landscape classes as integers (1, 2, 3, 4, …, n).  
+
+3. Landscape metrics describe categorical landscapes, that means that your landscape needs to be classified (we throw a warning if you have more than 30 classes to make sure you work with a classified landscape).  
+
+There is a `check_landscape()` function that you can use and find out.  Here is a raster that is not good.
+
+```{r}
+library( landscapemetrics )
+check_landscape( landscapemetrics::podlasie_ccilc )
+```
+
+Fortunately, this library was made with the NLCD data in mind, so ours works just fine.
+
+```{r}
+check_landscape( land_2016 )
+```
+
+We can examine landscape metrics at several different nested scales, the landscape at a whole, the patch (spatially contiguous habitat types), and the class level (all values for "Barren Land" for example).  For the landscape level, the following metrics are available.
+
+```{r}
+list_lsm(level="landscape")
+```
+
+At the patch level, the following metrics are available.
+
+```{r}
+list_lsm(level="patch")
+```
+
+
+And for each class of feature, the following are available.
+
+```{r}
+list_lsm(level="class")
+```
+
+Take a look through these metric types for each level.  For each of these metrics, there is a function whose names has the following configuration
+
+`lsm_{l|p|c}_metric()`
+
+where `{l|p|c}` is one of `l`, `p`, or `c` and the metric is the name as shown above.  So, for example, if we are looking at the area of each patch in the landscape we would use the function
+
+```{r}
+lsm_p_area( land_2016 ) 
+```
+
+As you see, it divides the landscape into individual patches, numbers them, and provides metric feedback. Let's summarize for mixed (type=43) and evergreen (type = 42) forests.
+
+```{r}
+lsm_p_area( land_2016 ) %>%
+  filter( class %in% c(42, 43) ) %>%
+  mutate( Forest = ifelse( class == 42, "Evergreen", "Mixed Hardwoods") ) %>%
+  ggplot( aes(value) ) + 
+  geom_density() + 
+  facet_grid( Forest ~ .) +
+  xlab("Area (ha)") + 
+  ylab("Frequency") + 
+  ggtitle("Area Distribution of Mixed Forest Types")
+```
+
+
+Other metrics you may be interested in include (use `View( list_lsm())` to see them all): 
+
+- *gyrate* - The mean distance between cells within it which approximates something like the average distance an organism can move within a patch before encountering a boundary.  
+
+- *ca* - The physical area associated with each landscape type.
+
+
+- *clump* - A measure of how spatially contingent the features are ranging from random (no clumping) to all in one large patch (fully clumped).
+
+- *pr* - Patch richness.
+
+- *shdi* - Shannon's Diversity index
+
+
+## Finding Patches
+
+To connect back to the spatial arrangement of features, we can use the following functions to point out where specific patches may be on the original landscape.  For example, we can plot the spatial location of the most common types (say the first 3) of habitat as:
+
+
+
+```{r}
+lsm_p_area( land_2016 ) %>%
+  group_by( class ) %>%
+  summarize( `Area` = sum( value) ) %>%
+  arrange(-Area)
+```
+
+Which turn out to 
+
+```{r}
+plot( get_patches( land_2016, class=43)[[1]] ) 
+```
+
+
+```{r}
+plot( get_patches( land_2016, class=90)[[1]] ) 
+```
+
+```{r}
+plot( get_patches( land_2016, class=43)[[1]] ) 
+```
+
+The difference in the colors of these patches reflect the patch ID number that `lsm_*` give them.

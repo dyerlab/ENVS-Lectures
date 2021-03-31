@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Projections &amp; Point Data</title>
+    <title>Habitat Analysis</title>
     <meta charset="utf-8" />
     <script src="libs/header-attrs-2.7/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+    <script src="libs/jquery-3.5.1/jquery.min.js"></script>
+    <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding-0.17/datatables.js"></script>
+    <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
     <link rel="stylesheet" href="../../css/slide_styles.css" type="text/css" />
     <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
   </head>
@@ -19,56 +30,230 @@ background-size: cover
 
 
 
-# .orange[Spatial Data]
+# .orange[Habitat Analysis]
 
-### .fancy[Projections &amp; Points <svg aria-hidden="true" role="img" viewBox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-right:0.2em;font-size:inherit;fill:orange;overflow:visible;position:relative;"><path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/></svg>]
+### .fancy[Types, Composition, and Configuration  <svg aria-hidden="true" role="img" viewBox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-right:0.2em;font-size:inherit;fill:orange;overflow:visible;position:relative;"><path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/></svg>]
 
-
-
-
----
-class: bottom
-background-image: url("https://live.staticflickr.com/65535/50437121667_ac9c3e7f84_c_d.jpg")
-background-size: 55%
-
-
-.footnote[ [Knight *et al.* (2005) *Nature*.  **437**, 880-883.](https://www.researchgate.net/deref/http%3A%2F%2Fdx.doi.org%2F10.1038%2Fnature03962)]
 
 
 
 ---
+class: top
+background-image: url("https://live.staticflickr.com/65535/51083828531_e6d0965d5c_k_d.jpg")
+background-size: cover
 
-# Toblers First Law of Geography
+# What is a Landscape?
 
-.blue[
-&gt; Everything is related to everything else, but near things are more related to each other.
-]
+
+---
+
+# Landscapes
+
+&gt; A landscape is a mosaic of interacting ecosystems which are heterogeneous in at least one factor of interest.
+
+&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;mdash; Ecologist
 
 --
 
+&amp;nbsp; 
+
+
+
+&gt; The spatial distribution of suitable habitat
+
+&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;mdash; All Other Living Things
+
+
+--
+
+
+&amp;nbsp;
+
+.redinline[The same physical location may be (to different organisms) several overlapping or independent landscapes.]
+
+---
+class: sectionTitle, inverse
+
+# .orange[Habitat Quantification]
+
+## .fancy[Quantifying Space On .redinline[*This*] Planet.]
+
+
+---
+
+# Types of Quantification 
+
+### General `\(\to\)` Specific
+
+- *Landscape Type* : The categories (e.g., `factor`) of landscape features present in the study area.
+
+- *Landscape Composition* : The relative frequency of landscape features types in this area.
+
+- *Landscape Configuration* : The spatial arrangement of landscape features on the earth.
+
+
+---
+
 .pull-left[
-### Physical Measurements
-- Location  
 
-- Distance  
+# Organismal Perspective
 
-- Network  
+We *must* remember that when we are looking at habitats, it is done so *only* from the perspective of the organism we are studying.  
 
-- Neighborhoods &amp; Regions
+- Temporal Scale
+
+- Spatial Scale 
+
+These are entirely .redinline[*independent*] of what our scales are or what the scale of the closest raster just happens to be.
+
+
+See also: *Metasequoia glyptostroboides*
+]
+
+
+.pull-right[
+&lt;img src="https://live.staticflickr.com/65535/51084359331_683f527fc3_c_d.jpg" height="600" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# Scale
+
+At a base level, spatial and temporal scales may be unique to each landscape feature.  
+
+.pull-left[
+&lt;img src="https://live.staticflickr.com/65535/50999448554_b561b2138a_c_d.jpg" height="400" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
-### Emerging Properties 
-
-- Spatial Heterogeneity
-
-- Spatial Dependence  
-
-- Objects &amp; Fields
-
+&lt;img src="https://live.staticflickr.com/65535/51084723036_85b49100e4_c_d.jpg" height="400" style="display: block; margin: auto;" /&gt;
 ]
 
-.footnote[[Tobler, W. R. 1970. *Economic Geography*, **46**, 234–240.](https://doi.org/10.1002/9781118786352.wbieg1011)]
+---
+# Granularity
+
+What is the appropriate .redinline[pixel size] that the organism recognizes?
+
+---
+# Intensity
+
+How much does the feature influence the organism.
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Case Study]
+
+## .fancy[Lanscape Change In The Piedmont]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50998498169_0e502bc7ba_c_d.jpg")
+background-size: cover
+
+
+
+---
+
+# Quantifying Landscape Use
+
+Besides .redinline[very tall ladders], our ability to map out the characteristics of specific regions on the planet are dictated by the availability of raster databases. 
+
+&amp;nbsp;
+
+.center[[![mrlc logo](https://live.staticflickr.com/65535/51016602045_a59cd29c90_o_d.png)](mrlc.gov)]
+
+
+
+---
+# Raster Sources
+
+
+.pull-left[
+The MRLC provides an interactive mapping tool to provide access to locations.  Base rasters are available but are .redinline[HUGE] (e.g, 25Gb and larger) and you'd be doing a lot of 
+
+*download `\(\to\)` open in R `\(\to\)` define boundary box `\(\to\)` crop `\(\to\)` save* 
+
+IF (and this is a big if), you laptop does not crumble due to size of the data sets first...
+
+Consequently, the use of the interactive viewer at  
+
+https://www.mrlc.gov/viewer/ 
+
+is a great resources.
+]
+.pull-right[
+&lt;img src="https://live.staticflickr.com/65535/51014241625_f0894ec432_c_d.jpg" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+# Loading MRLC Data
+
+MRLC Data comes as a set of GEOTiff objects, which I've uploaded to the class GitHub account.
+
+
+```r
+library( raster )
+
+land_2016_url &lt;- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land_2016 &lt;- raster( land_2016_url )
+land_2016
+```
+
+```
+## class      : RasterLayer 
+## dimensions : 82, 83, 6806  (nrow, ncol, ncell)
+## resolution : 30, 30  (x, y)
+## extent     : 1637235, 1639725, 1749465, 1751925  (xmin, xmax, ymin, ymax)
+## crs        : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs 
+## source     : https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff 
+## names      : NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e 
+## values     : 11, 95  (min, max)
+```
+
+
+---
+
+.pull-left[
+# MRLC Plot
+
+You can use the normal `plot()` function (but for some reason it produces an extraneous empty plot for this one) or use our old friend `ggplot2()`.
+
+&amp;nbsp;
+
+
+
+```r
+rasterToPoints( land_2016) %&gt;%
+  as.data.frame() %&gt;%
+  mutate( LC = factor( NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e )) %&gt;%
+  ggplot( aes(x,y,fill=LC)) + 
+  geom_raster() + theme_void()
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-7-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -80,9 +265,590 @@ background-size: 55%
 ---
 class: sectionTitle, inverse
 
-# .orange[Projections]
+# .orange[Habitat Quantification]
 
-## .fancy[Representing Location On .redinline[*This*] Planet.]
+## .fancy[Quantifying Space On .redinline[*This*] Planet.]
+
+
+
+
+
+
+
+
+
+---
+# Landscape Type
+
+
+```r
+values( land_2016 ) %&gt;%
+  table() 
+```
+
+```
+## .
+##   11   21   22   23   31   41   42   43   52   71   82   90   95 
+##  824  283   14    2   24  628 1519 1524  144    8  732  950  154
+```
+
+---
+
+.pull-left[
+# Make It Usable
+
+For *historical* reasons, much of the data that we work with is defined using numeric codes needing *look-up tables* to format into output that can be interpreted by humans.  When you download the raw data, it provides a [CSV file legend](https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/NLCD_landcover_legend_2018_12_17_qn2B1f8ganicJNKnJN0e.csv) to translate these numbers into real-world feature names.
+
+
+```r
+legend_url &lt;- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/NLCD_landcover_legend_2018_12_17_qn2B1f8ganicJNKnJN0e.csv"
+read_csv( legend_url ) %&gt;%
+  filter( !is.na(Legend))
+```
+]
+
+.pull-right[
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Code &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Legend &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unclassified &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Open Water &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Perennial Snow/Ice &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Open Space &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Low Intensity &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Medium Intensity &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, High Intensity &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Barren Land &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Deciduous Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Evergreen Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 43 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Mixed Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 52 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Shrub/Scrub &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Herbaceuous &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Hay/Pasture &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cultivated Crops &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 90 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Woody Wetlands &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 95 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Emergent Herbaceuous Wetlands &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+
+
+
+---
+# Level 1 Quantification - Landscape Types 
+
+Which landscape features are present?
+
+
+.pull-left[
+
+```r
+values( land_2016 ) %&gt;%
+  as.data.frame() %&gt;%
+  rename( "Code" = !!names(.[1])) %&gt;%
+  distinct() %&gt;%
+  left_join( legend, by = "Code") %&gt;%
+  arrange( Legend )
+```
+]
+
+.pull-right[
+
+```
+##    Code                        Legend
+## 1    31                   Barren Land
+## 2    82              Cultivated Crops
+## 3    41              Deciduous Forest
+## 4    22      Developed, Low Intensity
+## 5    23   Developed, Medium Intensity
+## 6    21         Developed, Open Space
+## 7    95 Emergent Herbaceuous Wetlands
+## 8    42              Evergreen Forest
+## 9    71                   Herbaceuous
+## 10   43                  Mixed Forest
+## 11   11                    Open Water
+## 12   52                   Shrub/Scrub
+## 13   90                Woody Wetlands
+```
+
+]
+
+
+
+---
+# Level 2 - Landscape Composition
+
+.pull-left[
+What are the relative frequencies of each type?
+
+
+```r
+values( land_2016 ) %&gt;%
+  table() %&gt;%
+  as.data.frame() %&gt;%
+  rename( Code = !!names(.[1]), 
+          Frequency = Freq) %&gt;%
+  mutate( Code = as.numeric( as.character(Code ) ) ) %&gt;%
+  left_join( legend, by = "Code") %&gt;%
+  arrange( -Frequency )
+```
+]
+
+.pull-right[
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Code &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Frequency &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Legend &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 43 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1524 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Mixed Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1519 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Evergreen Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 950 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Woody Wetlands &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 824 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Open Water &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 732 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cultivated Crops &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 628 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Deciduous Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 283 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Open Space &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 95 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 154 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Emergent Herbaceuous Wetlands &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 52 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 144 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Shrub/Scrub &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Barren Land &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Low Intensity &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Herbaceuous &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Medium Intensity &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+
+---
+
+# Level 3 - Spatial Configuration
+
+There are *a lot* more metrics that we can estimate from landscape features than just identity and frequency and what we will be covering here is just a bit off the top.  We can loosely categorize the kinds of metrics into the following groups:  
+
+- Aggregation metrics  
+- Area &amp; Edge metrics  
+- Contrast metrics  
+- Core area metrics  
+- Diversity metrics  
+- Isolation metrics  
+- Shape metrics  
+- Subdivision metrics
+
+
+---
+
+# Landscape Metrics Package
+
+
+```r
+library( landscapemetrics )
+```
+
+There are some requirements for your raster to use this library:  
+
+1. The distance units of your projection are meter, as the package converts units internally and returns results in either meters, square meters or hectares. For more information see the help file of each function.  
+
+2. Your raster encodes landscape classes as integers (1, 2, 3, 4, …, n).  
+
+3. Landscape metrics describe categorical landscapes, that means that your landscape needs to be classified (we throw a warning if you have more than 30 classes to make sure you work with a classified landscape).  
+
+
+---
+
+# Built-In Checks
+
+To check the applicability of your raster, there are some helper functions that provide feedback to you.
+
+
+```r
+check_landscape( landscapemetrics::podlasie_ccilc )
+```
+
+```
+##   layer        crs   units   class n_classes OK
+## 1     1 geographic degrees integer        14  x
+```
+
+
+--
+
+&amp;nbsp;
+
+Fortunately, this package was written with the MRLC data sets.
+
+
+
+```r
+check_landscape( land_2016 )
+```
+
+```
+##   layer       crs units   class n_classes OK
+## 1     1 projected     m integer        13  ✓
+```
+
+
+---
+# Nested Levels of Metrics
+
+This library breaks up the functions into the following nested levels: class, patch, landscape
+
+<div id="htmlwidget-e1f85c6378358a8091f7" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e1f85c6378358a8091f7">{"x":{"filter":"none","data":[["area","cai","circle","contig","core","enn","frac","gyrate","ncore","para","perim","shape","ai","area_cv","area_mn","area_sd","ca","cai_cv","cai_mn","cai_sd","circle_cv","circle_mn","circle_sd","clumpy","cohesion","contig_cv","contig_mn","contig_sd","core_cv","core_mn","core_sd","cpland","dcad","dcore_cv","dcore_mn","dcore_sd","division","ed","enn_cv","enn_mn","enn_sd","frac_cv","frac_mn","frac_sd","gyrate_cv","gyrate_mn","gyrate_sd","iji","lpi","lsi","mesh","ndca","nlsi","np","pafrac","para_cv","para_mn","para_sd","pd","pladj","pland","shape_cv","shape_mn","shape_sd","split","tca","te","ai","area_cv","area_mn","area_sd","cai_cv","cai_mn","cai_sd","circle_cv","circle_mn","circle_sd","cohesion","condent","contag","contig_cv","contig_mn","contig_sd","core_cv","core_mn","core_sd","dcad","dcore_cv","dcore_mn","dcore_sd","division","ed","enn_cv","enn_mn","enn_sd","ent","frac_cv","frac_mn","frac_sd","gyrate_cv","gyrate_mn","gyrate_sd","iji","joinent","lpi","lsi","mesh","msidi","msiei","mutinf","ndca","np","pafrac","para_cv","para_mn","para_sd","pd","pladj","pr","prd","rpr","shape_cv","shape_mn","shape_sd","shdi","shei","sidi","siei","split","ta","tca","te"],["patch area","core area index","related circumscribing circle","contiguity index","core area","euclidean nearest neighbor distance","fractal dimension index","radius of gyration","number of core areas","perimeter-area ratio","patch perimeter","shape index","aggregation index","patch area","patch area","patch area","total (class) area","core area index","core area index","core area index","related circumscribing circle","related circumscribing circle","related circumscribing circle","clumpiness index","patch cohesion index","contiguity index","contiguity index","contiguity index","core area","core area","core area","core area percentage of landscape","disjunct core area density","disjunct core area","disjunct core area","disjunct core area","division index","edge density","euclidean nearest neighbor distance","euclidean nearest neighbor distance","euclidean nearest neighbor distance","fractal dimension index","fractal dimension index","fractal dimension index","radius of gyration","radius of gyration","radius of gyration","interspersion and juxtaposition index","largest patch index","landscape shape index","effective mesh size","number of disjunct core areas","normalized landscape shape index","number of patches","perimeter-area fractal dimension","perimeter-area ratio","perimeter-area ratio","perimeter-area ratio","patch density","percentage of like adjacencies","percentage of landscape","shape index","shape index","shape index","splitting index","total core area","total edge","aggregation index","patch area","patch area","patch area","core area index","core area index","core area index","related circumscribing circle","related circumscribing circle","related circumscribing circle","patch cohesion index","conditional entropy","connectance","contiguity index","contiguity index","contiguity index","core area","core area","core area","disjunct core area density","disjunct core area","disjunct core area","disjunct core area","division index","edge density","euclidean nearest neighbor distance","euclidean nearest neighbor distance","euclidean nearest neighbor distance","shannon entropy","fractal dimension index","fractal dimension index","fractal dimension index","radius of gyration","radius of gyration","radius of gyration","interspersion and juxtaposition index","joint entropy","largest patch index","landscape shape index","effective mesh size","modified simpson's diversity index","modified simpson's evenness index","mutual information","number of disjunct core areas","number of patches","perimeter-area fractal dimension","perimeter-area ratio","perimeter-area ratio","perimeter-area ratio","patch density","percentage of like adjacencies","patch richness","patch richness density","relative patch richness","shape index","shape index","shape index","shannon's diversity index","shannon's evenness index","simpson's diversity index","simspon's evenness index","splitting index","total area","total core area","total edge"],["area and edge metric","core area metric","shape metric","shape metric","core area metric","aggregation metric","shape metric","area and edge metric","core area metric","shape metric","area and edge metric","shape metric","aggregation metric","area and edge metric","area and edge metric","area and edge metric","area and edge metric","core area metric","core area metric","core area metric","shape metric","shape metric","shape metric","aggregation metric","aggregation metric","shape metric","shape metric","shape metric","core area metric","core area metric","core area metric","core area metric","core area metric","core area metric","core area metric","core area metric","aggregation metric","area and edge metric","aggregation metric","aggregation metric","aggregation metric","shape metric","shape metric","shape metric","area and edge metric","area and edge metric","area and edge metric","aggregation metric","area and edge metric","aggregation metric","aggregation metric","core area metric","aggregation metric","aggregation metric","shape metric","shape metric","shape metric","shape metric","aggregation metric","aggregation metric","area and edge metric","shape metric","shape metric","shape metric","aggregation metric","core area metric","area and edge metric","aggregation metric","area and edge metric","area and edge metric","area and edge metric","core area metric","core area metric","core area metric","shape metric","shape metric","shape metric","aggregation metric","complexity metric","aggregation metric","shape metric","shape metric","shape metric","core area metric","core area metric","core area metric","core area metric","core area metric","core area metric","core area metric","aggregation metric","area and edge metric","aggregation metric","aggregation metric","aggregation metric","complexity metric","shape metric","shape metric","shape metric","area and edge metric","area and edge metric","area and edge metric","aggregation metric","complexity metric","area and edge metric","aggregation metric","aggregation metric","diversity metric","diversity metric","complexity metric","core area metric","aggregation metric","shape metric","shape metric","shape metric","shape metric","aggregation metric","aggregation metric","diversity metric","diversity metric","diversity metric","shape metric","shape metric","shape metric","diversity metric","diversity metric","diversity metric","diversity metric","aggregation metric","area and edge metric","core area metric","area and edge metric"],["patch","patch","patch","patch","patch","patch","patch","patch","patch","patch","patch","patch","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape"],["lsm_p_area","lsm_p_cai","lsm_p_circle","lsm_p_contig","lsm_p_core","lsm_p_enn","lsm_p_frac","lsm_p_gyrate","lsm_p_ncore","lsm_p_para","lsm_p_perim","lsm_p_shape","lsm_c_ai","lsm_c_area_cv","lsm_c_area_mn","lsm_c_area_sd","lsm_c_ca","lsm_c_cai_cv","lsm_c_cai_mn","lsm_c_cai_sd","lsm_c_circle_cv","lsm_c_circle_mn","lsm_c_circle_sd","lsm_c_clumpy","lsm_c_cohesion","lsm_c_contig_cv","lsm_c_contig_mn","lsm_c_contig_sd","lsm_c_core_cv","lsm_c_core_mn","lsm_c_core_sd","lsm_c_cpland","lsm_c_dcad","lsm_c_dcore_cv","lsm_c_dcore_mn","lsm_c_dcore_sd","lsm_c_division","lsm_c_ed","lsm_c_enn_cv","lsm_c_enn_mn","lsm_c_enn_sd","lsm_c_frac_cv","lsm_c_frac_mn","lsm_c_frac_sd","lsm_c_gyrate_cv","lsm_c_gyrate_mn","lsm_c_gyrate_sd","lsm_c_iji","lsm_c_lpi","lsm_c_lsi","lsm_c_mesh","lsm_c_ndca","lsm_c_nlsi","lsm_c_np","lsm_c_pafrac","lsm_c_para_cv","lsm_c_para_mn","lsm_c_para_sd","lsm_c_pd","lsm_c_pladj","lsm_c_pland","lsm_c_shape_cv","lsm_c_shape_mn","lsm_c_shape_sd","lsm_c_split","lsm_c_tca","lsm_c_te","lsm_l_ai","lsm_l_area_cv","lsm_l_area_mn","lsm_l_area_sd","lsm_l_cai_cv","lsm_l_cai_mn","lsm_l_cai_sd","lsm_l_circle_cv","lsm_l_circle_mn","lsm_l_circle_sd","lsm_l_cohesion","lsm_l_condent","lsm_l_contag","lsm_l_contig_cv","lsm_l_contig_mn","lsm_l_contig_sd","lsm_l_core_cv","lsm_l_core_mn","lsm_l_core_sd","lsm_l_dcad","lsm_l_dcore_cv","lsm_l_dcore_mn","lsm_l_dcore_sd","lsm_l_division","lsm_l_ed","lsm_l_enn_cv","lsm_l_enn_mn","lsm_l_enn_sd","lsm_l_ent","lsm_l_frac_cv","lsm_l_frac_mn","lsm_l_frac_sd","lsm_l_gyrate_cv","lsm_l_gyrate_mn","lsm_l_gyrate_sd","lsm_l_iji","lsm_l_joinent","lsm_l_lpi","lsm_l_lsi","lsm_l_mesh","lsm_l_msidi","lsm_l_msiei","lsm_l_mutinf","lsm_l_ndca","lsm_l_np","lsm_l_pafrac","lsm_l_para_cv","lsm_l_para_mn","lsm_l_para_sd","lsm_l_pd","lsm_l_pladj","lsm_l_pr","lsm_l_prd","lsm_l_rpr","lsm_l_shape_cv","lsm_l_shape_mn","lsm_l_shape_sd","lsm_l_shdi","lsm_l_shei","lsm_l_sidi","lsm_l_siei","lsm_l_split","lsm_l_ta","lsm_l_tca","lsm_l_te"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>metric<\/th>\n      <th>name<\/th>\n      <th>type<\/th>\n      <th>level<\/th>\n      <th>function_name<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"tip","searchable":false,"ordering":false,"pageLength":7,"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[7,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# Landscape Metric Naming Conventions
+
+The functions in this library are named with the following taxonomy.
+
+`lsm_{l|p|c}_metric()`
+
+where `{l|p|c}` is one of `l`, `p`, or `c` and the metric is the name as shown above.  So, for example, if we are looking at the area of each patch in the landscape we would use the function
+
+--
+
+.pull-left[
+
+
+```r
+lsm_p_area( land_2016 ) 
+```
+
+```
+## # A tibble: 193 x 6
+##    layer level class    id metric value
+##    &lt;int&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1     1 patch    11     1 area   70.4 
+##  2     1 patch    11     2 area    0.18
+##  3     1 patch    11     3 area    0.18
+##  4     1 patch    11     4 area    0.18
+##  5     1 patch    11     5 area    1.17
+##  6     1 patch    11     6 area    0.18
+##  7     1 patch    11     7 area    0.18
+##  8     1 patch    11     8 area    0.36
+##  9     1 patch    11     9 area    0.27
+## 10     1 patch    11    10 area    1.08
+## # … with 183 more rows
+```
+
+]
+
+.pull-right[
+The output provides the following components:  
+
+- layers: See `?stack` for raster stacks  
+
+- level: The nested level of the analysis (lpc)  
+
+- class: The landscape feature class from the raster
+
+- id: A unique identification number for each group
+
+- metric: What is being measured.
+
+- value: The estimated value for the analysis.
+]
+
+
+---
+
+# Case Study - Summary of Forest Types
+
+
+.pull-left[
+
+```r
+lsm_p_area( land_2016 ) %&gt;%
+  filter( class %in% c(42, 43) ) %&gt;%
+  mutate( Forest = ifelse( class == 42, "Evergreen", "Mixed Hardwoods") ) %&gt;%
+  ggplot( aes(value) ) + 
+  geom_density() + 
+  facet_grid( Forest ~ .) +
+  xlab("Area (ha)") + 
+  ylab("Frequency") + 
+  ggtitle("Area Distribution of Mixed Forest Types")
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-21-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Other Metrics of Interest
+
+- *gyrate* - The mean distance between cells within it which approximates something like the average distance an organism can move within a patch before encountering a boundary.  
+
+- *ca* - The physical area associated with each landscape type.
+
+
+- *clump* - A measure of how spatially contingent the features are ranging from random (no clumping) to all in one large patch (fully clumped).
+
+- *pr* - Patch richness.
+
+- *shdi* - Shannon's Diversity index
+
+
+---
+
+# Finding Patches by ID
+
+
+
+```r
+lsm_p_area( land_2016 ) %&gt;%
+  group_by( class ) %&gt;%
+  summarize( `Area` = sum( value) ) %&gt;%
+  arrange(-Area)
+```
+
+```
+## # A tibble: 13 x 2
+##    class   Area
+##    &lt;int&gt;  &lt;dbl&gt;
+##  1    43 137.  
+##  2    42 137.  
+##  3    90  85.5 
+##  4    11  74.2 
+##  5    82  65.9 
+##  6    41  56.5 
+##  7    21  25.5 
+##  8    95  13.9 
+##  9    52  13.0 
+## 10    31   2.16
+## 11    22   1.26
+## 12    71   0.72
+## 13    23   0.18
+```
+
+---
+
+# Evergreen Forests
+
+.pull-left[
+
+```r
+get_patches( land_2016, class=42)[[1]] %&gt;%
+  plot( ) 
+```
+]
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-24-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Mixed Forests
+
+.pull-left[
+
+```r
+get_patches( land_2016, class=43)[[1]] %&gt;%
+  plot( ) 
+```
+]
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-26-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Woody Wetlands
+
+.pull-left[
+
+```r
+get_patches( land_2016, class=90)[[1]] %&gt;%
+  plot( ) 
+```
+]
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-28-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# 🙋🏻‍♀️ Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif+)
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     </textarea>

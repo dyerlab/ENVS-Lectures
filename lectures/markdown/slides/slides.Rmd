@@ -1,0 +1,335 @@
+---
+title: "R Markdown"
+subtitle: "Efficient Data Communication"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [envs543-styles.css, middlebury, middlebury-fonts]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/50367566131_d113e26988_d.jpg")
+background-position: right
+background-size: auto
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(kableExtra)
+```
+
+
+
+
+# Markdown Slides & Github
+
+### Serving Slides to the World 
+
+
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<img src="https://live.staticflickr.com/65535/50913544171_9a2f1a6252_z_d.jpg" width="400px">
+
+---
+class: sectionTitle
+
+# But WHY?
+
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51113440438_a05ea68123_o_d.png")
+background-position: right
+background-size: cover
+
+
+---
+
+# **95%** of all presentations suck!
+
+.center[
+```{r echo=FALSE, out.width=600}
+data.frame( Part = c("The Rest", "Non-Sucking Presentations"), 
+            Value = c(95,5)) %>%
+  ggplot( aes(x="", Value, fill=Part)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=20) + 
+  theme_void( base_size=18) +
+  scale_fill_brewer(palette="Set1")
+```
+]
+
+
+---
+
+# Examples
+
+.pull-left[
+![Crappy visuals](https://live.staticflickr.com/65535/51114300795_fc4952949c_o_d.png)
+I don't care enough about my audience to even photocopy something square
+]
+--
+.pull-right[
+
+![too much text](https://live.staticflickr.com/65535/51113270794_a641745b5a_o_d.png)
+I know that if I put a lot of crap on a slide my audience will actually spend time reading it instead of listening to me talk about the subject I am *supposed* to be an expert in.
+]
+
+---
+class: center, middle
+
+# OK, perhaps **95%** was a bit too generous!
+
+
+---
+class: center, middle
+
+# .red[Why?]
+
+---
+
+# What is being attempted
+
+
+.pull-left[
+## Attempting
+
+- Understanding  
+
+- Competence  
+
+- Storytelling
+
+- Projection
+
+- Humor
+]
+
+--
+
+.pull-right[
+## Demonstrating
+
+- Too Long
+
+- Poor Graphics
+
+- Boring
+
+- Crowded Slides
+
+- Incoherence
+]
+
+---
+
+# The Audience Wants (Deserves)
+
+.center[
+### Short
+
+### Clean
+
+### Legible
+
+### Engaging
+
+### Memorable
+
+]
+
+
+
+
+
+
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51113446273_c508a8158b_o_d.png")
+background-position: center
+background-size: auto
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51113536001_e6a4219e50_o_d.png")
+background-position: center
+background-size: auto
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51114324835_9c9048e495_o_d.png")
+background-position: center
+background-size: auto
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51112972097_e7f4bd238c_c_d.jpg")
+background-position: center
+background-size: auto
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51113294404_bb80ca4336_c_d.jpg")
+background-position: center
+background-size: auto
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51113537746_f2a8552aff_o_d.png")
+background-position: right
+background-size: cover
+
+
+
+---
+class: sectionTitle
+
+# Slides in Markdown
+
+
+
+
+---
+
+
+.left-column[
+
+# Built-In Types
+
+
+RStudio has the following types built-in:
+
+- ioslides 
+
+- Slidy  
+
+- Beamer  
+
+- Powerpoint (don't laugh)
+]
+
+.right-column[
+![](https://live.staticflickr.com/65535/51114346635_c3db85c876_o_d.png)
+]
+
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/51113472093_68290ac4cc_c_d.jpg")
+background-position: center
+background-size: auto
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50913544171_9a2f1a6252_z_d.jpg" width="400px")
+background-position: right
+background-size: auto
+
+.center[
+
+# Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif)
+]
+
+<p>&nbsp;</p>
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

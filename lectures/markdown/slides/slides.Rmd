@@ -23,6 +23,9 @@ background-size: auto
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(kableExtra)
+library( gganimate )
+library( gapminder )
+theme_set( theme_bw() )
 ```
 
 
@@ -402,7 +405,155 @@ system("find docs -iname '*.zip' -delete" )
 
 
 ---
+class: sectionTitle, inverse
 
+# gganimate
+
+## .fancy[Finally!]
+
+
+
+---
+
+# Required Libraries for Animations
+
+For this quick tutorial, we'll need to install both the `gganimate` package 
+
+```{r eval=FALSE}
+install.packages("gifski")
+remotes::install_github("thomasp85/gganimate")
+library( gganimate )
+```
+
+--
+
+as well as a package that has temporal data for Gross Domestic Product and Life Expecency for 142 different countries from 1952-2007.
+
+```{r eval=FALSE}
+install.packages("gapminder")
+library( gapminder )
+```
+
+
+
+
+---
+# The Data
+
+
+```{r}
+summary( gapminder )
+```
+
+
+
+---
+
+# Static View of the Data
+
+.pull-left[
+
+```{r eval=FALSE}
+ggplot( gapminder,
+        aes(gdpPercap, lifeExp, color=country, size=pop)) + 
+  geom_point(show.legend=FALSE, alpha=0.7) +
+  scale_color_viridis_d() +
+  scale_x_log10() -> p
+p
+```
+
+Note:
+
+- I'm not showing the legend as there would be no place for the plot after `listing 142 country` names.  
+
+- I'm using a log tranform on the x-axis to `linearize` it a bit.
+
+- Data is plot for `all years`.
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+ggplot( gapminder,
+        aes(gdpPercap, lifeExp, color=country, size=pop)) + 
+  geom_point(show.legend=FALSE, alpha=0.7) +
+  scale_color_viridis_d() +
+  scale_x_log10() -> p
+p
+```
+]
+
+
+
+---
+# Animating the Plot Through Time
+
+.pull-left[
+Add a `transition_time` modifification layer using `year` as the variable.
+
+```{r eval=FALSE}
+p + transition_time(year) + 
+  labs( title = "Year: {frame_time}")
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+p + transition_time(year) + 
+  labs( title = "Year: {frame_time}")
+```
+]
+
+
+
+
+
+---
+# Integrating Facets
+
+
+.pull-left[
+```{r eval=FALSE}
+p + transition_time(year) + 
+  labs( title = "Year: {frame_time}") + 
+  facet_wrap( ~continent )
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+p + transition_time(year) + 
+  labs( title = "Year: {frame_time}") + 
+  facet_wrap( ~continent )
+```
+]
+
+
+---
+.pull-left[
+![](https://live.staticflickr.com/65535/51116089065_bf79d5d711_o_d.jpg)
+
+# I see Trailers Man!
+
+]
+
+.pull-right[
+```{r message=FALSE}
+p + transition_time(year) +
+  labs(title = "Year: {frame_time}") +
+  shadow_wake(wake_length = 0.2, alpha = FALSE)
+```
+]
+
+
+
+
+
+
+
+
+
+---
 class: middle
 background-image: url("https://live.staticflickr.com/65535/50913544171_9a2f1a6252_z_d.jpg" width="400px")
 background-position: right

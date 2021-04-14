@@ -391,7 +391,169 @@ system("find docs -iname '*.zip' -delete" )
 
 
 ---
+class: sectionTitle, inverse
 
+# gganimate
+
+## .fancy[Finally!]
+
+
+
+---
+
+# Required Libraries for Animations
+
+For this quick tutorial, we'll need to install both the `gganimate` package 
+
+
+```r
+install.packages("gifski")
+remotes::install_github("thomasp85/gganimate")
+library( gganimate )
+```
+
+--
+
+as well as a package that has temporal data for Gross Domestic Product and Life Expecency for 142 different countries from 1952-2007.
+
+
+```r
+install.packages("gapminder")
+library( gapminder )
+```
+
+
+
+
+---
+# The Data
+
+
+
+```r
+summary( gapminder )
+```
+
+```
+##         country        continent        year         lifeExp     
+##  Afghanistan:  12   Africa  :624   Min.   :1952   Min.   :23.60  
+##  Albania    :  12   Americas:300   1st Qu.:1966   1st Qu.:48.20  
+##  Algeria    :  12   Asia    :396   Median :1980   Median :60.71  
+##  Angola     :  12   Europe  :360   Mean   :1980   Mean   :59.47  
+##  Argentina  :  12   Oceania : 24   3rd Qu.:1993   3rd Qu.:70.85  
+##  Australia  :  12                  Max.   :2007   Max.   :82.60  
+##  (Other)    :1632                                                
+##       pop              gdpPercap       
+##  Min.   :6.001e+04   Min.   :   241.2  
+##  1st Qu.:2.794e+06   1st Qu.:  1202.1  
+##  Median :7.024e+06   Median :  3531.8  
+##  Mean   :2.960e+07   Mean   :  7215.3  
+##  3rd Qu.:1.959e+07   3rd Qu.:  9325.5  
+##  Max.   :1.319e+09   Max.   :113523.1  
+## 
+```
+
+
+
+---
+
+# Static View of the Data
+
+.pull-left[
+
+
+```r
+ggplot( gapminder,
+        aes(gdpPercap, lifeExp, color=country, size=pop)) + 
+  geom_point(show.legend=FALSE, alpha=0.7) +
+  scale_color_viridis_d() +
+  scale_x_log10() -&gt; p
+p
+```
+
+Note:
+
+- I'm not showing the legend as there would be no place for the plot after `listing 142 country` names.  
+
+- I'm using a log tranform on the x-axis to `linearize` it a bit.
+
+- Data is plot for `all years`.
+
+]
+
+.pull-right[
+![](slides_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+]
+
+
+
+---
+# Animating the Plot Through Time
+
+.pull-left[
+Add a `transition_time` modifification layer using `year` as the variable.
+
+
+```r
+p + transition_time(year) + 
+  labs( title = "Year: {frame_time}")
+```
+]
+
+.pull-right[
+![](slides_files/figure-html/unnamed-chunk-10-1.gif)&lt;!-- --&gt;
+]
+
+
+
+
+
+---
+# Integrating Facets
+
+
+.pull-left[
+
+```r
+p + transition_time(year) + 
+  labs( title = "Year: {frame_time}") + 
+  facet_wrap( ~continent )
+```
+]
+
+.pull-right[
+![](slides_files/figure-html/unnamed-chunk-12-1.gif)&lt;!-- --&gt;
+]
+
+
+---
+.pull-left[
+![](https://live.staticflickr.com/65535/51116089065_bf79d5d711_o_d.jpg)
+
+# I see Trailers Man!
+
+]
+
+.pull-right[
+
+```r
+p + transition_time(year) +
+  labs(title = "Year: {frame_time}") +
+  shadow_wake(wake_length = 0.2, alpha = FALSE)
+```
+
+![](slides_files/figure-html/unnamed-chunk-13-1.gif)&lt;!-- --&gt;
+]
+
+
+
+
+
+
+
+
+
+---
 class: middle
 background-image: url("https://live.staticflickr.com/65535/50913544171_9a2f1a6252_z_d.jpg" width="400px")
 background-position: right

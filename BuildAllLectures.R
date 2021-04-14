@@ -8,7 +8,6 @@ library(tidyverse)
 #  git commit -m 'put a message in here to explain what you are doing'
 #  git push
 
-
 # Fix to break in rmarkdown and HTMLWidgets
 options(htmltools.preserve.raw = FALSE)
 

@@ -307,20 +307,97 @@ background-position: top
 background-size: cover
 
 
+---
+# Make `Presentations` Repository On Github 💻 `r fontawesome::fa("github")` 
+
+.center[![](https://live.staticflickr.com/65535/51115892370_be869723c1_c_d.jpg)]
 
 
 
+---
+# Make New Project From Github 💻 `r fontawesome::fa("github")`
+
+.center[
+![](https://live.staticflickr.com/65535/51115889090_28bd96f7fe_z_d.jpg)
+]
 
 
 
+---
+# New Presentation On Github 💻 `r fontawesome::fa("github")`
+
+.center[
+![](https://live.staticflickr.com/65535/51114854899_7654216757_o_d.png)
 
 
 
+---
+class: middle, center
+
+# Go play with Xaringan!
+
+![](https://media.giphy.com/media/demgpwJ6rs2DS/giphy.gif)
+
+---
+class: sectionTitle
+
+# Deploying on Github
+
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51115114901_e4b09956f9_c_d.jpg")
+background-position: center
+background-size: cover
 
 
 
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51115122666_828982f713_b_d.jpg")
+background-position: top
+background-size: cover
 
 
+
+---
+# Deploying Many Presenatations
+
+
+1. Make an index.Rmd HTML page above folders for presentations.
+.center[ 
+![](https://live.staticflickr.com/65535/51115038513_584ea6a803_c_d.jpg)
+]
+
+
+---
+# Deploying Many Presenatations
+
+1. Make an index.Rmd HTML page  
+2. Automate Building Lectures
+
+```{r eval=FALSE}
+# Remove all data and functions in the Environment
+rm(list=ls())
+
+# Set option for HTML embeds
+options(htmltools.preserve.raw = FALSE)
+
+# Go through tall the subfolders and build anything that is 'new'
+for( folder in list.dirs("presentations",full.names = TRUE,recursive = FALSE) ) {
+  print( paste("Building",folder) )
+  blogdown::build_dir( folder, force=FALSE )
+}
+
+# Make the one page to rule them all...
+rmarkdown::render("presentations/index.Rmd")
+
+# Mac/Linux Specific Automation for moving stuff automatically
+#  Winblows users need to figure out how to do this in another way (or manual)
+system("rsync -raz --progress  lectures/ docs/")
+system("find docs -iname '*.Rmd' -delete" )
+system("find docs -iname '*.zip' -delete" )
+```
 
 
 

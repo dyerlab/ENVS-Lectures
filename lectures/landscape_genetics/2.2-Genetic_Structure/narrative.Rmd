@@ -1,0 +1,37 @@
+---
+title: "Narrative for Genetic Data"
+output: html_notebook
+---
+![](https://live.staticflickr.com/65535/51022898606_826b8ed709_c_d.jpg)
+
+## Background
+
+
+
+
+## Research Example
+
+
+
+
+## Data Requirements
+
+
+
+
+## Analyses & Interpretations
+
+
+
+
+## Challenges
+
+
+
+
+## Cheatsheets & Other External Resources
+
+
+
+
+---

@@ -516,9 +516,9 @@ points
 
 # Reprojecting Rasters
 
-Just like points, we can reproject the entire raster using the `projectRaster` function.  HJere I am going to project the raster into UTM Zone 12N, a common projection for this part of [Mexico from epsg.io](https://epsg.io/6367).  
+Just like points, we can reproject the entire raster using the `projectRaster` function.  Here I am going to project the raster into UTM Zone 12N, a common projection for this part of [Mexico from epsg.io](https://epsg.io/6367).  
 
-Unfortunatly, the `raster` library does not use epsg codes so we'll have to use the large description of that projection.  See the [page](https://epsg.io/6367) for this projection and scroll down to the proj.4 definition.  
+Unfortunately, the `raster` library does not use epsg codes so we'll have to use the large description of that projection.  See the [page](https://epsg.io/6367) for this projection and scroll down to the proj.4 definition.  
 
 ```{r}
 new.proj <- "+proj=utm +zone=12 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs "

@@ -1,0 +1,621 @@
+---
+title: "R Markdown"
+subtitle: "Efficient Data Communication"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [envs543-styles.css, middlebury, middlebury-fonts]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/50367566131_d113e26988_d.jpg")
+background-position: right
+background-size: auto
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(kableExtra)
+library( gganimate )
+library( gapminder )
+theme_set( theme_bw() )
+```
+
+
+
+
+# Markdown Slides & Github
+
+### Serving Slides to the World 
+
+
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<img src="https://live.staticflickr.com/65535/50913544171_9a2f1a6252_z_d.jpg" width="400px">
+
+---
+class: sectionTitle
+
+# But WHY?
+
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51113440438_a05ea68123_o_d.png")
+background-position: right
+background-size: cover
+
+
+---
+
+# **95%** of all presentations suck!
+
+.center[
+```{r echo=FALSE, out.width=600}
+data.frame( Part = c("The Rest", "Non-Sucking Presentations"), 
+            Value = c(95,5)) %>%
+  ggplot( aes(x="", Value, fill=Part)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=20) + 
+  theme_void( base_size=18) +
+  scale_fill_brewer(palette="Set1")
+```
+]
+
+
+---
+
+# Examples
+
+.pull-left[
+![Crappy visuals](https://live.staticflickr.com/65535/51114300795_fc4952949c_o_d.png)
+I don't care enough about my audience to even photocopy something square
+]
+--
+.pull-right[
+
+![too much text](https://live.staticflickr.com/65535/51113270794_a641745b5a_o_d.png)
+I know that if I put a lot of crap on a slide my audience will actually spend time reading it instead of listening to me talk about the subject I am *supposed* to be an expert in.
+]
+
+---
+class: center, middle
+
+# OK, perhaps **95%** was a bit too generous!
+
+
+---
+class: center, middle
+
+# .red[Why?]
+
+---
+
+# What is being attempted
+
+
+.pull-left[
+## Attempting
+
+- Understanding  
+
+- Competence  
+
+- Storytelling
+
+- Projection
+
+- Humor
+]
+
+--
+
+.pull-right[
+## Demonstrating
+
+- Too Long
+
+- Poor Graphics
+
+- Boring
+
+- Crowded Slides
+
+- Incoherence
+]
+
+---
+
+# The Audience Wants (Deserves)
+
+.center[
+### Short
+
+### Clean
+
+### Legible
+
+### Engaging
+
+### Memorable
+
+]
+
+
+
+
+
+
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51113446273_c508a8158b_o_d.png")
+background-position: center
+background-size: auto
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51113536001_e6a4219e50_o_d.png")
+background-position: center
+background-size: auto
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51114324835_9c9048e495_o_d.png")
+background-position: center
+background-size: auto
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51112972097_e7f4bd238c_c_d.jpg")
+background-position: center
+background-size: auto
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51113294404_bb80ca4336_c_d.jpg")
+background-position: center
+background-size: auto
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51113537746_f2a8552aff_o_d.png")
+background-position: right
+background-size: cover
+
+
+
+---
+class: sectionTitle
+
+# Slides in Markdown
+
+
+
+
+---
+
+
+.left-column[
+
+# Built-In Types
+
+
+RStudio has the following types built-in:
+
+- ioslides 
+
+- Slidy  
+
+- Beamer  
+
+- Powerpoint (don't laugh)
+]
+
+.right-column[
+![](https://live.staticflickr.com/65535/51114346635_c3db85c876_o_d.png)
+]
+
+
+
+
+---
+class: middle
+
+# Xaringan Slides (![defn](https://live.staticflickr.com/65535/51114493697_72172aa56c_o_d.png) Xar·in·gan)
+## /ʃæ.'riŋ.ɡæn/
+
+
+.pull-left[
+![JavaScript](https://arm.rbind.io/slides/img/nutshell-js.png)
+]
+
+--
+
+.pull-right[
+![CSS](https://arm.rbind.io/slides/img/nutshell-css.png)
+]
+
+
+---
+class: center, middle
+
+<iframe src="https://remarkjs.com/#1" width="800" height="600"></iframe>
+
+
+---
+class: middle, center
+
+
+## .redinline[Remark.js] does not take `R` code natively, but...
+
+&nbsp;
+
+--
+
+&nbsp;
+
+## .greeninline[Xaringan] provides the link.
+
+
+
+---
+
+# Difference from Normal Markdown
+
+## Markdown Workflow
+
+![normal workflow for markdown](https://d33wubrfki0l68.cloudfront.net/61d189fd9cdf955058415d3e1b28dd60e1bd7c9b/9791d/images/rmarkdownflow.png)
+
+--
+
+### Xaringan Workflow
+
+![Xaringan remark workflow](https://live.staticflickr.com/65535/51114511437_9858ede419_c_d.jpg)
+
+
+---
+# Installation of Xaringan
+
+Let's install this package directly from its [GitHub repository](https://github.com/yihui/xaringan).
+
+```{r eval=FALSE}
+remotes::install_github("yihui/xaringan")
+```
+
+
+
+
+
+---
+class: sectionTitle
+
+# Using Github
+
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51115874990_9e4a5a4d32_b_d.jpg")
+background-position: top
+background-size: cover
+
+
+---
+# Make `Presentations` Repository On Github 💻 `r fontawesome::fa("github")` 
+
+.center[![](https://live.staticflickr.com/65535/51115892370_be869723c1_c_d.jpg)]
+
+
+
+---
+# Make New Project From Github 💻 `r fontawesome::fa("github")`
+
+.center[
+![](https://live.staticflickr.com/65535/51115889090_28bd96f7fe_z_d.jpg)
+]
+
+
+
+---
+# New Presentation On Github 💻 `r fontawesome::fa("github")`
+
+.center[
+![](https://live.staticflickr.com/65535/51114854899_7654216757_o_d.png)
+
+
+
+---
+class: middle, center
+
+# Go play with Xaringan!
+
+![](https://media.giphy.com/media/demgpwJ6rs2DS/giphy.gif)
+
+---
+class: sectionTitle
+
+# Deploying on Github
+
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51115114901_e4b09956f9_c_d.jpg")
+background-position: center
+background-size: cover
+
+
+
+---
+class: left, bottom
+background-image: url("https://live.staticflickr.com/65535/51115122666_828982f713_b_d.jpg")
+background-position: top
+background-size: cover
+
+
+
+---
+# Deploying Many Presenatations
+
+
+1. Make an index.Rmd HTML page above folders for presentations.
+.center[ 
+![](https://live.staticflickr.com/65535/51115038513_584ea6a803_c_d.jpg)
+]
+
+
+---
+# Deploying Many Presenatations
+
+1. Make an index.Rmd HTML page  
+2. Automate Building Lectures
+
+```{r eval=FALSE}
+# Remove all data and functions in the Environment
+rm(list=ls())
+
+# Set option for HTML embeds
+options(htmltools.preserve.raw = FALSE)
+
+# Go through tall the subfolders and build anything that is 'new'
+for( folder in list.dirs("presentations",full.names = TRUE,recursive = FALSE) ) {
+  print( paste("Building",folder) )
+  blogdown::build_dir( folder, force=FALSE )
+}
+
+# Make the one page to rule them all...
+rmarkdown::render("presentations/index.Rmd")
+
+# Mac/Linux Specific Automation for moving stuff automatically
+#  Winblows users need to figure out how to do this in another way (or manual)
+system("rsync -raz --progress  lectures/ docs/")
+system("find docs -iname '*.Rmd' -delete" )
+system("find docs -iname '*.zip' -delete" )
+```
+
+
+
+---
+class: sectionTitle, inverse
+
+# gganimate
+
+## .fancy[Finally!]
+
+
+
+---
+
+# Required Libraries for Animations
+
+For this quick tutorial, we'll need to install both the `gganimate` package 
+
+```{r eval=FALSE}
+install.packages("gifski")
+remotes::install_github("thomasp85/gganimate")
+library( gganimate )
+```
+
+--
+
+as well as a package that has temporal data for Gross Domestic Product and Life Expecency for 142 different countries from 1952-2007.
+
+```{r eval=FALSE}
+install.packages("gapminder")
+library( gapminder )
+```
+
+
+
+
+---
+# The Data
+
+
+```{r}
+summary( gapminder )
+```
+
+
+
+---
+
+# Static View of the Data
+
+.pull-left[
+
+```{r eval=FALSE}
+ggplot( gapminder,
+        aes(gdpPercap, lifeExp, color=country, size=pop)) + 
+  geom_point(show.legend=FALSE, alpha=0.7) +
+  scale_color_viridis_d() +
+  scale_x_log10() -> p
+p
+```
+
+Note:
+
+- I'm not showing the legend as there would be no place for the plot after `listing 142 country` names.  
+
+- I'm using a log tranform on the x-axis to `linearize` it a bit.
+
+- Data is plot for `all years`.
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+ggplot( gapminder,
+        aes(gdpPercap, lifeExp, color=country, size=pop)) + 
+  geom_point(show.legend=FALSE, alpha=0.7) +
+  scale_color_viridis_d() +
+  scale_x_log10() -> p
+p
+```
+]
+
+
+
+---
+# Animating the Plot Through Time
+
+.pull-left[
+Add a `transition_time` modifification layer using `year` as the variable.
+
+```{r eval=FALSE}
+p + transition_time(year) + 
+  labs( title = "Year: {frame_time}")
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+p + transition_time(year) + 
+  labs( title = "Year: {frame_time}")
+```
+]
+
+
+
+
+
+---
+# Integrating Facets
+
+
+.pull-left[
+```{r eval=FALSE}
+p + transition_time(year) + 
+  labs( title = "Year: {frame_time}") + 
+  facet_wrap( ~continent )
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+p + transition_time(year) + 
+  labs( title = "Year: {frame_time}") + 
+  facet_wrap( ~continent )
+```
+]
+
+
+---
+.pull-left[
+![](https://live.staticflickr.com/65535/51116089065_bf79d5d711_o_d.jpg)
+
+# I see Trailers Man!
+
+]
+
+.pull-right[
+```{r message=FALSE}
+p + transition_time(year) +
+  labs(title = "Year: {frame_time}") +
+  shadow_wake(wake_length = 0.2, alpha = FALSE)
+```
+]
+
+
+
+
+
+
+
+
+
+---
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50913544171_9a2f1a6252_z_d.jpg" width="400px")
+background-position: right
+background-size: auto
+
+.center[
+
+# Questions?
+
+
+![Peter Sellers](https://live.staticflickr.com/65535/50382906427_2845eb1861_o_d.gif)
+]
+
+<p>&nbsp;</p>
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

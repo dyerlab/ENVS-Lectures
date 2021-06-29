@@ -1,0 +1,32 @@
+---
+title: "Habitat Homework"
+output: html_notebook
+---
+
+![Photo by Ricardo Resende on Unsplash](https://live.staticflickr.com/65535/51083828531_a16e8d2f2f_c_d.jpg)
+
+
+This homework focuses on analysis of habitat classification using a chunk of landscape including the [Rice River Center](https://ricerivers.vcu.edu).  The data were grabbed from the [NLCD](https://nlcd.gov) viewer website consisting of a (roughtly) 25 km$^2$ chunk of landscape.
+
+Here are the raw data url's on GitHub.
+
+```{r}
+library( raster )
+library( landscapemetrics )
+
+land_2011 <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2011_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land_2013 <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2013_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land_2016 <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land_legend <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/NLCD_landcover_legend_2018_12_17_qn2B1f8ganicJNKnJN0e.csv"
+
+```
+
+
+
+## Questions
+
+1. Landscape structure can be examined by type, composition, and configuration.  Load in the above three time periods for the same location and compare them in terms of Type, Composition, and Configuration (where configuration is measured by average patch area for forest types (`Value %in% c(41, 42, 43) )`).
+
+
+2. In 2011, the biggest difference in habitat areas was accounted for by Herbaceous ground cover.  What happened to that landtype in 2013 and 2016?
+

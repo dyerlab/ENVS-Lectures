@@ -8,11 +8,17 @@ library(tidyverse)
 #  git commit -m 'put a message in here to explain what you are doing'
 #  git push
 
-
 # Fix to break in rmarkdown and HTMLWidgets
 options(htmltools.preserve.raw = FALSE)
 
 
+<<<<<<< HEAD
+# Fix to break in rmarkdown and HTMLWidgets
+options(htmltools.preserve.raw = FALSE)
+
+
+=======
+>>>>>>> c753669be163fd5b74cc0dda3543c8edc61894f2
 if ( 0 ) {
   
   # look to make sure all the libraries are installed

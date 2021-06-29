@@ -1,0 +1,131 @@
+---
+title: "Habitat Homework"
+output: html_notebook
+---
+
+![Photo by Ricardo Resende on Unsplash](https://live.staticflickr.com/65535/51083828531_a16e8d2f2f_c_d.jpg)
+
+
+This homework focuses on analysis of habitat classification using a chunk of landscape including the [Rice River Center](https://ricerivers.vcu.edu).  The data were grabbed from the [NLCD](https://nlcd.gov) viewer website consisting of a (roughtly) 25 km$^2$ chunk of landscape.
+
+Here are the raw data url's on GitHub.
+
+```{r}
+library( raster )
+library( landscapemetrics )
+
+land_2011 <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2011_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land_2013 <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2013_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land_2016 <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land_legend <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/NLCD_landcover_legend_2018_12_17_qn2B1f8ganicJNKnJN0e.csv"
+
+```
+
+
+
+## Questions
+
+1. Landscape structure can be examined by type, composition, and configuration.  Load in the above three time periods for the same location and compare them in terms of Type, Composition, and Configuration (where configuration is measured by average patch area for forest types (`Value %in% c(41, 42, 43) )`).
+
+
+```{r}
+library( tidyverse )
+
+# Load them in
+l2011 <- raster( land_2011 )
+l2013 <- raster( land_2013 )
+l2016 <- raster( land_2016 )
+
+legend <- read_csv(land_legend)
+
+
+type_2011 <- values( l2011 ) %>% unique()  %>% sort()
+type_2013 <- values( l2013 ) %>% unique()  %>% sort()
+type_2016 <- values( l2016 ) %>% unique()  %>% sort()
+
+data.frame( Year = c(2011, 2013, 2016),
+            `Habitat Types` = c( paste( type_2011, collapse=", "),
+                       paste( type_2013, collapse=", "),
+                       paste( type_2016, collapse=", "))) %>%
+  knitr::kable() %>%
+  kableExtra::kable_styling( full_width = FALSE )
+```
+
+*Looks like the exact same types are present in each time period.  How about the percentage composition?*
+
+```{r}
+
+rbind( values( l2011 ) %>%
+         table() %>% 
+         as_tibble(), 
+       values( l2013 ) %>%
+         table() %>% 
+         as_tibble() , 
+       values( l2016 ) %>%
+         table() %>% 
+         as_tibble() ) -> landscape_composition
+names( landscape_composition ) <- c("Value","Legend")
+landscape_composition$Year <- factor(rep( c(2011,2013,2016), each=13))
+
+landscape_composition %>%
+  ggplot( aes(Value,Legend,fill=Year)) + 
+  geom_bar( stat="identity", position = "dodge")  
+
+```
+
+*The main differences seem to be different in some aspects, including: 2011 had more `71` (Herbaceous) and `90` (woody wetlands) than the other years, 2013 had more `52` (Shrub/Scrub) than other years, 2016 has more `42` (Evergreen Forest) than the other years.*
+ 
+ *The patch areas for forest types are comparable as follows*
+ 
+ 
+```{r}
+
+# Here I stack the three rasters together as they are measuring the same location
+stack( l2011, l2013, l2016 ) %>%
+  lsm_c_ai() %>%
+  dplyr::filter( class %in% c(41, 42, 43) ) %>%
+  mutate( Year = c("2011","2013","2016")[layer]) %>%
+  select( Year, Class = class, Area = value)  %>%
+  ggplot( aes(Class,Area, fill=Year) ) + 
+  geom_bar( stat="identity", position="dodge") + 
+  xlab("Forest Category") + ylab("Total Area (ha)")
+```
+
+2. In 2011, the biggest difference in habitat areas was accounted for by Herbaceous ground cover.  What happened to that landtype in 2013 and 2016?
+
+```{r}
+lsm_p_area( l2011 ) %>%
+  filter( class == 71 ) %>%
+  arrange( -value )
+```
+
+*Now let's see where the herbaceous vegitation was located in 2011*
+
+```{r}
+lg_herbaceous <- get_patches( l2011, class=71)[[1]]
+plot( lg_herbaceous ) 
+```
+
+*and then we can use that as a raster to mask out the 2013 and 2016 and see what replaced those landcape components*
+
+```{r}
+
+rbind( mask(l2013, lg_herbaceous) %>%
+  lsm_c_ai() %>%
+  mutate( Feature = legend$Legend[class+1]) %>%
+  mutate( Year = 2013 ) , 
+  mask(l2016, lg_herbaceous) %>%
+  lsm_c_ai() %>%
+  mutate( Feature = legend$Legend[class+1]) %>%
+  mutate( Year = 2016 ) ) %>%
+  filter( class != 71 ) %>%
+  filter( value > 0 ) %>%
+  select( Year, Feature, Class = class, Hectares = value ) %>%
+  knitr::kable( caption = "Landscape type replacing herbaceous layer from 2011.") %>%
+  kableExtra::kable_styling()
+```
+
+
+
+
+

@@ -1,0 +1,43 @@
+---
+title: "Activity Narrative"
+output: html_notebook
+---
+
+<center>
+[![National Cancer Institute](https://unsplash.com/photos/tV-RX0beDp8/download?force=true&w=640)](https://unsplash.com/photos/tV-RX0beDp8?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink)
+</center>
+
+## Overview
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel sodales purus. Ut fermentum lorem eget magna porttitor, in interdum lorem aliquet. Nunc fermentum tempor volutpat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce id dolor ac diam molestie scelerisque eget sed nibh. Maecenas aliquam magna vel elementum tempus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+
+## Leaning Objective
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel sodales purus. Ut fermentum lorem eget magna porttitor, in interdum lorem aliquet. Nunc fermentum tempor volutpat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce id dolor ac diam molestie scelerisque eget sed nibh. Maecenas aliquam magna vel elementum tempus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+
+
+## Research Outcomes
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel sodales purus. Ut fermentum lorem eget magna porttitor, in interdum lorem aliquet. Nunc fermentum tempor volutpat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce id dolor ac diam molestie scelerisque eget sed nibh. Maecenas aliquam magna vel elementum tempus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+
+
+---
+
+### Research Question X
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel sodales purus. Ut fermentum lorem eget magna porttitor, in interdum lorem aliquet. Nunc fermentum tempor volutpat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce id dolor ac diam molestie scelerisque eget sed nibh. Maecenas aliquam magna vel elementum tempus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+
+**Skills:** For this activity, you will need to be proficient in the following skills.
+- Skill 1
+- Skill 2
+
+**Packages:** This activity requires the following packages:
+- Package 1
+- Package 2
+
+
+**Data:**
+- Data Set 1: `description`
+
+
+

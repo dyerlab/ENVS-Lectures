@@ -1,0 +1,41 @@
+---
+title: "Population Subdivision Activity"
+output: html_notebook
+---
+
+<center>
+[![Rodney Dyer](https://live.staticflickr.com/65535/51022901036_ac29177a77_c_d.jpg)](https://rodney.af)
+</center>
+
+## Overview
+
+This section will focus on estimating the measures of genetic distance and genetic structure.  The lecture content for this topic is [here](https://thurstoncounty.gitlab.io/landscape-genetics-workshop/genetic/subdivsion/slides.html).
+
+##  The Data
+
+```{r}
+library( gstudio )
+data( arapat )
+```
+
+
+The data for this activity is included in the `gstudio` library and represents a set of nuclear co-dominant loci (named *`r column_class(arapat,"locus") `*) assayed for `r nrow(arapat)` individuals and partitioned into `r length( column_class(arapat,"factor"))-1` partitions.
+
+```{r}
+summary( arapat )
+```
+
+1. Copy over the function `island_frequencies()` created in the slides ( [here](https://thurstoncounty.gitlab.io/landscape-genetics-workshop/genetic/subdivsion/slides.html#14) ).  If the mainland population frequency was $p=1.0$ and the island frequency started at $p=0.32$, how many generations does it take for a migration rate of $m=0.10$ with the underlying model of unidirectional migration as depicted in the $N-Island$ diagram? 
+
+2. Consider the simple demographic population model with three populations (*Pop-X*, *Pop-Y*, and *Pop-Z*) all connected by symmetric migration (as shown [here](https://thurstoncounty.gitlab.io/landscape-genetics-workshop/genetic/subdivsion/slides.html#17)).  If the initial allele frequencies at a simple 2-allele locus are $p_X = 0.25$, $p_Y = 0.50$, and $p_Z = 0.75$, what are the allele frequency for this network of populations at equilibrium if migration is:
+    - $m = 0.0$, 
+    - $m = 0.01$, 
+    - $m = 0.1$
+
+3. Isolation by physical distance (classically called *IBD*) is a relationship between physical separation of populations and some measure of genetic differences.  For the the *arapat* data set, estimate inter-population genetic distance using Nei's metric and then plot that against inter-population physical distance.  Overlay a trendline.  Interpret the results, do genetic differences have a relationship with physical separation?
+
+
+4. Does your interpretation of the *IBD* relationship change if you only use individuals whose `Species == Peninsula`?
+
+5. Is there more structure ($\Phi_{ST}$) among *Species*, *Clusters*, or *Populations* in the *arapat* data set?  And how would you suggest analyzing these data after seeing these differences?
+

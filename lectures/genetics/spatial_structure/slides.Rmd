@@ -1,0 +1,636 @@
+---
+title: "Introduction"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "slide_styles.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+```{r setup, include=FALSE}
+library( sf )
+library( ggplot2 )
+library( tidyverse )
+library( fontawesome )
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+
+theme_set( theme_classic( base_size = 20) )
+```
+
+
+# .orange[Explicitly Spatial Analyses]
+
+### .fancy[Genes in Space!]
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51198451539_f09703e3d8_c_d.jpg)
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206228661_831c4a9241_c_d.jpg)
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .blue[Spatial <br> Autocorrelation]
+
+## .fancy[Self-similarity in space]
+
+
+
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206415778_cbcfde8417_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206209856_ff6cc1e21b_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205518387_9a282276e8_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206228671_cde5f8ff6a_c_d.jpg)
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206434673_a227c2dd48_c_d.jpg)
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206209876_fac5d21f18_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51207277255_f6c7737ecd_c_d.jpg)
+
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206994379_1117dc4e90_c_d.jpg)
+
+
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205499692_8930c96040_c_d.jpg)
+
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51207277285_e4bb978743_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51207277345_391091e168_c_d.jpg)
+
+
+---
+
+# An Example from *Cornus*
+
+
+.pull-left[
+```{r}
+library( gstudio )
+data(cornus)
+summary( cornus )
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+cornus$Population <- factor( cornus$Population)
+
+ggplot( cornus, aes(X.Coordinate, Y.Coordinate, color=Population) ) + geom_point() + coord_equal() + xlab("Easting") + ylab("Northing")
+```
+
+]
+
+---
+
+# Spatial Autocorrelation
+
+![](https://live.staticflickr.com/65535/51207391795_a656b2839e_c_d.jpg)
+
+
+--- 
+
+# Estimating Spatial Bins
+
+.pull-left[
+To construct a spatial autocorrelation, we need to find groups of individuals who are separated by a `lag` or `bin` (e.g., that can all be grouped into a *distance class*).  
+
+
+- Ecological  
+
+- Euclidean  
+
+- Other  
+
+]
+
+
+.pull-right[
+```{r}
+coords <- strata_coordinates(cornus, stratum = "SampleID", longitude = "X.Coordinate", latitude="Y.Coordinate")
+P <- strata_distance(coords, mode="Euclidean")
+G <- genetic_distance(cornus, mode="AMOVA")
+```
+]
+
+
+---
+
+```{r}
+df <- data.frame( Physical=P[lower.tri(P)], Genetic=G[lower.tri(G)])
+ggplot( df, aes(Physical,Genetic)) + geom_point() + stat_smooth(method="gam")
+
+```
+
+---
+
+# Overall Correlation - The Mantel
+
+```{r}
+cor.test(df$Physical, df$Genetic)
+```
+
+
+
+
+---
+
+```{r}
+df %>% filter( Physical < 25 ) -> df1
+ggplot( df[ df$Physical < 25,], aes(Physical,Genetic)) + geom_point() + stat_smooth(method="loess") + geom_jitter()
+```
+
+
+---
+
+# Correlation At Bins - The Spatially Restriced Mantel
+
+```{r}
+cor.test(df1$Physical, df1$Genetic)
+```
+
+
+
+
+---
+
+# Estimate the Correlgrams
+
+.pull-left[
+Each entry in the correlogram is based upon the interclass correlation statistic:
+
+\begin{equation}
+r^h = \frac{\sum_{i\ne j}^K x_{ij}^hc_{ij}^h}{\sum_{i=1}^Kx_{ii}^hc_{ii}^h}
+\end{equation}
+
+
+
+```{r eval=FALSE}
+df <- genetic_autocorrelation(P,G,bins=seq(0,1000,by=100),perms=999)
+df$Significant <- df$P <= 0.05
+ggplot( df, aes(x=To,y=R)) + 
+  geom_line() + 
+  geom_point( aes(color=Significant), size=4) + 
+  geom_abline(slope=0,intercept=0, linetype=2) +
+  xlab("Physical Separation") + 
+  ylab("Genetic Correlation")
+```
+
+
+]
+
+
+.pull-right[
+```{r autocorr, echo=FALSE, cache=TRUE}
+df <- genetic_autocorrelation( P,
+                               G,
+                               bins=seq(0,1000,by=100),
+                               perms=999)
+df$Significant <- df$P <= 0.05
+ggplot( df, aes(x=To,y=R)) + geom_line() + 
+  geom_point( aes(color=Significant), size=4) + 
+  geom_abline(slope=0,intercept=0, linetype=2) +
+  xlab("Physical Separation") + ylab("Genetic Correlation")
+```
+]
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206415968_fd33982962_c_d.jpg)
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[Eigen Structure]
+
+## .fancy[Please define an eigenvalue... I dare you.]
+
+
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206994389_bdd3824fda_c_d.jpg)
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51207296305_4f7428786d_c_d.jpg)
+
+
+
+
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206415998_3527374bc2_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206210046_4cc91ca0ea_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206975949_e08e018ffe_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206975979_22ceef0be6_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206994494_bcd4fb98c3_c_d.jpg)
+
+---
+
+```{r}
+data( arapat )
+mv_genos <- to_mv( arapat ) 
+fit.pca <- princomp(mv_genos,cor = TRUE)
+names( fit.pca )
+```
+
+---
+
+```{r}
+summary( fit.pca )
+```
+
+
+---
+
+```{r}
+plot( fit.pca )
+```
+
+---
+
+# Visualization
+
+.pull-left[
+```{r eval=FALSE}
+predict( fit.pca ) %>%
+  data.frame() %>%
+  mutate( Species = arapat$Species) -> pred.pca 
+
+ggplot( pred.pca, aes(Comp.1,Comp.2,color=Species) ) + 
+  geom_point()  + 
+  theme( legend.position = "none")
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+predict( fit.pca ) %>%
+  data.frame() %>%
+  mutate( Species = arapat$Species) -> pred.pca 
+
+ggplot( pred.pca, aes(Comp.1,Comp.2,color=Species) ) + 
+  geom_point()  + 
+  theme( legend.position = "none")
+```
+]
+
+
+
+---
+
+# Principal Components Analysis on Frequencies
+
+Just like working on raw data, but coalescing all the individuals into single populations defined by allele frquency matrices.
+
+
+```{r}
+freqs <- frequency_matrix(arapat)
+head( freqs )
+```
+
+
+---
+
+# Principal Components Analysis on Frequencies
+
+Just like working on raw data, but coalescing all the individuals into single populations defined by allele frquency matrices.
+
+
+```{r}
+F <- as.matrix( freqs[,2:59])
+rownames( F ) <- freqs$Stratum
+fit.pca_freq <- prcomp( F, center = TRUE )
+```
+
+
+---
+
+```{r}
+summary( fit.pca_freq )
+```
+
+
+---
+
+# Principal Components Analysis on Frequencies
+
+.pull-left[
+Just like working on raw data, but coalescing all the individuals into single populations defined by allele frquency matrices.
+
+```{r eval=FALSE}
+predict( fit.pca_freq ) %>%
+  data.frame() %>%
+  mutate( Population = freqs$Stratum ) %>%
+  ggplot( aes(PC1,PC2) ) + 
+  geom_text( aes(label=Population))
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+predict( fit.pca_freq ) %>%
+  data.frame() %>%
+  mutate( Population = freqs$Stratum ) %>%
+  ggplot( aes(PC1,PC2) ) + 
+  geom_text( aes(label=Population))
+```
+]
+
+
+
+
+---
+
+# More Detailed Visulizations
+
+.pull-left[
+```{r eval=FALSE}
+library( factoextra )
+fviz_pca_biplot( fit.pca_freq )
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+library( factoextra )
+fviz_pca_biplot( fit.pca_freq )
+```
+]
+
+
+
+
+
+
+---
+
+# Principal Coordinate Analysis
+
+Like PCA but using genetic distance measures instead of raw data.
+
+```{r}
+D.Euc <- genetic_distance(arapat, mode="Euclidean")
+dim(D.Euc)
+fit.gendist <- prcomp( D.Euc, center = TRUE)
+```
+
+
+---
+```{r}
+summary( fit.gendist )
+```
+
+
+
+---
+
+```{r echo=FALSE}
+fviz_pca_biplot( fit.gendist )
+```
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .green[Admixture]
+
+## .fancy[Simulating Clusters]
+
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206416268_36630e815c_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206210291_df27863258_c_d.jpg)
+
+
+---
+
+# Exporting Data for STRUCTURE 
+
+![](https://live.staticflickr.com/65535/51206389031_d85445362e_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51207277690_be692945a3_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206416333_c10e5711f1_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206416363_d52a1011d5_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206210376_e3426a3cd3_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206210421_957d853d14_c_d.jpg)
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206994529_512722eac1_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206228881_922f6ce8ae_c_d.jpg)
+
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![Moira](https://media.giphy.com/media/7OVR6nwR6CTh2onJq2/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about<br/> the content presented herein<br/> now is your time.  
+
+If you think of something later though, <br/>feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll<br/> get back to you as soon as possible.
+]
+

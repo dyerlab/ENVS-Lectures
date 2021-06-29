@@ -1,0 +1,109 @@
+---
+title: "Resistance Activity"
+output: html_notebook
+---
+
+![](https://live.staticflickr.com/65535/51022164298_1aa9b8df76_c_d.jpg)
+
+
+## Overview
+
+This activity will let you explore some of the issues associated with developing resistance models.  This is rather complex process because you'll have to:
+
+1. Decide what features to entertain as putative predictor values.  
+
+2. Decide which genetic distance metrics you'll be estimating.  
+
+3. Develop raster sets based upon differences in at least granularity and magnitude.  
+
+4. Estimate distances using different movement models.
+
+5. Explore the set of predictors to find suitable combinations.
+
+6. Model build to best describe the entire system.
+
+
+```{r}
+library( vegan )
+library( raster )
+library( gstudio )
+library( gdistance ) 
+```
+
+
+Here are two sets of data that you can use to explore the creation of rasters and the analysis of $G \approx f(E)$ from complete data sets.  
+
+
+## Activity - Large Scale Creation
+
+[These bioclimatic rasters](https://drive.google.com/file/d/1yK3SujQvBE-tYePbkWnqZCm7wDLQ4t9l/view?usp=sharing) are from Baja California and cover temperature and precipitation variables and can be used to examine large-scale landscape genetic processes.  Download this zip archive (if you do not already have it) and expand it in your Workshop Project Folder.
+
+
+
+
+
+1. Using the `arapat` data and the bioclimatic rasters in the zip archive (the key to what they represent is [here](https://www.worldclim.org/data/bioclim.html)), come up with a hypothesis using at least one of the raster layers based upon a categorical or threshold value.  From this, derive a *base raster* where values in it are 0/1 and then estimate a range of resistances using the `create_resistances()` function.  
+
+
+
+2. Select a subset of `arapat` populations and **make sure** their location is on a full raster pixel and that they are **connectable**.  I would recommend starting small, 5-10 sites spread throughout the landscape.
+
+3. Crop your raster so that it has a suitable buffer around your sample locations.
+
+4. Estimate transition, geoCoreection, and resulting costDistance (a Least-Cost approach) matrices for these layers.
+
+5. Decide on a suitable population-level genetic distance metric (among these populations) and then estimate the Mantel correlation between your hypothesized landscape distance matrices and genetic distance.  Plot Mantel *r* as a function of resistance ratio (I usually log transform them).
+
+
+
+## Activity - Comparing Movmement Model, Cost Ratio, and Features
+
+Below is a link to a small zip archive containing a complete set of R data matrices files for *Cornus florida* including raw rasters (saved as *.asc files), and a complete set of resistance matrices estimated using both least cost path (`lcp.`) and circuit theory (`ct.`) for five landscape features (Cornus canopy `.cf.`; coniferous vegitation `.cv.`, open fields `.fd.`, mixed hardwood density `.mh`, and roads `.rd.` each of which are estimated on ratios 1:10 - 10:1.  There is also distances based upon elevation change and euclidean distance.
+
+
+```{r eval=FALSE}
+download.file(url="https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/dogwood.zip?inline=false",destfile = "dogwood.zip")
+unzip( "dogwood.zip")
+unlink( "dogwood.zip")
+```
+
+Each of these rasters is saved already as a matrix whose variable is `D`.  There is also a Genetic Distance matrix baed upon pollen pool genetic structure named `G.rda`.
+
+Download these files and explore which combination of features, resistance ratios, and movement models best explains first-order relationships between the set of all potential landscape resistence features and the observed genetic differences measured in pollen pool genetic structure.
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r echo=FALSE}
+system( "rm -rf dogwood")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

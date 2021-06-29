@@ -1,0 +1,1202 @@
+---
+title: "Introduction"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "slide_styles.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+```{r setup, include=FALSE}
+library( sf )
+library( ggplot2 )
+library( tidyverse )
+library( fontawesome )
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+
+theme_set( theme_classic( base_size = 20) )
+```
+
+
+# .orange[Models of Resistance]
+
+### .fancy[The *sine quo non* of Landscape Genetics]
+
+
+
+
+
+
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51202194363_c8f08d149f_c_d.jpg")
+background-position: center
+
+
+
+
+
+---
+
+# Impetus
+
+It is our .redinline[goal] to identify which features of the landscape influence movement of genes or organisms.  The challenge is that we can't just ask them...  
+
+So, we must examine a wide range of potential features that may influence connectivity and evalute the extent to which they satisfy the canonical landscape genetics formula.  The challenge is that we do not know **anything** about what the transport agent is keying in on as it moves across the landscape.
+
+
+- What features are important?
+
+- How much to they influence movement?
+
+- At what scale do organisms detect ecological features?
+
+- How do they decide to move from one locale to the next?
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[What Is Resistance]
+
+## .fancy[.redinline[Is it futile?] ![](https://live.staticflickr.com/65535/51191969633_84ecb79c16_o_d.png)]
+
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191732431_c82a618546_c_d.jpg)
+
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191946263_768a108840_c_d.jpg)
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192503169_2a7ff60569_c_d.jpg)
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191023152_eef8c097c0_c_d.jpg)
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191946358_25866aa617_c_d.jpg)
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192503249_636554234b_c_d.jpg)
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191023272_a7c5929d4e_c_d.jpg)
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191946193_6a1dfde421_c_d.jpg)
+
+---
+
+# Two Challenges of Resistance Models 
+
+
+1. Quantifying **.redinline[what]** and **.redinline[to what extent]** contributes to resistence.   
+
+2. Estimating Separation
+
+
+
+---
+
+# Resistance
+
+Resistance can be defined in at least two different ways.
+
+1. *Absolute resistance:* The value of a particular location is constant no matter where you look at it from.  
+
+2. *Relative Resistance:* The value of a particular location depends upon the location being considered.
+
+
+---
+
+# Absolute Resistance
+
+The resistance surface is fixed as a singular matrix of values.
+
+
+
+![](https://live.staticflickr.com/65535/51192827045_d405106ab0_c_d.jpg)
+
+
+---
+
+# Cost To Cross
+
+The values in the cells represent a *cost* that an organism or gamete or zygote incurs based to traverse it.
+
+- Specific values may be assigned to represent features of the landscape.
+
+- Can represent categorical (e.g, $Forst=1$ or $!Forest = 2$) or continuous values for features based upon local conditions (e.g., $Forest = \delta_{stems}$).
+
+
+---
+
+# Example from Baja California
+
+
+.pull-left[
+Let's look at the slope of terrain in Baja California and the Sonoran desert.
+
+```{r eval=FALSE}
+library( raster )
+url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
+
+alt <- crop( raster( url ), extent(-116,-109,22,30) ) 
+plot( alt )
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+library( raster )
+url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
+
+alt <- crop( raster( url ), 
+             extent(-116,-109,22,30) ) 
+plot( alt )
+
+```
+]
+
+---
+
+# Example from Baja California
+
+.pull-left[
+```{r eval=FALSE}
+terrain(alt, 
+        opt="slope", 
+        unit="degrees") %>%
+  values() %>%
+  data.frame( Degrees = . ) %>%
+  filter( !is.na( Degrees ) ) %>%
+  ggplot( aes( Degrees ) ) + 
+  geom_histogram( fill="grey90", 
+                  color="grey") + 
+  ylab( "Frequency" ) 
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+terrain(alt, 
+        opt="slope", 
+        unit="degrees") %>%
+  values() %>%
+  data.frame( Degrees = . ) %>%
+  filter( !is.na(Degrees ) ) %>%
+  ggplot( aes(Degrees) ) + 
+  geom_histogram( fill="grey90", color="grey", bins=30) + 
+  ylab( "Frequency" ) -> p
+p
+```
+]
+
+
+
+---
+
+# Example from Baja California
+
+.pull-left[
+```{r eval=FALSE}
+df <- data.frame( x = c( 2, 10 ), 
+                  y = c( 40000, 30000 ), 
+                  label = c( "OK", 
+                             "None shall pass" ) )
+terrain(alt, 
+        opt="slope", 
+        unit="degrees") %>%
+  values() %>%
+  data.frame( Degrees = . ) %>%
+  filter( !is.na( Degrees ) ) %>%
+  ggplot( aes( Degrees ) ) + 
+  geom_histogram( fill="grey90", 
+                  color="grey") + 
+  ylab( "Frequency" ) + 
+  geom_vline( xintercept = 5, 
+                col = "red") + 
+  geom_text( aes(x, 
+                 y, 
+                 label = label), 
+             color = "#cc0000", 
+             data = df, 
+             size = 6) 
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+df <- data.frame( x = c( 2, 10 ), 
+                  y = c( 40000, 30000 ), 
+                  label = c( "OK", 
+                             "None shall pass" ) )
+p + geom_vline( xintercept = 5, 
+                col = "red") + 
+  geom_text( aes(x, y, label = label), 
+             color = "#cc0000", 
+             data = df, 
+             size = 6) 
+```
+]
+
+
+---
+
+# Example from Baja California
+
+
+![](https://live.staticflickr.com/65535/51191807451_b3132f84c2_c_d.jpg)
+
+
+
+
+---
+
+# Relative Resistence
+
+Connectivity between sites increases by similarity of **at-site** features such as *elevation*, *phenology*, etc.
+
+![](https://live.staticflickr.com/65535/51191813596_3414556d1f_o_d.png)
+---
+
+# Host Plant for *Araptus* 
+
+.pull-left[
+
+## *Euphorbia lomelli*
+
+- Sonoran Desert Endemic
+
+- Hummingbrid pollinated  
+
+- Gravity dispersed seeds
+
+- Found throughout Sonoran Desert Ecosystems.
+
+]
+
+
+.pull-right[
+
+Only known host to *Araptus*.
+
+![](https://live.staticflickr.com/65535/51191110697_9a7ef07f42_w_d.jpg)
+
+]
+
+---
+
+# Hypothesis Phenology & Connectivity
+
+```{r}
+library( sf )
+library( gstudio )
+data( arapat )
+arapat %>% 
+  group_by( Population ) %>%
+  summarize( Latitude = mean( Latitude ), 
+             Longitude = mean( Longitude ) )  %>%
+  st_as_sf( coords=c("Longitude", "Latitude"), crs=4326 ) -> sites
+```
+
+
+```{r eval=FALSE}
+sites$Elevation <- extract( alt, as(sites, "Spatial") ) 
+sites$Elevation
+```
+
+--
+
+### .redinline[Wait A Minute!!!  Why Do I keep typing this code?]
+
+
+
+---
+###  Dogfooding
+
+
+.pull-left[
+
+```{r}
+sites <- strata_coordinates( arapat ) 
+```
+
+
+```{r}
+sites$Elevation <- raster_extract( sites, alt )
+```
+
+
+```{r}
+sites %>% filter( Stratum == "163")
+```
+
+]
+
+.pull-right[]
+
+.footnote[*Dogfooding* refers to the use of a newly developed product or service by a company's staff to test it before it is made available to customers. ]
+
+---
+###  Dogfooding
+
+
+.pull-left[
+
+```{r}
+sites <- strata_coordinates( arapat ) 
+```
+
+
+```{r}
+sites$Elevation <- raster_extract( sites, alt )
+```
+
+
+```{r}
+sites %>% filter( Stratum == "163")
+```
+
+]
+
+
+
+.pull-right[
+```{r eval=FALSE}
+remotes::install_github("dyerlab/gstudio")
+```
+
+![](https://live.staticflickr.com/65535/51209239360_bdf73f26a2_w_d.jpg)
+
+]
+
+.footnote[*Dogfooding* refers to the use of a newly developed product or service by a company's staff to test it before it is made available to customers. ]
+
+
+
+
+
+---
+
+# Relative to Population 163
+
+.pull-left[
+
+Estimation of resistance needs to be from the perspective of somewhere.  Let's use 163 as the example here.
+
+```{r eval=FALSE}
+library( leaflet )
+sites %>%
+  leaflet() %>%
+  addMarkers( popup = ~Stratum ) %>%
+  addProviderTiles( providers$Esri.WorldImagery )
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+library( leaflet )
+sites %>%
+  leaflet() %>%
+  addMarkers( popup = ~Stratum) %>%
+  addProviderTiles( providers$Esri.WorldImagery )
+```
+]
+
+
+
+
+---
+
+# A Coorridor Approach Elevation
+
+.pull-left[
+```{r eval=FALSE}
+phen <- alt 
+bkgrnd <- alt
+
+values( phen ) <- abs( values( phen ) - 163 )
+values( phen )[ values(phen) > 100 ] <- NA
+values( bkgrnd )[ !is.na(values(bkgrnd) ) ] <- 1
+
+plot( bkgrnd, 
+      col = "#cccccc", 
+      legend=FALSE )
+plot(phen, 
+     add=TRUE)
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+phen <- alt 
+bkgrnd <- alt
+
+values( phen ) <- abs( values( phen ) - 163 )
+values( phen )[ values(phen) > 100 ] <- NA
+
+values( bkgrnd )[ !is.na(values(bkgrnd) ) ] <- 1
+
+plot( bkgrnd, col = "#dddddd", legend=F )
+plot(phen, add=TRUE)
+```
+]
+
+
+
+---
+class: center, middle 
+
+# .red[Granularity]
+
+
+---
+
+# Granularity
+
+At what scale does the transport agent .redinline[perceive] the environment?
+
+
+- Forest openings are not a problem until they become so large that they incur a thermal load on insect pollinators.
+
+- A river is not a problem until it gets over 2m deep or has a flow of over 4m/s.
+
+
+&nbsp;
+
+--
+
+The challenge here, as with all the other stuff, is that we do not know *a priori*, what is important to the transport agent.
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192068133_da58972928_c_d.jpg)
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191143607_512cfb3c11_c_d.jpg)
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192068188_ac9e264d06_c_d.jpg)
+
+
+---
+
+# In R, we `aggregate`
+
+
+Specifying both the size of the aggregation & the function.
+
+![](https://live.staticflickr.com/65535/51207071273_fb313d5060_o_d.png)
+
+
+
+
+---
+
+# In R, we `aggregate`
+
+.pull-left[
+```{r}
+tmp <- crop( alt, extent(-112,-109,22,25) )
+tmp
+```
+]
+
+
+
+.pull-right[
+```{r echo=FALSE}
+plot( tmp )
+```
+]
+
+
+---
+
+# Aggregate
+
+.pull-left[
+
+```{r}
+tmp.1 <- aggregate(tmp, fact=5)
+tmp.1
+```
+
+]
+
+
+.pull-right[
+```{r echo=FALSE}
+plot( tmp.1 )
+```
+
+
+]
+
+
+
+---
+
+# Aggregate
+
+.pull-left[
+
+```{r}
+tmp.2 <- aggregate(tmp.1, fact=5)
+tmp.2
+```
+
+
+]
+
+
+.pull-right[
+```{r echo=FALSE}
+plot( tmp.2 )
+```
+
+]
+
+
+
+
+
+---
+class: center, middle
+
+# .redinline[Is is Collapseable]
+
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191170882_474d559874_c_d.jpg)
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192946970_9bef785612_c_d.jpg)
+
+
+
+
+
+---
+class: center, middle 
+
+# .red[Resistance Magnitude]
+
+
+
+
+
+---
+class: center, middle 
+
+![](https://live.staticflickr.com/65535/51192503559_30b7a52408_c_d.jpg)
+
+---
+# Univariate Resistance Surfaces
+
+To create a resistance raster, we are really working on an exercies in determining what the .redinline[*relevant resistance*] of a particular feature is on the landscape.  Consider the case where we have a landscape with 2 features *A* and *B*.
+
+- *A* is **despised** so $R_A >> R_B$ or $\frac{R_A}{R_B} >> 1$.
+
+--
+
+- *A* is **avoided** so $R_A > R_B$ or $\frac{R_A}{R_B} > 1$.
+
+--
+
+- *A* and *B* are not perceived deferentially by the organism,  or $\frac{R_A}{R_B} == 1$.
+
+--
+
+- *A* is **preferred** so $R_A < R_B$ or $\frac{R_A}{R_B} < 1$.
+
+--
+
+- *A* is **loved** so $R_A << R_B$ or $\frac{R_A}{R_B} << 1$.
+
+
+---
+
+# Resistance Ratios
+
+I always think of these are a ratio of *in:out*, across a range such as:
+
+$\frac{1}{100}, \frac{1}{50}, \frac{1}{20}, \frac{1}{10}, \frac{1}{5}, \frac{1}{2}, \frac{2}{1}, \frac{5}{1}, \frac{10}{1}, \frac{20}{1}, \frac{50}{1}, \frac{100}{1}$
+
+--
+
+```{r cache=TRUE}
+land_2016 <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land <- raster( land_2016 )
+table( values( land ) )
+```
+
+--
+
+```{r cache=TRUE}
+land_42 <- land
+land_42[ land_42 != 42 ] <- 0
+table( values( land_42 ))
+```
+
+
+
+---
+
+# Creating Raster Sets
+
+To quickly create the set of rasters, we have the `create_resistances()` function that will save the set to the local filesystem.
+
+![](https://live.staticflickr.com/65535/51208194621_92e54f9e2b_z_d.jpg)
+
+
+---
+
+# Creating Raster Sets
+
+To quickly create the set of rasters, we have the `create_resistances()` function that will save the set to the local filesystem.
+
+```{r}
+create_resistances( land_42, feature_name = "EvergreenForest" )
+```
+
+
+--
+
+File name formats: <tt>FEATURENAME.R<sub>IN</sub>.R<sub>OUT</sub>.rda</tt>
+
+![](https://live.staticflickr.com/65535/51208199631_4e0af1f5cc_z_d.jpg)
+
+
+---
+```{r}
+load( "EvergreenForest.1.5.rda" )
+plot( layer )
+```
+
+---
+
+# Created to Iterate Filesystems
+
+```{r}
+for( file in list.files(path=".", pattern="EvergreenForest.*")) {
+  load(file)
+  tot <- sum( values(layer) )
+  
+  cat( file, " Sum of raster = ", tot, "\n")
+}
+```
+
+```{r echo=FALSE}
+system("rm EvergreenForest*")
+```
+
+
+---
+
+```{r echo=FALSE}
+rasterToPoints(land_42) %>% 
+  data.frame() -> df
+names(df)[3] <- "Feature"
+
+df %>%
+  mutate( Value = ifelse( Feature == 0, 0, 1) ) %>%
+  mutate( Value = factor( Value) ) %>%
+  dplyr::select( x,y,Value) %>%
+  ggplot() + 
+  geom_tile( aes(x,y,fill=Value)) +
+  scale_fill_manual( values=c("ivory","blue"))
+```
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[Movement Models]
+
+## .fancy[How does movement occur?]
+
+
+
+---
+
+
+# Shortest Path Algorithms
+
+.pull-left[
+
+#### Optimized movement.
+
+![](https://media.giphy.com/media/f6mUGYKhLGJ0DAsE4D/giphy.gif)
+
+
+]
+
+.pull-right[
+
+#### Djikstra's Algorithm
+
+The path taken is the one that will get from $A \to B$ in the shortest amount of accumulated distance across the resistance surface.
+
+
+![](https://upload.wikimedia.org/wikipedia/commons/5/57/Dijkstra_Animation.gif)
+
+]
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192503014_e93cdab1a6_c_d.jpg)
+
+
+---
+
+# Random Walk Movement
+
+.pull-left[
+
+The whole resistance surface is .orangeinline[**explored**] and the distances between locales is made up of a weighed summation of .redinline[all paths] (even those that are suboptimal).
+
+![](https://media.giphy.com/media/SikKQ1GKktmFy/giphy.gif)
+
+]
+
+--
+
+
+.pull-right[
+
+The notion is that all potential paths are probably followed, just the ones that are more commonly traversed will gain more weight than those potential paths that are uncommonly followed.
+
+
+![](https://live.staticflickr.com/65535/51193041615_c08e01e787_o_d.png)
+
+]
+
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191731931_6c26a44434_c_d.jpg)
+
+
+---
+class: middle
+background-image: url("https://live.staticflickr.com/65535/51193035455_6a8ee6f48d_c_d.jpg")
+background-position: center
+background-size: cover
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51191366422_21b078f221_c_d.jpg)
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51193142290_068baf2f4a_c_d.jpg)
+
+
+
+---
+
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .green[Example Estimations]
+
+## .fancy[Baja California & Forest Pollinators]
+
+
+
+
+---
+
+# Baja California Populations
+
+.pull-left[
+
+Let's Use Slope as a surrogate for traversal area in Baja California.
+
+```{r}
+library( gstudio )
+library( ggrepel )
+library( leaflet )
+
+data(arapat)
+arapat %>%
+  filter( Population %in% c("Aqu", "164","Const","64","159","9") ) %>%
+  arrange(  Population ) -> data 
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+strata_coordinates( data ) %>%
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers( ~Longitude, ~Latitude, popup = ~Stratum)
+```
+]
+
+
+---
+
+# Convex Hull
+
+```{r}
+strata_coordinates( data )  -> coords 
+
+
+
+coords %>%
+  st_as_sf( coords = c("Longitude","Latitude"), crs=4326 ) -> baja_pts
+
+baja_pts %>%
+  st_union() %>%
+  st_convex_hull() %>%
+  st_buffer( dist = 0.5) %>%
+  as("Spatial") -> hull
+hull
+```
+
+
+
+---
+
+# Crop It
+
+```{r}
+alt %>%
+  mask( hull ) %>%
+  crop( hull ) %>%
+  terrain( opt="slope",
+           unit="degrees") -> slope
+
+hist( values(slope))
+```
+
+---
+
+```{r}
+tmp <- slope
+tmp[ slope < 5 ] <- 1
+tmp[ slope > 5 ] <- 5
+cat_slope <- ratify(tmp, count=TRUE)
+rat <- levels( cat_slope )[[1]]
+rat$Slope_Type <- c("Passable", "Steep")
+levels(cat_slope) <- rat 
+cat_slope
+```
+
+
+---
+
+```{r}
+plot( cat_slope, legend=FALSE )
+plot( st_geometry(baja_pts), add=TRUE, pch=3)
+```
+
+
+---
+
+# Shortest Path `gdistance`
+
+
+```{r}
+library( gdistance )
+tr <- transition( 1/cat_slope, transitionFunction = mean, directions = 4)
+tr <- geoCorrection( tr, type="c", multpl=FALSE, scl=FALSE)
+tr
+```
+
+---
+
+# Shortest Path `gdistance`
+
+```{r}
+coords %>%
+  filter( Stratum %in% c("Aqu", "164","Const","64","159","9") ) -> tmp
+
+baja_pts <- SpatialPoints( tmp[,2:3] )
+
+path1 <- shortestPath( tr, baja_pts[1], baja_pts[6], output="SpatialLines")
+path1
+
+```
+
+---
+
+```{r}
+plot(cat_slope)
+plot(path1, add=TRUE, col="red")
+```
+
+
+
+---
+
+# Length of the Path
+
+```{r}
+SpatialLinesLengths(path1)
+```
+
+
+
+
+
+---
+
+# Pairwise Least Cost Paths
+
+```{r}
+lcp_Dist <- gdistance::costDistance( tr, baja_pts )
+lcp_Dist <- as.matrix( lcp_Dist )
+rownames(lcp_Dist) <- colnames(lcp_Dist) <- tmp$Stratum
+lcp_Dist
+```
+
+
+
+---
+
+# Genetic Distances
+
+For simplicity, I'll use Nei's Distance here, though multiple distances should be examined.
+
+```{r}
+arapat %>%
+  filter( Population %in% tmp$Stratum ) %>%
+  genetic_distance( mode="Nei" ) -> nei_Dist
+nei_Dist
+```
+
+
+---
+
+```{r echo=FALSE }
+plot( nei_Dist[ lower.tri(nei_Dist)], 
+      lcp_Dist[ lower.tri(lcp_Dist)],
+      xlab = "Genetic Distance (Nei)",
+      ylab = "LCP Distance", 
+      bty="n")
+```
+
+
+
+
+---
+
+# Correlation via Mantel
+
+```{r}
+library( vegan )
+mantel(lcp_Dist, nei_Dist)
+```
+
+
+
+
+---
+
+# Circuit Theory Paths
+
+.pull-left[
+![](https://live.staticflickr.com/65535/51208060349_4e0ea7dc89_d.jpg)
+]
+
+.pull-right[
+```{r eval=FALSE}
+tr <- transition( 1/cat_slope, transitionFunction = mean, directions = 4)
+tr <- geoCorrection( tr, type="r", multpl=FALSE, scl=TRUE)
+ct_Dist <- commuteDistance( tr, baja_pts  )
+```
+
+]
+
+
+
+
+---
+
+# Trouble Shooting
+
+There are times when doing `commuteDistance()` throws an error.  
+
+![](https://live.staticflickr.com/65535/51209354380_658125affc_o_d.png)
+
+---
+
+![](https://live.staticflickr.com/65535/51209367340_5f444a233b_c_d.jpg)
+
+
+
+---
+
+# Study Design - *Cornus florida*
+
+
+![](https://live.staticflickr.com/65535/51191358682_57edee4acd_c_d.jpg)
+
+For this study, we were interested in looking at what kind of features of the landscape influence the ability of pollinators to successfully move pollen between trees.  We looked at the following landscape features.
+
+
+.pull-left[
+Overstory Characteristics:  
+
+- Pine canopy
+- Oak canopy 
+- Broadleaf (non-oak) canopy
+- No canopy
+
+]
+
+.pull-right[
+
+Understory Characteristics:
+
+- Roads
+- Stem density
+- Shrubbery 
+- Dogwood Canopy 
+
+]
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192798560_b457b9faba_c_d.jpg)
+
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205971389_560d25e3b4_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205971469_de76b22bd5_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206269975_a8b7d51ef5_c_d.jpg)
+
+
+
+
+
+
+---
+
+# Summary
+
+Resistance Models allow us to propose a large number potential hypotheses to see if they can explain the observed spatial distribution of genetic variation.  These are just *hypotheses* and it is important to remember that.
+
+
+# &nbsp; $$G \approx f(E)$$
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![](https://media.giphy.com/media/d1E1YlkOTe4IfdNC/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about<br/> the content presented herein<br/> now is your time.  
+
+If you think of something later though, <br/>feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll<br/> get back to you as soon as possible.
+]
+

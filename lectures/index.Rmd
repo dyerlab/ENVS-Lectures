@@ -165,14 +165,28 @@ files <- list.dirs( path="models", recursive=FALSE )
 makeTable( files, caption="A broad collection of general statiatical models as applied to data in R.")
 ```
 
-## Landscape Genetics
+## Landscape 
 
-Here are some lectures that mix together some of the above activities that I've developed to teach a graduate and postgraduate workshop in *Landscape Genetics*.
+Here are some lectures that mix together some of the above activities that I've developed to teach a graduate and postgraduate workshop in *Landscape Genetics* based upon habitat analyses.
 
 ```{r}
-files <- list.dirs( path="landscape_genetics", recursive=FALSE )
+files <- list.dirs( path="landscape", recursive=FALSE )
 makeTable( files, caption="A series of lectures and activities focused on the spatial analysis of landscape genetic structure in R.")
 ```
+
+
+## Genetics
+
+Here are some lectures on content that I've created to work with genetic data.
+
+```{r}
+files <- list.dirs( path="genetics", recursive=FALSE )
+makeTable( files, caption="A series of lectures and activities focused on the spatial analysis of landscape genetic structure in R.")
+```
+
+
+
+
 
 
 

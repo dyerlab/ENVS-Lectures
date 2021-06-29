@@ -1,0 +1,51 @@
+---
+title: "Genetic Diversity Activity"
+output: html_notebook
+---
+
+
+[![Rodney Dyer](https://live.staticflickr.com/65535/51022165043_59a7f7b3d5_c_d.jpg)](https://rodney.af)
+
+
+## Overview
+
+In this activity, we will be examining diversity in the Sonoran desert bark beetle, *Araptus attenuatus*, included in the `gstudio` library.
+
+```{r}
+library( tidyverse )
+library( gstudio )
+data( arapat )
+summary( arapat )
+```
+
+
+## Activity Questions
+
+
+<center>
+[![Rodney Dyer](https://live.staticflickr.com/65535/51022165043_59a7f7b3d5_c_d.jpg)](https://rodney.af)
+</center>
+
+
+## Overview
+
+In this activity, we will be examining diversity in the Sonoran desert bark beetle, *Araptus attenuatus*, included in the `gstudio` library.
+
+```{r}
+library( tidyverse )
+library( gstudio )
+data( arapat )
+summary( arapat )
+```
+
+
+## Activity Questions
+
+
+1. Create a `leaflet` map showing the levels of effective allelic diversity ($A_e$) as bars by Populations for loci $LTRS$, $WNT$, and $EN$.
+
+2. Estimate effective allelic diversity for all populations of the individuals where *Species == Peninsula* at the locus `MP20`.  Is there the same indication of "Allele Surfing" in the beetle as shown for its host plant?  How do you interpret this pattern?
+
+3. Is there more effective allelic diversity in the `Cape` or `Peninsula` groupings?  
+
+4. Is there a correlation between genetic effective allelic diversity ($A_e$) and genotypic diversity ($H_e$) in these data?  Do you expect there to be one?  Why?

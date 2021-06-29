@@ -1,0 +1,40 @@
+---
+title: "Population Genetics Activity"
+output: html_notebook
+---
+
+![](https://live.staticflickr.com/65535/51022898606_826b8ed709_c_d.jpg)
+
+## Overview
+
+This activity will focus on the using genetic data.
+
+##  The Data
+
+```{r}
+library( tidyverse )
+library( gstudio )
+data( arapat )
+```
+
+
+The data for this activity is included in the `gstudio` library and represents a set of nuclear co-dominant loci (named *`r column_class(arapat,"locus") `*) assayed for `r nrow(arapat)` individuals and partitioned into `r length( column_class(arapat,"factor"))-1` partitions.
+
+```{r}
+summary( arapat )
+```
+
+
+1. Create all potential genotypes *de novo* for a locus with 3 alleles.
+
+2. At the ATPS locus, there are several genotypes that are observed only once in the entire data set.  What are these genotypes and which populations are they found in?  
+
+3. Look at the composition of *Populations* in the *arapat* data set with particular attention to *Species*.  This species is a parasite on a limited habit resource.  Ecologically, what is happening here?
+
+4. One way to see if ther is any indication that *Peninsula* and *Cape* species are interbreeding would be to look to see if there are alleles that are unique to one of the groups and not in the other.  A stronger inference would be gained if those *private* alleles were within individuals who are in the same physical location.  For the sites where both *Peninsula* and *Cape* taxonomic groups co-exist is there any evidence of alleles in one species but not in the other?
+
+
+
+
+
+

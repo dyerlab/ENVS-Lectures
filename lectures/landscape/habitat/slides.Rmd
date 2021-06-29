@@ -1,0 +1,1324 @@
+---
+title: "Introduction"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "slide_styles.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+```{r setup, include=FALSE}
+library( sf )
+library( DT )
+library( knitr )
+library( raster )
+library( ggplot2 )
+library( tidyverse )
+library( kableExtra )
+library( fontawesome )
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center",
+                       tidy.opts=list(width.cutoff=80), 
+                       tidy=TRUE)
+
+theme_set( theme_classic( base_size = 20) )
+```
+
+
+
+
+
+# .orange[Habitat Analyses]
+
+### .fancy[Types, Composition, and Configuration  `r fa("map-marker-alt", fill='red'  )`]
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51201238932_dbd2eb50d9_c_d.jpg")
+background-position: center
+
+
+
+
+
+---
+class: top
+background-image: url("https://live.staticflickr.com/65535/51083828531_e6d0965d5c_k_d.jpg")
+background-size: cover
+
+# What is a Landscape?
+
+
+---
+
+# Landscapes
+
+> A landscape is a mosaic of interacting ecosystems which are heterogeneous in at least one factor of interest.
+
+> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &mdash; Ecologist
+
+--
+
+&nbsp; 
+
+
+
+> The spatial distribution of suitable habitat
+
+> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &mdash; All Other Living Things
+
+
+--
+
+
+&nbsp;
+
+.redinline[The same physical location may be (to different organisms) several overlapping or independent landscapes.]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .orange[Habitat Quantification]
+
+## .fancy[Quantifying Space On .redinline[*This*] Planet.]
+
+
+---
+
+# Types of Quantification 
+
+### General $\to$ Specific
+
+- *Landscape Type* : The categories (e.g., `factor`) of landscape features present in the study area.
+
+- *Landscape Composition* : The relative frequency of landscape features types in this area.
+
+- *Landscape Configuration* : The spatial arrangement of landscape features on the earth.
+
+
+---
+
+.pull-left[
+
+# Organismal Perspective
+
+We *must* remember that when we are looking at habitats, it is done so *only* from the perspective of the organism we are studying.  
+
+- Temporal Scale
+
+- Spatial Scale 
+
+These are entirely .redinline[*independent*] of what our scales are or what the scale of the closest raster just happens to be.
+
+
+See also: *Metasequoia glyptostroboides*
+]
+
+
+.pull-right[
+```{r echo=FALSE, out.height="600"}
+knitr::include_graphics("https://live.staticflickr.com/65535/51084359331_683f527fc3_c_d.jpg")
+```
+]
+
+---
+# Scale
+
+At a base level, spatial and temporal scales may be unique to each landscape feature.  
+
+.pull-left[
+```{r echo=FALSE, out.height="400"}
+knitr::include_graphics("https://live.staticflickr.com/65535/50999448554_b561b2138a_c_d.jpg")
+```
+]
+
+.pull-right[
+```{r echo=FALSE, out.height="400"}
+knitr::include_graphics("https://live.staticflickr.com/65535/51084723036_85b49100e4_c_d.jpg")
+```
+]
+
+---
+class: top
+# Granularity - Proper Pixel Size
+
+```{r echo=FALSE, out.height=600}
+r1 <- raster("https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/pines.asc")
+r2 <- raster::aggregate(r1, fact=10, fun=sum)
+r3 <- raster::aggregate(r2, fact=10, fun=sum)
+par( mar = c(0.1, 0.1, 0.1, 0.1), 
+     mfrow = c(1,3))
+plot(r1, bty="n", box=F, axes=F, legend=F)
+plot(r2, bty="n", box=F, axes=F, legend=F)
+plot(r3, bty="n", box=F, axes=F, legend=F)
+```
+
+
+---
+
+.left-column[
+# Intensity
+
+How .redinline[much] does the feature influence the organism.
+]
+
+.right-column[
+```{r echo=FALSE, out.height=500}
+knitr::include_graphics("https://live.staticflickr.com/65535/51016826740_ee1cf72271_c_d.jpg")
+```
+]
+
+
+
+---
+
+# Nestedness of Inquiry - At Site Features
+
+
+.pull-left[
+There are different nestedness-es (is that even a word?) of ecological and spatial features that may impact connectivity and structure examined in landscape genetic studies.
+
+Features .redinline[**at**] the sampling location.  Conditions in the immediate vicinity may have some impact on connectivity such as good habitat may facilitate larger floral displays for reproductive individuals.  Larger floral displays *attract* more pollinators.
+]
+
+
+
+.pull-right[
+[![Tim Peterson](https://unsplash.com/photos/Q6XtUc6vEsk/download?force=true&w=640)](https://unsplash.com/photos/Q6XtUc6vEsk?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink)
+]
+
+
+
+---
+
+# Nestedness of Inquiry - Around Features
+
+.pull-left[
+[![Anita Denuzio](https://unsplash.com/photos/H2SoH8-5EJA/download?force=true&w=640)](https://unsplash.com/photos/H2SoH8-5EJA?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink)
+]
+
+.pull-right[
+Conditions .redinline[**around**] our study area may impact the abiltiy of organisms to move into those patches.  
+
+- Two locales with identical `@Site` features may have vastly different potential for connectivity by what is immediately surrounding them.
+
+]
+
+
+---
+
+
+# Nestedness of Inquiry - Between Sites
+
+Independent of what is at or around specific sampling sites, the conditions that exist **between** interacting populations directly modulate the likelihood of connectivity.   This is the subject of a whole lecture on [Resistance Models](https://thurstoncounty.gitlab.io/landscape-genetics-workshop/landscape-genetic/resistence/slides.html), later in the workshop.
+
+[![Jonny Kennaugh](https://unsplash.com/photos/WKYofu7G3D8/download?force=true&w=640)](https://unsplash.com/photos/WKYofu7G3D8?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink)
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Case Study 1]
+
+## .fancy[Forest Composition Along an Urban Gradient]
+
+
+---
+
+# Overall Research Question
+
+.pull-left[
+For the flowering dogwood (*Cornus flordia*), how do `@Site` and `@Near` site land cover features change along an urban gradient?  The entire study will use the following resources to help understand how landscape composition influences pollen-mediated gene flow in this common understory tree.
+
+- NLCDB land type classifications
+
+- 59 georeferenced trees
+
+- 10-20 Offspring Collected from each
+
+- Multilocus genotypes to infer pollen donor population.
+
+- Inferences about connectivity.
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51022897866_dd178532f3_c_d.jpg)
+]
+
+
+---
+
+# Overall Research Question
+
+.pull-left[
+For the flowering dogwood (*Cornus flordia*), how do `@Site` and `@Near` site land cover features change along an urban gradient?  The entire study will use the following resources to help understand how landscape composition influences pollen-mediated gene flow in this common understory tree.
+
+- .redinline[**NLCDB land type classifications**]
+
+- .redinline[**59 georeferenced trees**]
+
+- 10-20 Offspring Collected from each
+
+- Multilocus genotypes to infer pollen donor population.
+
+- Inferences about connectivity.
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51022897866_dd178532f3_c_d.jpg)
+]
+
+
+
+---
+
+# Quantifying Locations for Dogwoods
+
+
+```{r echo=FALSE}
+library( leaflet )
+library( tidyverse )
+url <- "https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/DogwoodUrban.csv"
+
+read_csv("../../../data/DogwoodUrban.csv") %>%
+  st_as_sf( coords=c("Longitude",
+                     "Latitude"), 
+            crs=4326 ) -> dogwoods
+
+dogwoods %>%
+  leaflet() %>%
+  addProviderTiles(providers$Esri.WorldTopo) %>%
+  addMarkers() -> p
+```
+
+
+.pull-left[
+```{r eval=FALSE}
+library( leaflet )
+library( tidyverse )
+url <- "https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/DogwoodUrban.csv"
+
+read_csv( url ) %>%
+  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) -> dogwoods
+
+dogwoods %>%
+  leaflet() %>%
+  addProviderTiles(providers$Esri.WorldTopo) %>%
+  addMarkers()
+```
+
+```{r}
+st_bbox(dogwoods)
+```
+
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+p
+```
+
+]
+
+
+
+
+
+
+---
+
+# Landscape Classification
+
+Besides .redinline[very tall ladders], our ability to map out the characteristics of specific regions on the planet are dictated by the availability of raster databases. 
+
+&nbsp;
+
+.center[[![mrlc logo](https://live.staticflickr.com/65535/51016602045_a59cd29c90_o_d.png)](mrlc.gov)]
+
+
+
+---
+# Raster Sources
+
+.pull-left[
+The MRLC provides an interactive mapping tool to provide access to locations.  Base rasters are available but are .redinline[HUGE] (e.g, 25Gb and larger) and you'd be doing a lot of 
+
+*download $\to$ open in R $\to$ define boundary box $\to$ crop $\to$ save* 
+
+IF (and this is a big if), you laptop does not crumble due to size of the data sets first...
+
+Consequently, the use of the interactive viewer at  
+
+https://www.mrlc.gov/viewer/ 
+
+is a great resources.
+]
+.pull-right[
+```{r echo=FALSE}
+knitr::include_graphics("https://live.staticflickr.com/65535/51014241625_f0894ec432_c_d.jpg")
+```
+]
+
+
+
+---
+
+# Spatial Locations
+
+`GeoTIFF` and `GIF` files in the download.
+
+```{r}
+url <- "https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/NLCD_RVA_Gradient.zip"
+download.file( url, destfile = "./NLCD.zip")
+unzip("NLCD.zip")
+grep( list.files("./NLCD_RVA_Gradient/"), pattern = "*.xml", invert = TRUE, value=TRUE)
+```
+
+
+
+---
+
+```{r}
+raster <- raster( "NLCD_RVA_Gradient/NLCD_2016_Land_Cover_L48_20190424_vHkEMUfENR7tqriq0VRl.tiff") 
+raster
+```
+
+
+---
+class: center, middle
+
+# .red[Dyer's First Law of Spatial Analysis]
+
+
+```{r}
+crs( dogwoods ) 
+crs( raster )
+```
+
+
+
+
+
+---
+
+.pull-left[
+#### Raster Projection
+
+```{r}
+st_crs( raster )
+```
+
+
+
+
+
+]
+
+.pull-right[
+#### Points
+
+```{r}
+st_crs( dogwoods )
+```
+
+
+
+]
+
+
+???
+
+The datum here is lat/lon, which is not one that can easily and accuratley be used for measuing distances.
+
+
+
+
+---
+
+# Conforming Projections & Datum
+
+Go look at [EPSG.io](http://epsg.io) to find a transformation of suitable projection and datum for measuing distances & areas. 
+
+--
+
+*NAD83/Virginia Lambert* with a 1m accuracy.
+
+```{r}
+st_transform(dogwoods, 3968) -> dogwoods
+projectRaster( raster, crs = crs(dogwoods), res = res( raster ) ) -> land_cover
+
+crs( dogwoods ) 
+crs( land_cover )
+```
+
+
+
+
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/51194815380_656e88569a_c_d.jpg")
+background-position: center
+background-size: auto
+
+
+
+---
+
+# Extracting Raster Data using Points, Lines, or Polygons
+
+```{r}
+class( dogwoods )
+class( land_cover )
+```
+
+
+---
+
+```{r eval=FALSE}
+?extract
+```
+
+
+
+![](https://live.staticflickr.com/65535/51193053207_c60117c8b9_c_d.jpg)
+
+---
+background-image: url("https://live.staticflickr.com/65535/51193055742_8a478d81f1_c_d.jpg")
+background-position: center
+background-size: auto
+
+
+
+
+---
+
+# Coercing the `sf` object into a SpatialPointsDataFrame
+
+For a brief moment, we can *coerce* the mighty `sf` data.frame into the form of an object from the `sp` library so that we can use the `raster::extract()` function.
+
+```{r}
+raster::extract( land_cover,   as(dogwoods, "Spatial") ) 
+```
+
+# .redinline[**WTAF?**]
+
+---
+
+# Coercing the `sf` object into a SpatialPointsDataFrame
+
+```{r}
+projectRaster( raster, 
+               crs = crs(dogwoods), 
+               res = res( raster ),
+               method="ngb") -> tmp
+raster::extract( tmp,   as(dogwoods, "Spatial") ) 
+land_cover <- tmp 
+```
+
+
+
+
+
+
+
+
+---
+
+# Make Things Readable
+
+```{r}
+read_csv("NLCD_RVA_Gradient/NLCD_landcover_legend_2018_12_17_vHkEMUfENR7tqriq0VRl.csv") %>%
+  filter( !is.na(Legend) ) %>%
+  dplyr::select( Value, Type = Legend) -> lgnd
+head( lgnd )
+```
+
+
+---
+
+# Extract Remaining Components 
+
+#### .redinline[REPROJECT OTHER RASTERS FIRST!!!!!!]
+
+```{r}
+url <- "NLCD_RVA_Gradient/NLCD_2016_Tree_Canopy_L48_20190831_vHkEMUfENR7tqriq0VRl.tiff"
+r <- raster(url)
+canopy <- projectRaster( r, 
+                         crs = crs(dogwoods), 
+                         res = res( raster ),
+                         method="ngb" ) 
+
+url <- "NLCD_RVA_Gradient/NLCD_2016_Impervious_L48_20190405_vHkEMUfENR7tqriq0VRl.tiff"
+r <- raster(url)
+impervious <- projectRaster( r, 
+                         crs = crs(dogwoods), 
+                         res = res( raster ),
+                         method="ngb" ) 
+```
+
+
+---
+# Extract Remaining Components 
+
+```{r}
+dogwoods %>%
+  mutate( Value = raster::extract( land_cover, as(dogwoods, "Spatial") ) ) %>%
+  mutate( Canopy = raster::extract( canopy, as(dogwoods, "Spatial") ) ) %>%
+  mutate( Impervious = raster::extract( impervious, as(dogwoods, "Spatial") ) ) %>%
+  right_join( lgnd ) %>% 
+  mutate( Type = factor( Type ) ) %>% 
+  dplyr::select( Mother, Type, Canopy, Impervious ) -> df
+```
+
+.footnote[The `dplyr::` was necessary to prevent *namespace collision*.]
+
+---
+
+# Full Data Set
+
+```{r}
+summary( df )
+```
+
+
+
+
+---
+
+.pull-left[
+# At Site Variables
+
+Here are the landscape types that are present for the trees being studied.
+
+```{r eval=FALSE}
+data.frame( table( df$Type ) ) %>%
+  rename(Category = Var1, 
+         Frequency = Freq ) %>%
+  arrange( -Frequency ) %>%
+  kable(caption = "Land use classification for locations of 69 maternal dogwood trees in Richmond Virginia.") %>% 
+  kable_styling()
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+data.frame( table( df$Type ) ) %>%
+  rename(Category = Var1, 
+         Frequency = Freq ) %>%
+  arrange( -Frequency ) %>%
+  kable() %>% 
+  kable_styling()
+```
+]
+
+
+---
+
+# Simplify the Categories
+
+I'm going to set all these *singleton* landscape types as "Other" to simplify displaying output.
+
+```{r}
+df %>%
+  mutate( Landscape = ifelse( Type %in% c("Developed, Low Intensity",
+                                          "Deciduous Forest",
+                                          "Mixed Forest",
+                                          "Developed, Open Space",
+                                          "Developed, Medium Intensity",
+                                          "Evergreen Forest"), 
+                              as.character( Type ), 
+                              "Other")) %>%
+  mutate( Landscape = factor( Landscape ) ) -> df.landscape 
+
+```
+
+
+---
+
+
+```{r}
+ggplot( df.landscape, 
+        aes(Impervious, Canopy, color=Landscape) ) + 
+  geom_point()  + 
+  ylab("Percent Canopy Cover") + 
+  xlab("Percent Impervious Surface")
+```
+
+---
+
+```{r}
+plot( df.landscape["Landscape"], 
+      pch=16, 
+      axes=TRUE )
+```
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .orange[Case Study 2]
+
+## .fancy[Near.....  Far...... Wherever you are....]
+
+
+---
+
+# Neighborhood Estimates
+
+
+.pull-left[
+We can use the same approaches to start analyzing the features surrounding the target trees.  You may want to go back and take a look at the [cheetsheet](https://github.com/rstudio/cheatsheets/blob/master/sf.pdf)
+
+
+```{r}
+dogwoods %>%
+  filter( Mother == "1024PWP") %>%
+  st_buffer( dist=100 ) %>% 
+  as("Spatial") -> mom1 
+mom1 
+```
+
+Note: `dist=100` is based upon the distance based upon the DATUM for the `dogwood` objects.
+]
+
+.pull-right[
+```{r}
+vals <- raster::extract( land_cover, 
+                         mom1 )
+vals
+table( vals[[1]] )
+```
+]
+
+
+---
+
+# Mom1 Neighborhood
+
+
+Let's examine the raster around this mother.
+```{r}
+dogwoods %>%
+  filter( Mother == "1024PWP") %>%
+  st_buffer( dist=200 ) %>% 
+  st_bbox() %>%
+  raster::extent() -> e 
+
+mom1_landscape <- raster::crop( land_cover, e )
+```
+
+---
+
+# Mom1 Neighborhood
+
+```{r echo=FALSE}
+rasterToPoints( mom1_landscape ) %>%
+  as.data.frame() -> df.mom1 
+
+names( df.mom1 )[3] <- "Type"
+df.mom1$Type <- factor( df.mom1$Type)
+
+ggplot( ) +
+  geom_raster(aes(x,y,fill=Type),
+              data=df.mom1 ) + 
+  geom_sf( data= dogwoods %>% filter( Mother == "1024PWP") %>% st_buffer( dist=100 ),
+           fill=NA) + 
+  geom_sf( data=dogwoods %>% filter( Mother == "1024PWP"),
+           color = "red") 
+```
+
+
+
+
+---
+
+# Now All the Moms
+
+```{r}
+dogwoods %>%
+  st_buffer( dist=100 ) -> moms
+moms
+```
+
+---
+
+## Extract Them All
+
+Now, instead of having a single point for each maternal individual, we extract all the cells that fall within 100m
+
+```{r}
+raster::extract( land_cover, as(moms, "Spatial") ) -> vals
+head( vals )
+```
+
+
+```{r}
+unlist( lapply( vals, length ) )
+```
+
+
+--
+
+.redinline[How would you turn this into something that you can do an analysis of neighborhood similarity?]
+
+[Here](https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/NeighbrohoodVals.rda) is the raw data, give it a shot.
+
+
+---
+
+# A Principal Component Analysis
+
+```{r}
+
+df <- data.frame( Mom = character(0),
+                  Value = numeric(0),
+                  Frequency = numeric(0))
+
+for( i in 1:nrow(moms) ) {
+  Value <- raster::extract( land_cover, as(moms[i,], "Spatial"))[[1]]
+  e <- table( Value )
+  d <- data.frame( Mom = moms$Mother[i],
+                   Value = as.numeric( names( e ) ),
+                   Frequency = as.numeric( e ))
+  df <- rbind( df, d )
+}
+
+
+head(df )
+
+
+```
+
+
+
+---
+
+# A Principal Component Analysis
+
+```{r}
+df %>%
+  right_join( lgnd, ) %>% 
+  filter( !is.na(Frequency) ) %>% 
+  dplyr::select( Mom, Type, Frequency ) %>% 
+  pivot_wider( names_from = Type, 
+               values_from = Frequency,
+               values_fill = 0) %>%
+  column_to_rownames( var = "Mom" ) -> df.neighborhoods
+
+head( df.neighborhoods )
+```
+
+---
+
+```{r}
+fit <- prcomp( df.neighborhoods, scale = TRUE )
+```
+
+
+.pull-left[
+```{r echo=FALSE}
+library( factoextra )
+fviz_pca_ind( fit, repel=TRUE )
+```
+]
+
+
+.pull-right[
+```{r echo=FALSE}
+fviz_pca_var( fit)
+```
+
+]
+
+
+
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Case Study 3]
+
+## .fancy[Landscape Wide Change In The Piedmont]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50998498169_0e502bc7ba_c_d.jpg")
+background-size: cover
+
+
+
+
+---
+# Loading MRLC Data
+
+MRLC Data comes as a set of GEOTiff objects, which I've uploaded to the class GitHub account.
+
+```{r}
+library( raster )
+
+land_2016_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land_2016 <- raster( land_2016_url )
+land_2016
+```
+
+
+---
+
+.pull-left[
+# MRLC Plot
+
+You can use the normal `plot()` function (but for some reason it produces an extraneous empty plot for this one) or use our old friend `ggplot2()`.
+
+&nbsp;
+
+
+```{r eval=FALSE}
+rasterToPoints( land_2016) %>%
+  as.data.frame() %>%
+  mutate( LC = factor( NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e )) %>%
+  ggplot( aes(x,y,fill=LC)) + 
+  geom_raster() + theme_void()
+```
+]
+
+.pull-right[
+
+&nbsp;
+
+
+```{r echo=FALSE}
+rasterToPoints( land_2016) %>%
+  as.data.frame() %>%
+  mutate( LC = factor( NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e )) %>%
+  ggplot( aes(x,y,fill=LC)) + 
+  geom_raster() + theme_void()
+```
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+# Landscape Type
+
+```{r}
+values( land_2016 ) %>%
+  table() 
+```
+
+---
+
+.pull-left[
+# Make It Usable
+
+For *historical* reasons, much of the data that we work with is defined using numeric codes needing *look-up tables* to format into output that can be interpreted by humans.  When you download the raw data, it provides a [CSV file legend](https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/NLCD_landcover_legend_2018_12_17_qn2B1f8ganicJNKnJN0e.csv) to translate these numbers into real-world feature names.
+
+```{r eval=FALSE}
+legend_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/NLCD_landcover_legend_2018_12_17_qn2B1f8ganicJNKnJN0e.csv"
+read_csv( legend_url ) %>%
+  filter( !is.na(Legend))
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+legend_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/NLCD_landcover_legend_2018_12_17_qn2B1f8ganicJNKnJN0e.csv"
+
+read_csv( legend_url) %>%
+  filter( !is.na(Legend)) %>%
+  mutate( Code = as.numeric(Value)) %>%
+  dplyr::select( Code, Legend )  -> legend
+
+legend %>%
+  knitr::kable() %>%
+  kableExtra::kable_styling()
+```
+
+]
+
+
+
+---
+# Level 1 Quantification - Landscape *Types* 
+
+Which landscape features are present?
+
+
+.pull-left[
+```{r eval=FALSE}
+values( land_2016 ) %>%
+  as.data.frame() %>%
+  rename( "Code" = !!names(.[1])) %>%
+  distinct() %>%
+  left_join( legend, by = "Code") %>%
+  arrange( Legend )
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+values( land_2016 ) %>%
+  as.data.frame() %>%
+  rename( "Code" = !!names(.[1])) %>%
+  distinct() %>%
+  left_join( legend, by = "Code") %>%
+  arrange( Legend )
+```
+
+]
+
+
+
+---
+# Level 2 - Landscape *Composition*
+
+.pull-left[
+What are the relative frequencies of each type?
+
+```{r eval=FALSE}
+values( land_2016 ) %>%
+  table() %>%
+  as.data.frame() %>%
+  rename( Code = !!names(.[1]), 
+          Frequency = Freq) %>%
+  mutate( Code = as.numeric( as.character(Code ) ) ) %>%
+  left_join( legend, by = "Code") %>%
+  arrange( -Frequency )
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+values( land_2016 ) %>%
+  table() %>%
+  as.data.frame() %>%
+  rename( Code = !!names(.[1]), 
+          Frequency = Freq) %>%
+  mutate( Code = as.numeric( as.character(Code ) ) ) %>%
+  left_join( legend, by = "Code") %>%
+  arrange( -Frequency ) %>%
+  knitr::kable() %>% 
+  kableExtra::kable_styling()
+```
+]
+
+
+
+---
+
+# Level 3 - Spatial *Configuration*
+
+There are *a lot* more metrics that we can estimate from landscape features than just identity and frequency and what we will be covering here is just a bit off the top.  We can loosely categorize the kinds of metrics into the following groups:  
+
+- Aggregation metrics  
+
+- Area & Edge metrics  
+
+- Contrast metrics  
+
+- Core area metrics  
+
+- Diversity metrics  
+
+- Isolation metrics  
+
+- Shape metrics  
+
+- Subdivision metrics
+
+
+---
+
+# Landscape Metrics Package
+
+```{r}
+library( landscapemetrics )
+```
+
+There are some requirements for your raster to use this library:  
+
+1. The distance units of your projection are meter, as the package converts units internally and returns results in either meters, square meters or hectares. For more information see the help file of each function.  
+
+2. Your raster encodes landscape classes as integers (1, 2, 3, 4, …, n).  
+
+3. Landscape metrics describe categorical landscapes, that means that your landscape needs to be classified (we throw a warning if you have more than 30 classes to make sure you work with a classified landscape).  
+
+
+---
+
+# Built-In Checks
+
+To check the applicability of your raster, there are some helper functions that provide feedback to you.
+
+```{r}
+check_landscape( landscapemetrics::podlasie_ccilc )
+```
+
+
+--
+
+&nbsp;
+
+Fortunately, this package was written with the MRLC data sets.
+
+
+```{r}
+check_landscape( land_2016 )
+```
+
+
+---
+# Nested Levels of Metrics
+
+This library breaks up the functions into the following nested levels: class, patch, landscape
+
+```{r echo=FALSE, out.height="500"}
+list_lsm() %>% datatable( rownames=FALSE, filter = "none", options = list(dom="tip",searchable = F, ordering = F, pageLength=7) )
+```
+
+---
+
+# Landscape Metric Naming Conventions
+
+The functions in this library are named with the following taxonomy.
+
+`lsm_{l|p|c}_metric()`
+
+where `{l|p|c}` is one of `l`, `p`, or `c` and the metric is the name as shown above.  So, for example, if we are looking at the area of each patch in the landscape we would use the function
+
+--
+
+.pull-left[
+
+```{r}
+lsm_p_area( land_2016 ) 
+```
+
+]
+
+.pull-right[
+The output provides the following components:  
+
+- layers: See `?stack` for raster stacks  
+
+- level: The nested level of the analysis (lpc)  
+
+- class: The landscape feature class from the raster
+
+- id: A unique identification number for each group
+
+- metric: What is being measured.
+
+- value: The estimated value for the analysis.
+]
+
+
+---
+
+# Case Study - Summary of Forest Types
+
+
+.pull-left[
+```{r eval=FALSE}
+lsm_p_area( land_2016 ) %>%
+  filter( class %in% c(42, 43) ) %>%
+  mutate( Forest = ifelse( class == 42, "Evergreen", "Mixed Hardwoods") ) %>%
+  ggplot( aes(value) ) + 
+  geom_density() + 
+  facet_grid( Forest ~ .) +
+  xlab("Area (ha)") + 
+  ylab("Frequency") + 
+  ggtitle("Area Distribution of Mixed Forest Types")
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+lsm_p_area( land_2016 ) %>%
+  filter( class %in% c(42, 43) ) %>%
+  mutate( Forest = ifelse( class == 42, "Evergreen", "Mixed Hardwoods") ) %>%
+  ggplot( aes(value) ) + 
+  geom_density() + 
+  facet_grid( Forest ~ .) +
+  xlab("Area (ha)") + 
+  ylab("Frequency") + 
+  ggtitle("Area Distribution of Mixed Forest Types")
+```
+]
+
+---
+
+# Other Metrics of Interest
+
+- *gyrate* - The mean distance between cells within it which approximates something like the average distance an organism can move within a patch before encountering a boundary.  
+
+- *ca* - The physical area associated with each landscape type.
+
+
+- *clump* - A measure of how spatially contingent the features are ranging from random (no clumping) to all in one large patch (fully clumped).
+
+- *pr* - Patch richness.
+
+- *shdi* - Shannon's Diversity index
+
+
+---
+
+# Finding Patches by ID
+
+
+```{r}
+lsm_p_area( land_2016 ) %>%
+  group_by( class ) %>%
+  summarize( `Area` = sum( value) ) %>%
+  arrange(-Area)
+```
+
+---
+
+# Evergreen Forests
+
+.pull-left[
+```{r eval=FALSE}
+get_patches( land_2016, class=42)[[1]] %>%
+  plot( ) 
+```
+]
+.pull-right[
+```{r echo=FALSE}
+get_patches( land_2016, class=42)[[1]] %>%
+  plot( )
+```
+]
+
+
+---
+
+# Mixed Forests
+
+.pull-left[
+```{r eval=FALSE}
+get_patches( land_2016, class=43)[[1]] %>%
+  plot( ) 
+```
+]
+.pull-right[
+```{r echo=FALSE}
+plot( get_patches( land_2016, class=43)[[1]] ) 
+```
+]
+
+
+---
+
+# Woody Wetlands
+
+.pull-left[
+```{r eval=FALSE}
+get_patches( land_2016, class=90)[[1]] %>%
+  plot( ) 
+```
+]
+.pull-right[
+```{r echo=FALSE}
+plot( get_patches( land_2016, class=90)[[1]] ) 
+```
+]
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![](https://media.giphy.com/media/106cqwD4WrDjJm/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about<br/> the content presented herein<br/> now is your time.  
+
+If you think of something later though, <br/>feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll<br/> get back to you as soon as possible.
+]
+
+
+
+
+
+```{r}
+system("rm *.zip")
+system("rm -rf __MACOSX/")
+system("rm -rf NLCD_RVA_Gradient")
+```
+
+

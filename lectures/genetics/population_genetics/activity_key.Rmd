@@ -1,0 +1,83 @@
+---
+title: "Popualtion Genetics Activity"
+output: html_notebook
+---
+
+<center>
+[![National Cancer Institute](https://unsplash.com/photos/tV-RX0beDp8/download?force=true&w=640)](https://unsplash.com/photos/tV-RX0beDp8?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink)
+</center>
+
+## Overview
+
+This activity will focus on the location and amount of genetic 
+
+##  The Data
+
+```{r}
+library( tidyverse )
+library( gstudio )
+data( arapat )
+```
+
+
+The data for this activity is included in the `gstudio` library and represents a set of nuclear co-dominant loci (named *`r column_class(arapat,"locus") `*) assayed for `r nrow(arapat)` individuals and partitioned into `r length( column_class(arapat,"factor"))-1` partitions.
+
+```{r}
+summary( arapat )
+```
+
+1. Create all potential genotypes *de novo* for a locus with 3 alleles.
+
+2. At the ATPS locus, there are several genotypes that are observed only once in the entire data set.  What are these genotypes and which populations are they found in?  
+
+
+3. Look at the composition of *Populations* in the *arapat* data set with particular attention to *Species*.  This species is a parasite on a limited habit resource.  Ecologically, what is happening here?
+
+```{r}
+table( arapat$Species, arapat$Population) -> t
+t
+```
+
+*There is only 2 populations for the `Cape` species where it occurs in isolation, all the rest have both individuals who have been designated as `Cape` and `Peninsula` Species co-occurring.  This parasite lives on a restricted habitat, and this may be a situation where they in competitive exclusion on the limited habitat.*
+
+
+4. One way to see if ther is any indication that *Peninsula* and *Cape* species are interbreeding would be to look to see if there are alleles that are unique to one of the groups and not in the other.  A stronger inference would be gained if those *private* alleles were within individuals who are in the same physical location.  For the sites where both *Peninsula* and *Cape* taxonomic groups co-exist is there any evidence of alleles in one species but not in the other?
+
+*First I would just grab the populations where they co-occur.  I can do this either programatically or just look at the table from the previous question. Then filter the data to just have those populations.*
+
+```{r}
+arapat %>%
+  filter( Population %in% c("Mat","ESan","Const","Aqu","98","77","75","73","166","164","163","157") ) %>%
+  droplevels() %>%   # I use this to reconfigure the levels on factors to only those present
+  select(-Cluster, -ID, -Latitude, -Longitude ) -> sympatry 
+summary( sympatry )
+```
+
+*Then I'd split them by species and look at the genetic data*
+
+```{r}
+sympatry %>%
+  filter( Species == "Cape") -> cape
+summary( cape )
+
+sympatry %>%
+  filter( Species == "Peninsula" ) -> peninsula
+summary( peninsula )
+```
+
+*Now, look at the output.  If you look at `WNT` you can see that the cape group only has alleles 1&2 whereas the peninsula group also has alleles 3 & 4.  In fact, there is most of them are 03:03 homozygotes, which do not occur in sympatric cape samples.  Here are the populations in which these homozygotes exist.*
+
+```{r}
+peninsula %>%
+  filter( WNT == locus("03:03") ) %>%
+  select( Population, WNT ) 
+
+```
+*Repeat with the other loci and you'll see a lot of evidence that there are private alleles in one species that do not occur in the other.*
+
+
+
+
+
+
+

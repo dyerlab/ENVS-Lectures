@@ -1,0 +1,1150 @@
+---
+title: "Introduction"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "slide_styles.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+```{r setup, include=FALSE}
+library( sf )
+library( ggplot2 )
+library( tidyverse )
+library( DiagrammeR )
+library( fontawesome )
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+
+theme_set( theme_classic( base_size = 20) )
+```
+
+
+# .orange[Population Genetics]
+
+### .fancy[Neutral & Non-neutral Processes `r fa("dna", fill='brickred'  )`]
+
+
+
+
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51198451479_5ce952b659_c_d.jpg")
+background-position: center
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .blue[Foundations]
+
+## .fancy[The Algebra of Alleles & Genotypes]
+
+
+
+---
+
+# Allele Frequencies
+
+
+.pull-left[
+Consider the alleles $A$ and $B$ which occur at:
+
+\begin{equation}
+f(A) = p
+\end{equation}
+
+and 
+
+\begin{equation}
+f(B) = 1 - p = q 
+\end{equation}
+
+
+which implies
+
+\begin{equation}
+p + q = 1.0
+\end{equation}
+
+]
+
+
+--
+
+.pull-right[
+
+Alleles coalesce into **genotypes** which occur at the following frequency expectations.
+
+**Homozygotes**
+
+\begin{equation}
+f(AA) = p^2 \\
+f(BB) = q^2
+\end{equation}
+
+**Heterozygotes**
+
+\begin{equation}
+f(AB) + f(BA) = 2pq = 1- (p^2 + q^2)
+\end{equation}
+
+
+]
+
+
+
+---
+
+# Mating Frequencies
+
+The frequency of genotypes through time, can be model using the following assumptions.
+
+.pull-left[
+
+For simplicity, let's consider the genotypes at this locus is defined by the following .redinline[**genotype frequencies**].
+
+&nbsp;
+
+$f(AA) = p^2 = P$
+
+&nbsp;
+
+$f(AB) = 2pq = Q$
+
+&nbsp;
+
+$f(BB) = q^2 = R$
+
+]
+
+--
+
+.pull-right[
+
+Then, the expections for the next generation suggest that the genotypes coalesce in random and the probabilities of each mating pair could be parameterized as follows:
+
+
+   | AA | AB | BB  
+---|----|----|----  
+AA | $P^2$ | $PQ$ | $PR$  
+AB | $PQ$ | $Q^2$ | $QR$    
+AB | $PR$ | $QR$ | $R^2$  
+
+]
+
+
+---
+
+# Samples of Frequencies
+
+From samples of $N$ individuals with observerations of $N_{AA}$, $N_{AB}$, and $N_{BB}$ for each genoptype.
+
+.pull-left[
+
+### Genotype Frequencies 
+
+$P = \frac{N_{AA}}{N}$,
+
+$Q = \frac{N_{AB}}{N}$, 
+
+and
+
+$R = \frac{N_{BB}}{N}$
+
+]
+
+--
+
+.pull-right[
+
+### Allele Frequencies
+
+$f(A) = P + \frac{Q}{2} = p$
+
+and 
+
+$f(B) = R + \frac{Q}{2} = q$
+
+]
+
+---
+
+# Independent Assortment of Alleles
+
+And when we have any of these mating events occur, we can predict the frequency of alleles in the **next generation**.
+
+
+.pull-left[
+
+<center>
+<b>Homozygotes</b>
+</center>
+
+&nbsp;
+
+  |  A |  A
+-------|----|----  
+ **A** | AA | AA  
+ **A** | AA | AA  
+
+
+&nbsp;
+
+  |  A |  A
+-------|----|----  
+ **B** | AB | AB  
+ **B** | AB | AB  
+
+
+
+]
+
+.pull-right[
+
+<center>
+<b>Mixed</b>
+</center>
+
+&nbsp;
+
+  |  A |  A
+-------|----|----  
+ **A** | AA | AA  
+ **B** | AB | AB  
+
+
+&nbsp;
+
+  |  A |  B
+-------|----|----  
+ **A** | A1 | AB  
+ **B** | AB | BB  
+
+
+
+]
+
+&nbsp;
+
+The old "Punnet Square"
+
+
+
+---
+class: middle
+background-image: url("https://live.staticflickr.com/65535/51202021951_40cb6f88ae_c_d.jpg")
+background-position: center
+background-size: cover
+
+
+
+
+
+---
+class: middle
+background-image: url("https://live.staticflickr.com/65535/51201303937_6a8c37be22_c_d.jpg")
+background-position: center
+background-size: cover
+
+
+
+
+
+
+
+---
+
+# Mating Frequencies for $N_{t+1}$
+
+Given the genotype frequencies of $P$, $Q$, and $R$, random mating of individuals are expected to create the 
+
+
+Parents   | $\mathbf{P(Parents)}$ | $\mathbf{P(AA)}$ | $\mathbf{P(AB)}$ | $\mathbf{P(BB)}$
+------------|:----------:|:-------:|:-------:|:-------:
+$AA\;x\;AA$	| $P^2$      | $P^2$	 | &nbsp;  | &nbsp;
+$AA\;x\;AB$	| $PQ$       | $PQ/2$  | $PQ/2$  | &nbsp;	
+$AA\;x\;BB$	| $PR$       | &nbsp;  | $PR$	   | &nbsp;
+$AB\;x\;AB$	| $Q^2$      | $Q^2/4$ | $Q^2/2$ | $Q^2/4$
+$AB\;x\;BB$	| $QR$       | &nbsp;  | $QR/2$	 | $QR/2$
+$BB\;x\;BB$	| $R^2$      | &nbsp;  | &nbsp;  | $R^2$
+
+
+---
+
+# Genotype Frequencies for $N_{t+1}$
+
+.pull-left[
+
+### Homozygotes 
+
+$$
+\begin{aligned}
+P_{t+1} &= P_{t}^2 + \frac{P_tQ_t}{2} + \frac{Q^2_t}{4} \\\\ 
+&= \left( P_t + \frac{Q_t}{2} \right)^2 \\\\
+&= p^2
+\end{aligned}
+$$
+]
+
+--
+
+.pull-right[
+
+### Heterozygotes
+
+$$
+\begin{aligned}
+Q_{t+1} &= \frac{P_tQ_t}{2} + P_tR_t + \frac{Q^2_t}{2} + \frac{Q_tR_t}{2}\\
+&= 2\left(P_t + \frac{Q_t}{2} \right)\left(R_t + \frac{Q_t}{2}\right)\\
+&= 2pq
+\end{aligned}
+$$
+
+]
+
+--
+
+#### Consequences 
+So expectation .redinline[through time] is that with **random mating**, gentoype frequencies maintain $P = p^2$, $Q = 2pq$, and $R = q^2$
+
+---
+# Hardy-Weinberg Equilibrium
+![](https://live.staticflickr.com/65535/51189491043_434bf8df51_c_d.jpg)
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[Popgen in R]
+
+## .fancy[The `gstudio` library]
+
+
+
+---
+
+# The `gstudio` Package
+
+For this course, we will be using the `gstudio` package.  It is provided in a [Github Repository](https://github.com/dyerlab/gstudio) for simplicity.  
+
+It can be installed as:
+
+```{r eval=FALSE}
+remotes::install_github("dyerlab/popgraph")
+remotes::install_github("dyerlab/gstudio")
+```
+
+I created this package because I found the current offerings to be at odds between how my data workflow is constructed and how R packages dealt with Genetic Data.
+
+---
+
+# S2 vs S3 Configurations
+
+There are two common ways (and several additional ones) that you can program objects in `R` such as a genotype.  Using the spatial packages `sp` and `sf` I'll show the differences.
+
+.pull-left[
+### S2 Configuration `sp`
+
+Objects such as the `SpatialPointsDataFrame` are special entities, which have the following components:  
+
+  - attributes: `crs`, `bbox`, `centroid`
+
+  - data: `data.frame`
+  
+&nbsp;
+
+*Consequences* 
+
+The *object* is what we work with and stuff *inside of it* is where the data live making spatial data somehow different than other data we work with.
+
+]
+
+--
+
+.pull-right[
+### S3 Configuration `sf`
+
+Objects are fundamental data types:
+
+  - Contained within native `data.frame`, `list` containers.
+  
+&nbsp;
+
+&nbsp;
+
+*Consequences*
+
+The data integrate directly into `%>%` workflows just like all the rest of your data putting spatial components on an equal footing with all the other data we work with.
+
+]
+
+
+---
+
+# The `locus` Object
+
+```{r}
+library( gstudio )
+```
+
+A genotype is represented as a `locus` object in `R`, which is just like a `numeric`, `logical`, `character` or `factor` variable.
+
+.pull-left[
+
+#### Missing Locus
+
+```{r}
+loc_empty <- locus() 
+loc_empty
+```
+
+#### Haploid Locus
+
+```{r}
+loc_hap <- locus("A")
+loc_hap
+```
+]
+
+
+--
+
+.pull-right[
+
+#### Diploid Locus
+
+```{r}
+loc_hom <- locus( c("A","A") )
+loc_het <- locus( "A:B" )
+
+c(loc_hom, loc_het)
+
+```
+
+```{r}
+class( loc_hom )
+```
+
+
+]
+
+
+---
+
+# The Beetle Data
+
+The Bark Beetle, *Araptus attenuatus*, is a Sonoran Desert endemic parasite that lives on within the plant *Euphorbia lomelii*.
+
+.pull-left[
+
+&nbsp;
+
+![Araptus attenuatus](https://live.staticflickr.com/65535/50441339417_74e04216fa_w_d.jpg)
+]
+
+.pull-right[
+.center[![Euphorbia lomelii](https://live.staticflickr.com/65535/50441175211_ba3b9df2ea_w_d.jpg)]
+]
+
+
+---
+
+.pull-left[
+# Host Plant Vicariance
+
+- Obligate 
+
+- Desert Endemic
+
+- Geologic Sources of Vicariance
+
+- Alternative Scenarios
+
+- Coalescent Theory Tests
+
+
+&nbsp;
+
+[ref](https://rodneydyer.com/publication/garrick-et-al-2009-mol-ecol/)
+
+]
+
+.pull-right[
+
+&nbsp;
+
+&nbsp;
+
+![](https://live.staticflickr.com/65535/51203223823_e1b6597e00_z_d.jpg)
+]
+
+
+---
+
+.pull-left[
+# Araptus attenuatus
+
+- mtDNA Sequence
+
+- Spatial Locations 
+
+- Main clade diverged ~4.6MYA
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51203854884_9016731941_c_d.jpg)
+]
+
+---
+
+# Genotypes
+
+These data were genotyped and are provided in the `gstudio` package as example data.  As in most workflows, they are provided within a `data.frame` object along with any other data types.
+
+```{r}
+data( arapat )
+class( arapat )
+names( arapat )
+column_class( arapat, "locus")
+```
+
+
+---
+
+```{r}
+summary( arapat )
+```
+
+
+---
+
+# Genotype Frequencies
+
+Because the columns of data are recognized as `locus` object, we can get frequencies for:
+
+.pull-left[
+
+#### Genotypes
+
+```{r}
+genotype_frequencies( arapat$LTRS )
+```
+
+]
+
+.pull-right[
+
+#### Alleles 
+
+```{r}
+frequencies( arapat$LTRS )
+```
+
+]
+
+---
+
+# Allele Frequencies
+
+We can also get frequencies for multiple loci.
+
+```{r}
+freqs <- frequencies( arapat )
+head( freqs )
+```
+
+---
+
+# Allele Frequencies
+
+Or for subdivisions of the population.
+
+```{r}
+freqs <- frequencies( arapat, stratum = "Cluster" )
+head( freqs )
+```
+```{r}
+freqs <- frequencies( arapat, stratum = "Population" )
+head( freqs )
+```
+
+---
+
+# Allele Frequencies
+
+Or whatever combination you are interested in getting
+
+```{r}
+frequencies( arapat, 
+             stratum = "Cluster", 
+             loci = c("EN","LTRS") ) %>%
+  head() 
+```
+
+
+
+
+
+---
+# Visualizing 
+
+
+.pull-left[
+
+
+We can get allele frequencies from the data by using the function `frequencies` and it will return a `data.frame` object that we can pipe into subsequent analyses.
+
+
+```{r eval=FALSE}
+arapat %>%
+  frequencies( loci = "LTRS") %>%
+  ggplot( aes(Allele,Frequency) ) +
+  geom_bar( stat="identity")
+
+
+```
+
+]
+
+
+
+
+
+
+
+.pull-right[
+
+```{r echo=FALSE}
+arapat %>%
+  frequencies( loci = "LTRS") -> freqs 
+
+ggplot( aes(Allele, Frequency), data=freqs ) +
+  geom_col()
+```
+
+]
+
+
+
+
+
+
+---
+
+# Built-in `geom_`'s
+
+.pull-left[
+OR, you can use some of the `geom_` functions provided in `gstudio` which can take care of the mapping for you (e.g., no need to do `aes()`) such as:
+
+```{r eval=FALSE}
+ggplot() + 
+  geom_frequencies( freqs )
+```
+
+]
+
+.pull-right[
+
+```{r echo=FALSE}
+ggplot() + 
+  geom_frequencies( freqs )
+```
+
+]
+
+
+
+---
+
+# Allele Frequencies
+
+.pull-left[
+```{r eval=FALSE}
+freqs <- frequencies( arapat, 
+                      loci="EN", 
+                      stratum="Cluster")
+ggplot() + 
+  geom_frequencies( freqs ) + 
+  facet_grid(Stratum~.) 
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+freqs <- frequencies( arapat, loci="EN", stratum="Cluster")
+ggplot() + geom_frequencies( freqs ) + facet_grid(Stratum~.) 
+```
+]
+
+
+---
+
+# Allele Frequencies
+
+.pull-left[
+
+Or compare across substrata for an individual locus 
+
+
+```{r eval=FALSE}
+ggplot() + 
+  geom_locus( aes( x=LTRS,
+                   fill=Cluster), 
+              data=arapat ) 
+```
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE}
+ggplot() + 
+  geom_locus( aes(x=LTRS,fill=Cluster), data=arapat ) 
+```
+]
+
+---
+
+# Loading In Data
+
+Data should be easy to get *into* `R` and `gstudio` supports the following text formats for loading data in.
+
+![](https://live.staticflickr.com/65535/51190504170_fb922748b1_o_d.png)
+
+
+
+---
+
+# Gentoypes Separated by Symbols
+
+.pull-left[
+
+#### Separated Genotypes
+<pre>
+Population,Latitude,Longitude,Loc1,Loc2
+Olympia,47.15,-122.89,12:14,15:15
+Bellingham,48.75,-122.49,12:12,15:17
+St. Louis,38.81,-89.98,12:10,NA
+Ames,42.26,-93.47,10:14,NA:NA
+Richmond,37.74,-77.16,10:10,17:17
+</pre>
+]
+
+.pull-right[
+
+#### The `R` Code
+
+```{r}
+path <- system.file("extdata","data_separated.csv", package="gstudio")
+read_population( path, type = "separated", locus.columns = 4:5)
+```
+
+]
+
+
+---
+
+# Genotypes Contained in Separate Columns
+
+.pull-left[
+
+#### Alleles In Columns
+<pre>
+Population,Latitude,Longitude,Loc1,Loc1,Loc2,Loc2
+Olympia,47.15,-122.89,14,12,15,15
+Bellingham,48.75,-122.49,12,12,17,15
+St. Louis,38.81,-89.98,12,10,NA,NA
+Ames,42.26,-93.47,10,14,NA,NA
+Richmond,37.74,-77.16,10,10,17,17
+</pre>
+]
+
+--
+
+.pull-right[
+
+#### The `R` Code
+
+```{r}
+path <- system.file("extdata","data_2_column.csv", package="gstudio")
+read_population( path, type = "column", locus.columns = 4:7)
+```
+
+
+]
+
+
+---
+
+# SNP Genotypes As Minor Allele
+
+.pull-left[
+
+#### Alleles In Columns
+<pre>
+Population,Latitude,Longitude,snp1,snp2,snp3,snp4
+Olympia,47.15,-122.89,1,2,1,1
+Bellingham,48.75,-122.49,1,0,1,2
+St. Louis,38.81,-89.98,1,0,NA,NA
+Ames,42.26,-93.47,0,1,NA,NA
+Richmond,37.74,-77.16,0,2,1,2
+</pre>
+]
+
+--
+
+.pull-right[
+
+#### The `R` Code
+
+```{r}
+path <- system.file("extdata","data_snp.csv", package="gstudio")
+read_population( path, type = "snp", locus.columns = 4:7)
+```
+
+
+]
+
+
+
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .green[Evoluationary Forces]
+
+## .fancy[Deviants from Hardy-Weinberg]
+
+**OR** what we are really trying to measure...
+
+---
+
+# Genetic Drift
+
+
+
+.pull-left[
+Genetic drift is the *stochastic change in allele frequencies through time* due to the population size. When $N = \infty$ then $P_{t+1} = P_{t}$, etc.  However, when $N << \infty$, allele frequencies are expected to change. 
+
+```{r}
+Alleles <- c("A","B")
+sample_sizes <- c(5,10,20,50,100)
+data.frame( N = rep( sample_sizes, each=50),
+            FreqA = NA) -> df 
+for( i in 1:nrow(df)){
+  a <- sample( Alleles, 
+               size=df$N[i],
+               replace=TRUE)
+  df$FreqA[i] <- sum( a == "A") / length(a)
+}
+```
+]
+
+--
+
+.pull-right[
+```{r echo=FALSE}
+ggplot( df, aes(factor(N),FreqA) ) + 
+  geom_boxplot() + xlab("Population Size (N)") +
+  ylab("f(A)")
+```
+
+]
+
+
+---
+
+# Genetic Drift - The Binomial
+
+
+
+.pull-left[
+
+The amount of drift is inversely proportional to the population size $N$.  More specifically, we can treat a simple locus like this one as a *binomial random variable* 
+
+$$
+P(N_A|N,p_A) = \frac{2N!}{N_A!(2N-N_A)!}p_A^{N_A}(1-p_A)^{2N-N_A}
+$$
+
+For simplicity, let's assume that a population of $N=20$ individuals is randomly mating and has a locus where $p=q$.  At the next generation the probability distribution for the number of $A$ alleles is given by the expansion.
+
+
+This means that it is possible that even if everyone starts as a heterozygote at this generation, you may have a non-zero probability of .redinline[losing one of the alleles due to drift!]
+
+]
+
+--
+
+.pull-right[
+```{r echo=FALSE}
+p <- 0.5
+N <- 20
+N.A <- 0:(2*N)
+Frequency <- factorial(2*N)/( factorial(N.A)*factorial(2*N-N.A)) * p^N.A * (1-p)^(2*N-N.A)
+df <- data.frame(N.A,Frequency)
+ggplot(df,aes(x=N.A,y=Frequency)) + geom_bar(stat="identity") + xlab(expression(N[a]))
+```
+
+]
+
+---
+
+# Skewness in Allele Frequencies
+
+This probability increases the further allele frequencies diverge from $p=q$.  Here is an example where $p=0.1$
+
+```{r echo=FALSE}
+p <- 0.1
+Frequency <- factorial(2*N)/( factorial(N.A)*factorial(2*N-N.A)) * p^N.A * (1-p)^(2*N-N.A)
+df <- data.frame(N.A,Frequency)
+ggplot(df,aes(x=N.A,y=Frequency)) + geom_bar(stat="identity") + xlab(expression(N[a])) 
+```
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51198451189_1c19fd70d7_c_d.jpg")
+background-position: center
+
+
+
+
+
+---
+
+# Drifting Away - Simulations
+
+.pull-left[
+We can simulate mating in `R` for 
+```{r}
+freqs <- frequencies( arapat, loci="LTRS")
+freqs 
+```
+]
+
+
+.pull-right[
+```{r}
+pop <- make_population(freqs)
+summary( pop )
+```
+
+]
+
+
+
+
+
+---
+
+# Drifting Away - Simulations
+
+.pull-left[
+
+Set up `data.frame` to receive frequencies
+```{r}
+Lineage <- factor( rep( 1:10, each = 100 ) )
+Generation <- rep( 1:100, times=10)
+df.drift <- data.frame( Lineage,
+                        Generation,
+                        p = NA)
+```
+
+Small function to estimate $f(A)$.
+
+```{r}
+fA <- function( p ) { 
+  frequencies( p )  %>%
+    filter( Locus == "LTRS",
+            Allele == "01" ) %>%
+    select( Frequency ) %>%
+    as.numeric() 
+}
+```
+
+
+
+]
+
+--
+
+.pull-right[
+
+Simulate random mating across generations where we are creating a new generation equal in size to the previous one.
+
+```{r cache=TRUE}
+for( rep in levels( df.drift$Lineage) ) {
+  p <- pop 
+  for( gen in 1:100 ) {
+    f <- fA(p) 
+    df.drift[ df.drift$Generation == gen & 
+              df.drift$Lineage == rep, "p"] <- f
+    p <- mate(p)
+  }
+}
+```
+]
+
+---
+
+# Genetic Drift & Fixation
+
+.pull-left[
+
+Even though all the replicate simulations started at the same location (e.g., `LTRS` allele frequencies), their eventual fate is stochastic.
+
+&nbsp;
+
+```{r eval=FALSE}
+ggplot( df.drift, 
+        aes(Generation,p,color=Lineage) ) + 
+  geom_line() 
+```
+
+]
+
+
+.pull-right[
+```{r echo=FALSE}
+ggplot( df.drift, 
+        aes(Generation,p,color=Lineage) ) + 
+  geom_line() 
+```
+]
+
+
+
+---
+
+# Expectations of Drift
+
+
+As a result, there is an expectation on the number of random generations necessary for a population to go to .redinline[fixation] based upon the population size and allele frequencies.  This can be approximated by:
+
+&nbsp;
+
+\begin{equation}
+t_{fix} = \frac{-4N_e(1-p)\log{(1-p})}{p}
+\end{equation}
+
+&nbsp;
+Where $N_e$ is the *genetic effective number* of individuals.
+
+
+---
+# Mutation
+
+.pull-left[
+
+It it weren't for *mutation*, you would all look like this guy!
+
+![](https://live.staticflickr.com/65535/51190704830_30b4fe1acf_w_d.jpg)
+]
+
+--
+
+.pull-right[
+
+Mutation changes allele frequencies very slowly relative to time-frames that most landscape genetics studies are conducted.
+
+Assuming the rate of mutation from $A \to B$ is $\mu$ and from $B \to A$ is $\nu$, we expect to see a *per genertation* change equal to:
+
+$$
+p_{t+1} = p_t(1-\mu) + (1-p_t)\nu
+$$
+
+with an expected equilibrium at
+
+$$
+\hat{p} = \frac{\nu}{\nu + \mu}
+$$
+
+See also:
+
+- Stepwise mutation model (microsatellites)
+- Infinite allele model (Kimura & Crow, 1964)
+
+]
+
+
+
+---
+
+# So why do we care?
+
+In population genetics, the only things we have are *allele frequencies* and *genotype frequencies*.  What we **must** do is deploy .redinline[sampling strategies] (e.g., experimental design) to answer specific questions that can be answered by looking at variation in *allele* and *genotype* frequencies.  
+
+
+
+
+---
+
+# Changes in Heterozygosity
+
+
+&nbsp;
+
+Microevolutionary forces that can impact heterozygosity.
+
+&nbsp;
+
+Decreased Heterozygosity         | Increased Heterozygosity
+---------------------------------|-------------------------------
+Inbreeding                       | Coding Errors  
+Null Alleles                     | Gametic Gene Flow
+Positive Assortative Mating      | Negative Assortative Mating   
+Selection Against Heterozygotyes | Heterosis  
+Wahlund Effects                  | Outbreeding 
+Zygotic Gene Flow                | 
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![](https://media.giphy.com/media/xT0xeuOy2Fcl9vDGiA/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about<br/> the content presented herein<br/> now is your time.  
+
+If you think of something later though, <br/>feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll<br/> get back to you as soon as possible.
+]
+

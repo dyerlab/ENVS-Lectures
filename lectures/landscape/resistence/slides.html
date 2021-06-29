@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+    <script src="libs/jquery-1.12.4/jquery.min.js"></script>
+    <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-1.3.1/leaflet.js"></script>
+    <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+    <script src="libs/proj4-2.6.2/proj4.min.js"></script>
+    <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+    <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+    <script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+    <script src="libs/d3-4.5.0/d3.min.js"></script>
+    <script src="libs/dendroNetwork-binding-0.4/dendroNetwork.js"></script>
+    <link rel="stylesheet" href="slide_styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+
+
+
+# .orange[Models of Resistance]
+
+### .fancy[The *sine quo non* of Landscape Genetics]
+
+
+
+
+
+
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51202194363_c8f08d149f_c_d.jpg")
+background-position: center
+
+
+
+
+
+---
+
+# Impetus
+
+It is our .redinline[goal] to identify which features of the landscape influence movement of genes or organisms.  The challenge is that we can't just ask them...  
+
+So, we must examine a wide range of potential features that may influence connectivity and evalute the extent to which they satisfy the canonical landscape genetics formula.  The challenge is that we do not know **anything** about what the transport agent is keying in on as it moves across the landscape.
+
+
+- What features are important?
+
+- How much to they influence movement?
+
+- At what scale do organisms detect ecological features?
+
+- How do they decide to move from one locale to the next?
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[What Is Resistance]
+
+## .fancy[.redinline[Is it futile?] ![](https://live.staticflickr.com/65535/51191969633_84ecb79c16_o_d.png)]
+
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191732431_c82a618546_c_d.jpg)
+
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191946263_768a108840_c_d.jpg)
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192503169_2a7ff60569_c_d.jpg)
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191023152_eef8c097c0_c_d.jpg)
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191946358_25866aa617_c_d.jpg)
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192503249_636554234b_c_d.jpg)
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191023272_a7c5929d4e_c_d.jpg)
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191946193_6a1dfde421_c_d.jpg)
+
+---
+
+# Two Challenges of Resistance Models 
+
+
+1. Quantifying **.redinline[what]** and **.redinline[to what extent]** contributes to resistence.   
+
+2. Estimating Separation
+
+
+
+---
+
+# Resistance
+
+Resistance can be defined in at least two different ways.
+
+1. *Absolute resistance:* The value of a particular location is constant no matter where you look at it from.  
+
+2. *Relative Resistance:* The value of a particular location depends upon the location being considered.
+
+
+---
+
+# Absolute Resistance
+
+The resistnce surface is fixed as a singluar matrix of values.
+
+
+
+![](https://live.staticflickr.com/65535/51192827045_d405106ab0_c_d.jpg)
+
+
+---
+
+# Cost To Cross
+
+The values in the cells represent a *cost* that an organism or gamete or zygote incurs based to traverse it.
+
+- Specific values may be assigned to represent features of the landscape.
+
+- Can represent categorical (e.g, `\(Forst=1\)` or `\(!Forest = 2\)`) or continuous values for features based upon local conditions (e.g., `\(Forest = \delta_{stems}\)`).
+
+
+---
+
+# Example from Baja California
+
+
+.pull-left[
+Let's look at the slope of terrain in Baja California and the Sonoran desert.
+
+
+```r
+library( raster )
+url &lt;- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
+
+alt &lt;- crop( raster( url ), extent(-116,-109,22,30) ) 
+plot( alt )
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-2-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Example from Baja California
+
+.pull-left[
+
+```r
+terrain(alt, opt="slope", unit="degrees") %&gt;%
+  values() %&gt;%
+  data.frame(Degrees = .) %&gt;%
+  filter( !is.na(Degrees ) ) %&gt;%
+  ggplot( aes(Degrees) ) + 
+  geom_histogram( fill="grey90", color="grey") + 
+  ylab( "Frequency" ) 
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-4-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+
+# Example from Baja California
+
+.pull-left[
+
+```r
+terrain(alt, opt="slope", unit="degrees") %&gt;%
+  values() %&gt;%
+  data.frame(Degrees = .) %&gt;%
+  filter( !is.na(Degrees ) ) %&gt;%
+  ggplot( aes(Degrees) ) + 
+  geom_histogram( fill="grey90", color="grey") + 
+  ylab( "Frequency" ) 
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-6-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Example from Baja California
+
+
+![](https://live.staticflickr.com/65535/51191807451_b3132f84c2_c_d.jpg)
+
+
+
+
+---
+
+# Relative Resistence
+
+Connectivity between sites increases by similarity of **at-site** features such as *elevation*, *phenology*, etc.
+
+![](https://live.staticflickr.com/65535/51191813596_3414556d1f_o_d.png)
+---
+
+# Host Plant for *Araptus* 
+
+.pull-left[
+
+## *Euphorbia lomelli*
+
+- Sonoran Desert Endemic
+
+- Hummingbrid pollinated  
+
+- Gravity dispersed seeds
+
+- Found throughout Sonoran Desert Ecosystems.
+
+]
+
+
+.pull-right[
+
+Only known host to *Araptus*.
+
+![](https://live.staticflickr.com/65535/51191110697_9a7ef07f42_w_d.jpg)
+
+]
+
+---
+
+# Hypothesis Phenology &amp; Connectivity
+
+
+```r
+library( sf )
+library( gstudio )
+data( arapat )
+arapat %&gt;% 
+  group_by( Population ) %&gt;%
+  summarize( Latitude = mean( Latitude ), 
+             Longitude = mean( Longitude ) )  %&gt;%
+  st_as_sf( coords=c("Longitude", "Latitude"), crs=4326 ) -&gt; sites
+
+sites$Elevation &lt;- extract( alt, as(sites, "Spatial") ) 
+sites$Elevation
+```
+
+```
+##  [1]   8  10 488  31   0 609  87 371  29 248 196  35  NA  70 354   6 522  26 240
+## [20] 177  18 117  80  12 397 103  21  52 368 681 290 361  66  75 142  50   9   5
+## [39] 305
+```
+
+
+???
+
+Population 163 == 196m.
+
+
+
+---
+
+# Relative to Population 163
+
+.pull-left[
+
+Estimation of resistance needs to be from the perspective of somewhere.  Let's use 163 as the example here.
+
+
+```r
+library( leaflet )
+sites %&gt;%
+  leaflet() %&gt;%
+  addMarkers( popup = ~Population) %&gt;%
+  addProviderTiles(providers$OpenTopoMap)
+```
+]
+
+.pull-right[
+<div id="htmlwidget-c26d9bc6141955ce2c76" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c26d9bc6141955ce2c76">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addMarkers","args":[[27.90509,26.38014,27.18232,24.13389,24.0438,24.0195,27.52944,27.40498,27.0367,27.2028,24.2115,24.74642,26.24905,25.91409,25.55757,26.20876,28.22308,28.40846,28.72796,28.66056,26.63783,24.21441,25.34819,26.0155,25.60521,24.00789,24.58843,24.87611,28.96651,29.32541,28.03661,29.01457,26.94589,23.0757,23.2855,25.0247,24.45879,23.08984,27.3632],[-110.57436,-109.12633,-112.66552,-110.46236,-109.989,-110.096,-113.31609,-112.52959,-112.986,-112.408,-110.951,-111.5441,-112.40948,-112.08062,-111.21563,-111.37833,-113.18263,-112.86985,-113.48973,-113.99141,-109.327,-110.27252,-111.60056,-111.35475,-111.32638,-109.85071,-110.74599,-110.69175,-113.66787,-114.29353,-113.39991,-113.94486,-112.04613,-109.64869,-110.10429,-111.675,-110.36857,-110.1091,-112.964],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["101","102","12","153","156","157","159","160","161","162","163","164","165","166","168","169","171","173","175","177","32","48","51","58","64","73","75","77","84","88","89","9","93","98","Aqu","Const","ESan","Mat","SFr"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addProviderTiles","args":["OpenTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}],"limits":{"lat":[23.0757,29.32541],"lng":[-114.29353,-109.12633]}},"evals":[],"jsHooks":[]}</script>
+]
+
+
+
+
+---
+
+# Relative Elevation Change From 163
+
+.pull-left[
+
+```r
+phen &lt;- alt 
+bkgrnd &lt;- alt
+
+values( phen ) &lt;- abs( values( phen ) - 163 )
+values( phen )[ values(phen) &gt; 100 ] &lt;- NA
+
+values( bkgrnd )[ !is.na(values(bkgrnd) ) ] &lt;- 1
+
+plot( bkgrnd, col = "#cccccc", legend=F )
+plot(phen, add=TRUE)
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-11-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+class: center, middle 
+
+# .red[Granularity]
+
+
+---
+
+# Granularity
+
+At what scale does the transport agent .redinline[perceive] the environment?
+
+
+- Forest openings are not a problem until they become so large that they incur a thermal load on insect pollinators.
+
+- A river is not a problem until it gets over 2m deep or has a flow of over 4m/s.
+
+
+&amp;nbsp;
+
+--
+
+The challenge here, as with all the other stuff, is that we do not know `\(a priori\)`, what is important to the transport agent.
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192068133_da58972928_c_d.jpg)
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191143607_512cfb3c11_c_d.jpg)
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192068188_ac9e264d06_c_d.jpg)
+
+
+---
+
+# In R, we `aggregate`
+
+
+Specifying both the size of the aggregation &amp; the function.
+
+![](https://live.staticflickr.com/65535/51207071273_fb313d5060_o_d.png)
+
+
+
+
+---
+
+# In R, we `aggregate`
+
+.pull-left[
+
+```r
+tmp &lt;- crop( alt, extent(-112,-109,22,25) )
+tmp
+```
+
+```
+## class      : RasterLayer 
+## dimensions : 360, 360, 129600  (nrow, ncol, ncell)
+## resolution : 0.008333333, 0.008333333  (x, y)
+## extent     : -112, -109, 22, 25  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## source     : memory
+## names      : alt_22 
+## values     : -24, 2020  (min, max)
+```
+]
+
+
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-13-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Aggregate
+
+.pull-left[
+
+
+```r
+tmp.1 &lt;- aggregate(tmp, fact=5)
+tmp.1
+```
+
+```
+## class      : RasterLayer 
+## dimensions : 72, 72, 5184  (nrow, ncol, ncell)
+## resolution : 0.04166667, 0.04166667  (x, y)
+## extent     : -112, -109, 22, 25  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## source     : memory
+## names      : alt_22 
+## values     : -14, 1743.32  (min, max)
+```
+
+]
+
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-15-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+
+---
+
+# Aggregate
+
+.pull-left[
+
+
+```r
+tmp.2 &lt;- aggregate(tmp.1, fact=5)
+tmp.2
+```
+
+```
+## class      : RasterLayer 
+## dimensions : 15, 15, 225  (nrow, ncol, ncell)
+## resolution : 0.2083333, 0.2083333  (x, y)
+## extent     : -112, -108.875, 21.875, 25  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## source     : memory
+## names      : alt_22 
+## values     : -4, 845.688  (min, max)
+```
+
+
+]
+
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-17-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+
+
+
+---
+class: center, middle 
+
+# .red[Magnitude]
+
+
+
+
+
+---
+class: center, middle 
+
+![](https://live.staticflickr.com/65535/51192503559_30b7a52408_c_d.jpg)
+
+---
+# Univariate Resistance Surfaces
+
+To create a resistance raster, we are really working on an exercies in determining what the .redinline[*relevant resistance*] of a particular feature is on the landscape.  Consider the case where we have a landscape with 2 features *A* and *B*.
+
+- *A* is **despised** so `\(R_A &gt;&gt; R_B\)` or `\(\frac{R_A}{R_B} &gt;&gt; 1\)`.
+
+--
+
+- *A* is **avoided** so `\(R_A &gt; R_B\)` or `\(\frac{R_A}{R_B} &gt; 1\)`.
+
+--
+
+- *A* and *B* are not perceived deferentially by the organism,  or `\(\frac{R_A}{R_B} == 1\)`.
+
+--
+
+- *A* is **preferred** so `\(R_A &lt; R_B\)` or `\(\frac{R_A}{R_B} &lt; 1\)`.
+
+--
+
+- *A* is **loved** so `\(R_A &lt;&lt; R_B\)` or `\(\frac{R_A}{R_B} &lt;&lt; 1\)`.
+
+
+---
+
+# Resistance Ratios
+
+I always think of these are a ratio of *in:out*, across a range such as:
+
+`\(\frac{1}{100}, \frac{1}{50}, \frac{1}{20}, \frac{1}{10}, \frac{1}{5}, \frac{1}{2}, \frac{2}{1}, \frac{5}{1}, \frac{10}{1}, \frac{20}{1}, \frac{50}{1}, \frac{100}{1}\)`
+
+
+```r
+land_2016 &lt;- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land &lt;- raster( land_2016 )
+table( values( land ) )
+```
+
+```
+## 
+##   11   21   22   23   31   41   42   43   52   71   82   90   95 
+##  824  283   14    2   24  628 1519 1524  144    8  732  950  154
+```
+
+
+```r
+land_42 &lt;- land
+land_42[ land_42 != 42 ] &lt;- 0
+table( values( land_42 ))
+```
+
+```
+## 
+##    0   42 
+## 5287 1519
+```
+
+---
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-20-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+
+
+---
+class: center, middle
+
+# .redinline[Is is Collapseable]
+
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191170882_474d559874_c_d.jpg)
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192946970_9bef785612_c_d.jpg)
+
+---
+# What we have wraught
+
+
+All of this means that we can potentially have a very large number of hypothesis resistance surfaces that we may be interested in looking at.
+
+- Features
+  - Granularities
+     - Magnitudes 
+          - Layers ?
+
+
+
+
+---
+
+# Example Raster
+
+
+```r
+plot( land )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-21-1.png" width="504" style="display: block; margin: auto;" /&gt;&lt;img src="slides_files/figure-html/unnamed-chunk-21-2.png" width="504" style="display: block; margin: auto;" /&gt;
+
+```r
+hist( values(land))
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-21-3.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[Movement Models]
+
+## .fancy[How does movement occur?]
+
+
+
+
+---
+class: center, middle
+
+![]()
+
+
+
+---
+
+
+
+
+# Shortest Path Algorithms
+
+.pull-left[
+
+#### Optimized movement.
+
+![](https://media.giphy.com/media/f6mUGYKhLGJ0DAsE4D/giphy.gif)
+
+
+]
+
+.pull-right[
+
+#### Djikstra's Algorithm
+
+The path taken is the one that will get from `\(A \to B\)` in the shortest amount of accumulated distance across the resistance surface.
+
+
+![](https://upload.wikimedia.org/wikipedia/commons/5/57/Dijkstra_Animation.gif)
+
+]
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192503014_e93cdab1a6_c_d.jpg)
+
+
+
+---
+
+# Random Walk Movement
+
+.pull-left[
+
+The whole resistance surface is .orangeinline[**explored**] and the distances between locales is made up of a weighed summation of .redinline[all paths] (even those that are suboptimal).
+
+![](https://media.giphy.com/media/SikKQ1GKktmFy/giphy.gif)
+
+]
+
+.pull-right[
+
+The notion is that all potential paths are probably followed, just the ones that are more commonly traversed will gain more weight than those potential paths that are uncommonly followed.
+
+
+![](https://live.staticflickr.com/65535/51193041615_c08e01e787_o_d.png)
+
+]
+
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51191731931_6c26a44434_c_d.jpg)
+
+
+---
+class: middle
+background-image: url("https://live.staticflickr.com/65535/51193035455_6a8ee6f48d_c_d.jpg")
+background-position: center
+background-size: cover
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51191366422_21b078f221_c_d.jpg)
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51193142290_068baf2f4a_c_d.jpg)
+
+---
+
+# Estimating Distances
+
+
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .green[Example Models]
+
+## .fancy[Baja California &amp; Forest Pollinators]
+
+
+
+
+---
+
+# Baja California
+
+
+
+```r
+library( gstudio )
+library( ggrepel )
+library( leaflet )
+
+data(arapat)
+arapat %&gt;%
+  filter( !( Population %in% c("101","102","32","ESan","165")) ) %&gt;%
+  arrange(  Population ) -&gt; data 
+
+strata_coordinates( data ) %&gt;%
+  leaflet() %&gt;%
+  addTiles() %&gt;%
+  addMarkers( ~Longitude, ~Latitude, popup = ~Stratum)
+```
+
+<div id="htmlwidget-825a4cb3ee4af55204db" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-825a4cb3ee4af55204db">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[27.18232,24.13389,24.0438,24.0195,27.52944,27.40498,27.0367,27.2028,24.2115,24.74642,25.91409,25.55757,26.20876,28.22308,28.40846,28.72796,28.66056,24.21441,25.34819,26.0155,25.60521,24.00789,24.58843,24.87611,28.96651,29.32541,28.03661,29.01457,26.94589,23.0757,23.2855,25.0247,23.08984,27.3632],[-112.66552,-110.46236,-109.989,-110.096,-113.31609,-112.52959,-112.986,-112.408,-110.951,-111.5441,-112.08062,-111.21563,-111.37833,-113.18263,-112.86985,-113.48973,-113.99141,-110.27252,-111.60056,-111.35475,-111.32638,-109.85071,-110.74599,-110.69175,-113.66787,-114.29353,-113.39991,-113.94486,-112.04613,-109.64869,-110.10429,-111.675,-110.1091,-112.964],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["12","153","156","157","159","160","161","162","163","164","166","168","169","171","173","175","177","48","51","58","64","73","75","77","84","88","89","9","93","98","Aqu","Const","Mat","SFr"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.0757,29.32541],"lng":[-114.29353,-109.64869]}},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Convex Hull
+
+
+```r
+strata_coordinates( data ) -&gt; coords 
+coords %&gt;%
+  st_as_sf( coords = c("Longitude","Latitude"), crs=4326 ) %&gt;% 
+  st_union() %&gt;%
+  st_convex_hull() %&gt;%
+  st_buffer( dist = 0.1) %&gt;%
+  as("Spatial") -&gt; hull
+hull
+```
+
+```
+## class       : SpatialPolygons 
+## features    : 1 
+## extent      : -114.3935, -109.5487, 22.97572, 29.42541  (xmin, xmax, ymin, ymax)
+## crs         : +proj=longlat +datum=WGS84 +no_defs
+```
+
+
+
+```r
+library( raster ) 
+url &lt;- "https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/alt_22.tif"
+r &lt;- raster( url )
+r
+```
+
+```
+## class      : RasterLayer 
+## dimensions : 3600, 3600, 12960000  (nrow, ncol, ncell)
+## resolution : 0.008333333, 0.008333333  (x, y)
+## extent     : -120, -90, 0, 30  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## source     : alt_22.tif 
+## names      : alt_22 
+## values     : -202, 5469  (min, max)
+```
+
+
+---
+
+# Crop It
+
+
+```r
+r %&gt;%
+  mask( hull ) %&gt;%
+  crop( hull ) %&gt;%
+  terrain( opt="slope",
+           unit="degrees") -&gt; slope
+
+hist( values(slope))
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-25-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+summary( slope )
+```
+
+```
+##                slope
+## Min.    0.000000e+00
+## 1st Qu. 7.166507e-01
+## Median  1.866094e+00
+## 3rd Qu. 4.101284e+00
+## Max.    2.567188e+01
+## NA's    3.675560e+05
+```
+
+```r
+slope[ values(slope) &gt; 7.5 ] &lt;- NA
+summary( slope )
+```
+
+```
+##                slope
+## Min.    0.000000e+00
+## 1st Qu. 6.466878e-01
+## Median  1.604332e+00
+## 3rd Qu. 3.351897e+00
+## Max.    7.499705e+00
+## NA's    3.747270e+05
+```
+
+
+
+
+---
+
+
+```r
+R &lt;- slope
+R[ !is.na(slope) ] &lt;- 1
+R[ values(slope) &gt; 2 ] &lt;- 2
+R[ values(slope) &gt; 5 ] &lt;- 5
+
+
+R &lt;- ratify(R, count=TRUE)
+rat &lt;- levels( R )[[1]]
+rat$Slope_Type &lt;- c("None","Low","High")
+levels( R ) &lt;- rat
+R
+```
+
+
+
+
+---
+
+
+```r
+coords %&gt;%
+  filter( Stratum %in% c("88","98")) -&gt; sites 
+
+baja_pts &lt;- SpatialPoints( cbind( sites$Longitude, 
+                                  sites$Latitude))
+plot( R )
+plot( baja_pts, add=TRUE )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-28-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+
+
+
+---
+
+# Shortest Path
+
+
+
+```r
+library( gdistance )
+
+tr &lt;- transition( 1/R, transitionFunction = mean, directions = 4)
+tr &lt;- geoCorrection( tr, type="c", multpl=FALSE, scl=FALSE)
+tr
+```
+
+```
+## class      : TransitionLayer 
+## dimensions : 774, 581, 449694  (nrow, ncol, ncell)
+## resolution : 0.008333333, 0.008333333  (x, y)
+## extent     : -114.3917, -109.55, 22.975, 29.425  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## values      : conductance 
+## matrix class: dsCMatrix
+```
+
+
+
+```r
+path &lt;- shortestPath( tr, baja_pts[1], baja_pts[2], output="SpatialLines")
+path
+```
+
+```
+## class       : SpatialLines 
+## features    : 1 
+## extent      : -114.2958, -109.6458, 23.07917, 29.32917  (xmin, xmax, ymin, ymax)
+## crs         : +proj=longlat +datum=WGS84 +no_defs
+```
+
+
+
+
+```r
+plot(R)
+plot(path, add=TRUE, col="red")
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-31-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+
+
+
+
+
+---
+
+# Study Design - *Cornus florida*
+
+
+![](https://live.staticflickr.com/65535/51191358682_57edee4acd_c_d.jpg)
+
+For this study, we were interested in looking at what kind of features of the landscape influence the ability of pollinators to successfully move pollen between trees.  We looked at the following landscape features.
+
+
+.pull-left[
+Overstory Characteristics:  
+
+- Pine canopy
+- Oak canopy 
+- Broadleaf (non-oak) canopy
+- No canopy
+
+]
+
+.pull-right[
+
+Understory Characteristics:
+
+- Roads
+- Stem density
+- Shrubbery 
+- Dogwood Canopy 
+
+]
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51192798560_b457b9faba_c_d.jpg)
+
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205971389_560d25e3b4_c_d.jpg)
+
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205971469_de76b22bd5_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206269975_a8b7d51ef5_c_d.jpg)
+
+
+
+
+
+
+
+---
+
+# PCA Ordination
+
+
+
+```r
+library( gstudio )
+data(arapat)
+x &lt;- to_mv(arapat, drop.allele = TRUE)
+fit.pca &lt;- princomp(x, cor = TRUE)
+```
+
+
+
+```r
+library( ggplot2 )
+pred &lt;- predict(fit.pca)
+df &lt;- data.frame(PC1 = pred[, 1], PC2 = pred[, 2])
+df$Species &lt;- arapat$Species
+df$Clade &lt;- arapat$Cluster
+df$Pop = arapat$Population
+ggplot(df) + geom_point(aes(x = PC1, y = PC2, shape = Species, color = Clade), size = 3, alpha = 0.75)
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-33-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+
+
+---
+
+# Interactive Trees
+
+
+```r
+library( networkD3 )
+d &lt;- genetic_distance(arapat,stratum = "Population", mode="Nei")
+d &lt;- as.dist( d )
+hc &lt;- hclust(d)
+dendroNetwork(hc, height=600, 
+              zoom=TRUE, 
+              textColour = c("red","green","orange","blue")[ cutree(hc,4)])
+```
+
+<div id="htmlwidget-5a993ae22fc40880a33a" style="width:800px;height:600px;" class="dendroNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5a993ae22fc40880a33a">{"x":{"root":{"name":"","y":2.42750793079744,"children":[{"name":"","y":0.40043031967334,"children":[{"name":"","y":0.0777031473286693,"children":[{"name":"168","y":0,"textColour":"green","textOpacity":0.9},{"name":"64","y":0,"textColour":"green","textOpacity":0.9}]},{"name":"","y":0.307307707289673,"children":[{"name":"","y":0.151874861527607,"children":[{"name":"77","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":0.0798549864061192,"children":[{"name":"","y":0.0535453126706662,"children":[{"name":"","y":0.0182122629068529,"children":[{"name":"161","y":0,"textColour":"green","textOpacity":0.9},{"name":"162","y":0,"textColour":"green","textOpacity":0.9}]},{"name":"","y":0.0253688895902562,"children":[{"name":"165","y":0,"textColour":"green","textOpacity":0.9},{"name":"169","y":0,"textColour":"green","textOpacity":0.9}]}]},{"name":"","y":0.0621895100648743,"children":[{"name":"166","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":0.0379353898476728,"children":[{"name":"SFr","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":0.0193686624371975,"children":[{"name":"160","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":0.0090494011027888,"children":[{"name":"12","y":0,"textColour":"green","textOpacity":0.9},{"name":"93","y":0,"textColour":"green","textOpacity":0.9}]}]}]}]}]}]},{"name":"","y":0.171783706823408,"children":[{"name":"164","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":0.0527147059018703,"children":[{"name":"51","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":0.0120777523239005,"children":[{"name":"153","y":0,"textColour":"green","textOpacity":0.9},{"name":"58","y":0,"textColour":"green","textOpacity":0.9}]}]}]}]}]},{"name":"","y":1.71814096590403,"children":[{"name":"","y":0.500393662757928,"children":[{"name":"163","y":0,"textColour":"orange","textOpacity":0.9},{"name":"","y":0.273019981841683,"children":[{"name":"","y":0.0571897107347076,"children":[{"name":"98","y":0,"textColour":"orange","textOpacity":0.9},{"name":"Mat","y":0,"textColour":"orange","textOpacity":0.9}]},{"name":"","y":0.178611535956708,"children":[{"name":"","y":0.0180044586756884,"children":[{"name":"156","y":0,"textColour":"orange","textOpacity":0.9},{"name":"48","y":0,"textColour":"orange","textOpacity":0.9}]},{"name":"","y":0.10067979775669,"children":[{"name":"Const","y":0,"textColour":"orange","textOpacity":0.9},{"name":"","y":0.0810269019222702,"children":[{"name":"Aqu","y":0,"textColour":"orange","textOpacity":0.9},{"name":"","y":0.0582402938404049,"children":[{"name":"","y":0.0149610367520153,"children":[{"name":"157","y":0,"textColour":"orange","textOpacity":0.9},{"name":"ESan","y":0,"textColour":"orange","textOpacity":0.9}]},{"name":"","y":0.0215179253884179,"children":[{"name":"73","y":0,"textColour":"orange","textOpacity":0.9},{"name":"75","y":0,"textColour":"orange","textOpacity":0.9}]}]}]}]}]}]}]},{"name":"","y":1.31518061715509,"children":[{"name":"","y":0.344376856124094,"children":[{"name":"101","y":0,"textColour":"red","textOpacity":0.9},{"name":"","y":0.169140879502713,"children":[{"name":"102","y":0,"textColour":"red","textOpacity":0.9},{"name":"32","y":0,"textColour":"red","textOpacity":0.9}]}]},{"name":"","y":0.410507692151071,"children":[{"name":"","y":0.0790296425187349,"children":[{"name":"","y":0.0173670517834045,"children":[{"name":"159","y":0,"textColour":"blue","textOpacity":0.9},{"name":"171","y":0,"textColour":"blue","textOpacity":0.9}]},{"name":"","y":0.0388082932269227,"children":[{"name":"173","y":0,"textColour":"blue","textOpacity":0.9},{"name":"89","y":0,"textColour":"blue","textOpacity":0.9}]}]},{"name":"","y":0.124293574381157,"children":[{"name":"","y":0.0196842014241559,"children":[{"name":"175","y":0,"textColour":"blue","textOpacity":0.9},{"name":"177","y":0,"textColour":"blue","textOpacity":0.9}]},{"name":"","y":0.0251155253067114,"children":[{"name":"88","y":0,"textColour":"blue","textOpacity":0.9},{"name":"","y":0.0203097958917947,"children":[{"name":"84","y":0,"textColour":"blue","textOpacity":0.9},{"name":"9","y":0,"textColour":"blue","textOpacity":0.9}]}]}]}]}]}]}]},"options":{"height":600,"width":800,"fontSize":10,"linkColour":"#ccc","nodeColour":"#fff","nodeStroke":"steelblue","textRotate":0,"margins":{"top":40,"right":150,"bottom":40,"left":40},"opacity":0.9,"linkType":"elbow","treeOrientation":"horizontal","zoom":true}},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+---
+
+# Summary
+
+Resistance Models allow us to propose a large number potential hypotheses to see if they can explain the observed spatial distribution of genetic variation.  These are just *hypotheses* and it is important to remember that.
+
+
+# &amp;nbsp; `$$G \approx f(E)$$`
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![](https://media.giphy.com/media/d1E1YlkOTe4IfdNC/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about&lt;br/&gt; the content presented herein&lt;br/&gt; now is your time.  
+
+If you think of something later though, &lt;br/&gt;feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll&lt;br/&gt; get back to you as soon as possible.
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

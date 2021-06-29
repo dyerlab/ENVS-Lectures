@@ -1,0 +1,321 @@
+---
+title: "Resistance Activity"
+output: html_notebook
+---
+
+![](https://live.staticflickr.com/65535/51022164298_1aa9b8df76_c_d.jpg)
+
+
+## Overview
+
+This activity will let you explore some of the issues associated with developing resistance models.  This is rather complex process because you'll have to:
+
+1. Decide what features to entertain as putative predictor values.  
+
+2. Decide which genetic distance metrics you'll be estimating.  
+
+3. Develop raster sets based upon differences in at least granularity and magnitude.  
+
+4. Estimate distances using different movement models.
+
+5. Explore the set of predictors to find suitable combinations.
+
+6. Model build to best describe the entire system.
+
+
+```{r}
+library( sf )
+library( vegan )
+library( raster )
+library( gstudio )
+library( gdistance ) 
+```
+
+
+Here are two sets of data that you can use to explore the creation of rasters and the analysis of $G \approx f(E)$ from complete data sets.  
+
+
+## Activity - Large Scale Creation
+
+[These bioclimatic rasters](https://drive.google.com/file/d/1yK3SujQvBE-tYePbkWnqZCm7wDLQ4t9l/view?usp=sharing) are from Baja California and cover temperature and precipitation variables and can be used to examine large-scale landscape genetic processes.  Download this zip archive (if you do not already have it) and expand it in your Workshop Project Folder.
+
+
+
+
+
+1. Using the `arapat` data and the bioclimatic rasters in the zip archive (the key to what they represent is [here](https://www.worldclim.org/data/bioclim.html)), come up with a hypothesis using at least one of the raster layers based upon a categorical or threshold value.  From this, derive a *base raster* where values in it are 0/1 and then estimate a range of resistances using the `create_resistances()` function.  
+
+*I'm going to grab one of the layers `Maximum_Precip.tif` that is in the zip archive and use it. *
+
+```{r}
+min_precip_url <- "https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/Maximum_Precip.tif?inline=false"
+precip <- raster( min_precip_url )
+precip <- crop( precip, extent( -115, -109, 22, 30 ))
+plot( precip )
+```
+
+```{r}
+data(arapat)
+coords <- strata_coordinates( arapat )
+
+coords %>% 
+  st_as_sf( coords=c("Longitude","Latitude"), crs=4326) -> pts
+
+```
+
+```{r}
+plot( precip )
+plot( st_geometry(pts) , add=TRUE,  col="black", pch=4)
+```
+
+```{r}
+library( ggplot2 )
+map_data("world", "mexico") -> mex
+
+mex %>%
+  ggplot() + 
+  geom_polygon( aes(long,lat,group=group), 
+                fill="gray") +
+  geom_text( aes(Longitude,
+                 Latitude,
+                 label=Stratum), 
+             data=coords) + 
+  coord_sf( xlim=c(-111,-109.4),
+            ylim=c(22.75,24.5), 
+            crs=4326 )
+```
+
+
+2. Select a subset of `arapat` populations and **make sure** their location is on a full raster pixel and that they are **connectable**.  I would recommend starting small, 5-10 sites spread throughout the landscape.
+
+
+```{r}
+populations <- c( "163","153", "48", "156", "Aqu", "98" )
+
+coords %>% 
+  dplyr::filter( Stratum %in% populations ) -> sites
+
+sites %>%
+  st_as_sf( coords = c("Longitude","Latitude"), crs = 4326) %>%
+  st_union() %>%
+  st_convex_hull() -> hull
+
+precip %>%
+  crop( extent( c(xmin = -111, xmax=-109.4, ymin=22.75, ymax=24.5) ) ) -> cape_precip
+
+```
+
+3. Crop your raster so that it has a suitable buffer around your sample locations.
+
+*Let's take a look at this*
+
+```{r}
+plot( cape_precip )
+points( sites$Longitude, sites$Latitude, pch=3)
+
+```
+
+
+4. Estimate transition, geoCoreection, and resulting costDistance (a Least-Cost approach) matrices for these layers.
+
+
+*So given the distribution of sites, I'm going to hypothesize that increased precipitation is not conductive to the presence of the target species.  Let's look at where the <b>all the sites</b> are located and then make the regions with precip greater than observed as 'outside' resistence.*
+
+```{r}
+raster::extract( precip, as(pts, "Spatial")) 
+```
+
+*There is only 1 site with >100mm precip. So I'll cut it there.*
+
+```{r}
+base_r <- cape_precip
+base_r[ base_r < 100 ] <- 1
+base_r[ base_r > 1 ] <- 0
+plot( base_r )
+```
+
+*Now, let's make some resistance layers*
+
+```{r}
+gstudio::create_resistances(base_r, feature_name = "precip")
+```
+
+
+5. Decide on a suitable population-level genetic distance metric (among these populations) and then estimate the Mantel correlation between your hypothesized landscape distance matrices and genetic distance.  Plot Mantel *r* as a function of resistance ratio (I usually log transform them).
+
+*Let's use the Dps Distance*
+
+```{r}
+arapat %>% 
+  dplyr::filter( Population %in% populations) %>% 
+  droplevels() -> genos 
+
+G <- gstudio::genetic_distance( genos, mode="Dps")
+G <- G[ lower.tri(G) ]
+
+```
+
+*Now, let's make the resistance layers.  I'm going to set up the data frame to receive the values of the Mantel.*
+
+```{r}
+df <- data.frame( In = c( rep(1,5), c(2,5,10,50,100)) )
+df$Out <- rev(df$In )
+df$Ratio = log( df$In / df$Out  )
+df$Rho <- NA
+df$P <- NA
+df
+```
+
+*Then I'm going to cycle through all the raster layers and estimate a correlation, I'm going to use a non-parametric one.*
+
+```{r}
+library( gdistance )
+pts <- sites %>% st_as_sf( coords=c("Longitude","Latitude"), crs=4326) %>% as("Spatial")
+
+for( file in list.files(,pattern="precip.*")) {
+  # each is variable named 'layer'
+  load( file ) 
+  
+  # make the transition layers and estimate pairwise distances 
+  tr <- transition( 1/layer, transitionFunction = mean, directions = 4)
+  tr <- geoCorrection( tr, type="c", multpl=FALSE, scl=FALSE )
+  D <- costDistance( tr, pts  )
+  
+  
+  # estimate correlation
+  cor <- cor.test( as.numeric( D ), G )
+  
+  # find In/Out from filename using strsplit
+  fileinfo <- as.numeric( strsplit( basename( file ), 
+                          split=".", 
+                          fixed = TRUE )[[1]][2:3] )
+  
+  df$Rho[ df$In == fileinfo[1] & df$Out == fileinfo[2] ] <- cor$estimate
+  df$P[ df$In == fileinfo[1] & df$Out == fileinfo[2] ] <- cor$p.value
+}
+```
+
+
+*Now, we just plot the Rho as a function of the In:Out ratio*
+
+```{r}
+library( ggplot2 )
+df$Significant <- df$P <= 0.05
+
+ggplot( df, aes(Ratio, Rho) ) +
+  geom_line() +
+  geom_point(aes(color=Significant))  + 
+  xlab("Resistance Ratio") + 
+  ylab("Spearmans Correaltion)")
+```
+
+
+*So, it looks like the 50:1 and 100:1 are most predictive of the genetic separation...  Now, interpretation time!* 
+
+
+## Activity - Comparing Movmement Model, Cost Ratio, and Features
+
+Below is a link to a small zip archive containing a complete set of R data matrices files for *Cornus florida* including raw rasters (saved as *.asc files), and a complete set of resistance matrices estimated using both least cost path (`lcp.`) and circuit theory (`ct.`) for five landscape features (Cornus canopy `.cf.`; coniferous vegitation `.cv.`, open fields `.fd.`, mixed hardwood density `.mh`, and roads `.rd.` each of which are estimated on ratios 1:10 - 10:1.  There is also distances based upon elevation change and euclidean distance.
+
+
+```{r eval=FALSE}
+download.file(url="https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/dogwood.zip?inline=false",destfile = "dogwood.zip")
+unzip( "dogwood.zip")
+unlink( "dogwood.zip")
+```
+
+Each of these rasters is saved already as a matrix whose variable is `D`.  There is also a Genetic Distance matrix baed upon pollen pool genetic structure named `G.rda`.
+
+
+Download these files and explore which combination of features, resistance ratios, and movement models best explains first-order relationships between the set of all potential landscape resistance features and the observed genetic differences measured in pollen pool genetic structure.
+
+```{r}
+load( "dogwood/G.rda" )
+library( vegan )
+library( dplyr )
+
+df <-data.frame( file = list.files("./dogwood", pattern="*.rda",full.names = TRUE),
+                 r = NA)
+
+# I am going to look a just the resistance files in the dogwood folder.
+df %>% 
+  dplyr::filter( nchar(file) > 20,
+                 nchar(file) < 26 ) -> df
+
+
+for( file in df$file ) {
+  load(file)
+  fit <- mantel(G,D)  
+  df$r[ df$file == file ] <- fit$statistic
+}
+
+summary(df)
+```
+
+
+```{r}
+# tanslate the filenames into an array split by the period symbol.
+mat <- matrix( unlist( strsplit( basename(df$file), 
+                                 fixed=TRUE, 
+                                 split=".") ), 
+               ncol=5, 
+               byrow=TRUE)
+
+# here is what that looks like 
+head( mat )
+
+# now make them columns in the f
+df$Movement <- factor( mat[,1] )
+df$Feature <- factor( mat[,2] )
+df$In <- as.numeric( mat[,3] )
+df$Out <- as.numeric( mat[,4] )
+df$Ratio <- log( df$In / df$Out )
+```
+
+
+*OK, so now plot them*
+
+
+
+```{r}
+ggplot( df, aes(Ratio, r)) + 
+  geom_line( aes(color=Movement)) + 
+  geom_point() + 
+  facet_wrap(.~Feature)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+```{r echo=FALSE}
+system( "rm -rf dogwood")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

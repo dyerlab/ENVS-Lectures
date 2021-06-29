@@ -1,0 +1,94 @@
+---
+title: "Diversity Activity"
+output: html_notebook
+---
+
+
+<center>
+[![Rodney Dyer](https://live.staticflickr.com/65535/51022165043_59a7f7b3d5_c_d.jpg)](https://rodney.af)
+</center>
+
+
+## Overview
+
+In this activity, we will be examining diversity in the Sonoran desert bark beetle, *Araptus attenuatus*, included in the `gstudio` library.
+
+```{r}
+library( tidyverse )
+library( gstudio )
+data( arapat )
+summary( arapat )
+```
+
+
+## Activity Questions
+
+
+1. Create a `leaflet` map showing the levels of effective allelic diversity ($A_e$) for Populations for loci $LTRS$, $WNT$, and $EN$.
+
+```{r}
+library( leaflet ) 
+library( leaflet.minicharts ) 
+
+arapat %>% 
+  select( Population, LTRS, WNT, EN ) %>%
+  genetic_diversity( mode="Ae", 
+                     stratum = "Population") %>%
+  spread( Locus, Ae) %>%
+  left_join(  strata_coordinates(arapat) ) -> diversity 
+
+leaflet() %>% 
+  addProviderTiles( providers$Esri.WorldTerrain ) %>%
+  addMinicharts( diversity$Longitude, diversity$Latitude,
+                 chartdata =  diversity %>% select( LTRS, WNT, EN ),
+                 colorPalette = c("#3093e5", "#fcba50", "#a0d9e8"),
+                 width=45,
+                 height=45)
+```
+
+
+
+
+2. Estimate effective allelic diversity for all populations of the individuals where *Species == Peninsula* at the locus `MP20`.  Is there the same indication of "Allele Surfing" in the beetle as shown for its host plant?  How do you interpret this pattern?
+
+```{r}
+arapat %>%
+  filter( Species == "Peninsula" ) %>%
+  select( Population, MP20 ) %>%
+  genetic_diversity( stratum = "Population" )  %>%
+  left_join( strata_coordinates(arapat), by="Stratum") %>%
+  select( Stratum, Latitude, Ae) %>%
+  ggplot( aes(Latitude, Ae) ) + 
+  geom_point() 
+```
+
+3. Is there more effective allelic diversity in the `Cape` or `Peninsula` groupings?  
+
+```{r}
+cape <- arapat %>% filter(Species == "Cape") %>% droplevels()
+n.cape <- nrow( cape )
+n.cape
+
+peninsula <- arapat %>% filter( Species == "Peninsula" ) %>% droplevels()
+n.peninsula <- nrow( peninsula )
+n.peninsula
+```
+
+*So, we'll want to subsample `peninsula` in sizes equal to `r n.cape` and do a rarefaction for each locus.  I'll demonstrate with one of the loci, but you'd probably want to do all of them and then summarize them in a table or something.*
+
+```{r}
+peninsula.mp20 <- rarefaction( peninsula$MP20, size = n.cape, mode = "Ae", nperm = 999)
+cape.mp20 <- genetic_diversity(cape$MP20)
+cape.mp20
+Ae <- data.frame( Ae = c( cape.mp20$Ae[1], peninsula.mp20 ),
+                  Estimate = factor( c("Cape",rep("Peninsula",999))) )
+ggplot( Ae, aes(Ae, fill=Estimate) ) + 
+  geom_histogram()
+```
+
+*It looks like there is a lot less diversity in the Cape when compared to the rest of the peninsula*
+
+
+
+
+4. Is there a correlation between genetic effective allelic diversity ($A_e$) and genotypic diversity ($H_e$) in these data?  Do you expect there to be one?  Why?

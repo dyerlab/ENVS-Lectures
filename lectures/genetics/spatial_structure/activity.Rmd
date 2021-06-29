@@ -1,0 +1,33 @@
+---
+title: "Spatial Genetics Activity"
+output: html_notebook
+---
+
+![](https://live.staticflickr.com/65535/51022165353_2a7f7fb351_c_d.jpg)
+
+## Overview
+
+```{r}
+library( GGally )
+library( raster )
+library( gstudio )
+library( factoextra )
+data( arapat )
+```
+
+For this activity, you'll also need a folder of bioclimatic raste data sets.  These are zipped and live on my google drive partition.  This is somewhat of a large archive (~77MB). You can download it by running the following chunk (by default it will not run because `eval=FALSE` is in the chunk's meta-data).  
+
+[Download](https://drive.google.com/file/d/1yK3SujQvBE-tYePbkWnqZCm7wDLQ4t9l/view?usp=sharing) the archive from here and and extract it into your Project folder (where this file is saved).
+
+## Questions
+
+1. The `GGally` package produces pairs of plots using the `?ggpairs` function.  The figure in the slides [here](https://thurstoncounty.gitlab.io/landscape-genetics-workshop/genetic/spatial_structure/slides.html#5) is created by extracting data values from each of the rasters in the bioclim layers above and then plotting them in a pairwise fashion.  If you can, reconstruct that figure here.
+
+
+2. Principal components & coordinates analyses are based upon rotations of multivariate data.  Take the `arapat` data set and perform a principal components analysis based upon individual-level mutlivariate structure.  What are the most important loadings for this rotation?  How much variation does the first axis explain?
+
+3. The `factoextra` package has functions `fviz_pca_ind()` and `fviz_pca_var()` to help visualize the output of PCA-type analyses.  Estimate population-level genetic distance matrices using Nei's and cGD and construct two principal coordinate analyses. When you visualize these models using the `fviz_pca_*` functions, do you see any differences in the eigenstructure between the two distance metrics?
+
+4. Spatial Autocorrelation is a measure of genetic similarity limited to different distance classes.  Presumably, limitation in dispersal lead to positive spatial autocorrelation at the closest distance classes.  In the lecture [here](https://thurstoncounty.gitlab.io/landscape-genetics-workshop/genetic/spatial_structure/slides.html#1), we examined autocorrelation with bin sizes equal to 100m.  Produce the correlograms for autocorrelation with distances of 25, 50, 100, and 200.  How does the bin size influence the estimation of how far a distance is required until there is no genetic correlation?  You may need to run and get a cup of coffee for each, it can take a bit to do the significance testing of 1/1000 (or you can lower the significance to 1/100 by setting `perms=99` instead of `perms=999`).  
+
+

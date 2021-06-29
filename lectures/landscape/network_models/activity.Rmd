@@ -1,0 +1,28 @@
+---
+title: "Network Models"
+output: html_notebook
+---
+![](https://live.staticflickr.com/65535/51022993832_c07ddb5e7a_o_d.jpg)
+
+## Overview
+
+This activity will focus on working with simple networks.  You will need the following data sets.
+
+```{r}
+library( gstudio ) 
+library( popgraph )
+data(arapat)
+data(lopho)
+data(baja)
+```
+
+
+
+1. Create a *de novo* network based upon a hypothesized population model for your own organism and study site.  Parameterize the nodes with locations and names and visualize it both a-spatially and spatially projected onto a map.
+
+2. Estimate a population graph for the *arapat* data set and visualize it in a `leaflet()` map. 
+
+3. Estimate from the *arapat* population graph node-specific parameters such as degree, centrality, and betweenness.  Load in the previous sex-baised dispersal data sets.  Is the estimated habitat suitability for each sampling locale correlated with any of these graph-theoretic parameters?
+
+4. Load in the `lopho` and `upiga` population graphs and map out each of their individual popualtion graphs as well as the `congruence_topology`.  What kind of inferences can you gain by looking at these levels of spatial synchrony?
+

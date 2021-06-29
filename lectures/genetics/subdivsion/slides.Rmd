@@ -1,0 +1,799 @@
+---
+title: "Genetic Subdivision"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "slide_styles.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+```{r setup, include=FALSE}
+library( sf )
+library( knitr )
+library( ggplot2 )
+library( tidyverse )
+library( kableExtra )
+library( fontawesome )
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+
+theme_set( theme_classic( base_size = 20) )
+```
+
+
+# .orange[Population Sudivision]
+
+### .fancy[Not everything is mixed `r fa(name='cocktail') `]
+
+
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51198451479_5ce952b659_c_d.jpg")
+background-position: center
+
+
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .blue[Connectivity & Expectations]
+
+## .fancy[Models of Population Subdivision]
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51198451189_1c19fd70d7_c_d.jpg)
+
+
+---
+
+# An Island-Mainland Model
+
+
+.pull-left[
+
+- Single locus with 2-alleles, $p$ and $1-p$.  
+
+- Unidirectional migration at **rate** of $m$ individuals per generation.
+
+![](https://live.staticflickr.com/65535/51191397426_b5117a0de0_d.jpg)
+
+With expectations given by:
+
+$$p_{y, t+1} = (1-m)p_{y,t} + mp_x$$
+
+]
+
+--
+
+.pull-right[
+#### Example Function Creation
+
+```{r}
+px <- 0.75
+py <- 0.25
+m <- 0.1
+ret <- rep(NA,100)
+ret[1] <- py
+
+for( i in 2:100) {
+  ret[i] <- (1-m)*ret[(i-1)] + px * m   
+}
+
+
+```
+
+]
+
+
+---
+
+# An Island-Mainland Model
+
+
+.pull-left[
+
+```{r}
+px <- 0.75
+py <- 0.25
+m <- 0.0
+ret <- rep(NA,100)
+ret[1] <- py
+
+for( i in 2:100) {
+  ret[i] <- (1-m)*ret[(i-1)] + px * m   
+}
+```
+
+
+]
+
+--
+
+.pull-right[
+```{r echo=FALSE}
+plot( ret )
+```
+
+]
+
+
+
+
+
+---
+
+# An Island-Mainland Model
+
+
+.pull-left[
+
+```{r}
+px <- 0.75
+py <- 0.25
+m <- 0.01
+ret <- rep(NA,100)
+ret[1] <- py
+
+for( i in 2:100) {
+  ret[i] <- (1-m)*ret[(i-1)] + px * m   
+}
+```
+
+
+]
+
+--
+
+.pull-right[
+```{r echo=FALSE}
+plot( ret )
+```
+
+]
+
+
+---
+
+# An Island-Mainland Model
+
+
+.pull-left[
+
+```{r}
+px <- 0.75
+py <- 0.25
+m <- 0.1
+ret <- rep(NA,100)
+ret[1] <- py
+
+for( i in 2:100) {
+  ret[i] <- (1-m)*ret[(i-1)] + px * m   
+}
+```
+
+
+]
+
+--
+
+.pull-right[
+```{r echo=FALSE}
+plot( ret )
+```
+
+]
+
+
+
+---
+
+# Make it into a function
+
+Creating a `function` is pretty easy.  We just need to know the taxonomy of how to do it.
+
+```{r eval=FALSE}
+
+functionName <- function( parameters ) { 
+  operation1
+  operation2
+  ...
+  return( values )
+}
+```
+
+
+---
+
+# Allele Frequencies Island Model
+
+The constant values I used in the last examples I put as *parameters* to the function itself.  Then basically put the same code into the *body* of the function, and had it return the result.
+
+```{r}
+island_frequencies <- function(px, py, m) {
+  ret <- rep( NA, 100)
+  ret[1] <- py
+  for( i in 2:100) {
+    ret[i] <- (1-m)*ret[(i-1)] + px * m   
+  }
+  return( ret )
+}
+```
+
+
+---
+# Example Island Model
+
+.pull-left[
+```{r}
+m <- factor( rep( c(0.0, 0.01, 0.1), each=100),
+             ordered=TRUE )
+Py <- c(  island_frequencies(0.75, 0.25, 0.00),
+          island_frequencies(0.75, 0.25, 0.01),
+          island_frequencies(0.75, 0.25, 0.10) ) 
+Generation <- c( rep(1:100, times=3) )
+data.frame( m, Py, Generation ) -> df 
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+ggplot( df, aes(x=Generation,y=Py,color=m) ) + 
+  geom_line() 
+```
+
+]
+
+---
+
+# Underlying Assumptions
+
+For these simple models, the following general assumptions are invoked:
+
+- Generations do not overlap such that a difference equation approach can be used.  If they do overlap, then we'd be using differential equations.
+
+- Populations are discrete in that there are firm breaks between then.  
+
+- Migration rates are constant through both space and time. 
+
+
+
+---
+class: center
+
+# N-Island Model
+
+
+![](https://live.staticflickr.com/65535/51191641063_0cfa939af3_z_d.jpg)
+
+
+$$p_{x,t+1} = (1-m)p_{x,t} + m\bar{p}$$
+
+--
+
+$$p_t = \bar{p} + (p_0 - p_t)(1-m)^t$$
+
+.footnote[Wright (1931)]
+
+
+---
+class: center
+
+# 1-Dimensional Stepping Stone Model
+
+![](https://live.staticflickr.com/65535/51192201869_c196a79201_c_d.jpg)
+
+$$p_{i,t+1} = (1-m_1 - m_\infty)p_i + \frac{m}{2}(p_{i-1,t} + p_{i+1,t}) + m_\infty\bar{p} + \eta_i$$
+.footnote[Kimura & Weiss (1964)]
+
+---
+class: middle, center
+
+# 2-Dimensional Stepping Stone Model
+
+![](https://live.staticflickr.com/65535/51191438721_a0d7ea2fa2_z_d.jpg)
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51191657303_059e579f30_c_d.jpg)
+
+---
+
+# Demographic Models $\to$ Genetic Changes
+
+Some thoughts:
+
+- There is an .redinline[unknown] (and perhaps unknowable) underlying demographic model in the populations we work with.  Our **goal** is to try to figure out, **by looking at only the alleles and genotypes** what that underlying demographic model is (or at least rule out the majority of scenarios that they are not).
+
+--
+
+- Gene flow, *m*, is a .redinline[rate] but it is rarely estimated **directly**, rather we gain inferences from surrogates.  
+
+--
+
+- We do this by looking at how different subdivided populations are using either continuous or discrete measures (similar to the way we can analyze regular statistical models using regression or anova).
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[Measures of Distance]
+
+## .fancy[Near...  Far... ]
+
+
+---
+
+# Genetic Distance
+
+Genetic distance is measure of differences between individuals or sampling locales based upon and underlying *continuous* separation metric.  These metrics must have the following properties.
+
+- Are continuously increasing in anti-similarity.
+
+--
+
+- Have a property of self-identity where $\delta_{ii} = 0$.  
+
+--
+
+- Are symmetric in reflection $\delta_{ij} = \delta_{ji}$.  
+
+--
+
+- To be .redinline[metric], it must also satisfy the triangle inequality such that $\delta_{ij} \le \delta_{ik} + \delta_{kj}$.  
+
+
+---
+class: center, middle
+
+
+# .red[Individual Distances]
+
+
+---
+
+# Euclidean Distances
+
+
+![](https://live.staticflickr.com/65535/51192237419_3e800128ea_c_d.jpg)
+
+
+---
+
+# AMOVA Distance
+
+.left-column[
+
+#### 
+
+- Squared Distances  
+
+- Additive 
+
+- Vector Distance
+
+- What is $\delta_{AA,BC}$?
+
+
+]
+
+.right-column[
+![](https://live.staticflickr.com/65535/51192237449_465843878c_z_d.jpg)
+]
+
+???
+
+Do it on iPAD
+
+
+---
+
+
+# Estimating Distance
+
+![](https://live.staticflickr.com/65535/51192551680_c2c5568573_c_d.jpg)
+
+
+
+---
+
+# AMOVA Distance
+
+```{r}
+library( gstudio )
+loci <- c( locus("A:A"), locus("B:B"), locus("C:C"), locus("D:D"),
+           locus("A:B"), locus("A:C"), locus("A:D"), 
+           locus("B:C"), locus("B:D"),
+           locus("C:D"))
+D <- genetic_distance( loci, mode="AMOVA")
+rownames(D) <- colnames(D) <- as.character( loci )
+D
+```
+
+
+
+
+
+---
+
+# Bray-Curtis Distance
+
+A measure of proportional equality.  However, .redinline[there are at least 3 different ways] I've found in the literature to estimate this parameter and at least two of them give different answers depending upon the frequencies being used. 
+
+&nbsp;
+
+$$D_C = 1-2\frac{\sum_{i=1}^{\ell}min(p_{X,i}, p_{Y,i})}{\sum_{i=1}^{\ell}p_{X,i} + p_{Y,i}}$$
+
+
+
+
+
+---
+
+# Ladder Distance $R_{ST}$
+
+Suggested to be important for structure based upon loci with differences in repeat motifs...
+
+
+![](https://live.staticflickr.com/65535/51190757742_03a2a8a61f_c_d.jpg)
+
+---
+
+# How to Choose?
+
+Different underlying metrics can be used:
+
+- As response in the $G \approx f(E)$ framework. 
+
+--
+
+- Foundations for structure statistics.  
+
+    - Differences by underlying model reveal the relative importance of underlying assumptions.
+
+
+
+
+
+
+
+
+
+---
+class: center, middle
+
+# .red[Strata Distances]
+
+
+
+---
+
+# Czekanowski (Manhattan) Distance
+
+![](https://live.staticflickr.com/65535/51190770222_16b6b42617_c_d.jpg)
+
+---
+
+# Roger's Distance
+
+
+![](https://live.staticflickr.com/65535/51191480751_fba973eb4d_c_d.jpg)
+
+---
+
+# Nei's Genetic Distance
+
+![](https://live.staticflickr.com/65535/51192249694_5dc5447d27_c_d.jpg)
+
+
+
+
+---
+
+# Differing Distances
+
+.pull-left[
+```{r eval=FALSE}
+data(arapat)
+nei <- genetic_distance( arapat, 
+                           stratum="Population", 
+                           mode="Nei")
+euc <- genetic_distance( arapat, 
+                         stratum="Population", 
+                         mode="Euclidean")
+data.frame( Nei = nei[ lower.tri(nei)],
+            Euclidean = euc[ lower.tri(euc)]) %>%
+  ggplot( aes( Nei, 
+               Euclidean ) ) + 
+  geom_point() +
+  stat_smooth( se=FALSE, 
+               col="red")
+```
+]
+
+.pull-right[
+```{r echo=FALSE, cache=TRUE}
+data(arapat)
+D.nei <- genetic_distance( arapat, stratum="Population", mode="Nei")
+D.euclidean <- genetic_distance( arapat, stratum="Population", mode="Euclidean")
+data.frame( Nei = D.nei[ lower.tri(D.nei)],
+            Euclidean = D.euclidean[ lower.tri(D.euclidean)]) %>%
+  ggplot( aes(Nei,Euclidean) ) + 
+  geom_point() +
+  stat_smooth( se=FALSE, col="red")
+```
+]
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[Measures of Structure]
+
+## .fancy[Categorically How Different Are They?]
+
+---
+
+# Wrights Fixation Index
+
+Sewel Wright derived the $F$-statistics, of which we've already seen the inbreeding statistic $F$.  This parameter is one of a larger family of statistics on inbreeding (or more appropiratly .redinline[**fixation**])
+
+### $F_{IS} = 1 - H_O / H_E$
+
+The average fixation probability at the locus of the *Individual* relative to the *Subpopulation* it resides in.
+
+--
+
+### $F_{ST} = 1 - H_S / H_T$
+
+The average fixation probability of the locus of the *Subpopulation* relative to the *Total* set of data set where $H_S = 2pq$ and $H_T = 2\bar{p}\bar{q}$.
+
+
+---
+
+# In Class Exercise
+
+Estimate $F_{ST} = 1 - H_S / H_T$ for one of the following situations.
+
+1. Two populations both fixed for different alleles (e.g., **A** has $p=1.0$ and **B** has $q=1.0$).
+
+2. Two populations, each with 2 alleles but not in common (e.g., **A**has $p=q=0.5$ and $r=s=0$ whereas **B** has $p=q=0$ and $r=s=0.5$).
+
+3. Four populations, three of which are fixed for one allele (e.g., $p=1$), and the fourth is fixed for a different allele (e.g., $q=1$).
+
+
+
+
+---
+
+
+
+.pull-left[
+# The Misusue of $F_{ST}$
+
+The fixation index is thus not a measure of degree of differentiation in the sense implied by the extreme case by absence of any common allele.  It measures differentiation within the total array in the sense of the .redinline[**extent to which the process of fixation has gone towards completion**].
+
+![](https://live.staticflickr.com/65535/51192298279_a0caccaed7_w_d.jpg)
+]
+
+
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51192292699_c261e72b49_o_d.png)
+]
+
+.footnote[Yes, it does look like he is about to erase the blackboard with a guinea pig...]
+
+
+
+
+---
+
+# Sampling Considerations
+
+The parameter $F_{ST}$ is a *population-level* parameter:  
+
+
+- Stucture parameters are influences by sampling scale, breadth, and intensity.
+
+- All parametrers are subject to bias.   
+
+- There is a "cottage industry" based upon corrections to these parameters.
+
+
+---
+
+# Some $F_{ST}$-lke Parameters.
+
+Here are some of the proposed alterantives to this estimate.
+
+- $G_{ST}$ - First approximation.
+
+- $N_{ST}$ - Sequence based data.  
+
+- $G_{ST}^{\prime}$ and $D_{est}$ - For loci with several alleles 
+
+- $\theta$ - An analog based upon the Analysis of Variance.
+
+- $\Phi_{ST}$ - The multilocus extension of $\theta$ used in AMVOA.
+
+
+
+
+
+
+
+
+
+---
+class: middle, center 
+
+# .red[Statistical Structure]
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51190828107_1e42ff5367_o_d.png)
+---
+class: middle, center 
+
+![](https://live.staticflickr.com/65535/51190829697_5c9fe98345_c_d.jpg)
+
+---
+class: middle, center 
+
+![](https://live.staticflickr.com/65535/51192309359_909e085a6c_c_d.jpg)
+
+
+---
+
+# Variance Decomposition in AMVOA
+
+The SSD values are then used to estimate an Analysis of Variance model using population as a **random effect**.  The variance components representing the variation among populations $\sigma_A^2$ and the variance within populations $\sigma_W^2$ are then used to estimate the .redinline[fraction of the to total genetic variation due to being in different populations].
+
+
+$$\Phi_{ST} = \frac{\sigma_A^2}{\sigma_A^2 + \sigma_W^2}$$
+
+--
+
+Significance is tested via permuting individuals across sampling locales and then comparing the original observed $\sigma_A^2$ to the null distribution of values gained by permutation (similar to that done for rarefaction).
+
+
+
+---
+
+
+.pull-left[
+
+# Example 
+
+How much statistical differences are there among the identified *Species* in the beetle data set?
+
+
+```{r cache=TRUE}
+library( pegas )
+D <- genetic_distance( arapat, 
+                       stratum="Species", 
+                       mode = "AMOVA")
+D <- as.dist( D )
+Species <-  arapat$Population  
+
+model <- amova( D ~ Species )
+phi <- getPhi( setNames( model$varcomp$sigma2, rownames(model$varcomp))   )
+```
+]
+
+
+
+.pull-right[
+```{r echo=FALSE}
+model
+phi 
+```
+
+]
+
+
+
+
+
+
+
+---
+
+# Final Thoughts
+
+- Magnitude  
+
+
+- Non-reversibility   
+
+
+- Surrogate Measures   
+
+
+
+
+---
+
+# Landscape Genetic Issues
+
+
+Many of the Landscape Genetic analytical approaches we use rely upon estimation of pair-wise distances or structure statistics.
+
+- Sampling should be designed to minimize variance in parameters.  
+
+- Corrections (such as $F_{ST}/(1-F_{ST})$ for structure) are helpful for creating more appropriate models.  
+
+- All measures of structure respond slowly to perturbations. 
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![Moira](https://media.giphy.com/media/ghToz6eRdaNba3aPhS/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about<br/> the content presented herein<br/> now is your time.  
+
+If you think of something later though, <br/>feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll<br/> get back to you as soon as possible.
+]
+
+
+
+
+```{r echo=FALSE}
+library( kinship2 )
+library( vegan )
+```
+
+
+
+
+
+

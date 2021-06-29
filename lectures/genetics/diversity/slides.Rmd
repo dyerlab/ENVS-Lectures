@@ -1,0 +1,964 @@
+---
+title: "Introduction"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "slide_styles.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+```{r setup, include=FALSE}
+library( sf )
+library( leaflet )
+library( ggplot2 )
+library( tidyverse )
+library( DiagrammeR )
+library( fontawesome )
+library( leaflet.minicharts )
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+theme_set( theme_bw( base_size = 20) )
+```
+
+
+# .green[Genetic Diversity]
+
+### .fancy[Measures of variation within Strata 🤷🏼]
+
+
+
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51198451479_5ce952b659_c_d.jpg")
+background-position: center
+
+
+
+
+
+
+
+---
+class: middle, center
+
+# .red[Inbreeding]
+
+
+### Non-random mating based upon mate choice.
+
+
+
+
+
+---
+
+# Associative Mating 
+
+Associative mating happens when the probability of mating is based upon some genetic componet and can come in two different categories.
+
+--
+
+.pull-left[
+**Positive Assortative** is mate choice based upon **.greeninline[similarities]**.
+
+![](https://live.staticflickr.com/65535/51189655001_7215bacdc4_w_d.jpg)
+
+]
+
+
+--
+
+
+.pull-right[
+
+**Negative Assortative Mating** is mate choice based upon **.redinline[dissimilarities]**
+
+![](https://live.staticflickr.com/65535/51189665366_11af57421a_w_d.jpg)
+]
+
+
+
+
+
+---
+
+# Assortative Mating
+
+Assortative mating may result in change in both .orangeinline[allele] and .orangeinline[genotype] frequencies in the population.
+
+--
+
+.pull-left[
+**Positive Assortative** results in:
+
+- Allele frequency changes
+    - $\delta p >= 0$
+
+- Genotype frequency changes
+    - Decreased heterozygosity
+
+]
+
+
+--
+
+
+.pull-right[
+
+**Negative Assortative** results in:
+
+- No allele frequency changes
+    - $\delta p == 0$
+
+- Genotype frequency changes
+    - Increased heterozygosity
+
+]
+
+
+
+
+
+
+
+
+---
+
+# Selfing
+
+.pull-left[
+
+The most sever kind of which is selfing.  Not all species can self, though some species only self.
+
+![](https://unsplash.com/photos/tQsGVxwodtM/download?force=true&w=640)
+
+*Hordeum vulgare* 
+]
+
+--
+
+.pull-right[
+
+Selfing for homozygotes results in no net change in genotype or allele frequencies from $t \to t+1$.
+
+  |  A |  A
+-------|----|----  
+ **A** | AA | AA  
+ **A** | AA | AA  
+ 
+ &nbsp;
+
+Selfing for heterozygotes results in 50% loss of *heterozygotes* **but no change** in allele frequencies.
+
+
+  |  A |  B
+-------|----|----  
+ **A** | AA | AB  
+ **B** | AB | BB  
+
+]
+
+
+---
+
+# Selfing
+
+
+
+.pull-left[
+The most sever kind of which is selfing.  Not all species can self, though some species only self.
+
+![](https://unsplash.com/photos/tQsGVxwodtM/download?force=true&w=640)
+
+*Hordeum vulgare* 
+]
+
+.pull-right[
+
+```{r echo=FALSE}
+p <- 0.49
+q <- 1-p
+P <- p^2
+Q <- 2*p*q
+R <- q^2
+data.frame( P, Q, R) -> df
+for( i in 1:19) {
+  P <- P + Q/4
+  R <- R + Q/4
+  Q <- Q / 2
+  df <- rbind( df, 
+               data.frame( P, Q, R ) ) 
+}
+
+data.frame( Generation = rep( 1:20, times=3), 
+            Genotype = rep( c("AA","AB","BB"), each=20),
+            Frequency = c(df$P, df$Q, df$R) ) %>%
+  ggplot( aes(Generation, Frequency, color=Genotype ) ) + 
+  geom_line() 
+```
+
+]
+
+
+---
+
+# Mixed Mating
+
+
+.pull-left[
+
+![](https://live.staticflickr.com/65535/51191217035_6463e01960_o_d.png)
+
+*Microstegium vimineum* (Poaceae)
+]
+
+--
+
+.pull-right[
+ 
+Some species produce offspring that are either *inbreeding* through selfing (at a rate of $s$) or resulting from randome mating, called *outcrossing* (at a rate of $1-s$).
+
+Genotypes will change at a rate proportional to $s$ but also **no** changes in allele frequencies.
+]
+
+
+
+---
+
+# Mixed Mating
+
+
+.pull-left[
+
+![](https://live.staticflickr.com/65535/51191217035_6463e01960_o_d.png)
+
+*Microstegium vimineum* (Poaceae)
+]
+
+
+
+.pull-right[
+Two Equilibrium States for Mixed Mating:
+
+1. When $p=1$ there is no more change in genotype frequencies from $t \to t+1$ because there are no more heterozygotes!
+
+2. The other non-trivial solution is when heterozygote frequencies no longer change throught time, (e.g., $\hat{Q} = Q_t = Q_{t+1}$).
+
+$$
+\begin{aligned}
+\hat{Q} &= s\frac{\hat{Q}}{2} + (1-s)2pq \\
+\end{aligned}
+$$
+
+]
+
+---
+
+# Mixed Mating
+
+
+.pull-left[
+
+![](https://live.staticflickr.com/65535/51191217035_6463e01960_o_d.png)
+
+*Microstegium vimineum* (Poaceae)
+]
+
+
+
+.pull-right[
+**Heterozygote Frequency Equilibrium** 
+
+$$
+\begin{aligned}
+\hat{Q} &= s\frac{\hat{Q}}{2} + (1-s)2pq \\
+\hat{Q}-s\frac{\hat{Q}}{2} &= (1-s)2pq \\
+\hat{Q}\left( 1 - \frac{s}{2} \right) &= (1-s)2pq \\
+\hat{Q} &= \frac{(1-s)2pq}{1-\frac{s}{2}} \\
+\hat{Q} &= \frac{2}{2}\frac{(1-s)2pq}{1-\frac{s}{2}} \\
+\hat{Q} &= \frac{(1-s)4pq}{2-s}
+\end{aligned}
+$$
+]
+
+
+---
+
+# Inbreeding Statistic
+
+There is a common inbreeding statistic that we estimate that allows us to determine how far the observed rate of heterozygosity has changed from what was expected.  This is called the **fixation index** and is denoted as $F$ (you will also see it denoted as $F_{IS}$ but we will return to that later). 
+
+
+$$
+F = 1 - \frac{H_O}{H_E}
+$$
+--
+Values of F and potential scenarios:
+
+- $F < 0$: Negative inbreeding (outbreeding)  
+
+- $F == 0$: No Inbreeding
+
+- $F > 0$: Positive inbreeding (inbreeding)
+When $F=0$, there is no indication of inbreeding.
+
+
+
+
+
+
+---
+
+# Probabilities of Homozygosity
+
+.left-column[
+```{r echo=FALSE}
+mermaid("graph TD;
+        A --> B;
+        A --> C;
+        B --> D;
+        C --> E;
+        D --> F;
+        E --> F;
+        ")
+```
+]
+
+.right-column[
+
+Two alleles are the same in a genotype (a homozygote) because of only two reasons.
+
+- .blueinline[Identical By State:]  The two alleles are equal because they randomly happen to have evolved into the same state at some point in the past.  For example, a $CC$ locus may have had a lineage where at one point $A \to C$ and $B \to C$.  These genotypes **are not** inbred. $f(AA_{IBS}) = p^2(1 - F)$
+
+
+- .redinline[Identical by Descent:] The two alleles are equal because we can trace the lineage of both of them to a single allele in the individuals ancestry.  The likelihood of this is the frequency of the allele in the population and the probability that it was derived from the same inbred allele. $f(AA_{IBD}) = pF$
+
+]
+
+
+
+---
+
+# Wahlund Effects
+
+Breakout Group Exercise.  I'm going to put you into three rooms, and each will work on one of the following populations.  Consider the three populations below.
+
+Population | $N_{AA}$ | $N_{AB}$ | $N_{BB}$ 
+-----------|:--------:|:--------:|:---------:
+Pop-A      |  49      |  42      | 9   
+Pop-B      |  16      |  48      | 36  
+Pop-(A+B)  |  65      |  90      | 45 
+
+--
+
+By hand/calculator/R, make the following calculations:
+1. Allele frequencies, $p$ & $q$.  
+2. Observed heterozygote frequency, $H_o = \frac{N_{AB}}{N}$
+3. Calculate expected heterozygote frequency, $H_e = 2*p*q$.
+4. Estimate $F = 1 - \frac{H_o}{H_e}$ and interpret the results.
+
+We will then return and discuss.
+
+
+---
+
+# Isolate Breaking
+
+When we artificially combine non-interacting populations ($A$ and $B$) we misallocate genotype frequencies such that
+
+
+\begin{equation}
+\bar{Q} = \frac{2p_Aq_A + 2p_Bq_B}{2}
+\end{equation}
+
+which simplifies to:
+ 
+
+\begin{equation}
+\bar{Q} = p_Aq_A + p_Bq_B \\
+= p_A(1-p_A) + p_B(1-p_B)
+\end{equation}
+
+
+Now this will .redinline[always] be smaller than 
+
+\begin{equation}
+2\bar{p}\bar{q} = 2\left[\frac{1}{K}\sum_{i=1}^K p_i\right]\left[\frac{1}{K}\sum_{i=1}^K q_i\right]
+\end{equation}
+
+unless $p_A = p_B$.
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51189042937_159251b8a0_c_d.jpg)
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51189034817_3f1054002a_c_d.jpg)
+
+
+
+---
+
+# Estimating $F$ in R
+
+A wide set of diversity measures are available through `gstudio`.  To simplify things, there is a single function that is used as an entry point to these parameters.  The inbreeding statistic `F` is denoted as `Fis` for purposes that will become clear when we talk later about genetic structure.
+
+<hr>
+
+![](https://live.staticflickr.com/65535/51190450838_05fe995b8e_c_d.jpg)
+
+---
+
+# Inbreeding in *Araptus*
+
+```{r}
+library( gstudio ) 
+data( arapat ) 
+genetic_diversity( arapat, mode="Fis" )
+```
+
+---
+
+# Subdivisions of Inbreeding
+
+
+.pull-left[
+```{r eval=FALSE}
+genetic_diversity( arapat, 
+                   mode="Fis", 
+                   stratum = "Cluster") %>%
+  filter( Locus %in% c("WNT","AML") ) -> Fis
+
+Fis %>%
+  ggplot( aes(Stratum, Fis) ) + 
+    geom_col() + 
+    facet_grid( Locus ~ .)
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+genetic_diversity( arapat, 
+                   mode="Fis", 
+                   stratum = "Cluster") %>%
+  filter( Locus %in% c("WNT","AML") ) -> Fis
+
+Fis %>%
+  ggplot( aes(Stratum, Fis) ) + 
+    geom_col() + 
+    facet_grid( Locus ~ .)
+
+```
+]
+
+
+---
+
+# Mapping Inbreeding
+
+Create a `leaflet` map showing $F_{IS}$ for each subdivision.
+
+```{r}
+genetic_diversity( arapat, 
+                   mode="Fis", 
+                   stratum = "Cluster") %>%
+  filter( Locus %in% c("AML", "EF","WNT") ) -> Fis
+
+head(Fis)
+```
+
+---
+
+# Mapping Inbreeding
+
+```{r}
+Fis %>%
+  spread( Locus, Fis) -> Fis
+
+head( Fis )
+```
+
+
+
+---
+
+# Mapping Inbreeding
+
+```{r}
+arapat %>% 
+  group_by( Cluster ) %>%
+  summarize( Latitude = mean(Latitude),
+             Longitude = mean(Longitude ) ) %>%
+  rename( Stratum = Cluster ) %>%
+  left_join( Fis ) -> inbreeding
+
+head( inbreeding ) 
+```
+
+---
+
+# Mapping Inbreeding 
+
+
+.pull-left[
+```{r eval=FALSE}
+library( leaflet )
+library( leaflet.minicharts )
+leaflet() %>% 
+  addProviderTiles( providers$Esri.WorldTerrain ) %>%
+  addMinicharts( inbreeding$Longitude, inbreeding$Latitude,
+                 chartdata =  inbreeding %>% select( AML, EF, WNT ),
+                 colorPalette = c("#3093e5", "#fcba50", "#a0d9e8"),
+                 width=45,
+                 height=45)
+  
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+leaflet() %>% 
+  addProviderTiles( providers$Esri.WorldTerrain ) %>%
+  addMinicharts( inbreeding$Longitude, inbreeding$Latitude,
+                 chartdata =  inbreeding %>% select( AML, EF, WNT ),
+                 colorPalette = c("#3093e5", "#fcba50", "#a0d9e8"),
+                 width=45,
+                 height=45)
+  
+```
+]
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .blue[Allelic Diversity]
+
+## .fancy[The base to all variation]
+
+
+---
+
+# Allelic Diversity
+
+The amount of diversity at a locus is based what kind of genetic data you are using and how we are coalescing our data togheter.
+
+
+.pull-left[
+#### Genetic Markers
+
+Different markers have different potentials for vatiation.
+
+- SNP/AFLP/RFLP/Haplotypes: Major/Minor allele or Presence/Absence  (binomial random variable)
+
+- Nucleic Acid: *A, C, G, T*  (multinomial random variable)
+
+- Microsatellites: Distribution of alleles  (multinomial random variable)
+
+]
+
+--
+
+.pull-right[
+
+#### Groupings
+
+How we group individuals together impacts our estimates and expectations.
+
+- Individual  
+
+- Locale  
+
+- Population  
+
+- Region   
+
+- Species   
+
+]
+
+
+---
+
+# Statistics for Allelic Diversity
+
+The total number of alleles at a locus, $A$:
+
+$$A = \ell$$
+
+&nbsp;
+
+--
+
+The number of alleles whose frequencies exceed a threshold of 5%, $A_{95}$: 
+
+
+$$A_{95} = \sum_{i=1}^{\ell} |p_i \ge 0.05|$$
+
+&nbsp;
+
+--
+
+Effective diversity of alleles weighed by the frequency at which it occurs, $A_e$.
+
+
+$$A_e = \frac{1}{\sum_{i=1}^{\ell} p_i^2}$$
+
+
+
+---
+
+# Estimating Allelic Diversity
+
+What is the Allelic diversity for the MP20 locus in the *Araptus* data set?  
+
+```{r}
+arapat %>% 
+  genetic_diversity() # uses Ae by default and all data.
+```
+
+---
+
+# All Diversity Measures
+
+```{r}
+arapat %>% 
+  genetic_diversity(mode="A") %>%
+  left_join( genetic_diversity(arapat, mode="A95") ) %>%
+  left_join( genetic_diversity(arapat, mode="Ae") )  -> allelic_diversity
+allelic_diversity
+```
+
+---
+
+# Measures of Diversity
+
+.pull-left[
+```{r eval=FALSE}
+library( ggtern )
+ggtern( allelic_diversity, aes(A,A95,Ae)) + 
+  geom_point( size=4, alpha=0.75 ) + 
+  theme_rgbw() 
+```
+
+.footnote[I've found that *sometimes* using `ggtern` screws up `ggplot` output.]
+]
+
+.pull-right[
+
+![](https://live.staticflickr.com/65535/51192353645_a10f34ed1a_c_d.jpg)
+
+]
+
+
+---
+
+# Comparing Diversity
+
+Consider that you have the following data:  
+
+- *Population A:* $N = 50$ samples with an estimated $A_e = 4.52$.
+
+- *Population B:* $N = 25$ samples with an estimated $A_e = 3.29$
+
+&nbsp;
+
+**Which is more diverse?**
+
+
+
+---
+
+# Asymptotic Nature of Diversity
+
+.pull-left[
+```{r eval=FALSE}
+N <- c(2,4,10,15,20,50,100,150, 200, 250, 300)
+loci <- arapat$MP20
+df <- data.frame( N = factor( rep(N,each=20) ), 
+                  Rep = rep( 1:20, times=length(N)),
+                  Ae = NA) 
+
+# Cycle through
+for( n in N ) {
+  for( rep in 1:20 ) {
+    l <- sample(loci,size=n,replace=FALSE)
+    a <- genetic_diversity( l )$Ae[1]
+    df$Ae[ df$N == n & df$Rep == rep ] <- a
+  }
+}
+
+
+df %>%
+  ggplot( aes(N,Ae) ) + 
+  geom_boxplot()
+```
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+N <- c(2,4,10,15,20,50,100,150, 200, 250, 300)
+loci <- arapat$MP20
+df <- data.frame( N = factor( rep(N,each=20) ), 
+                  Rep = rep( 1:20, times=length(N)),
+                  Ae = NA) 
+for( n in N ) {
+  for( rep in 1:20 ) {
+    l <- sample(loci,size=n,replace=FALSE)
+    a <- genetic_diversity( l )$Ae[1]
+    df$Ae[ df$N == n & df$Rep == rep ] <- a
+  }
+}
+df %>%
+  ggplot( aes(N,Ae) ) + 
+  geom_boxplot()
+```
+
+]
+
+---
+
+# Consequences - Sampling Matters!
+
+.pull-left[
+Sampling effort is directly influencing your estimates: 
+
+- The more diverse the locus, the more individuals you need to sample to get a good estimate of diversity.
+
+```{r eval=FALSE}
+df %>%
+  group_by( N ) %>%
+  summarize( SD = sd(Ae) ) %>%
+  mutate( N = as.numeric( as.character( N ) ) ) %>%
+  ggplot( aes(N,SD) ) + 
+  geom_point( size = 3) + 
+  stat_smooth()
+```
+
+- For rare alleles, you need some very large sample sizes.
+
+]
+
+.pull-right[
+
+```{r echo=FALSE}
+df %>%
+  group_by( N ) %>%
+  summarize( SD = sd(Ae) ) %>%
+  mutate( N = as.numeric( as.character( N ) ) ) %>%
+  ggplot( aes(N,SD) ) + 
+  geom_point( size = 3) + 
+  stat_smooth( se=FALSE) + 
+  ylab(expression( sigma[A[e]] )  ) + 
+  xlab("Sample Size (N)")
+```
+
+
+]
+
+
+---
+
+# Rarefaction
+
+The approach to use subsampled data from larger data sets to be able to compare with diversity measured from smaller sample sets.  Example from samples from the Cape Region ( $N = 75$ ) vs the Mainland samples ( $N = 36$ ).
+
+```{r}
+arapat %>% 
+  filter( Species == "Cape" ) %>%
+  genetic_diversity( loci = "WNT" ) -> ae.cape
+ae.cape
+```
+
+
+
+```{r}
+arapat %>% 
+  filter( Species == "Mainland" ) %>%
+  genetic_diversity( loci = "WNT" ) -> ae.mainland
+ae.mainland
+
+```
+
+
+---
+
+# General Rarefaction Appraoch
+
+1. Select sample with the smallest number of samples.  
+
+2. Randomly select genotypes from teh larger population with sample sizes equal to the that of the smaller sample.  
+
+3. Estimate Diversity.  
+
+4. Do 2-3 a large number of times.  
+
+5. Compare diversity of smaller population to the *distribution* of values estimated by subsampling the larger distribution.
+
+
+
+---
+
+# Rarefied Diversity for Cape
+
+.pull-left[
+
+```{r}
+arapat %>% 
+  filter( Species == "Cape") -> cape.pop
+
+null.ae <- rarefaction( cape.pop$WNT, 
+                        mode = "Ae", 
+                        size = 36 )
+mean( null.ae )
+sum( null.ae >= ae.mainland$Ae[1])/(1+length(null.ae))
+```
+
+]
+
+.pull_right[
+```{r echo=FALSE}
+data.frame( Ae = c(ae.mainland$Ae[1],
+                   null.ae),
+            Estimate = c("Mainland",
+                        rep("Cape", length(null.ae)))) %>%
+  ggplot( aes(Ae, fill=Estimate ) ) + 
+  geom_histogram( bins=20) + 
+  scale_fill_manual( values = c("#dfc27d", "#ca0020")) + 
+  ylab("Frequency of Estimate")
+```
+
+]
+
+
+---
+# 🏄🏻 Allele Surfing 🤙🏽
+
+.pull-left[
+
+Range expansion of a species results in the front-most groups colonizing new area.  
+
+- New locales are made up individuals who have only a subset of alleles taken from the front.
+
+- Continued expansion creates a .redinline[decreasing] gradient in diversity (pointing in the direction of expansion).
+
+]
+
+--
+
+.pull-right[
+
+![](https://live.staticflickr.com/65535/51204095120_81c8c58e9c_o_d.png)
+[arapat host plant post-pleistocene expansion](https://drive.google.com/open?id=0B0T81CzLjtfPbFl6WVJEekpUR1U)
+]
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[Genotypic Diversity]
+
+## .fancy[Diversity in How Alleles Coalesce]
+
+
+---
+
+# Levels of Heterozygosity
+
+The *observed* fraction of individuals who have at least 2 alleles at a locus.
+
+$$H_O = \frac{\sum_{i,j=1; i \ne j}^{\ell}N_{ij}}{N}$$
+
+&nbsp;
+
+--
+
+The *expected* level of heterozygosity based upon Hardy-Weinberg Equilibrium.
+
+$$H_E = 1 - \sum_{i=1}^{\ell}p_i^2$$
+
+&nbsp;
+
+--
+
+Measured across populations, with possible subdivision when populations are of different sizes (where $\hat{N}$ is the harmonic mean population size across $k$ sampling locations).
+
+$$H_S = \frac{\hat{N}}{\hat{N}-1} \left[  1 - \sum_{i=1}^{\ell}p_{k,i}^2 - \frac{H_O}{2\hat{N}} \right]$$
+
+
+---
+
+# Estimating Genotypic Diversity
+
+```{r}
+arapat %>%
+  genetic_diversity( mode = "He" ) 
+```
+
+
+
+---
+
+# Large Picture
+
+The goal here is to provide you with the tools necessary to look at various levels of diversity, both taxonomic and spatially.  It is often of interest to examine how raw variation is distributed across the landscape.   
+
+- Identifying areas of genetic conservation   
+
+--
+
+- Choosing locals for selecting broodstock   
+
+--
+
+- Getting an idea of relative adaptive potential
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![Moira](https://media.giphy.com/media/xT5LMB2WiOdjpB7K4o/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about<br/> the content presented herein<br/> now is your time.  
+
+If you think of something later though, <br/>feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll<br/> get back to you as soon as possible.
+]
+

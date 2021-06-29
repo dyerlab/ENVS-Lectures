@@ -1,0 +1,847 @@
+---
+title: "Introduction"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "slide_styles.css"]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: default
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+---
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+```{r setup, include=FALSE}
+library( sf )
+library( sna )
+library( GGally )
+library( ggplot2 )
+library( popgraph )
+library( gganimate )
+library( tidyverse )
+library( DiagrammeR )
+library( fontawesome )
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+
+theme_set( theme_bw( base_size = 20) )
+```
+
+
+# .orange[Network Models]
+
+### .fancy[The *One True* Representation]
+
+
+
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51198451539_f09703e3d8_c_d.jpg")
+background-position: center
+
+
+---
+
+# Networks as a Metaphor
+
+Much of what we do in Landscape (and Popualation) Genetics can be considered as a set of network problems.  
+
+Both genetic and ecological distances are commonly represented as distance matrices, which mathematically is also an adjacency matrix.
+
+  - Between Sites connectivity $\to$  gene flow.  
+  
+  - Between Site separation $\to$ spatial/ecological separation.  
+  
+  - Source/Sink dynamics
+  
+  
+
+---
+class: center, middle 
+
+![](https://live.staticflickr.com/65535/51206238790_fe6c8cbd5e_c_d.jpg)
+
+
+
+---
+
+# Graph Components - Nodes 
+
+
+  
+.pull-left[
+Definable sample locaions defined by sites, ponds, habitats, etc.
+
+- Nodes, Vertices, Points  
+
+- .redinline[**AT**] site data  
+
+- Spatially Relevant  
+
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51205931839_d540cc3ec7_d.jpg)
+]
+
+
+---
+
+# Graph Components - Edges
+
+.pull-left[
+Connections between nodes.
+
+
+- Edges, arcs, links  
+
+- .orangeinline[**BETWEEN**] site data  
+
+- Spatially, ecologically, or topographically relevant.
+
+
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51204455502_fc4943c478_o_d.png)
+]
+
+
+---
+
+# Graph Types
+
+![](https://live.staticflickr.com/65535/51206240790_140e96e423_c_d.jpg)
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51205383083_6edcbb258e_o_d.png)
+
+
+---
+# Graph Jargon
+
+![](https://live.staticflickr.com/65535/51205177786_e3ab1a2cf9_o_d.png)
+
+
+---
+
+# Graph Visualization
+
+A `layout` is a configuration of nodes in either 2- or 3-dimensional space.  
+
+- Spatial  
+
+- Based upon internal structure.
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51195610656_d755898d56_o_d.png)
+## This does exist
+
+
+---
+
+# Basic Network Analysis in R
+
+.pull-left[
+![](https://live.staticflickr.com/65535/51195610656_d755898d56_o_d.png)
+]
+
+
+.pull-right[
+```{r}
+library( igraph )
+
+A <- matrix( 0, nrow=5,ncol=5)
+A[1,2] <- A[2,1] <- A[1,3] <- A[2,3] <- 1
+A[3,4] <- A[4,5] <- 1
+rownames(A) <- colnames(A) <- c("X","Y","Z","W","U")
+A
+```
+]
+
+
+---
+
+# Basic Network Analysis in R
+
+.pull-left[
+![](https://live.staticflickr.com/65535/51195610656_d755898d56_o_d.png)
+]
+
+
+.pull-right[
+```{r}
+G <- graph.adjacency( A, 
+                      mode="directed" )
+G
+
+vertex_attr( G )
+edge_attr( G )
+```
+]
+
+
+---
+
+```{r}
+plot(G)
+```
+
+
+---
+class: center, middle
+
+# .red[Rule Based Networks]
+
+
+
+---
+
+# Genetic Distance
+
+- A metric that can be used to describe pair-wise structure of populations.  
+
+- Configured as a network, the topological shape of the network is a snapshot of structure.
+
+- Require specific rules for construction.
+
+---
+
+# *Posidonia oceanica* - clonal seagrass
+
+.pull-left[
+![](https://live.staticflickr.com/65535/51205458203_ec5d8d27c9_c_d.jpg)
+]
+
+
+.pull-right[
+
+![](https://live.staticflickr.com/65535/51205253741_fafc8f1c78_w_d.jpg)
+
+]
+
+---
+
+# *Posidonia oceanica* - clonal seagrass
+
+
+![](https://live.staticflickr.com/65535/51206024464_6fd31fb37d_c_d.jpg)
+
+
+---
+
+# Threshold Connectivities
+
+.pull-left[
+Edges are In/Out based upon geographic separation between sample locations.
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51204543827_59de1e1220_z_d.jpg)
+]
+
+
+
+---
+
+# Topological Rules - Graph Metrics
+
+Perhaps these networks are defined by graph-construction algorithms, many of which have been sucessful in describing other network structures (internet, epidemoloigcal disease networks, etc.)  In these models, the topological connections define the network connection rules.
+
+![](https://live.staticflickr.com/65535/51204551747_449d06f702_c_d.jpg)
+
+
+
+---
+
+# Challenges to Rules-Based Networks
+
+Rules based networks require `someone` to decide on the rules.
+
+
+- Male intuition?   
+
+- "Body of Knowledge"...
+
+--
+
+Making .redinline[arbitrary] decisions about modifying your data based upon your own *intuition* or *body of knowledge* is suspect.  
+
+- No matter what kind of *expert* you think you are in some system (with fancy papers to show off), your intuition is just a **guess**, nothing more.
+
+- Use **data**, **math**, and **experimentation** to verify the input into your models.
+
+
+
+
+
+
+--
+
+
+To what extent doe the .redinline[mechanisms that influence realized connectivity for a species] sampled among different locations operate in a way that is aligned with a fancy graph-construction algorithm thought up by some mathematician?
+
+
+
+
+---
+class: center, middle
+
+# .red[Population Graphs]
+
+### .red[Statistical Based Topologies]
+
+
+
+---
+
+# Model-Based Graph Construction
+
+
+- The raw data itself as valuable information about the *spatial distribution of genetic variation*.
+
+- The demographic processes that connect populations (or localles) is **exactly** the process that creates the genetic structure we observe.
+
+- Initiated by wanting to find a *post hoc* analysis on genetic structure statitics.
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203766_22810be269_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205410383_c244978b56_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205410543_424d303c3d_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203956_9a07fd9754_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203991_9ff8c40c09_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205972029_675cac0b89_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206270395_40fb0f8cf2_c_d.jpg)
+
+
+---
+
+# Non-Uniqueness of Structure
+
+A structure statistic such as $F_{ST}$ is a very powerful tool for understanding  connectivity.  However, there are some topological concerns related to its non-reversability.
+
+&nbsp;
+
+
+![](https://live.staticflickr.com/65535/51205429223_32845ba2d1_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205970699_745cc3ba67_c_d.jpg)
+
+
+
+---
+
+
+
+.pull-left[
+# *Lophocereus schottii*
+
+Shape of genetic connectivity.
+
+
+![](https://live.staticflickr.com/65535/51205997584_08e1520193_o_d.png)
+]
+
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51205242571_989f485252_c_d.jpg)
+]
+
+
+
+---
+
+# Conditional Graph Distance As Surrogate 
+
+![](https://live.staticflickr.com/65535/51205494498_61f223f600_c_d.jpg)
+
+
+
+
+
+
+---
+
+# Visualizing Topologies
+
+```{r}
+library( popgraph ) 
+data( lopho ) 
+lopho
+```
+
+---
+
+```{r}
+plot( lopho )
+```
+
+.footnote[ The default layout is based upon the *Fruchterman Reinghold* algorithm.]
+
+
+---
+
+# Customizing Layouts - Topological Layouts
+
+.pull-left[
+
+Projection onto 2-dimensional space based upon *spring* model of connectivity.  
+```{r}
+l <- igraph::layout.kamada.kawai( lopho )
+head(l)
+```
+
+]
+
+
+.pull-right[
+
+```{r}
+plot( lopho, layout = l )
+```
+
+
+]
+
+---
+
+# Customizing Network Plots
+
+.pull-left[
+```{r eval=FALSE}
+plot( lopho, 
+      edge.color = "black", 
+      vertex.label.color = "darkred",
+      vertex.color = "gray",
+      vertex.label.dist = 2 )
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+plot( lopho, 
+      edge.color = "black", 
+      vertex.label.color = "darkred",
+      vertex.color = "gray",
+      vertex.label.dist = 2 )
+```
+]
+
+
+---
+
+# Interactive Visualization
+
+.pull-left[
+```{r eval=FALSE}
+library( networkD3 )
+lopho.d3 <- igraph_to_networkD3( lopho,
+                                 group=V(lopho)$Region)
+forceNetwork( Links = lopho.d3$links,
+              Nodes = lopho.d3$nodes,
+              Source = "source",
+              Target = 'target',
+              NodeID = 'name', 
+              Group = 'group')
+```
+
+]
+
+.pull-right[
+```{r echo=FALSE}
+library( networkD3 )
+
+lopho.d3 <- igraph_to_networkD3( lopho,
+                                 group=V(lopho)$Region)
+forceNetwork( Links = lopho.d3$links,
+              Nodes = lopho.d3$nodes,
+              Source = "source",
+              Target = 'target',
+              NodeID = 'name', 
+              Group = 'group')
+```
+]
+
+
+---
+
+# Visualizing Topologies - Spatially
+
+
+```{r}
+data( baja )
+lopho <- decorate_graph(lopho, baja)
+lopho
+```
+
+---
+
+# Spatial Locations
+
+.pull-left[
+```{r eval=FALSE}
+library( ggplot2 ) 
+p <- ggplot() 
+p <- p + geom_edgeset( aes(x=Longitude,y=Latitude), lopho)
+p
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+library( ggplot2 ) 
+p <- ggplot() 
+p <- p + geom_edgeset( aes(x=Longitude,y=Latitude), lopho)
+p
+```
+]
+
+
+---
+
+# Spatial Locations
+
+.pull-left[
+```{r eval=FALSE}
+p <- p + geom_nodeset( aes(x=Longitude,y=Latitude), lopho)
+p <- p + coord_map() + xlab("Longitude") + ylab("Latitude")
+p
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+p <- p + geom_nodeset( aes(x=Longitude,y=Latitude), lopho)
+p <- p + coord_map() + xlab("Longitude") + ylab("Latitude")
+p
+```
+]
+
+
+
+
+
+
+
+---
+
+# Overlaying onto Other Features
+
+.pull-left[
+```{r eval=FALSE}
+map_data("world", "mexico") -> map 
+ggplot() + 
+  geom_polygon( aes(long,lat, group=group), 
+                data=map, 
+                fill="gray") + 
+  geom_edgeset( aes(x=Longitude,y=Latitude), 
+                lopho, 
+                color="gray40") + 
+  geom_nodeset( aes(x=Longitude,y=Latitude, 
+                    color=Region,
+                    size=size, 
+                    alpha=0.7), 
+                lopho) +
+  coord_sf( xlim=c(-116,-109),
+            ylim=c(22,35), 
+            crs = 4326) 
+```
+
+]
+
+
+.pull-right[
+```{r echo=FALSE}
+map_data("world", "mexico") -> map 
+ggplot() + 
+  geom_polygon( aes(long,lat, group=group), 
+                data=map, 
+                fill="gray") + 
+  geom_edgeset( aes(x=Longitude,y=Latitude), 
+                lopho, 
+                color="gray40") + 
+  geom_nodeset( aes(x=Longitude,y=Latitude, 
+                    color=Region,
+                    size=size), 
+                lopho, 
+                alpha=0.75) +
+  coord_sf( xlim=c(-116,-109),
+            ylim=c(22,35), 
+            crs = 4326) +
+  theme_minimal( base_size = 14) + 
+  theme( legend.position = "none", 
+         axis.text.x = element_text(angle = 45, 
+                                    vjust = 0.5, 
+                                    hjust=1)) + 
+  xlab(" ") + ylab(" ") 
+  
+```
+
+]
+
+
+
+---
+
+# Leaflet Overlays
+
+.pull-left[
+We can convert the node and edge sets into `sf` objects and then overlay them using the leaflet framework.
+
+```{r}
+nodes <- to_sf(lopho, what="nodes" )
+edges <- to_sf(lopho, what="edges" )
+```
+
+]
+
+.pull-right[
+```{r}
+head( nodes )
+```
+
+```{r}
+head( edges )
+```
+
+
+]
+
+
+---
+
+# Leaflet Map
+
+.pull-left[
+```{r eval=FALSE}
+library( leaflet )
+
+leaflet() %>%
+  addProviderTiles( provider = providers$Esri.WorldImagery ) %>%
+  addMarkers( data = nodes ) %>%
+  addPolylines( data=edges, color="white" )
+```
+
+]
+
+
+.pull-right[
+```{r echo=FALSE}
+library( leaflet )
+
+leaflet() %>%
+  addProviderTiles( provider = providers$Esri.WorldImagery ) %>%
+  addMarkers( data = nodes ) %>%
+  addPolylines( data=edges, color="white" )
+```
+]
+
+
+
+
+
+---
+
+# Connectivity & Intervening Habitat
+
+If the network captures much of the underlying connectivity network, then the habitat types that connectivity edges traverse may be indicative of preferendes in paths of gene flow.  One way to test this while at the same time preserve any local habitat heterogeneity is to permute the edges.
+
+$H_O: Edges \; Random \; WRT \; Habitat$
+
+If this is true, then we should be able to permute edges across the landscape and `raster::extract()` the habitat types traversed.  The set of observed ones should be just a random sample of the randomized ones **if and only if** the null hypothesis is correct.
+
+See the function `?randomize_graph()` on how you can randomize the edges in a network.
+
+
+
+---
+
+# Ecological Edge Crossing
+
+![](https://live.staticflickr.com/65535/51205993197_ce1568ff05_c_d.jpg)
+
+.footnote[Dyer *et al.* (2012) [doi](https://doi.org/10.1007/s10980-011-9696-x) [pdf](https://drive.google.com/open?id=0B0T81CzLjtfPOXlQcXdLczM2c2c)]
+---
+
+# Ecological Edge Crossing
+
+![](https://live.staticflickr.com/65535/51207771575_7cd9da01fa_z_d.jpg)
+
+
+
+
+
+
+
+
+
+---
+class: center, middle
+
+# .redinline[Popgraph Topolgical Features]
+
+
+
+---
+
+# Topological Properties
+
+There are several different statistics measuring properties of nodes and edges.  Here are some examples:  
+
+- *Degree:* The number of edges connected to a node.  
+
+- *Closeness:* Standardized distance from a node to other nodes (firestation).
+
+- *Betweenness:* Standardized distance from everywhere else to the node/edge (library).
+
+
+
+---
+
+# Node-Specific Topological Features
+
+```{r}
+degree( lopho )
+closeness( lopho )
+betweenness( lopho )
+eigen_centrality( lopho )$vector 
+```
+
+
+
+
+---
+class: center, middle
+
+## .red[Draw it Dummy!]
+
+######  .red[ &dash; Message from *Historical* Dyer to *Current* Dyer to Draw Graph Distance IBD]
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203386_e141b95821_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203411_25329895cd_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51204488512_a795b7aa3e_c_d.jpg)
+
+
+---
+class: middle, center
+
+# .red[Topological Congruence]
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203086_f31a9dca94_c_d.jpg)
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51204488022_f78b237a1d_c_d.jpg)
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203226_519092c333_c_d.jpg)
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51204488267_4e3256cf7e_c_d.jpg)
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![](https://media.giphy.com/media/xUySTWhYy6KDZBEWsw/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about<br/> the content presented herein<br/> now is your time.  
+
+If you think of something later though, <br/>feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll<br/> get back to you as soon as possible.
+]
+

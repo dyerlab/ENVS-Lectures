@@ -1,0 +1,71 @@
+---
+title: "Habitat Activity"
+output: html_notebook
+---
+
+<center>
+[![Dayne Tompkin](https://unsplash.com/photos/Sk-C-om9Jz8/download?force=true&w=640)](https://unsplash.com/photos/Sk-C-om9Jz8?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink)
+</center>
+
+## Overview
+
+
+
+
+```{r}
+library( sf )
+library( readr )
+library( raster )
+library( leaflet ) 
+```
+
+
+
+
+
+```{r message=FALSE}
+dogwood_coords <- "https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/DogwoodUrban.csv"
+
+
+```
+
+
+
+1. Create an interactive map to visualize the location of the sample trees on the landscape.  For each of the tree locations, provide a pop-up so you can see the `Mother` identification number.
+
+```{r}
+read_csv( dogwood_coords ) %>%
+  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) %>%
+  arrange( Mother ) -> dogwood
+
+dogwood %>%
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers( popup = ~Mother)
+
+```
+
+
+
+
+2. The MRLC data viewer is found [here](https://www.mrlc.gov/viewer/).  Using the coordinates from the focal trees, download the following coverages: Tree Canopy, Land Cover, & Impervious Services.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

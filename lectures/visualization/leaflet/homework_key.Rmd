@@ -5,6 +5,15 @@ date: "3/15/2021"
 output: html_notebook
 ---
 
+```{r setup, indluce=FALSE}
+
+knitr::opts_chunk(eval=FALSE)
+
+```
+
+
+
+
 ```{r}
 library(dplyr)
 library(sf)
@@ -31,7 +40,7 @@ library(tigris)
 ```
 
 Convert education levels to factor - this allows us to use `colorFactor()` to create our color palette
-```{r}
+```{r eval=FALSE}
 points$education <- factor(points$education, levels = c("No HS diploma", "HS, no Bachelors", "Bachelors" , "Post-Bachelors"  )) 
 ```
 

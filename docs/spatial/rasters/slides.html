@@ -3,10 +3,10 @@
   <head>
     <title>Rasters</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.6.6/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../../css/slide_styles.css" type="text/css" />
-    <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
+    <link rel="stylesheet" href="/Users/rodney/Documents/github/classes/ENVS-Lectures/lectures/css/slide_styles.css" type="text/css" />
+    <link rel="stylesheet" href="/Users/rodney/Documents/github/classes/ENVS-Lectures/lectures/css/slide_fonts.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -21,7 +21,7 @@ background-size: cover
 
 # .green[Rasters]
 
-### .fancy[Continuously Distributed Data &lt;svg style="height:0.8em;top:.04em;position:relative;fill:limegreen;" viewBox="0 0 512 512"&gt;&lt;path d="M149.333 56v80c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V56c0-13.255 10.745-24 24-24h101.333c13.255 0 24 10.745 24 24zm181.334 240v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm32-240v80c0 13.255 10.745 24 24 24H488c13.255 0 24-10.745 24-24V56c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24zm-32 80V56c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm-205.334 56H24c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24zM0 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H24c-13.255 0-24 10.745-24 24zm386.667-56H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zm0 160H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zM181.333 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24z"/&gt;&lt;/svg&gt;]
+### .fancy[Continuously Distributed Data <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:limegreen;overflow:visible;position:relative;"><path d="M149.333 56v80c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V56c0-13.255 10.745-24 24-24h101.333c13.255 0 24 10.745 24 24zm181.334 240v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm32-240v80c0 13.255 10.745 24 24 24H488c13.255 0 24-10.745 24-24V56c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24zm-32 80V56c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm-205.334 56H24c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24zM0 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H24c-13.255 0-24 10.745-24 24zm386.667-56H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zm0 160H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zM181.333 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24z"/></svg>]
 
 
 
@@ -59,8 +59,8 @@ values
 ```
 
 ```
-##  [1] 16 16 12 10 11 14 15  5 11 15 11 11 10 13  9 14 23 16  8  7 13 15 16 13 12
-## [26] 12  6 16 15  9  7 17  9 16 10 18
+##  [1] 11 13 11  9 10  4  8 19 12 16 14  7 15 10 12 10  8 16  8 15  6 16 11 16 11
+## [26] 16 15 12  9 17 13 11 13 10  9  8
 ```
 
 --
@@ -73,12 +73,12 @@ x
 
 ```
 ##      [,1] [,2] [,3] [,4] [,5] [,6]
-## [1,]   16   15   10    8   12    7
-## [2,]   16    5   13    7   12   17
-## [3,]   12   11    9   13    6    9
-## [4,]   10   15   14   15   16   16
-## [5,]   11   11   23   16   15   10
-## [6,]   14   11   16   13    9   18
+## [1,]   11    8   15    8   11   13
+## [2,]   13   19   10   15   16   11
+## [3,]   11   12   12    6   15   13
+## [4,]    9   16   10   16   12   10
+## [5,]   10   14    8   11    9    9
+## [6,]    4    7   16   16   17    8
 ```
 
 
@@ -117,7 +117,7 @@ r
 ## crs        : NA 
 ## source     : memory
 ## names      : layer 
-## values     : 5, 23  (min, max)
+## values     : 4, 19  (min, max)
 ```
 
 --
@@ -208,7 +208,7 @@ This particular raster is quite large (in terms of the number of cells)
 ## resolution : 0.008333333, 0.008333333  (x, y)
 ## extent     : -120, -90, 0, 30  (xmin, xmax, ymin, ymax)
 ## crs        : +proj=longlat +datum=WGS84 +no_defs 
-## source     : https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif 
+## source     : alt_22.tif 
 ## names      : alt_22 
 ## values     : -202, 5469  (min, max)
 ```
@@ -313,7 +313,7 @@ beetles %&gt;%
 
 ```
 ##       xmin       ymin       xmax       ymax 
-## -114.79353   22.78550 -108.82700   29.82541
+## -114.29354   23.28549 -109.32699   29.32542
 ```
 
 ]
@@ -608,9 +608,9 @@ points
 
 # Reprojecting Rasters
 
-Just like points, we can reproject the entire raster using the `projectRaster` function.  HJere I am going to project the raster into UTM Zone 12N, a common projection for this part of [Mexico from epsg.io](https://epsg.io/6367).  
+Just like points, we can reproject the entire raster using the `projectRaster` function.  Here I am going to project the raster into UTM Zone 12N, a common projection for this part of [Mexico from epsg.io](https://epsg.io/6367).  
 
-Unfortunatly, the `raster` library does not use epsg codes so we'll have to use the large description of that projection.  See the [page](https://epsg.io/6367) for this projection and scroll down to the proj.4 definition.  
+Unfortunately, the `raster` library does not use epsg codes so we'll have to use the large description of that projection.  See the [page](https://epsg.io/6367) for this projection and scroll down to the proj.4 definition.  
 
 
 ```r
@@ -674,10 +674,10 @@ sfran
 
 ```
 ## Geometry set for 1 feature 
-## geometry type:  POINT
-## dimension:      XY
-## bbox:           xmin: -112.964 ymin: 27.3632 xmax: -112.964 ymax: 27.3632
-## geographic CRS: WGS 84
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: -112.964 ymin: 27.3632 xmax: -112.964 ymax: 27.3632
+## Geodetic CRS:  WGS 84
 ```
 
 

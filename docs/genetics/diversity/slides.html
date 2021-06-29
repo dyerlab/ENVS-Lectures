@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+    <script src="libs/d3-3.3.8/d3.min.js"></script>
+    <script src="libs/dagre-0.4.0/dagre-d3.min.js"></script>
+    <link href="libs/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet" />
+    <script src="libs/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
+    <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+    <script src="libs/chromatography-0.1/chromatography.js"></script>
+    <script src="libs/DiagrammeR-binding-1.0.6.1/DiagrammeR.js"></script>
+    <script src="libs/jquery-1.12.4/jquery.min.js"></script>
+    <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-1.3.1/leaflet.js"></script>
+    <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+    <script src="libs/proj4-2.6.2/proj4.min.js"></script>
+    <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+    <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+    <script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+    <link href="libs/minichart-0.2.2/minicharts.css" rel="stylesheet" />
+    <script src="libs/minichart-0.2.2/leaflet.minicharts.min.js"></script>
+    <link href="libs/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="slide_styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+
+
+
+# .green[Genetic Diversity]
+
+### .fancy[Measures of variation within Strata 🤷🏼]
+
+
+
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51198451479_5ce952b659_c_d.jpg")
+background-position: center
+
+
+
+
+
+
+
+---
+class: middle, center
+
+# .red[Inbreeding]
+
+
+### Non-random mating based upon mate choice.
+
+
+
+
+
+---
+
+# Associative Mating 
+
+Associative mating happens when the probability of mating is based upon some genetic componet and can come in two different categories.
+
+--
+
+.pull-left[
+**Positive Assortative** is mate choice based upon **.greeninline[similarities]**.
+
+![](https://live.staticflickr.com/65535/51189655001_7215bacdc4_w_d.jpg)
+
+]
+
+
+--
+
+
+.pull-right[
+
+**Negative Assortative Mating** is mate choice based upon **.redinline[dissimilarities]**
+
+![](https://live.staticflickr.com/65535/51189665366_11af57421a_w_d.jpg)
+]
+
+
+
+
+
+---
+
+# Assortative Mating
+
+Assortative mating may result in change in both .orangeinline[allele] and .orangeinline[genotype] frequencies in the population.
+
+--
+
+.pull-left[
+**Positive Assortative** results in:
+
+- Allele frequency changes
+    - `\(\delta p &gt;= 0\)`
+
+- Genotype frequency changes
+    - Decreased heterozygosity
+
+]
+
+
+--
+
+
+.pull-right[
+
+**Negative Assortative** results in:
+
+- No allele frequency changes
+    - `\(\delta p == 0\)`
+
+- Genotype frequency changes
+    - Increased heterozygosity
+
+]
+
+
+
+
+
+
+
+
+---
+
+# Selfing
+
+.pull-left[
+
+The most sever kind of which is selfing.  Not all species can self, though some species only self.
+
+![](https://unsplash.com/photos/tQsGVxwodtM/download?force=true&amp;w=640)
+
+*Hordeum vulgare* 
+]
+
+--
+
+.pull-right[
+
+Selfing for homozygotes results in no net change in genotype or allele frequencies from `\(t \to t+1\)`.
+
+  |  A |  A
+-------|----|----  
+ **A** | AA | AA  
+ **A** | AA | AA  
+ 
+ &amp;nbsp;
+
+Selfing for heterozygotes results in 50% loss of *heterozygotes* **but no change** in allele frequencies.
+
+
+  |  A |  B
+-------|----|----  
+ **A** | AA | AB  
+ **B** | AB | BB  
+
+]
+
+
+---
+
+# Selfing
+
+
+
+.pull-left[
+The most sever kind of which is selfing.  Not all species can self, though some species only self.
+
+![](https://unsplash.com/photos/tQsGVxwodtM/download?force=true&amp;w=640)
+
+*Hordeum vulgare* 
+]
+
+.pull-right[
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-1-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+# Mixed Mating
+
+
+.pull-left[
+
+![](https://live.staticflickr.com/65535/51191217035_6463e01960_o_d.png)
+
+*Microstegium vimineum* (Poaceae)
+]
+
+--
+
+.pull-right[
+ 
+Some species produce offspring that are either *inbreeding* through selfing (at a rate of `\(s\)`) or resulting from randome mating, called *outcrossing* (at a rate of `\(1-s\)`).
+
+Genotypes will change at a rate proportional to `\(s\)` but also **no** changes in allele frequencies.
+]
+
+
+
+---
+
+# Mixed Mating
+
+
+.pull-left[
+
+![](https://live.staticflickr.com/65535/51191217035_6463e01960_o_d.png)
+
+*Microstegium vimineum* (Poaceae)
+]
+
+
+
+.pull-right[
+Two Equilibrium States for Mixed Mating:
+
+1. When `\(p=1\)` there is no more change in genotype frequencies from `\(t \to t+1\)` because there are no more heterozygotes!
+
+2. The other non-trivial solution is when heterozygote frequencies no longer change throught time, (e.g., `\(\hat{Q} = Q_t = Q_{t+1}\)`).
+
+$$
+`\begin{aligned}
+\hat{Q} &amp;= s\frac{\hat{Q}}{2} + (1-s)2pq \\
+\end{aligned}`
+$$
+
+]
+
+---
+
+# Mixed Mating
+
+
+.pull-left[
+
+![](https://live.staticflickr.com/65535/51191217035_6463e01960_o_d.png)
+
+*Microstegium vimineum* (Poaceae)
+]
+
+
+
+.pull-right[
+**Heterozygote Frequency Equilibrium** 
+
+$$
+`\begin{aligned}
+\hat{Q} &amp;= s\frac{\hat{Q}}{2} + (1-s)2pq \\
+\hat{Q}-s\frac{\hat{Q}}{2} &amp;= (1-s)2pq \\
+\hat{Q}\left( 1 - \frac{s}{2} \right) &amp;= (1-s)2pq \\
+\hat{Q} &amp;= \frac{(1-s)2pq}{1-\frac{s}{2}} \\
+\hat{Q} &amp;= \frac{2}{2}\frac{(1-s)2pq}{1-\frac{s}{2}} \\
+\hat{Q} &amp;= \frac{(1-s)4pq}{2-s}
+\end{aligned}`
+$$
+]
+
+
+---
+
+# Inbreeding Statistic
+
+There is a common inbreeding statistic that we estimate that allows us to determine how far the observed rate of heterozygosity has changed from what was expected.  This is called the **fixation index** and is denoted as `\(F\)` (you will also see it denoted as `\(F_{IS}\)` but we will return to that later). 
+
+
+$$
+F = 1 - \frac{H_O}{H_E}
+$$
+--
+Values of F and potential scenarios:
+
+- `\(F &lt; 0\)`: Negative inbreeding (outbreeding)  
+
+- `\(F == 0\)`: No Inbreeding
+
+- `\(F &gt; 0\)`: Positive inbreeding (inbreeding)
+When `\(F=0\)`, there is no indication of inbreeding.
+
+
+
+
+
+
+---
+
+# Probabilities of Homozygosity
+
+.left-column[
+<div id="htmlwidget-3fe91c35be88417baa20" style="width:504px;height:504px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3fe91c35be88417baa20">{"x":{"diagram":"graph TD;\n        A --> B;\n        A --> C;\n        B --> D;\n        C --> E;\n        D --> F;\n        E --> F;\n        "},"evals":[],"jsHooks":[]}</script>
+]
+
+.right-column[
+
+Two alleles are the same in a genotype (a homozygote) because of only two reasons.
+
+- .blueinline[Identical By State:]  The two alleles are equal because they randomly happen to have evolved into the same state at some point in the past.  For example, a `\(CC\)` locus may have had a lineage where at one point `\(A \to C\)` and `\(B \to C\)`.  These genotypes **are not** inbred. `\(f(AA_{IBS}) = p^2(1 - F)\)`
+
+
+- .redinline[Identical by Descent:] The two alleles are equal because we can trace the lineage of both of them to a single allele in the individuals ancestry.  The likelihood of this is the frequency of the allele in the population and the probability that it was derived from the same inbred allele. `\(f(AA_{IBD}) = pF\)`
+
+]
+
+
+
+---
+
+# Wahlund Effects
+
+Breakout Group Exercise.  I'm going to put you into three rooms, and each will work on one of the following populations.  Consider the three populations below.
+
+Population | `\(N_{AA}\)` | `\(N_{AB}\)` | `\(N_{BB}\)` 
+-----------|:--------:|:--------:|:---------:
+Pop-A      |  49      |  42      | 9   
+Pop-B      |  16      |  48      | 36  
+Pop-(A+B)  |  65      |  90      | 45 
+
+--
+
+By hand/calculator/R, make the following calculations:
+1. Allele frequencies, `\(p\)` &amp; `\(q\)`.  
+2. Observed heterozygote frequency, `\(H_o = \frac{N_{AB}}{N}\)`
+3. Calculate expected heterozygote frequency, `\(H_e = 2*p*q\)`.
+4. Estimate `\(F = 1 - \frac{H_o}{H_e}\)` and interpret the results.
+
+We will then return and discuss.
+
+
+---
+
+# Isolate Breaking
+
+When we artificially combine non-interacting populations ($A$ and `\(B\)`) we misallocate genotype frequencies such that
+
+
+`\begin{equation}
+\bar{Q} = \frac{2p_Aq_A + 2p_Bq_B}{2}
+\end{equation}`
+
+which simplifies to:
+ 
+
+`\begin{equation}
+\bar{Q} = p_Aq_A + p_Bq_B \\
+= p_A(1-p_A) + p_B(1-p_B)
+\end{equation}`
+
+
+Now this will .redinline[always] be smaller than 
+
+`\begin{equation}
+2\bar{p}\bar{q} = 2\left[\frac{1}{K}\sum_{i=1}^K p_i\right]\left[\frac{1}{K}\sum_{i=1}^K q_i\right]
+\end{equation}`
+
+unless `\(p_A = p_B\)`.
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51189042937_159251b8a0_c_d.jpg)
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51189034817_3f1054002a_c_d.jpg)
+
+
+
+---
+
+# Estimating `\(F\)` in R
+
+A wide set of diversity measures are available through `gstudio`.  To simplify things, there is a single function that is used as an entry point to these parameters.  The inbreeding statistic `F` is denoted as `Fis` for purposes that will become clear when we talk later about genetic structure.
+
+&lt;hr&gt;
+
+![](https://live.staticflickr.com/65535/51190450838_05fe995b8e_c_d.jpg)
+
+---
+
+# Inbreeding in *Araptus*
+
+
+```r
+library( gstudio ) 
+data( arapat ) 
+genetic_diversity( arapat, mode="Fis" )
+```
+
+```
+##   Locus       Fis
+## 1  LTRS 0.5251293
+## 2   WNT 0.5735364
+## 3    EN 0.5421225
+## 4    EF 0.6697396
+## 5   ZMP 0.5447106
+## 6   AML 0.5531682
+## 7  ATPS 0.8812849
+## 8  MP20 0.4540160
+```
+
+---
+
+# Subdivisions of Inbreeding
+
+
+.pull-left[
+
+```r
+genetic_diversity( arapat, 
+                   mode="Fis", 
+                   stratum = "Cluster") %&gt;%
+  filter( Locus %in% c("WNT","AML") ) -&gt; Fis
+
+Fis %&gt;%
+  ggplot( aes(Stratum, Fis) ) + 
+    geom_col() + 
+    facet_grid( Locus ~ .)
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-5-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Mapping Inbreeding
+
+Create a `leaflet` map showing `\(F_{IS}\)` for each subdivision.
+
+
+```r
+genetic_diversity( arapat, 
+                   mode="Fis", 
+                   stratum = "Cluster") %&gt;%
+  filter( Locus %in% c("AML", "EF","WNT") ) -&gt; Fis
+
+head(Fis)
+```
+
+```
+##   Stratum Locus         Fis
+## 1   CBP-C   WNT  0.15093566
+## 2   CBP-C    EF  0.43338190
+## 3   CBP-C   AML  0.29598864
+## 4   NBP-C   WNT  0.29004329
+## 5   NBP-C    EF -0.01818182
+## 6   NBP-C   AML  0.19090519
+```
+
+---
+
+# Mapping Inbreeding
+
+
+```r
+Fis %&gt;%
+  spread( Locus, Fis) -&gt; Fis
+
+head( Fis )
+```
+
+```
+##   Stratum         AML          EF         WNT
+## 1   CBP-C  0.29598864  0.43338190  0.15093566
+## 2   NBP-C  0.19090519 -0.01818182  0.29004329
+## 3   SBP-C -0.06930693         NaN -0.02857143
+## 4  SCBP-A  0.81506977  0.37931034  0.76875000
+## 5   SON-B  0.73473684 -0.19298246 -0.01694915
+```
+
+
+
+---
+
+# Mapping Inbreeding
+
+
+```r
+arapat %&gt;% 
+  group_by( Cluster ) %&gt;%
+  summarize( Latitude = mean(Latitude),
+             Longitude = mean(Longitude ) ) %&gt;%
+  rename( Stratum = Cluster ) %&gt;%
+  left_join( Fis ) -&gt; inbreeding
+
+head( inbreeding ) 
+```
+
+```
+## # A tibble: 5 x 6
+##   Stratum Latitude Longitude     AML       EF     WNT
+##   &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+## 1 CBP-C       26.1     -112.  0.296    0.433   0.151 
+## 2 NBP-C       28.5     -114.  0.191   -0.0182  0.290 
+## 3 SBP-C       24.0     -110. -0.0693 NaN      -0.0286
+## 4 SCBP-A      24.2     -110.  0.815    0.379   0.769 
+## 5 SON-B       26.9     -110.  0.735   -0.193  -0.0169
+```
+
+---
+
+# Mapping Inbreeding 
+
+
+.pull-left[
+
+```r
+library( leaflet )
+library( leaflet.minicharts )
+leaflet() %&gt;% 
+  addProviderTiles( providers$Esri.WorldTerrain ) %&gt;%
+  addMinicharts( inbreeding$Longitude, inbreeding$Latitude,
+                 chartdata =  inbreeding %&gt;% select( AML, EF, WNT ),
+                 colorPalette = c("#3093e5", "#fcba50", "#a0d9e8"),
+                 width=45,
+                 height=45)
+```
+]
+
+.pull-right[
+<div id="htmlwidget-b1437bf5ff4b9a0054dd" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b1437bf5ff4b9a0054dd">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTerrain",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMinicharts","args":[[{"dyn":{},"static":{"type":"bar","width":45,"height":45,"opacity":1,"labels":"none","labelMinSize":8,"labelMaxSize":24,"transitionTime":750,"fillColor":"#1f77b4","layerId":"_minichart (-109.594246666667,26.8973805555556)","lat":26.8973805555556,"lng":-109.594246666667},"timeSteps":1},{"dyn":{},"static":{"type":"bar","width":45,"height":45,"opacity":1,"labels":"none","labelMinSize":8,"labelMaxSize":24,"transitionTime":750,"fillColor":"#1f77b4","layerId":"_minichart (-110.444172777778,23.9985272222222)","lat":23.9985272222222,"lng":-110.444172777778},"timeSteps":1},{"dyn":{},"static":{"type":"bar","width":45,"height":45,"opacity":1,"labels":"none","labelMinSize":8,"labelMaxSize":24,"transitionTime":750,"fillColor":"#1f77b4","layerId":"_minichart (-110.478640266667,24.2269433333333)","lat":24.2269433333333,"lng":-110.478640266667},"timeSteps":1},{"dyn":{},"static":{"type":"bar","width":45,"height":45,"opacity":1,"labels":"none","labelMinSize":8,"labelMaxSize":24,"transitionTime":750,"fillColor":"#1f77b4","layerId":"_minichart (-111.854512466667,26.1047319333333)","lat":26.1047319333333,"lng":-111.854512466667},"timeSteps":1},{"dyn":{},"static":{"type":"bar","width":45,"height":45,"opacity":1,"labels":"none","labelMinSize":8,"labelMaxSize":24,"transitionTime":750,"fillColor":"#1f77b4","layerId":"_minichart (-113.573342738095,28.5384714285714)","lat":28.5384714285714,"lng":-113.573342738095},"timeSteps":1}],[[[0.734736842105263,-0.192982456140351,-0.0169491525423724]],[[-0.0693069306930683,null,-0.028571428571426]],[[0.815069767441861,0.379310344827587,0.76875]],[[0.295988640397586,0.433381900598996,0.150935664526704]],[[0.190905190905191,-0.0181818181818176,0.29004329004329]]],1,["#3093e5","#fcba50","#a0d9e8"],["1"],null,{"showTitle":true,"showValues":true,"labels":["AML","EF","WNT"],"supValues":null,"supLabels":[],"html":null,"noPopup":false,"digits":null},null,null]},{"method":"addLegend","args":[{"colors":["#3093e5","#fcba50","#a0d9e8"],"labels":["AML","EF","WNT"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"unknown","title":null,"extra":null,"layerId":"minichartsLegend","className":"info legend","group":null}]}],"limits":{"lat":[23.9985272222222,28.5384714285714],"lng":[-113.573342738095,-109.594246666667]}},"evals":[],"jsHooks":[]}</script>
+]
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .blue[Allelic Diversity]
+
+## .fancy[The base to all variation]
+
+
+---
+
+# Allelic Diversity
+
+The amount of diversity at a locus is based what kind of genetic data you are using and how we are coalescing our data togheter.
+
+
+.pull-left[
+#### Genetic Markers
+
+Different markers have different potentials for vatiation.
+
+- SNP/AFLP/RFLP/Haplotypes: Major/Minor allele or Presence/Absence  (binomial random variable)
+
+- Nucleic Acid: *A, C, G, T*  (multinomial random variable)
+
+- Microsatellites: Distribution of alleles  (multinomial random variable)
+
+]
+
+--
+
+.pull-right[
+
+#### Groupings
+
+How we group individuals together impacts our estimates and expectations.
+
+- Individual  
+
+- Locale  
+
+- Population  
+
+- Region   
+
+- Species   
+
+]
+
+
+---
+
+# Statistics for Allelic Diversity
+
+The total number of alleles at a locus, `\(A\)`:
+
+`$$A = \ell$$`
+
+&amp;nbsp;
+
+--
+
+The number of alleles whose frequencies exceed a threshold of 5%, `\(A_{95}\)`: 
+
+
+`$$A_{95} = \sum_{i=1}^{\ell} |p_i \ge 0.05|$$`
+
+&amp;nbsp;
+
+--
+
+Effective diversity of alleles weighed by the frequency at which it occurs, `\(A_e\)`.
+
+
+`$$A_e = \frac{1}{\sum_{i=1}^{\ell} p_i^2}$$`
+
+
+
+---
+
+# Estimating Allelic Diversity
+
+What is the Allelic diversity for the MP20 locus in the *Araptus* data set?  
+
+
+```r
+arapat %&gt;% 
+  genetic_diversity() # uses Ae by default and all data.
+```
+
+```
+##   Locus       Ae
+## 1  LTRS 1.995623
+## 2   WNT 2.880450
+## 3    EN 1.814656
+## 4    EF 1.773533
+## 5   ZMP 1.513877
+## 6   AML 5.860583
+## 7  ATPS 3.563347
+## 8  MP20 5.511837
+```
+
+---
+
+# All Diversity Measures
+
+
+```r
+arapat %&gt;% 
+  genetic_diversity(mode="A") %&gt;%
+  left_join( genetic_diversity(arapat, mode="A95") ) %&gt;%
+  left_join( genetic_diversity(arapat, mode="Ae") )  -&gt; allelic_diversity
+allelic_diversity
+```
+
+```
+##   Locus  A A95       Ae
+## 1  LTRS  2   2 1.995623
+## 2   WNT  5   3 2.880450
+## 3    EN  5   3 1.814656
+## 4    EF  2   2 1.773533
+## 5   ZMP  2   2 1.513877
+## 6   AML 13   6 5.860583
+## 7  ATPS 10   4 3.563347
+## 8  MP20 19   4 5.511837
+```
+
+---
+
+# Measures of Diversity
+
+.pull-left[
+
+```r
+library( ggtern )
+ggtern( allelic_diversity, aes(A,A95,Ae)) + 
+  geom_point( size=4, alpha=0.75 ) + 
+  theme_rgbw() 
+```
+
+.footnote[I've found that *sometimes* using `ggtern` screws up `ggplot` output.]
+]
+
+.pull-right[
+
+![](https://live.staticflickr.com/65535/51192353645_a10f34ed1a_c_d.jpg)
+
+]
+
+
+---
+
+# Comparing Diversity
+
+Consider that you have the following data:  
+
+- *Population A:* `\(N = 50\)` samples with an estimated `\(A_e = 4.52\)`.
+
+- *Population B:* `\(N = 25\)` samples with an estimated `\(A_e = 3.29\)`
+
+&amp;nbsp;
+
+**Which is more diverse?**
+
+
+
+---
+
+# Asymptotic Nature of Diversity
+
+.pull-left[
+
+```r
+N &lt;- c(2,4,10,15,20,50,100,150, 200, 250, 300)
+loci &lt;- arapat$MP20
+df &lt;- data.frame( N = factor( rep(N,each=20) ), 
+                  Rep = rep( 1:20, times=length(N)),
+                  Ae = NA) 
+
+# Cycle through
+for( n in N ) {
+  for( rep in 1:20 ) {
+    l &lt;- sample(loci,size=n,replace=FALSE)
+    a &lt;- genetic_diversity( l )$Ae[1]
+    df$Ae[ df$N == n &amp; df$Rep == rep ] &lt;- a
+  }
+}
+
+
+df %&gt;%
+  ggplot( aes(N,Ae) ) + 
+  geom_boxplot()
+```
+
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-15-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+# Consequences - Sampling Matters!
+
+.pull-left[
+Sampling effort is directly influencing your estimates: 
+
+- The more diverse the locus, the more individuals you need to sample to get a good estimate of diversity.
+
+
+```r
+df %&gt;%
+  group_by( N ) %&gt;%
+  summarize( SD = sd(Ae) ) %&gt;%
+  mutate( N = as.numeric( as.character( N ) ) ) %&gt;%
+  ggplot( aes(N,SD) ) + 
+  geom_point( size = 3) + 
+  stat_smooth()
+```
+
+- For rare alleles, you need some very large sample sizes.
+
+]
+
+.pull-right[
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-17-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+---
+
+# Rarefaction
+
+The approach to use subsampled data from larger data sets to be able to compare with diversity measured from smaller sample sets.  Example from samples from the Cape Region ( `\(N = 75\)` ) vs the Mainland samples ( `\(N = 36\)` ).
+
+
+```r
+arapat %&gt;% 
+  filter( Species == "Cape" ) %&gt;%
+  genetic_diversity( loci = "WNT" ) -&gt; ae.cape
+ae.cape
+```
+
+```
+##   Locus       Ae
+## 1   WNT 1.305052
+```
+
+
+
+
+```r
+arapat %&gt;% 
+  filter( Species == "Mainland" ) %&gt;%
+  genetic_diversity( loci = "WNT" ) -&gt; ae.mainland
+ae.mainland
+```
+
+```
+##   Locus       Ae
+## 1   WNT 1.033889
+```
+
+
+---
+
+# General Rarefaction Appraoch
+
+1. Select sample with the smallest number of samples.  
+
+2. Randomly select genotypes from teh larger population with sample sizes equal to the that of the smaller sample.  
+
+3. Estimate Diversity.  
+
+4. Do 2-3 a large number of times.  
+
+5. Compare diversity of smaller population to the *distribution* of values estimated by subsampling the larger distribution.
+
+
+
+---
+
+# Rarefied Diversity for Cape
+
+.pull-left[
+
+
+```r
+arapat %&gt;% 
+  filter( Species == "Cape") -&gt; cape.pop
+
+null.ae &lt;- rarefaction( cape.pop$WNT, 
+                        mode = "Ae", 
+                        size = 36 )
+mean( null.ae )
+```
+
+```
+## [1] 1.312052
+```
+
+```r
+sum( null.ae &gt;= ae.mainland$Ae[1])/(1+length(null.ae))
+```
+
+```
+## [1] 0.995
+```
+
+]
+
+.pull_right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-21-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+# 🏄🏻 Allele Surfing 🤙🏽
+
+.pull-left[
+
+Range expansion of a species results in the front-most groups colonizing new area.  
+
+- New locales are made up individuals who have only a subset of alleles taken from the front.
+
+- Continued expansion creates a .redinline[decreasing] gradient in diversity (pointing in the direction of expansion).
+
+]
+
+--
+
+.pull-right[
+
+![](https://live.staticflickr.com/65535/51204095120_81c8c58e9c_o_d.png)
+[arapat host plant post-pleistocene expansion](https://drive.google.com/open?id=0B0T81CzLjtfPbFl6WVJEekpUR1U)
+]
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[Genotypic Diversity]
+
+## .fancy[Diversity in How Alleles Coalesce]
+
+
+---
+
+# Levels of Heterozygosity
+
+The *observed* fraction of individuals who have at least 2 alleles at a locus.
+
+`$$H_O = \frac{\sum_{i,j=1; i \ne j}^{\ell}N_{ij}}{N}$$`
+
+&amp;nbsp;
+
+--
+
+The *expected* level of heterozygosity based upon Hardy-Weinberg Equilibrium.
+
+`$$H_E = 1 - \sum_{i=1}^{\ell}p_i^2$$`
+
+&amp;nbsp;
+
+--
+
+Measured across populations, with possible subdivision when populations are of different sizes (where `\(\hat{N}\)` is the harmonic mean population size across `\(k\)` sampling locations).
+
+`$$H_S = \frac{\hat{N}}{\hat{N}-1} \left[  1 - \sum_{i=1}^{\ell}p_{k,i}^2 - \frac{H_O}{2\hat{N}} \right]$$`
+
+
+---
+
+# Estimating Genotypic Diversity
+
+
+```r
+arapat %&gt;%
+  genetic_diversity( mode = "He" ) 
+```
+
+```
+##   Locus        He
+## 1  LTRS 0.4989034
+## 2   WNT 0.6528320
+## 3    EN 0.4489313
+## 4    EF 0.4361538
+## 5   ZMP 0.3394444
+## 6   AML 0.8293685
+## 7  ATPS 0.7193649
+## 8  MP20 0.8185723
+```
+
+
+
+---
+
+# Large Picture
+
+The goal here is to provide you with the tools necessary to look at various levels of diversity, both taxonomic and spatially.  It is often of interest to examine how raw variation is distributed across the landscape.   
+
+- Identifying areas of genetic conservation   
+
+--
+
+- Choosing locals for selecting broodstock   
+
+--
+
+- Getting an idea of relative adaptive potential
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![Moira](https://media.giphy.com/media/xT5LMB2WiOdjpB7K4o/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about&lt;br/&gt; the content presented herein&lt;br/&gt; now is your time.  
+
+If you think of something later though, &lt;br/&gt;feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll&lt;br/&gt; get back to you as soon as possible.
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

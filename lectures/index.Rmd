@@ -133,18 +133,6 @@ makeTable( files, caption="Content lectures for visualizing data in R.")
 ```
 
 
-## Spatial Data in R
-
-
-```{r}
-files <- list.dirs( path="spatial", recursive=FALSE )
-makeTable( files, caption="Content lectures for working with geospatially referenced data (points, lines, polygons, and rasters) in R.")
-```
-
-
-
-
-
 ## Data Manipulation
 
 This is where the rubber meets the road in data analysis.  By far, the vast amount of effort we expend in our daily work is getting data into a format that makes sense to us, that can surface various insights, and be inserted into our analysis workflows.  
@@ -153,6 +141,16 @@ This is where the rubber meets the road in data analysis.  By far, the vast amou
 files <- list.dirs( path="manipulation", recursive=FALSE )
 
 makeTable( files, caption="These are methods based upon data manipulation, <i>sensu lato</i>.")
+```
+
+
+## Spatial Data
+
+Here are some lectures that focus on spatial data components and how to manipulate it and extract components from it.
+
+```{r}
+files <- list.dirs( path="spatial", recursive=FALSE )
+makeTable( files, caption="Content lectures for working with geospatially referenced data (points, lines, polygons, and rasters) in R.")
 ```
 
 

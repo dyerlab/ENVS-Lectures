@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="slide_styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+
+
+
+# .orange[Population Genetics]
+
+### .fancy[Neutral &amp; Non-neutral Processes <svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:brickred;overflow:visible;position:relative;"><path d="M.1 494.1c-1.1 9.5 6.3 17.8 15.9 17.8l32.3.1c8.1 0 14.9-5.9 16-13.9.7-4.9 1.8-11.1 3.4-18.1H380c1.6 6.9 2.9 13.2 3.5 18.1 1.1 8 7.9 14 16 13.9l32.3-.1c9.6 0 17.1-8.3 15.9-17.8-4.6-37.9-25.6-129-118.9-207.7-17.6 12.4-37.1 24.2-58.5 35.4 6.2 4.6 11.4 9.4 17 14.2H159.7c21.3-18.1 47-35.6 78.7-51.4C410.5 199.1 442.1 65.8 447.9 17.9 449 8.4 441.6.1 432 .1L399.6 0c-8.1 0-14.9 5.9-16 13.9-.7 4.9-1.8 11.1-3.4 18.1H67.8c-1.6-7-2.7-13.1-3.4-18.1-1.1-8-7.9-14-16-13.9L16.1.1C6.5.1-1 8.4.1 17.9 5.3 60.8 31.4 171.8 160 256 31.5 340.2 5.3 451.2.1 494.1zM224 219.6c-25.1-13.7-46.4-28.4-64.3-43.6h128.5c-17.8 15.2-39.1 30-64.2 43.6zM355.1 96c-5.8 10.4-12.8 21.1-21 32H114c-8.3-10.9-15.3-21.6-21-32h262.1zM92.9 416c5.8-10.4 12.8-21.1 21-32h219.4c8.3 10.9 15.4 21.6 21.2 32H92.9z"/></svg>]
+
+
+
+
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51198451479_5ce952b659_c_d.jpg")
+background-position: center
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .blue[Foundations]
+
+## .fancy[The Algebra of Alleles &amp; Genotypes]
+
+
+
+---
+
+# Allele Frequencies
+
+
+.pull-left[
+Consider the alleles `\(A\)` and `\(B\)` which occur at:
+
+`\begin{equation}
+f(A) = p
+\end{equation}`
+
+and 
+
+`\begin{equation}
+f(B) = 1 - p = q 
+\end{equation}`
+
+
+which implies
+
+`\begin{equation}
+p + q = 1.0
+\end{equation}`
+
+]
+
+
+--
+
+.pull-right[
+
+Alleles coalesce into **genotypes** which occur at the following frequency expectations.
+
+**Homozygotes**
+
+`\begin{equation}
+f(AA) = p^2 \\
+f(BB) = q^2
+\end{equation}`
+
+**Heterozygotes**
+
+`\begin{equation}
+f(AB) + f(BA) = 2pq = 1- (p^2 + q^2)
+\end{equation}`
+
+
+]
+
+
+
+---
+
+# Mating Frequencies
+
+The frequency of genotypes through time, can be model using the following assumptions.
+
+.pull-left[
+
+For simplicity, let's consider the genotypes at this locus is defined by the following .redinline[**genotype frequencies**].
+
+&amp;nbsp;
+
+`\(f(AA) = p^2 = P\)`
+
+&amp;nbsp;
+
+`\(f(AB) = 2pq = Q\)`
+
+&amp;nbsp;
+
+`\(f(BB) = q^2 = R\)`
+
+]
+
+--
+
+.pull-right[
+
+Then, the expections for the next generation suggest that the genotypes coalesce in random and the probabilities of each mating pair could be parameterized as follows:
+
+
+   | AA | AB | BB  
+---|----|----|----  
+AA | `\(P^2\)` | `\(PQ\)` | `\(PR\)`  
+AB | `\(PQ\)` | `\(Q^2\)` | `\(QR\)`    
+AB | `\(PR\)` | `\(QR\)` | `\(R^2\)`  
+
+]
+
+
+---
+
+# Samples of Frequencies
+
+From samples of `\(N\)` individuals with observerations of `\(N_{AA}\)`, `\(N_{AB}\)`, and `\(N_{BB}\)` for each genoptype.
+
+.pull-left[
+
+### Genotype Frequencies 
+
+`\(P = \frac{N_{AA}}{N}\)`,
+
+`\(Q = \frac{N_{AB}}{N}\)`, 
+
+and
+
+`\(R = \frac{N_{BB}}{N}\)`
+
+]
+
+--
+
+.pull-right[
+
+### Allele Frequencies
+
+`\(f(A) = P + \frac{Q}{2} = p\)`
+
+and 
+
+`\(f(B) = R + \frac{Q}{2} = q\)`
+
+]
+
+---
+
+# Independent Assortment of Alleles
+
+And when we have any of these mating events occur, we can predict the frequency of alleles in the **next generation**.
+
+
+.pull-left[
+
+&lt;center&gt;
+&lt;b&gt;Homozygotes&lt;/b&gt;
+&lt;/center&gt;
+
+&amp;nbsp;
+
+  |  A |  A
+-------|----|----  
+ **A** | AA | AA  
+ **A** | AA | AA  
+
+
+&amp;nbsp;
+
+  |  A |  A
+-------|----|----  
+ **B** | AB | AB  
+ **B** | AB | AB  
+
+
+
+]
+
+.pull-right[
+
+&lt;center&gt;
+&lt;b&gt;Mixed&lt;/b&gt;
+&lt;/center&gt;
+
+&amp;nbsp;
+
+  |  A |  A
+-------|----|----  
+ **A** | AA | AA  
+ **B** | AB | AB  
+
+
+&amp;nbsp;
+
+  |  A |  B
+-------|----|----  
+ **A** | A1 | AB  
+ **B** | AB | BB  
+
+
+
+]
+
+&amp;nbsp;
+
+The old "Punnet Square"
+
+
+
+---
+class: middle
+background-image: url("https://live.staticflickr.com/65535/51202021951_40cb6f88ae_c_d.jpg")
+background-position: center
+background-size: cover
+
+
+
+
+
+---
+class: middle
+background-image: url("https://live.staticflickr.com/65535/51201303937_6a8c37be22_c_d.jpg")
+background-position: center
+background-size: cover
+
+
+
+
+
+
+
+---
+
+# Mating Frequencies for `\(N_{t+1}\)`
+
+Given the genotype frequencies of `\(P\)`, `\(Q\)`, and `\(R\)`, random mating of individuals are expected to create the 
+
+
+Parents   | `\(\mathbf{P(Parents)}\)` | `\(\mathbf{P(AA)}\)` | `\(\mathbf{P(AB)}\)` | `\(\mathbf{P(BB)}\)`
+------------|:----------:|:-------:|:-------:|:-------:
+`\(AA\;x\;AA\)`	| `\(P^2\)`      | `\(P^2\)`	 | &amp;nbsp;  | &amp;nbsp;
+`\(AA\;x\;AB\)`	| `\(PQ\)`       | `\(PQ/2\)`  | `\(PQ/2\)`  | &amp;nbsp;	
+`\(AA\;x\;BB\)`	| `\(PR\)`       | &amp;nbsp;  | `\(PR\)`	   | &amp;nbsp;
+`\(AB\;x\;AB\)`	| `\(Q^2\)`      | `\(Q^2/4\)` | `\(Q^2/2\)` | `\(Q^2/4\)`
+`\(AB\;x\;BB\)`	| `\(QR\)`       | &amp;nbsp;  | `\(QR/2\)`	 | `\(QR/2\)`
+`\(BB\;x\;BB\)`	| `\(R^2\)`      | &amp;nbsp;  | &amp;nbsp;  | `\(R^2\)`
+
+
+---
+
+# Genotype Frequencies for `\(N_{t+1}\)`
+
+.pull-left[
+
+### Homozygotes 
+
+$$
+`\begin{aligned}
+P_{t+1} &amp;= P_{t}^2 + \frac{P_tQ_t}{2} + \frac{Q^2_t}{4} \\\\ 
+&amp;= \left( P_t + \frac{Q_t}{2} \right)^2 \\\\
+&amp;= p^2
+\end{aligned}`
+$$
+]
+
+--
+
+.pull-right[
+
+### Heterozygotes
+
+$$
+`\begin{aligned}
+Q_{t+1} &amp;= \frac{P_tQ_t}{2} + P_tR_t + \frac{Q^2_t}{2} + \frac{Q_tR_t}{2}\\
+&amp;= 2\left(P_t + \frac{Q_t}{2} \right)\left(R_t + \frac{Q_t}{2}\right)\\
+&amp;= 2pq
+\end{aligned}`
+$$
+
+]
+
+--
+
+#### Consequences 
+So expectation .redinline[through time] is that with **random mating**, gentoype frequencies maintain `\(P = p^2\)`, `\(Q = 2pq\)`, and `\(R = q^2\)`
+
+---
+# Hardy-Weinberg Equilibrium
+![](https://live.staticflickr.com/65535/51189491043_434bf8df51_c_d.jpg)
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[Popgen in R]
+
+## .fancy[The `gstudio` library]
+
+
+
+---
+
+# The `gstudio` Package
+
+For this course, we will be using the `gstudio` package.  It is provided in a [Github Repository](https://github.com/dyerlab/gstudio) for simplicity.  
+
+It can be installed as:
+
+
+```r
+remotes::install_github("dyerlab/popgraph")
+remotes::install_github("dyerlab/gstudio")
+```
+
+I created this package because I found the current offerings to be at odds between how my data workflow is constructed and how R packages dealt with Genetic Data.
+
+---
+
+# S2 vs S3 Configurations
+
+There are two common ways (and several additional ones) that you can program objects in `R` such as a genotype.  Using the spatial packages `sp` and `sf` I'll show the differences.
+
+.pull-left[
+### S2 Configuration `sp`
+
+Objects such as the `SpatialPointsDataFrame` are special entities, which have the following components:  
+
+  - attributes: `crs`, `bbox`, `centroid`
+
+  - data: `data.frame`
+  
+&amp;nbsp;
+
+*Consequences* 
+
+The *object* is what we work with and stuff *inside of it* is where the data live making spatial data somehow different than other data we work with.
+
+]
+
+--
+
+.pull-right[
+### S3 Configuration `sf`
+
+Objects are fundamental data types:
+
+  - Contained within native `data.frame`, `list` containers.
+  
+&amp;nbsp;
+
+&amp;nbsp;
+
+*Consequences*
+
+The data integrate directly into `%&gt;%` workflows just like all the rest of your data putting spatial components on an equal footing with all the other data we work with.
+
+]
+
+
+---
+
+# The `locus` Object
+
+
+```r
+library( gstudio )
+```
+
+A genotype is represented as a `locus` object in `R`, which is just like a `numeric`, `logical`, `character` or `factor` variable.
+
+.pull-left[
+
+#### Missing Locus
+
+
+```r
+loc_empty &lt;- locus() 
+loc_empty
+```
+
+```
+## [1] NA
+```
+
+#### Haploid Locus
+
+
+```r
+loc_hap &lt;- locus("A")
+loc_hap
+```
+
+```
+## [1] "A"
+```
+]
+
+
+--
+
+.pull-right[
+
+#### Diploid Locus
+
+
+```r
+loc_hom &lt;- locus( c("A","A") )
+loc_het &lt;- locus( "A:B" )
+
+c(loc_hom, loc_het)
+```
+
+```
+## [1] "A:A" "A:B"
+```
+
+
+```r
+class( loc_hom )
+```
+
+```
+## [1] "locus"
+```
+
+
+]
+
+
+---
+
+# The Beetle Data
+
+The Bark Beetle, *Araptus attenuatus*, is a Sonoran Desert endemic parasite that lives on within the plant *Euphorbia lomelii*.
+
+.pull-left[
+
+&amp;nbsp;
+
+![Araptus attenuatus](https://live.staticflickr.com/65535/50441339417_74e04216fa_w_d.jpg)
+]
+
+.pull-right[
+.center[![Euphorbia lomelii](https://live.staticflickr.com/65535/50441175211_ba3b9df2ea_w_d.jpg)]
+]
+
+
+---
+
+.pull-left[
+# Host Plant Vicariance
+
+- Obligate 
+
+- Desert Endemic
+
+- Geologic Sources of Vicariance
+
+- Alternative Scenarios
+
+- Coalescent Theory Tests
+
+
+&amp;nbsp;
+
+[ref](https://rodneydyer.com/publication/garrick-et-al-2009-mol-ecol/)
+
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+![](https://live.staticflickr.com/65535/51203223823_e1b6597e00_z_d.jpg)
+]
+
+
+---
+
+.pull-left[
+# Araptus attenuatus
+
+- mtDNA Sequence
+
+- Spatial Locations 
+
+- Main clade diverged ~4.6MYA
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51203854884_9016731941_c_d.jpg)
+]
+
+---
+
+# Genotypes
+
+These data were genotyped and are provided in the `gstudio` package as example data.  As in most workflows, they are provided within a `data.frame` object along with any other data types.
+
+
+```r
+data( arapat )
+class( arapat )
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+names( arapat )
+```
+
+```
+##  [1] "Species"    "Cluster"    "Population" "ID"         "Latitude"  
+##  [6] "Longitude"  "LTRS"       "WNT"        "EN"         "EF"        
+## [11] "ZMP"        "AML"        "ATPS"       "MP20"
+```
+
+```r
+column_class( arapat, "locus")
+```
+
+```
+## [1] "LTRS" "WNT"  "EN"   "EF"   "ZMP"  "AML"  "ATPS" "MP20"
+```
+
+
+---
+
+
+```r
+summary( arapat )
+```
+
+```
+##       Species      Cluster      Population        ID         Latitude    
+##  Cape     : 75   CBP-C :150   32     : 19   101_10A:  1   Min.   :23.08  
+##  Mainland : 36   NBP-C : 84   75     : 11   101_1A :  1   1st Qu.:24.59  
+##  Peninsula:252   SBP-C : 18   Const  : 11   101_2A :  1   Median :26.25  
+##                  SCBP-A: 75   12     : 10   101_3A :  1   Mean   :26.25  
+##                  SON-B : 36   153    : 10   101_4A :  1   3rd Qu.:27.53  
+##                               157    : 10   101_5A :  1   Max.   :29.33  
+##                               (Other):292   (Other):357                  
+##    Longitude          LTRS          WNT            EN           EF     
+##  Min.   :-114.3   01:01 :147   03:03  :108   01:01  :225   01:01 :219  
+##  1st Qu.:-113.0   01:02 : 86   01:01  : 82   01:02  : 52   01:02 : 52  
+##  Median :-111.5   02:02 :130   01:03  : 77   02:02  : 38   02:02 : 90  
+##  Mean   :-111.7                02:02  : 62   03:03  : 22   NA's  :  2  
+##  3rd Qu.:-110.5                03:04  :  8   01:03  :  7               
+##  Max.   :-109.1                (Other): 15   (Other): 16               
+##                                NA's   : 11   NA's   :  3               
+##      ZMP           AML           ATPS          MP20    
+##  01:01 : 46   08:08  : 51   05:05  :155   05:07  : 64  
+##  01:02 : 51   07:07  : 42   03:03  : 69   07:07  : 53  
+##  02:02 :233   07:08  : 42   09:09  : 66   18:18  : 52  
+##  NA's  : 33   04:04  : 41   02:02  : 30   05:05  : 48  
+##               07:09  : 22   07:09  : 14   05:06  : 22  
+##               (Other):142   08:08  :  9   (Other):119  
+##               NA's   : 23   (Other): 20   NA's   :  5
+```
+
+
+---
+
+# Genotype Frequencies
+
+Because the columns of data are recognized as `locus` object, we can get frequencies for:
+
+.pull-left[
+
+#### Genotypes
+
+
+```r
+genotype_frequencies( arapat$LTRS )
+```
+
+```
+##   Genotype Observed  Expected
+## 1    01:01      147  99.44904
+## 2    01:02       86 181.10193
+## 3    02:02      130  82.44904
+```
+
+]
+
+.pull-right[
+
+#### Alleles 
+
+
+```r
+frequencies( arapat$LTRS )
+```
+
+```
+##   Allele Frequency
+## 1     01  0.523416
+## 2     02  0.476584
+```
+
+]
+
+---
+
+# Allele Frequencies
+
+We can also get frequencies for multiple loci.
+
+
+```r
+freqs &lt;- frequencies( arapat )
+head( freqs )
+```
+
+```
+##   Locus Allele  Frequency
+## 1  LTRS     01 0.52341598
+## 2  LTRS     02 0.47658402
+## 3   WNT     01 0.35795455
+## 4   WNT     02 0.18181818
+## 5   WNT     03 0.43039773
+## 6   WNT     04 0.02698864
+```
+
+---
+
+# Allele Frequencies
+
+Or for subdivisions of the population.
+
+
+```r
+freqs &lt;- frequencies( arapat, stratum = "Cluster" )
+head( freqs )
+```
+
+```
+##   Stratum Locus Allele   Frequency
+## 1   CBP-C  LTRS     01 0.630000000
+## 2   CBP-C  LTRS     02 0.370000000
+## 3   CBP-C   WNT     01 0.287162162
+## 4   CBP-C   WNT     03 0.641891892
+## 5   CBP-C   WNT     04 0.064189189
+## 6   CBP-C   WNT     05 0.006756757
+```
+
+```r
+freqs &lt;- frequencies( arapat, stratum = "Population" )
+head( freqs )
+```
+
+```
+##   Stratum Locus Allele Frequency
+## 1     101  LTRS     01 0.2777778
+## 2     101  LTRS     02 0.7222222
+## 3     101   WNT     01 1.0000000
+## 4     101    EN     01 0.6111111
+## 5     101    EN     03 0.3888889
+## 6     101    EF     01 0.7142857
+```
+
+---
+
+# Allele Frequencies
+
+Or whatever combination you are interested in getting
+
+
+```r
+frequencies( arapat, 
+             stratum = "Cluster", 
+             loci = c("EN","LTRS") ) %&gt;%
+  head() 
+```
+
+```
+##   Stratum Locus Allele   Frequency
+## 1   CBP-C    EN     01 0.983108108
+## 2   CBP-C    EN     03 0.003378378
+## 3   CBP-C    EN     04 0.013513514
+## 4   CBP-C  LTRS     01 0.630000000
+## 5   CBP-C  LTRS     02 0.370000000
+## 6   NBP-C    EN     01 0.755952381
+```
+
+
+
+
+
+---
+# Visualizing 
+
+
+.pull-left[
+
+
+We can get allele frequencies from the data by using the function `frequencies` and it will return a `data.frame` object that we can pipe into subsequent analyses.
+
+
+
+```r
+arapat %&gt;%
+  frequencies( loci = "LTRS") %&gt;%
+  ggplot( aes(Allele,Frequency) ) +
+  geom_bar( stat="identity")
+```
+
+]
+
+
+
+
+
+
+
+.pull-right[
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-16-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+
+
+
+---
+
+# Built-in `geom_`'s
+
+.pull-left[
+OR, you can use some of the `geom_` functions provided in `gstudio` which can take care of the mapping for you (e.g., no need to do `aes()`) such as:
+
+
+```r
+ggplot() + 
+  geom_frequencies( freqs )
+```
+
+]
+
+.pull-right[
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-18-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+---
+
+# Allele Frequencies
+
+.pull-left[
+
+```r
+freqs &lt;- frequencies( arapat, 
+                      loci="EN", 
+                      stratum="Cluster")
+ggplot() + 
+  geom_frequencies( freqs ) + 
+  facet_grid(Stratum~.) 
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-20-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Allele Frequencies
+
+.pull-left[
+
+Or compare across substrata for an individual locus 
+
+
+
+```r
+ggplot() + 
+  geom_locus( aes( x=LTRS,
+                   fill=Cluster), 
+              data=arapat ) 
+```
+
+]
+
+
+.pull-right[
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-22-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Loading In Data
+
+Data should be easy to get *into* `R` and `gstudio` supports the following text formats for loading data in.
+
+![](https://live.staticflickr.com/65535/51190504170_fb922748b1_o_d.png)
+
+
+
+---
+
+# Gentoypes Separated by Symbols
+
+.pull-left[
+
+#### Separated Genotypes
+&lt;pre&gt;
+Population,Latitude,Longitude,Loc1,Loc2
+Olympia,47.15,-122.89,12:14,15:15
+Bellingham,48.75,-122.49,12:12,15:17
+St. Louis,38.81,-89.98,12:10,NA
+Ames,42.26,-93.47,10:14,NA:NA
+Richmond,37.74,-77.16,10:10,17:17
+&lt;/pre&gt;
+]
+
+.pull-right[
+
+#### The `R` Code
+
+
+```r
+path &lt;- system.file("extdata","data_separated.csv", package="gstudio")
+read_population( path, type = "separated", locus.columns = 4:5)
+```
+
+```
+##   Population Latitude Longitude  Loc1  Loc2
+## 1    Olympia    47.15   -122.89 12:14 15:15
+## 2 Bellingham    48.75   -122.49 12:12 15:17
+## 3  St. Louis    38.81    -89.98 10:12      
+## 4       Ames    42.26    -93.47 10:14      
+## 5   Richmond    37.74    -77.16 10:10 17:17
+```
+
+]
+
+
+---
+
+# Genotypes Contained in Separate Columns
+
+.pull-left[
+
+#### Alleles In Columns
+&lt;pre&gt;
+Population,Latitude,Longitude,Loc1,Loc1,Loc2,Loc2
+Olympia,47.15,-122.89,14,12,15,15
+Bellingham,48.75,-122.49,12,12,17,15
+St. Louis,38.81,-89.98,12,10,NA,NA
+Ames,42.26,-93.47,10,14,NA,NA
+Richmond,37.74,-77.16,10,10,17,17
+&lt;/pre&gt;
+]
+
+--
+
+.pull-right[
+
+#### The `R` Code
+
+
+```r
+path &lt;- system.file("extdata","data_2_column.csv", package="gstudio")
+read_population( path, type = "column", locus.columns = 4:7)
+```
+
+```
+##   Population Latitude Longitude  Loc1  Loc2
+## 1    Olympia    47.15   -122.89 12:14 15:15
+## 2 Bellingham    48.75   -122.49 12:12 15:17
+## 3  St. Louis    38.81    -89.98 10:12      
+## 4       Ames    42.26    -93.47 10:14      
+## 5   Richmond    37.74    -77.16 10:10 17:17
+```
+
+
+]
+
+
+---
+
+# SNP Genotypes As Minor Allele
+
+.pull-left[
+
+#### Alleles In Columns
+&lt;pre&gt;
+Population,Latitude,Longitude,snp1,snp2,snp3,snp4
+Olympia,47.15,-122.89,1,2,1,1
+Bellingham,48.75,-122.49,1,0,1,2
+St. Louis,38.81,-89.98,1,0,NA,NA
+Ames,42.26,-93.47,0,1,NA,NA
+Richmond,37.74,-77.16,0,2,1,2
+&lt;/pre&gt;
+]
+
+--
+
+.pull-right[
+
+#### The `R` Code
+
+
+```r
+path &lt;- system.file("extdata","data_snp.csv", package="gstudio")
+read_population( path, type = "snp", locus.columns = 4:7)
+```
+
+```
+##   Population Latitude Longitude snp1 snp2 snp3 snp4
+## 1    Olympia    47.15   -122.89  A:B  B:B  A:B  A:B
+## 2 Bellingham    48.75   -122.49  A:B  A:A  A:B  B:B
+## 3  St. Louis    38.81    -89.98  A:B  A:A          
+## 4       Ames    42.26    -93.47  A:A  A:B          
+## 5   Richmond    37.74    -77.16  A:A  B:B  A:B  B:B
+```
+
+
+]
+
+
+
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .green[Evoluationary Forces]
+
+## .fancy[Deviants from Hardy-Weinberg]
+
+**OR** what we are really trying to measure...
+
+---
+
+# Genetic Drift
+
+
+
+.pull-left[
+Genetic drift is the *stochastic change in allele frequencies through time* due to the population size. When `\(N = \infty\)` then `\(P_{t+1} = P_{t}\)`, etc.  However, when `\(N &lt;&lt; \infty\)`, allele frequencies are expected to change. 
+
+
+```r
+Alleles &lt;- c("A","B")
+sample_sizes &lt;- c(5,10,20,50,100)
+data.frame( N = rep( sample_sizes, each=50),
+            FreqA = NA) -&gt; df 
+for( i in 1:nrow(df)){
+  a &lt;- sample( Alleles, 
+               size=df$N[i],
+               replace=TRUE)
+  df$FreqA[i] &lt;- sum( a == "A") / length(a)
+}
+```
+]
+
+--
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-27-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+# Genetic Drift - The Binomial
+
+
+
+.pull-left[
+
+The amount of drift is inversely proportional to the population size `\(N\)`.  More specifically, we can treat a simple locus like this one as a *binomial random variable* 
+
+$$
+P(N_A|N,p_A) = \frac{2N!}{N_A!(2N-N_A)!}p_A^{N_A}(1-p_A)^{2N-N_A}
+$$
+
+For simplicity, let's assume that a population of `\(N=20\)` individuals is randomly mating and has a locus where `\(p=q\)`.  At the next generation the probability distribution for the number of `\(A\)` alleles is given by the expansion.
+
+
+This means that it is possible that even if everyone starts as a heterozygote at this generation, you may have a non-zero probability of .redinline[losing one of the alleles due to drift!]
+
+]
+
+--
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-28-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+# Skewness in Allele Frequencies
+
+This probability increases the further allele frequencies diverge from `\(p=q\)`.  Here is an example where `\(p=0.1\)`
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-29-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51198451189_1c19fd70d7_c_d.jpg")
+background-position: center
+
+
+
+
+
+---
+
+# Drifting Away - Simulations
+
+.pull-left[
+We can simulate mating in `R` for 
+
+```r
+freqs &lt;- frequencies( arapat, loci="LTRS")
+freqs 
+```
+
+```
+##   Locus Allele Frequency
+## 1  LTRS     01  0.523416
+## 2  LTRS     02  0.476584
+```
+]
+
+
+.pull-right[
+
+```r
+pop &lt;- make_population(freqs)
+summary( pop )
+```
+
+```
+##        ID            LTRS   
+##  Min.   : 1.00   01:01 : 5  
+##  1st Qu.: 5.75   01:02 :10  
+##  Median :10.50   02:02 : 5  
+##  Mean   :10.50              
+##  3rd Qu.:15.25              
+##  Max.   :20.00
+```
+
+]
+
+
+
+
+
+---
+
+# Drifting Away - Simulations
+
+.pull-left[
+
+Set up `data.frame` to receive frequencies
+
+```r
+Lineage &lt;- factor( rep( 1:10, each = 100 ) )
+Generation &lt;- rep( 1:100, times=10)
+df.drift &lt;- data.frame( Lineage,
+                        Generation,
+                        p = NA)
+```
+
+Small function to estimate `\(f(A)\)`.
+
+
+```r
+fA &lt;- function( p ) { 
+  frequencies( p )  %&gt;%
+    filter( Locus == "LTRS",
+            Allele == "01" ) %&gt;%
+    select( Frequency ) %&gt;%
+    as.numeric() 
+}
+```
+
+
+
+]
+
+--
+
+.pull-right[
+
+Simulate random mating across generations where we are creating a new generation equal in size to the previous one.
+
+
+```r
+for( rep in levels( df.drift$Lineage) ) {
+  p &lt;- pop 
+  for( gen in 1:100 ) {
+    f &lt;- fA(p) 
+    df.drift[ df.drift$Generation == gen &amp; 
+              df.drift$Lineage == rep, "p"] &lt;- f
+    p &lt;- mate(p)
+  }
+}
+```
+]
+
+---
+
+# Genetic Drift &amp; Fixation
+
+.pull-left[
+
+Even though all the replicate simulations started at the same location (e.g., `LTRS` allele frequencies), their eventual fate is stochastic.
+
+&amp;nbsp;
+
+
+```r
+ggplot( df.drift, 
+        aes(Generation,p,color=Lineage) ) + 
+  geom_line() 
+```
+
+]
+
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-36-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+
+# Expectations of Drift
+
+
+As a result, there is an expectation on the number of random generations necessary for a population to go to .redinline[fixation] based upon the population size and allele frequencies.  This can be approximated by:
+
+&amp;nbsp;
+
+`\begin{equation}
+t_{fix} = \frac{-4N_e(1-p)\log{(1-p})}{p}
+\end{equation}`
+
+&amp;nbsp;
+Where `\(N_e\)` is the *genetic effective number* of individuals.
+
+
+---
+# Mutation
+
+.pull-left[
+
+It it weren't for *mutation*, you would all look like this guy!
+
+![](https://live.staticflickr.com/65535/51190704830_30b4fe1acf_w_d.jpg)
+]
+
+--
+
+.pull-right[
+
+Mutation changes allele frequencies very slowly relative to time-frames that most landscape genetics studies are conducted.
+
+Assuming the rate of mutation from `\(A \to B\)` is `\(\mu\)` and from `\(B \to A\)` is `\(\nu\)`, we expect to see a *per genertation* change equal to:
+
+$$
+p_{t+1} = p_t(1-\mu) + (1-p_t)\nu
+$$
+
+with an expected equilibrium at
+
+$$
+\hat{p} = \frac{\nu}{\nu + \mu}
+$$
+
+See also:
+
+- Stepwise mutation model (microsatellites)
+- Infinite allele model (Kimura &amp; Crow, 1964)
+
+]
+
+
+
+---
+
+# So why do we care?
+
+In population genetics, the only things we have are *allele frequencies* and *genotype frequencies*.  What we **must** do is deploy .redinline[sampling strategies] (e.g., experimental design) to answer specific questions that can be answered by looking at variation in *allele* and *genotype* frequencies.  
+
+
+
+
+---
+
+# Changes in Heterozygosity
+
+
+&amp;nbsp;
+
+Microevolutionary forces that can impact heterozygosity.
+
+&amp;nbsp;
+
+Decreased Heterozygosity         | Increased Heterozygosity
+---------------------------------|-------------------------------
+Inbreeding                       | Coding Errors  
+Null Alleles                     | Gametic Gene Flow
+Positive Assortative Mating      | Negative Assortative Mating   
+Selection Against Heterozygotyes | Heterosis  
+Wahlund Effects                  | Outbreeding 
+Zygotic Gene Flow                | 
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![](https://media.giphy.com/media/xT0xeuOy2Fcl9vDGiA/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about&lt;br/&gt; the content presented herein&lt;br/&gt; now is your time.  
+
+If you think of something later though, &lt;br/&gt;feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll&lt;br/&gt; get back to you as soon as possible.
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

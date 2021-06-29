@@ -1,0 +1,2005 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+    <script src="libs/jquery-3.5.1/jquery.min.js"></script>
+    <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-1.3.1/leaflet.js"></script>
+    <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+    <script src="libs/proj4-2.6.2/proj4.min.js"></script>
+    <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+    <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+    <script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding-0.18/datatables.js"></script>
+    <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+    <link rel="stylesheet" href="slide_styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+
+
+
+
+
+
+# .orange[Habitat Analyses]
+
+### .fancy[Types, Composition, and Configuration  <svg aria-hidden="true" role="img" viewBox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:red;overflow:visible;position:relative;"><path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/></svg>]
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51201238932_dbd2eb50d9_c_d.jpg")
+background-position: center
+
+
+
+
+
+---
+class: top
+background-image: url("https://live.staticflickr.com/65535/51083828531_e6d0965d5c_k_d.jpg")
+background-size: cover
+
+# What is a Landscape?
+
+
+---
+
+# Landscapes
+
+&gt; A landscape is a mosaic of interacting ecosystems which are heterogeneous in at least one factor of interest.
+
+&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;mdash; Ecologist
+
+--
+
+&amp;nbsp; 
+
+
+
+&gt; The spatial distribution of suitable habitat
+
+&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;mdash; All Other Living Things
+
+
+--
+
+
+&amp;nbsp;
+
+.redinline[The same physical location may be (to different organisms) several overlapping or independent landscapes.]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .orange[Habitat Quantification]
+
+## .fancy[Quantifying Space On .redinline[*This*] Planet.]
+
+
+---
+
+# Types of Quantification 
+
+### General `\(\to\)` Specific
+
+- *Landscape Type* : The categories (e.g., `factor`) of landscape features present in the study area.
+
+- *Landscape Composition* : The relative frequency of landscape features types in this area.
+
+- *Landscape Configuration* : The spatial arrangement of landscape features on the earth.
+
+
+---
+
+.pull-left[
+
+# Organismal Perspective
+
+We *must* remember that when we are looking at habitats, it is done so *only* from the perspective of the organism we are studying.  
+
+- Temporal Scale
+
+- Spatial Scale 
+
+These are entirely .redinline[*independent*] of what our scales are or what the scale of the closest raster just happens to be.
+
+
+See also: *Metasequoia glyptostroboides*
+]
+
+
+.pull-right[
+&lt;img src="https://live.staticflickr.com/65535/51084359331_683f527fc3_c_d.jpg" height="600" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# Scale
+
+At a base level, spatial and temporal scales may be unique to each landscape feature.  
+
+.pull-left[
+&lt;img src="https://live.staticflickr.com/65535/50999448554_b561b2138a_c_d.jpg" height="400" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="https://live.staticflickr.com/65535/51084723036_85b49100e4_c_d.jpg" height="400" style="display: block; margin: auto;" /&gt;
+]
+
+---
+class: top
+# Granularity - Proper Pixel Size
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-4-1.png" width="504" height="600" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+.left-column[
+# Intensity
+
+How .redinline[much] does the feature influence the organism.
+]
+
+.right-column[
+&lt;img src="https://live.staticflickr.com/65535/51016826740_ee1cf72271_c_d.jpg" height="500" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+
+# Nestedness of Inquiry - At Site Features
+
+
+.pull-left[
+There are different nestedness-es (is that even a word?) of ecological and spatial features that may impact connectivity and structure examined in landscape genetic studies.
+
+Features .redinline[**at**] the sampling location.  Conditions in the immediate vicinity may have some impact on connectivity such as good habitat may facilitate larger floral displays for reproductive individuals.  Larger floral displays *attract* more pollinators.
+]
+
+
+
+.pull-right[
+[![Tim Peterson](https://unsplash.com/photos/Q6XtUc6vEsk/download?force=true&amp;w=640)](https://unsplash.com/photos/Q6XtUc6vEsk?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditShareLink)
+]
+
+
+
+---
+
+# Nestedness of Inquiry - Around Features
+
+.pull-left[
+[![Anita Denuzio](https://unsplash.com/photos/H2SoH8-5EJA/download?force=true&amp;w=640)](https://unsplash.com/photos/H2SoH8-5EJA?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditShareLink)
+]
+
+.pull-right[
+Conditions .redinline[**around**] our study area may impact the abiltiy of organisms to move into those patches.  
+
+- Two locales with identical `@Site` features may have vastly different potential for connectivity by what is immediately surrounding them.
+
+]
+
+
+---
+
+
+# Nestedness of Inquiry - Between Sites
+
+Independent of what is at or around specific sampling sites, the conditions that exist **between** interacting populations directly modulate the likelihood of connectivity.   This is the subject of a whole lecture on [Resistance Models](https://thurstoncounty.gitlab.io/landscape-genetics-workshop/landscape-genetic/resistence/slides.html), later in the workshop.
+
+[![Jonny Kennaugh](https://unsplash.com/photos/WKYofu7G3D8/download?force=true&amp;w=640)](https://unsplash.com/photos/WKYofu7G3D8?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditShareLink)
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Case Study 1]
+
+## .fancy[Forest Composition Along an Urban Gradient]
+
+
+---
+
+# Overall Research Question
+
+.pull-left[
+For the flowering dogwood (*Cornus flordia*), how do `@Site` and `@Near` site land cover features change along an urban gradient?  The entire study will use the following resources to help understand how landscape composition influences pollen-mediated gene flow in this common understory tree.
+
+- NLCDB land type classifications
+
+- 59 georeferenced trees
+
+- 10-20 Offspring Collected from each
+
+- Multilocus genotypes to infer pollen donor population.
+
+- Inferences about connectivity.
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51022897866_dd178532f3_c_d.jpg)
+]
+
+
+---
+
+# Overall Research Question
+
+.pull-left[
+For the flowering dogwood (*Cornus flordia*), how do `@Site` and `@Near` site land cover features change along an urban gradient?  The entire study will use the following resources to help understand how landscape composition influences pollen-mediated gene flow in this common understory tree.
+
+- .redinline[**NLCDB land type classifications**]
+
+- .redinline[**59 georeferenced trees**]
+
+- 10-20 Offspring Collected from each
+
+- Multilocus genotypes to infer pollen donor population.
+
+- Inferences about connectivity.
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51022897866_dd178532f3_c_d.jpg)
+]
+
+
+
+---
+
+# Quantifying Locations for Dogwoods
+
+
+
+
+
+.pull-left[
+
+```r
+library( leaflet )
+library( tidyverse )
+url &lt;- "https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/DogwoodUrban.csv"
+
+read_csv( url ) %&gt;%
+  st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) -&gt; dogwoods
+
+dogwoods %&gt;%
+  leaflet() %&gt;%
+  addProviderTiles(providers$Esri.WorldTopo) %&gt;%
+  addMarkers()
+```
+
+
+```r
+st_bbox(dogwoods)
+```
+
+```
+##      xmin      ymin      xmax      ymax 
+## -77.58980  37.35310 -77.44143  37.51526
+```
+
+
+]
+
+.pull-right[
+<div id="htmlwidget-94d189ac285b4f2e5931" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-94d189ac285b4f2e5931">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[37.353826,37.353104,37.396872,37.392639,37.392228,37.3908,37.389398,37.388365,37.385211,37.386464,37.388787,37.390698,37.389702,37.383342,37.4005,37.394651,37.396769,37.399049,37.510717,37.492974,37.492511,37.510291,37.480376,37.509475,37.515265,37.514828,37.492714,37.482443,37.37575,37.376944,37.378333,37.499823,37.382694,37.468216,37.383667,37.395417,37.398972,37.398861,37.399611,37.454236,37.501516,37.458609,37.453836,37.480995,37.44542,37.482151,37.463608,37.43491,37.428632,37.433422,37.427882,37.4142286,37.427128,37.423204,37.42318,37.413989,37.419995,37.426772,37.437777],[-77.589796,-77.587201,-77.532674,-77.531355,-77.53154,-77.530576,-77.531012,-77.531604,-77.531685,-77.534583,-77.536849,-77.540423,-77.585923,-77.579688,-77.5568,-77.529876,-77.533065,-77.538402,-77.471146,-77.473082,-77.47849,-77.44143,-77.465096,-77.455841,-77.464537,-77.470204,-77.45848,-77.461086,-77.540667,-77.542167,-77.542917,-77.466062,-77.541444,-77.478697,-77.540972,-77.531111,-77.538583,-77.539944,-77.542889,-77.465542,-77.468864,-77.483858,-77.479633,-77.479067,-77.511846,-77.483199,-77.490548,-77.499503,-77.507896,-77.46576,-77.511298,-77.5458581,-77.48653,-77.511703,-77.500805,-77.491558,-77.5265972,-77.540785,-77.490064],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[37.353104,37.515265],"lng":[-77.589796,-77.44143]}},"evals":[],"jsHooks":[]}</script>
+
+]
+
+
+
+
+
+
+---
+
+# Landscape Classification
+
+Besides .redinline[very tall ladders], our ability to map out the characteristics of specific regions on the planet are dictated by the availability of raster databases. 
+
+&amp;nbsp;
+
+.center[[![mrlc logo](https://live.staticflickr.com/65535/51016602045_a59cd29c90_o_d.png)](mrlc.gov)]
+
+
+
+---
+# Raster Sources
+
+.pull-left[
+The MRLC provides an interactive mapping tool to provide access to locations.  Base rasters are available but are .redinline[HUGE] (e.g, 25Gb and larger) and you'd be doing a lot of 
+
+*download `\(\to\)` open in R `\(\to\)` define boundary box `\(\to\)` crop `\(\to\)` save* 
+
+IF (and this is a big if), you laptop does not crumble due to size of the data sets first...
+
+Consequently, the use of the interactive viewer at  
+
+https://www.mrlc.gov/viewer/ 
+
+is a great resources.
+]
+.pull-right[
+&lt;img src="https://live.staticflickr.com/65535/51014241625_f0894ec432_c_d.jpg" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+
+# Spatial Locations
+
+`GeoTIFF` and `GIF` files in the download.
+
+
+```r
+url &lt;- "https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/NLCD_RVA_Gradient.zip"
+download.file( url, destfile = "./NLCD.zip")
+unzip("NLCD.zip")
+grep( list.files("./NLCD_RVA_Gradient/"), pattern = "*.xml", invert = TRUE, value=TRUE)
+```
+
+```
+##  [1] "NLCD Impervious Descriptor.gif"                                        
+##  [2] "NLCD Impervious.gif"                                                   
+##  [3] "NLCD Land Cover.gif"                                                   
+##  [4] "NLCD Tree Canopy.gif"                                                  
+##  [5] "NLCD_2016_Impervious_descriptor_L48_20190405_vHkEMUfENR7tqriq0VRl.tiff"
+##  [6] "NLCD_2016_Impervious_L48_20190405_vHkEMUfENR7tqriq0VRl.tiff"           
+##  [7] "NLCD_2016_Land_Cover_L48_20190424_vHkEMUfENR7tqriq0VRl.tiff"           
+##  [8] "NLCD_2016_Tree_Canopy_L48_20190831_vHkEMUfENR7tqriq0VRl.tiff"          
+##  [9] "NLCD_Land_Cover_Change_Index_L48_20190424_vHkEMUfENR7tqriq0VRl.tiff"   
+## [10] "NLCD_landcover_layer_2018_12_17_vHkEMUfENR7tqriq0VRl.lyr"              
+## [11] "NLCD_landcover_legend_2018_12_17_vHkEMUfENR7tqriq0VRl.csv"             
+## [12] "NLCD_landcover_readme_2018_12_17_vHkEMUfENR7tqriq0VRl.txt"             
+## [13] "NLCD_Tree_Canopy_Change_Index_L48_20190831_vHkEMUfENR7tqriq0VRl.tiff"
+```
+
+
+
+---
+
+
+```r
+raster &lt;- raster( "NLCD_RVA_Gradient/NLCD_2016_Land_Cover_L48_20190424_vHkEMUfENR7tqriq0VRl.tiff") 
+raster
+```
+
+```
+## class      : RasterLayer 
+## dimensions : 1339, 1366, 1829074  (nrow, ncol, ncell)
+## resolution : 30, 30  (x, y)
+## extent     : 1590495, 1631475, 1738215, 1778385  (xmin, xmax, ymin, ymax)
+## crs        : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs 
+## source     : NLCD_2016_Land_Cover_L48_20190424_vHkEMUfENR7tqriq0VRl.tiff 
+## names      : NLCD_2016_Land_Cover_L48_20190424_vHkEMUfENR7tqriq0VRl 
+## values     : 11, 95  (min, max)
+## attributes :
+##         ID Red Green Blue Opacity Count
+##  from:   0   0     0    0       0     0
+##   to : 255   0     0    0       0     0
+```
+
+
+---
+class: center, middle
+
+# .red[Dyer's First Law of Spatial Analysis]
+
+
+
+```r
+crs( dogwoods ) 
+```
+
+```
+## CRS arguments: +proj=longlat +datum=WGS84 +no_defs
+```
+
+```r
+crs( raster )
+```
+
+```
+## CRS arguments:
+##  +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0
+## +datum=WGS84 +units=m +no_defs
+```
+
+
+
+
+
+---
+
+.pull-left[
+#### Raster Projection
+
+
+```r
+st_crs( raster )
+```
+
+```
+## Coordinate Reference System:
+##   User input: Albers_Conical_Equal_Area 
+##   wkt:
+## PROJCRS["Albers_Conical_Equal_Area",
+##     BASEGEOGCRS["WGS 84",
+##         DATUM["World Geodetic System 1984",
+##             ELLIPSOID["WGS 84",6378137,298.257223563,
+##                 LENGTHUNIT["metre",1]]],
+##         PRIMEM["Greenwich",0,
+##             ANGLEUNIT["degree",0.0174532925199433]],
+##         ID["EPSG",4326]],
+##     CONVERSION["Albers Equal Area",
+##         METHOD["Albers Equal Area",
+##             ID["EPSG",9822]],
+##         PARAMETER["Latitude of false origin",23,
+##             ANGLEUNIT["degree",0.0174532925199433],
+##             ID["EPSG",8821]],
+##         PARAMETER["Longitude of false origin",-96,
+##             ANGLEUNIT["degree",0.0174532925199433],
+##             ID["EPSG",8822]],
+##         PARAMETER["Latitude of 1st standard parallel",29.5,
+##             ANGLEUNIT["degree",0.0174532925199433],
+##             ID["EPSG",8823]],
+##         PARAMETER["Latitude of 2nd standard parallel",45.5,
+##             ANGLEUNIT["degree",0.0174532925199433],
+##             ID["EPSG",8824]],
+##         PARAMETER["Easting at false origin",0,
+##             LENGTHUNIT["metre",1],
+##             ID["EPSG",8826]],
+##         PARAMETER["Northing at false origin",0,
+##             LENGTHUNIT["metre",1],
+##             ID["EPSG",8827]]],
+##     CS[Cartesian,2],
+##         AXIS["easting",east,
+##             ORDER[1],
+##             LENGTHUNIT["metre",1,
+##                 ID["EPSG",9001]]],
+##         AXIS["northing",north,
+##             ORDER[2],
+##             LENGTHUNIT["metre",1,
+##                 ID["EPSG",9001]]]]
+```
+
+
+
+
+
+]
+
+.pull-right[
+#### Points
+
+
+```r
+st_crs( dogwoods )
+```
+
+```
+## Coordinate Reference System:
+##   User input: EPSG:4326 
+##   wkt:
+## GEOGCRS["WGS 84",
+##     DATUM["World Geodetic System 1984",
+##         ELLIPSOID["WGS 84",6378137,298.257223563,
+##             LENGTHUNIT["metre",1]]],
+##     PRIMEM["Greenwich",0,
+##         ANGLEUNIT["degree",0.0174532925199433]],
+##     CS[ellipsoidal,2],
+##         AXIS["geodetic latitude (Lat)",north,
+##             ORDER[1],
+##             ANGLEUNIT["degree",0.0174532925199433]],
+##         AXIS["geodetic longitude (Lon)",east,
+##             ORDER[2],
+##             ANGLEUNIT["degree",0.0174532925199433]],
+##     USAGE[
+##         SCOPE["unknown"],
+##         AREA["World"],
+##         BBOX[-90,-180,90,180]],
+##     ID["EPSG",4326]]
+```
+
+
+
+]
+
+
+???
+
+The datum here is lat/lon, which is not one that can easily and accuratley be used for measuing distances.
+
+
+
+
+---
+
+# Conforming Projections &amp; Datum
+
+Go look at [EPSG.io](http://epsg.io) to find a transformation of suitable projection and datum for measuing distances &amp; areas. 
+
+--
+
+*NAD83/Virginia Lambert* with a 1m accuracy.
+
+
+```r
+st_transform(dogwoods, 3968) -&gt; dogwoods
+projectRaster( raster, crs = crs(dogwoods), res = res( raster ) ) -&gt; land_cover
+
+crs( dogwoods ) 
+```
+
+```
+## CRS arguments:
+##  +proj=lcc +lat_0=36 +lon_0=-79.5 +lat_1=37 +lat_2=39.5 +x_0=0 +y_0=0
+## +datum=NAD83 +units=m +no_defs
+```
+
+```r
+crs( land_cover )
+```
+
+```
+## CRS arguments:
+##  +proj=lcc +lat_0=36 +lon_0=-79.5 +lat_1=37 +lat_2=39.5 +x_0=0 +y_0=0
+## +datum=NAD83 +units=m +no_defs
+```
+
+
+
+
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/51194815380_656e88569a_c_d.jpg")
+background-position: center
+background-size: auto
+
+
+
+---
+
+# Extracting Raster Data using Points, Lines, or Polygons
+
+
+```r
+class( dogwoods )
+```
+
+```
+## [1] "sf"         "tbl_df"     "tbl"        "data.frame"
+```
+
+```r
+class( land_cover )
+```
+
+```
+## [1] "RasterLayer"
+## attr(,"package")
+## [1] "raster"
+```
+
+
+---
+
+
+```r
+?extract
+```
+
+
+
+![](https://live.staticflickr.com/65535/51193053207_c60117c8b9_c_d.jpg)
+
+---
+background-image: url("https://live.staticflickr.com/65535/51193055742_8a478d81f1_c_d.jpg")
+background-position: center
+background-size: auto
+
+
+
+
+---
+
+# Coercing the `sf` object into a SpatialPointsDataFrame
+
+For a brief moment, we can *coerce* the mighty `sf` data.frame into the form of an object from the `sp` library so that we can use the `raster::extract()` function.
+
+
+```r
+raster::extract( land_cover,   as(dogwoods, "Spatial") ) 
+```
+
+```
+##  [1] 41.64097 42.00000 41.52123 43.00000 43.00000 90.00000 42.23820 41.00000
+##  [9] 41.56692 41.00000 42.00000 41.00000 41.00000 41.00000 43.00000 40.43734
+## [17] 41.00000 39.97913 22.35566 21.19444 22.00000 22.05580 22.00000 22.75369
+## [25] 22.00000 21.98404 21.94292 23.60032 42.73856 41.00000 41.00000 21.78925
+## [33] 41.00000 21.00000 41.00000 41.00000 42.92679 41.09774 41.00000 26.40541
+## [41] 22.34378 29.45110 21.03812 22.05206 21.92840 21.90593 21.99755 22.00000
+## [49] 26.51182 22.00000 22.00000 21.96844 22.49090 28.51833 29.15225 21.61195
+## [57] 27.96340 21.03840 22.05960
+```
+
+# .redinline[**WTAF?**]
+
+---
+
+# Coercing the `sf` object into a SpatialPointsDataFrame
+
+
+```r
+projectRaster( raster, 
+               crs = crs(dogwoods), 
+               res = res( raster ),
+               method="ngb") -&gt; tmp
+raster::extract( tmp,   as(dogwoods, "Spatial") ) 
+```
+
+```
+##  [1] 41 42 43 43 43 90 43 41 41 41 42 41 41 41 43 41 41 43 22 21 22 22 22 22 22
+## [26] 22 22 22 43 41 41 22 41 21 41 41 43 41 41 21 23 41 21 22 22 22 22 22 21 22
+## [51] 22 22 23 22 22 22 22 21 22
+```
+
+```r
+land_cover &lt;- tmp 
+```
+
+
+
+
+
+
+
+
+---
+
+# Make Things Readable
+
+
+```r
+read_csv("NLCD_RVA_Gradient/NLCD_landcover_legend_2018_12_17_vHkEMUfENR7tqriq0VRl.csv") %&gt;%
+  filter( !is.na(Legend) ) %&gt;%
+  dplyr::select( Value, Type = Legend) -&gt; lgnd
+head( lgnd )
+```
+
+```
+## # A tibble: 6 x 2
+##   Value Type                       
+##   &lt;dbl&gt; &lt;chr&gt;                      
+## 1     0 Unclassified               
+## 2    11 Open Water                 
+## 3    12 Perennial Snow/Ice         
+## 4    21 Developed, Open Space      
+## 5    22 Developed, Low Intensity   
+## 6    23 Developed, Medium Intensity
+```
+
+
+---
+
+# Extract Remaining Components 
+
+#### .redinline[REPROJECT OTHER RASTERS FIRST!!!!!!]
+
+
+```r
+url &lt;- "NLCD_RVA_Gradient/NLCD_2016_Tree_Canopy_L48_20190831_vHkEMUfENR7tqriq0VRl.tiff"
+r &lt;- raster(url)
+canopy &lt;- projectRaster( r, 
+                         crs = crs(dogwoods), 
+                         res = res( raster ),
+                         method="ngb" ) 
+
+url &lt;- "NLCD_RVA_Gradient/NLCD_2016_Impervious_L48_20190405_vHkEMUfENR7tqriq0VRl.tiff"
+r &lt;- raster(url)
+impervious &lt;- projectRaster( r, 
+                         crs = crs(dogwoods), 
+                         res = res( raster ),
+                         method="ngb" ) 
+```
+
+
+---
+# Extract Remaining Components 
+
+
+```r
+dogwoods %&gt;%
+  mutate( Value = raster::extract( land_cover, as(dogwoods, "Spatial") ) ) %&gt;%
+  mutate( Canopy = raster::extract( canopy, as(dogwoods, "Spatial") ) ) %&gt;%
+  mutate( Impervious = raster::extract( impervious, as(dogwoods, "Spatial") ) ) %&gt;%
+  right_join( lgnd ) %&gt;% 
+  mutate( Type = factor( Type ) ) %&gt;% 
+  dplyr::select( Mother, Type, Canopy, Impervious ) -&gt; df
+```
+
+.footnote[The `dplyr::` was necessary to prevent *namespace collision*.]
+
+---
+
+# Full Data Set
+
+
+```r
+summary( df )
+```
+
+```
+##     Mother                                   Type        Canopy    
+##  Length:69          Developed, Low Intensity   :23   Min.   : 0.0  
+##  Class :character   Deciduous Forest           :17   1st Qu.:28.5  
+##  Mode  :character   Mixed Forest               : 8   Median :48.0  
+##                     Developed, Open Space      : 6   Mean   :51.9  
+##                     Developed, Medium Intensity: 2   3rd Qu.:87.5  
+##                     Evergreen Forest           : 2   Max.   :96.0  
+##                     (Other)                    :11   NA's   :10    
+##    Impervious             geometry 
+##  Min.   : 0.00   POINT        :69  
+##  1st Qu.: 0.00   epsg:3968    : 0  
+##  Median : 9.00   +proj=lcc ...: 0  
+##  Mean   :16.27                     
+##  3rd Qu.:31.50                     
+##  Max.   :66.00                     
+##  NA's   :10
+```
+
+
+
+
+---
+
+.pull-left[
+# At Site Variables
+
+Here are the landscape types that are present for the trees being studied.
+
+
+```r
+data.frame( table( df$Type ) ) %&gt;%
+  rename(Category = Var1, 
+         Frequency = Freq ) %&gt;%
+  arrange( -Frequency ) %&gt;%
+  kable(caption = "Land use classification for locations of 69 maternal dogwood trees in Richmond Virginia.") %&gt;% 
+  kable_styling()
+```
+]
+
+.pull-right[
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Category &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Frequency &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Low Intensity &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Deciduous Forest &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mixed Forest &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Open Space &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Medium Intensity &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Evergreen Forest &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Barren Land &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Cultivated Crops &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Developed, High Intensity &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Emergent Herbaceuous Wetlands &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Hay/Pasture &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Herbaceuous &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Open Water &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Perennial Snow/Ice &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Shrub/Scrub &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Unclassified &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Woody Wetlands &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+---
+
+# Simplify the Categories
+
+I'm going to set all these *singleton* landscape types as "Other" to simplify displaying output.
+
+
+```r
+df %&gt;%
+  mutate( Landscape = ifelse( Type %in% c("Developed, Low Intensity",
+                                          "Deciduous Forest",
+                                          "Mixed Forest",
+                                          "Developed, Open Space",
+                                          "Developed, Medium Intensity",
+                                          "Evergreen Forest"), 
+                              as.character( Type ), 
+                              "Other")) %&gt;%
+  mutate( Landscape = factor( Landscape ) ) -&gt; df.landscape 
+```
+
+
+---
+
+
+
+```r
+ggplot( df.landscape, 
+        aes(Impervious, Canopy, color=Landscape) ) + 
+  geom_point()  + 
+  ylab("Percent Canopy Cover") + 
+  xlab("Percent Impervious Surface")
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-28-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+plot( df.landscape["Landscape"], 
+      pch=16, 
+      axes=TRUE )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-29-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .orange[Case Study 2]
+
+## .fancy[Near.....  Far...... Wherever you are....]
+
+
+---
+
+# Neighborhood Estimates
+
+
+.pull-left[
+We can use the same approaches to start analyzing the features surrounding the target trees.  You may want to go back and take a look at the [cheetsheet](https://github.com/rstudio/cheatsheets/blob/master/sf.pdf)
+
+
+
+```r
+dogwoods %&gt;%
+  filter( Mother == "1024PWP") %&gt;%
+  st_buffer( dist=100 ) %&gt;% 
+  as("Spatial") -&gt; mom1 
+mom1 
+```
+
+```
+## class       : SpatialPolygonsDataFrame 
+## features    : 1 
+## extent      : 169107.9, 169307.9, 151906.7, 152106.7  (xmin, xmax, ymin, ymax)
+## crs         : +proj=lcc +lat_0=36 +lon_0=-79.5 +lat_1=37 +lat_2=39.5 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs 
+## variables   : 1
+## names       :  Mother 
+## value       : 1024PWP
+```
+
+Note: `dist=100` is based upon the distance based upon the DATUM for the `dogwood` objects.
+]
+
+.pull-right[
+
+```r
+vals &lt;- raster::extract( land_cover, 
+                         mom1 )
+vals
+```
+
+```
+## [[1]]
+##  [1] 42 43 41 42 43 43 41 41 41 42 43 41 43 41 41 43 42 43 41 41 41 41 43 43 43
+## [26] 43 41 43 43 43 43 41 41 43 42
+```
+
+```r
+table( vals[[1]] )
+```
+
+```
+## 
+## 41 42 43 
+## 14  5 16
+```
+]
+
+
+---
+
+# Mom1 Neighborhood
+
+
+Let's examine the raster around this mother.
+
+```r
+dogwoods %&gt;%
+  filter( Mother == "1024PWP") %&gt;%
+  st_buffer( dist=200 ) %&gt;% 
+  st_bbox() %&gt;%
+  raster::extent() -&gt; e 
+
+mom1_landscape &lt;- raster::crop( land_cover, e )
+```
+
+---
+
+# Mom1 Neighborhood
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-33-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+# Now All the Moms
+
+
+```r
+dogwoods %&gt;%
+  st_buffer( dist=100 ) -&gt; moms
+moms
+```
+
+```
+## Simple feature collection with 59 features and 1 field
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 169107.9 ymin: 151831.4 xmax: 182062 ymax: 170254
+## Projected CRS: NAD83 / Virginia Lambert
+## # A tibble: 59 x 2
+##    Mother                                                               geometry
+##  * &lt;chr&gt;                                                           &lt;POLYGON [m]&gt;
+##  1 1024PWP ((169307.9 152006.7, 169307.8 152001.5, 169307.4 151996.3, 169306.7 …
+##  2 1026PWP ((169539.4 151931.4, 169539.3 151926.2, 169538.9 151920.9, 169538.2 …
+##  3 1033PWP ((174265.6 156888.5, 174265.4 156883.3, 174265 156878.1, 174264.3 15…
+##  4 1037PWP ((174392.3 156421.4, 174392.2 156416.2, 174391.7 156410.9, 174391.1 …
+##  5 1038PWP ((174376.9 156375.5, 174376.8 156370.2, 174376.3 156365, 174375.7 15…
+##  6 1039PWP ((174465.6 156218.8, 174465.5 156213.6, 174465 156208.4, 174464.4 15…
+##  7 1040PWP ((174430.3 156062.5, 174430.2 156057.2, 174429.8 156052, 174429.1 15…
+##  8 1041PWP ((174380.3 155946.7, 174380.2 155941.5, 174379.8 155936.3, 174379.1 …
+##  9 1042PWP ((174380.6 155596.7, 174380.5 155591.4, 174380.1 155586.2, 174379.4 …
+## 10 1043PWP ((174121.1 155730.2, 174121 155725, 174120.6 155719.8, 174119.9 1557…
+## # … with 49 more rows
+```
+
+---
+
+## Extract Them All
+
+Now, instead of having a single point for each maternal individual, we extract all the cells that fall within 100m
+
+
+```r
+raster::extract( land_cover, as(moms, "Spatial") ) -&gt; vals
+head( vals )
+```
+
+```
+## [[1]]
+##  [1] 42 43 41 42 43 43 41 41 41 42 43 41 43 41 41 43 42 43 41 41 41 41 43 43 43
+## [26] 43 41 43 43 43 43 41 41 43 42
+## 
+## [[2]]
+##  [1] 41 42 42 42 42 41 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42
+## [26] 42 42 42 42 42 11 42 42 42 42
+## 
+## [[3]]
+##  [1] 41 41 21 21 21 21 41 41 41 41 21 22 21 41 41 41 43 43 21 41 41 41 41 43 43
+## [26] 43 41 41 41 43 43 43 41 43 43
+## 
+## [[4]]
+##  [1] 43 90 41 90 43 43 41 90 90 90 42 43 43 41 90 90 90 43 43 43 43 90 90 90 42
+## [26] 43 43 43 43 43 42 43 43 43 43 43
+## 
+## [[5]]
+##  [1] 41 42 43 43 41 90 43 43 43 43 90 90 42 42 43 43 43 43 43 42 42 43 43 43 43
+## [26] 42 42 43 43 43 43 42 43 43 43
+## 
+## [[6]]
+##  [1] 43 43 90 90 43 43 43 90 90 90 43 90 90 90 90 41 41 41 90 90 90 41 41 41 41
+## [26] 41 41 41 41 41 41 41 41 41
+```
+
+
+
+```r
+unlist( lapply( vals, length ) )
+```
+
+```
+##  [1] 35 35 35 36 35 34 35 32 35 37 34 35 37 37 35 35 32 32 35 36 35 36 36 37 37
+## [26] 35 36 35 35 36 35 36 35 37 36 32 35 35 36 35 35 35 36 36 35 34 34 32 35 35
+## [51] 35 35 34 32 36 34 35 36 35
+```
+
+
+--
+
+.redinline[How would you turn this into something that you can do an analysis of neighborhood similarity?]
+
+[Here](https://gitlab.com/ThurstonCounty/landscape-genetics-workshop/-/raw/master/data/NeighbrohoodVals.rda) is the raw data, give it a shot.
+
+
+---
+
+# A Principal Component Analysis
+
+
+```r
+df &lt;- data.frame( Mom = character(0),
+                  Value = numeric(0),
+                  Frequency = numeric(0))
+
+for( i in 1:nrow(moms) ) {
+  Value &lt;- raster::extract( land_cover, as(moms[i,], "Spatial"))[[1]]
+  e &lt;- table( Value )
+  d &lt;- data.frame( Mom = moms$Mother[i],
+                   Value = as.numeric( names( e ) ),
+                   Frequency = as.numeric( e ))
+  df &lt;- rbind( df, d )
+}
+
+
+head(df )
+```
+
+```
+##       Mom Value Frequency
+## 1 1024PWP    41        14
+## 2 1024PWP    42         5
+## 3 1024PWP    43        16
+## 4 1026PWP    11         1
+## 5 1026PWP    41         2
+## 6 1026PWP    42        32
+```
+
+
+
+---
+
+# A Principal Component Analysis
+
+
+```r
+df %&gt;%
+  right_join( lgnd, ) %&gt;% 
+  filter( !is.na(Frequency) ) %&gt;% 
+  dplyr::select( Mom, Type, Frequency ) %&gt;% 
+  pivot_wider( names_from = Type, 
+               values_from = Frequency,
+               values_fill = 0) %&gt;%
+  column_to_rownames( var = "Mom" ) -&gt; df.neighborhoods
+
+head( df.neighborhoods )
+```
+
+```
+##         Deciduous Forest Evergreen Forest Mixed Forest Open Water
+## 1024PWP               14                5           16          0
+## 1026PWP                2               32            0          1
+## 1033PWP               17                0           10          0
+## 1037PWP                3                3           19          0
+## 1038PWP                2                8           22          0
+## 1039PWP               16                0            6          0
+##         Developed, Open Space Developed, Low Intensity Woody Wetlands
+## 1024PWP                     0                        0              0
+## 1026PWP                     0                        0              0
+## 1033PWP                     7                        1              0
+## 1037PWP                     0                        0             11
+## 1038PWP                     0                        0              3
+## 1039PWP                     0                        0             12
+##         Developed, Medium Intensity Developed, High Intensity Barren Land
+## 1024PWP                           0                         0           0
+## 1026PWP                           0                         0           0
+## 1033PWP                           0                         0           0
+## 1037PWP                           0                         0           0
+## 1038PWP                           0                         0           0
+## 1039PWP                           0                         0           0
+##         Hay/Pasture
+## 1024PWP           0
+## 1026PWP           0
+## 1033PWP           0
+## 1037PWP           0
+## 1038PWP           0
+## 1039PWP           0
+```
+
+---
+
+
+```r
+fit &lt;- prcomp( df.neighborhoods, scale = TRUE )
+```
+
+
+.pull-left[
+&lt;img src="slides_files/figure-html/unnamed-chunk-40-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-41-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+
+
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Case Study 3]
+
+## .fancy[Landscape Wide Change In The Piedmont]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50998498169_0e502bc7ba_c_d.jpg")
+background-size: cover
+
+
+
+
+---
+# Loading MRLC Data
+
+MRLC Data comes as a set of GEOTiff objects, which I've uploaded to the class GitHub account.
+
+
+```r
+library( raster )
+
+land_2016_url &lt;- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+land_2016 &lt;- raster( land_2016_url )
+land_2016
+```
+
+```
+## class      : RasterLayer 
+## dimensions : 82, 83, 6806  (nrow, ncol, ncell)
+## resolution : 30, 30  (x, y)
+## extent     : 1637235, 1639725, 1749465, 1751925  (xmin, xmax, ymin, ymax)
+## crs        : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs 
+## source     : NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff 
+## names      : NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e 
+## values     : 11, 95  (min, max)
+```
+
+
+---
+
+.pull-left[
+# MRLC Plot
+
+You can use the normal `plot()` function (but for some reason it produces an extraneous empty plot for this one) or use our old friend `ggplot2()`.
+
+&amp;nbsp;
+
+
+
+```r
+rasterToPoints( land_2016) %&gt;%
+  as.data.frame() %&gt;%
+  mutate( LC = factor( NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e )) %&gt;%
+  ggplot( aes(x,y,fill=LC)) + 
+  geom_raster() + theme_void()
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-44-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+# Landscape Type
+
+
+```r
+values( land_2016 ) %&gt;%
+  table() 
+```
+
+```
+## .
+##   11   21   22   23   31   41   42   43   52   71   82   90   95 
+##  824  283   14    2   24  628 1519 1524  144    8  732  950  154
+```
+
+---
+
+.pull-left[
+# Make It Usable
+
+For *historical* reasons, much of the data that we work with is defined using numeric codes needing *look-up tables* to format into output that can be interpreted by humans.  When you download the raw data, it provides a [CSV file legend](https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/NLCD_landcover_legend_2018_12_17_qn2B1f8ganicJNKnJN0e.csv) to translate these numbers into real-world feature names.
+
+
+```r
+legend_url &lt;- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/NLCD_landcover_legend_2018_12_17_qn2B1f8ganicJNKnJN0e.csv"
+read_csv( legend_url ) %&gt;%
+  filter( !is.na(Legend))
+```
+]
+
+.pull-right[
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Code &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Legend &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unclassified &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Open Water &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Perennial Snow/Ice &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Open Space &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Low Intensity &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Medium Intensity &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, High Intensity &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Barren Land &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Deciduous Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Evergreen Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 43 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Mixed Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 52 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Shrub/Scrub &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Herbaceuous &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Hay/Pasture &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cultivated Crops &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 90 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Woody Wetlands &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 95 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Emergent Herbaceuous Wetlands &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+
+
+
+---
+# Level 1 Quantification - Landscape *Types* 
+
+Which landscape features are present?
+
+
+.pull-left[
+
+```r
+values( land_2016 ) %&gt;%
+  as.data.frame() %&gt;%
+  rename( "Code" = !!names(.[1])) %&gt;%
+  distinct() %&gt;%
+  left_join( legend, by = "Code") %&gt;%
+  arrange( Legend )
+```
+]
+
+.pull-right[
+
+```
+##    Code                        Legend
+## 1    31                   Barren Land
+## 2    82              Cultivated Crops
+## 3    41              Deciduous Forest
+## 4    22      Developed, Low Intensity
+## 5    23   Developed, Medium Intensity
+## 6    21         Developed, Open Space
+## 7    95 Emergent Herbaceuous Wetlands
+## 8    42              Evergreen Forest
+## 9    71                   Herbaceuous
+## 10   43                  Mixed Forest
+## 11   11                    Open Water
+## 12   52                   Shrub/Scrub
+## 13   90                Woody Wetlands
+```
+
+]
+
+
+
+---
+# Level 2 - Landscape *Composition*
+
+.pull-left[
+What are the relative frequencies of each type?
+
+
+```r
+values( land_2016 ) %&gt;%
+  table() %&gt;%
+  as.data.frame() %&gt;%
+  rename( Code = !!names(.[1]), 
+          Frequency = Freq) %&gt;%
+  mutate( Code = as.numeric( as.character(Code ) ) ) %&gt;%
+  left_join( legend, by = "Code") %&gt;%
+  arrange( -Frequency )
+```
+]
+
+.pull-right[
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Code &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Frequency &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Legend &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 43 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1524 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Mixed Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1519 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Evergreen Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 950 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Woody Wetlands &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 824 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Open Water &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 732 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cultivated Crops &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 628 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Deciduous Forest &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 283 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Open Space &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 95 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 154 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Emergent Herbaceuous Wetlands &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 52 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 144 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Shrub/Scrub &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Barren Land &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Low Intensity &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Herbaceuous &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Developed, Medium Intensity &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+
+---
+
+# Level 3 - Spatial *Configuration*
+
+There are *a lot* more metrics that we can estimate from landscape features than just identity and frequency and what we will be covering here is just a bit off the top.  We can loosely categorize the kinds of metrics into the following groups:  
+
+- Aggregation metrics  
+
+- Area &amp; Edge metrics  
+
+- Contrast metrics  
+
+- Core area metrics  
+
+- Diversity metrics  
+
+- Isolation metrics  
+
+- Shape metrics  
+
+- Subdivision metrics
+
+
+---
+
+# Landscape Metrics Package
+
+
+```r
+library( landscapemetrics )
+```
+
+There are some requirements for your raster to use this library:  
+
+1. The distance units of your projection are meter, as the package converts units internally and returns results in either meters, square meters or hectares. For more information see the help file of each function.  
+
+2. Your raster encodes landscape classes as integers (1, 2, 3, 4, …, n).  
+
+3. Landscape metrics describe categorical landscapes, that means that your landscape needs to be classified (we throw a warning if you have more than 30 classes to make sure you work with a classified landscape).  
+
+
+---
+
+# Built-In Checks
+
+To check the applicability of your raster, there are some helper functions that provide feedback to you.
+
+
+```r
+check_landscape( landscapemetrics::podlasie_ccilc )
+```
+
+```
+##   layer        crs   units   class n_classes OK
+## 1     1 geographic degrees integer        14  x
+```
+
+
+--
+
+&amp;nbsp;
+
+Fortunately, this package was written with the MRLC data sets.
+
+
+
+```r
+check_landscape( land_2016 )
+```
+
+```
+##   layer       crs units   class n_classes OK
+## 1     1 projected     m integer        13  ✓
+```
+
+
+---
+# Nested Levels of Metrics
+
+This library breaks up the functions into the following nested levels: class, patch, landscape
+
+<div id="htmlwidget-f4d97393d9846bc7ffb6" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f4d97393d9846bc7ffb6">{"x":{"filter":"none","data":[["area","cai","circle","contig","core","enn","frac","gyrate","ncore","para","perim","shape","ai","area_cv","area_mn","area_sd","ca","cai_cv","cai_mn","cai_sd","circle_cv","circle_mn","circle_sd","clumpy","cohesion","contig_cv","contig_mn","contig_sd","core_cv","core_mn","core_sd","cpland","dcad","dcore_cv","dcore_mn","dcore_sd","division","ed","enn_cv","enn_mn","enn_sd","frac_cv","frac_mn","frac_sd","gyrate_cv","gyrate_mn","gyrate_sd","iji","lpi","lsi","mesh","ndca","nlsi","np","pafrac","para_cv","para_mn","para_sd","pd","pladj","pland","shape_cv","shape_mn","shape_sd","split","tca","te","ai","area_cv","area_mn","area_sd","cai_cv","cai_mn","cai_sd","circle_cv","circle_mn","circle_sd","cohesion","condent","contag","contig_cv","contig_mn","contig_sd","core_cv","core_mn","core_sd","dcad","dcore_cv","dcore_mn","dcore_sd","division","ed","enn_cv","enn_mn","enn_sd","ent","frac_cv","frac_mn","frac_sd","gyrate_cv","gyrate_mn","gyrate_sd","iji","joinent","lpi","lsi","mesh","msidi","msiei","mutinf","ndca","np","pafrac","para_cv","para_mn","para_sd","pd","pladj","pr","prd","rpr","shape_cv","shape_mn","shape_sd","shdi","shei","sidi","siei","split","ta","tca","te"],["patch area","core area index","related circumscribing circle","contiguity index","core area","euclidean nearest neighbor distance","fractal dimension index","radius of gyration","number of core areas","perimeter-area ratio","patch perimeter","shape index","aggregation index","patch area","patch area","patch area","total (class) area","core area index","core area index","core area index","related circumscribing circle","related circumscribing circle","related circumscribing circle","clumpiness index","patch cohesion index","contiguity index","contiguity index","contiguity index","core area","core area","core area","core area percentage of landscape","disjunct core area density","disjunct core area","disjunct core area","disjunct core area","division index","edge density","euclidean nearest neighbor distance","euclidean nearest neighbor distance","euclidean nearest neighbor distance","fractal dimension index","fractal dimension index","fractal dimension index","radius of gyration","radius of gyration","radius of gyration","interspersion and juxtaposition index","largest patch index","landscape shape index","effective mesh size","number of disjunct core areas","normalized landscape shape index","number of patches","perimeter-area fractal dimension","perimeter-area ratio","perimeter-area ratio","perimeter-area ratio","patch density","percentage of like adjacencies","percentage of landscape","shape index","shape index","shape index","splitting index","total core area","total edge","aggregation index","patch area","patch area","patch area","core area index","core area index","core area index","related circumscribing circle","related circumscribing circle","related circumscribing circle","patch cohesion index","conditional entropy","connectance","contiguity index","contiguity index","contiguity index","core area","core area","core area","disjunct core area density","disjunct core area","disjunct core area","disjunct core area","division index","edge density","euclidean nearest neighbor distance","euclidean nearest neighbor distance","euclidean nearest neighbor distance","shannon entropy","fractal dimension index","fractal dimension index","fractal dimension index","radius of gyration","radius of gyration","radius of gyration","interspersion and juxtaposition index","joint entropy","largest patch index","landscape shape index","effective mesh size","modified simpson's diversity index","modified simpson's evenness index","mutual information","number of disjunct core areas","number of patches","perimeter-area fractal dimension","perimeter-area ratio","perimeter-area ratio","perimeter-area ratio","patch density","percentage of like adjacencies","patch richness","patch richness density","relative patch richness","shape index","shape index","shape index","shannon's diversity index","shannon's evenness index","simpson's diversity index","simspon's evenness index","splitting index","total area","total core area","total edge"],["area and edge metric","core area metric","shape metric","shape metric","core area metric","aggregation metric","shape metric","area and edge metric","core area metric","shape metric","area and edge metric","shape metric","aggregation metric","area and edge metric","area and edge metric","area and edge metric","area and edge metric","core area metric","core area metric","core area metric","shape metric","shape metric","shape metric","aggregation metric","aggregation metric","shape metric","shape metric","shape metric","core area metric","core area metric","core area metric","core area metric","core area metric","core area metric","core area metric","core area metric","aggregation metric","area and edge metric","aggregation metric","aggregation metric","aggregation metric","shape metric","shape metric","shape metric","area and edge metric","area and edge metric","area and edge metric","aggregation metric","area and edge metric","aggregation metric","aggregation metric","core area metric","aggregation metric","aggregation metric","shape metric","shape metric","shape metric","shape metric","aggregation metric","aggregation metric","area and edge metric","shape metric","shape metric","shape metric","aggregation metric","core area metric","area and edge metric","aggregation metric","area and edge metric","area and edge metric","area and edge metric","core area metric","core area metric","core area metric","shape metric","shape metric","shape metric","aggregation metric","complexity metric","aggregation metric","shape metric","shape metric","shape metric","core area metric","core area metric","core area metric","core area metric","core area metric","core area metric","core area metric","aggregation metric","area and edge metric","aggregation metric","aggregation metric","aggregation metric","complexity metric","shape metric","shape metric","shape metric","area and edge metric","area and edge metric","area and edge metric","aggregation metric","complexity metric","area and edge metric","aggregation metric","aggregation metric","diversity metric","diversity metric","complexity metric","core area metric","aggregation metric","shape metric","shape metric","shape metric","shape metric","aggregation metric","aggregation metric","diversity metric","diversity metric","diversity metric","shape metric","shape metric","shape metric","diversity metric","diversity metric","diversity metric","diversity metric","aggregation metric","area and edge metric","core area metric","area and edge metric"],["patch","patch","patch","patch","patch","patch","patch","patch","patch","patch","patch","patch","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","class","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape","landscape"],["lsm_p_area","lsm_p_cai","lsm_p_circle","lsm_p_contig","lsm_p_core","lsm_p_enn","lsm_p_frac","lsm_p_gyrate","lsm_p_ncore","lsm_p_para","lsm_p_perim","lsm_p_shape","lsm_c_ai","lsm_c_area_cv","lsm_c_area_mn","lsm_c_area_sd","lsm_c_ca","lsm_c_cai_cv","lsm_c_cai_mn","lsm_c_cai_sd","lsm_c_circle_cv","lsm_c_circle_mn","lsm_c_circle_sd","lsm_c_clumpy","lsm_c_cohesion","lsm_c_contig_cv","lsm_c_contig_mn","lsm_c_contig_sd","lsm_c_core_cv","lsm_c_core_mn","lsm_c_core_sd","lsm_c_cpland","lsm_c_dcad","lsm_c_dcore_cv","lsm_c_dcore_mn","lsm_c_dcore_sd","lsm_c_division","lsm_c_ed","lsm_c_enn_cv","lsm_c_enn_mn","lsm_c_enn_sd","lsm_c_frac_cv","lsm_c_frac_mn","lsm_c_frac_sd","lsm_c_gyrate_cv","lsm_c_gyrate_mn","lsm_c_gyrate_sd","lsm_c_iji","lsm_c_lpi","lsm_c_lsi","lsm_c_mesh","lsm_c_ndca","lsm_c_nlsi","lsm_c_np","lsm_c_pafrac","lsm_c_para_cv","lsm_c_para_mn","lsm_c_para_sd","lsm_c_pd","lsm_c_pladj","lsm_c_pland","lsm_c_shape_cv","lsm_c_shape_mn","lsm_c_shape_sd","lsm_c_split","lsm_c_tca","lsm_c_te","lsm_l_ai","lsm_l_area_cv","lsm_l_area_mn","lsm_l_area_sd","lsm_l_cai_cv","lsm_l_cai_mn","lsm_l_cai_sd","lsm_l_circle_cv","lsm_l_circle_mn","lsm_l_circle_sd","lsm_l_cohesion","lsm_l_condent","lsm_l_contag","lsm_l_contig_cv","lsm_l_contig_mn","lsm_l_contig_sd","lsm_l_core_cv","lsm_l_core_mn","lsm_l_core_sd","lsm_l_dcad","lsm_l_dcore_cv","lsm_l_dcore_mn","lsm_l_dcore_sd","lsm_l_division","lsm_l_ed","lsm_l_enn_cv","lsm_l_enn_mn","lsm_l_enn_sd","lsm_l_ent","lsm_l_frac_cv","lsm_l_frac_mn","lsm_l_frac_sd","lsm_l_gyrate_cv","lsm_l_gyrate_mn","lsm_l_gyrate_sd","lsm_l_iji","lsm_l_joinent","lsm_l_lpi","lsm_l_lsi","lsm_l_mesh","lsm_l_msidi","lsm_l_msiei","lsm_l_mutinf","lsm_l_ndca","lsm_l_np","lsm_l_pafrac","lsm_l_para_cv","lsm_l_para_mn","lsm_l_para_sd","lsm_l_pd","lsm_l_pladj","lsm_l_pr","lsm_l_prd","lsm_l_rpr","lsm_l_shape_cv","lsm_l_shape_mn","lsm_l_shape_sd","lsm_l_shdi","lsm_l_shei","lsm_l_sidi","lsm_l_siei","lsm_l_split","lsm_l_ta","lsm_l_tca","lsm_l_te"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>metric<\/th>\n      <th>name<\/th>\n      <th>type<\/th>\n      <th>level<\/th>\n      <th>function_name<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"tip","searchable":false,"ordering":false,"pageLength":7,"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[7,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# Landscape Metric Naming Conventions
+
+The functions in this library are named with the following taxonomy.
+
+`lsm_{l|p|c}_metric()`
+
+where `{l|p|c}` is one of `l`, `p`, or `c` and the metric is the name as shown above.  So, for example, if we are looking at the area of each patch in the landscape we would use the function
+
+--
+
+.pull-left[
+
+
+```r
+lsm_p_area( land_2016 ) 
+```
+
+```
+## # A tibble: 193 x 6
+##    layer level class    id metric value
+##    &lt;int&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1     1 patch    11     1 area   70.4 
+##  2     1 patch    11     2 area    0.18
+##  3     1 patch    11     3 area    0.18
+##  4     1 patch    11     4 area    0.18
+##  5     1 patch    11     5 area    1.17
+##  6     1 patch    11     6 area    0.18
+##  7     1 patch    11     7 area    0.18
+##  8     1 patch    11     8 area    0.36
+##  9     1 patch    11     9 area    0.27
+## 10     1 patch    11    10 area    1.08
+## # … with 183 more rows
+```
+
+]
+
+.pull-right[
+The output provides the following components:  
+
+- layers: See `?stack` for raster stacks  
+
+- level: The nested level of the analysis (lpc)  
+
+- class: The landscape feature class from the raster
+
+- id: A unique identification number for each group
+
+- metric: What is being measured.
+
+- value: The estimated value for the analysis.
+]
+
+
+---
+
+# Case Study - Summary of Forest Types
+
+
+.pull-left[
+
+```r
+lsm_p_area( land_2016 ) %&gt;%
+  filter( class %in% c(42, 43) ) %&gt;%
+  mutate( Forest = ifelse( class == 42, "Evergreen", "Mixed Hardwoods") ) %&gt;%
+  ggplot( aes(value) ) + 
+  geom_density() + 
+  facet_grid( Forest ~ .) +
+  xlab("Area (ha)") + 
+  ylab("Frequency") + 
+  ggtitle("Area Distribution of Mixed Forest Types")
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-58-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Other Metrics of Interest
+
+- *gyrate* - The mean distance between cells within it which approximates something like the average distance an organism can move within a patch before encountering a boundary.  
+
+- *ca* - The physical area associated with each landscape type.
+
+
+- *clump* - A measure of how spatially contingent the features are ranging from random (no clumping) to all in one large patch (fully clumped).
+
+- *pr* - Patch richness.
+
+- *shdi* - Shannon's Diversity index
+
+
+---
+
+# Finding Patches by ID
+
+
+
+```r
+lsm_p_area( land_2016 ) %&gt;%
+  group_by( class ) %&gt;%
+  summarize( `Area` = sum( value) ) %&gt;%
+  arrange(-Area)
+```
+
+```
+## # A tibble: 13 x 2
+##    class   Area
+##    &lt;int&gt;  &lt;dbl&gt;
+##  1    43 137.  
+##  2    42 137.  
+##  3    90  85.5 
+##  4    11  74.2 
+##  5    82  65.9 
+##  6    41  56.5 
+##  7    21  25.5 
+##  8    95  13.9 
+##  9    52  13.0 
+## 10    31   2.16
+## 11    22   1.26
+## 12    71   0.72
+## 13    23   0.18
+```
+
+---
+
+# Evergreen Forests
+
+.pull-left[
+
+```r
+get_patches( land_2016, class=42)[[1]] %&gt;%
+  plot( ) 
+```
+]
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-61-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Mixed Forests
+
+.pull-left[
+
+```r
+get_patches( land_2016, class=43)[[1]] %&gt;%
+  plot( ) 
+```
+]
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-63-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Woody Wetlands
+
+.pull-left[
+
+```r
+get_patches( land_2016, class=90)[[1]] %&gt;%
+  plot( ) 
+```
+]
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-65-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![](https://media.giphy.com/media/106cqwD4WrDjJm/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about&lt;br/&gt; the content presented herein&lt;br/&gt; now is your time.  
+
+If you think of something later though, &lt;br/&gt;feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll&lt;br/&gt; get back to you as soon as possible.
+]
+
+
+
+
+
+
+```r
+system("rm *.zip")
+system("rm -rf __MACOSX/")
+system("rm -rf NLCD_RVA_Gradient")
+```
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -15,7 +15,7 @@ options(htmltools.preserve.raw = FALSE)
 
 # if this is the first time making this repository change the following to TRUE
 #  and it will go through and figure out which libraries you need to install.
-firstRun = FALSE
+firstRun <- FALSE
 
 if ( firstRun ) {
   
@@ -23,7 +23,8 @@ if ( firstRun ) {
            "library(knitr)",
            "library(stringr)",
            "library(rmarkdown)",
-           "library(blogdown)") 
+           "library(blogdown)",
+           "library(devtools)") 
   
   allRmd <- list.files("lectures",pattern = ".Rmd",recursive = TRUE,full.names = TRUE)
 
@@ -47,6 +48,9 @@ if ( firstRun ) {
   
   needed <- setdiff( to_install, curr_packages)
   install.packages( needed, ask=FALSE)
+  
+  devtools::install_github("dyerlab/popgraph")
+  devtools::install_github("dyerlab/gstudio")
 }
 
 

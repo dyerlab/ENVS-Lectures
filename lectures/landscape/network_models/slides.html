@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+    <script src="libs/d3-4.5.0/d3.min.js"></script>
+    <script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
+    <script src="libs/jquery-1.12.4/jquery.min.js"></script>
+    <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-1.3.1/leaflet.js"></script>
+    <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+    <script src="libs/proj4-2.6.2/proj4.min.js"></script>
+    <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+    <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+    <script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+    <link rel="stylesheet" href="slide_styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+
+
+
+# .orange[Network Models]
+
+### .fancy[The *One True* Representation]
+
+
+
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51198451539_f09703e3d8_c_d.jpg")
+background-position: center
+
+
+---
+
+# Networks as a Metaphor
+
+Much of what we do in Landscape (and Popualation) Genetics can be considered as a set of network problems.  
+
+Both genetic and ecological distances are commonly represented as distance matrices, which mathematically is also an adjacency matrix.
+
+  - Between Sites connectivity `\(\to\)`  gene flow.  
+  
+  - Between Site separation `\(\to\)` spatial/ecological separation.  
+  
+  - Source/Sink dynamics
+  
+  
+
+---
+class: center, middle 
+
+![](https://live.staticflickr.com/65535/51206238790_fe6c8cbd5e_c_d.jpg)
+
+
+
+---
+
+# Graph Components - Nodes 
+
+
+  
+.pull-left[
+Definable sample locaions defined by sites, ponds, habitats, etc.
+
+- Nodes, Vertices, Points  
+
+- .redinline[**AT**] site data  
+
+- Spatially Relevant  
+
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51205931839_d540cc3ec7_d.jpg)
+]
+
+
+---
+
+# Graph Components - Edges
+
+.pull-left[
+Connections between nodes.
+
+
+- Edges, arcs, links  
+
+- .orangeinline[**BETWEEN**] site data  
+
+- Spatially, ecologically, or topographically relevant.
+
+
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51204455502_fc4943c478_o_d.png)
+]
+
+
+---
+
+# Graph Types
+
+![](https://live.staticflickr.com/65535/51206240790_140e96e423_c_d.jpg)
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51205383083_6edcbb258e_o_d.png)
+
+
+---
+# Graph Jargon
+
+![](https://live.staticflickr.com/65535/51205177786_e3ab1a2cf9_o_d.png)
+
+
+---
+
+# Graph Visualization
+
+A `layout` is a configuration of nodes in either 2- or 3-dimensional space.  
+
+- Spatial  
+
+- Based upon internal structure.
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51195610656_d755898d56_o_d.png)
+## This does exist
+
+
+---
+
+# Basic Network Analysis in R
+
+.pull-left[
+![](https://live.staticflickr.com/65535/51195610656_d755898d56_o_d.png)
+]
+
+
+.pull-right[
+
+```r
+library( igraph )
+
+A &lt;- matrix( 0, nrow=5,ncol=5)
+A[1,2] &lt;- A[2,1] &lt;- A[1,3] &lt;- A[2,3] &lt;- 1
+A[3,4] &lt;- A[4,5] &lt;- 1
+rownames(A) &lt;- colnames(A) &lt;- c("X","Y","Z","W","U")
+A
+```
+
+```
+##   X Y Z W U
+## X 0 1 1 0 0
+## Y 1 0 1 0 0
+## Z 0 0 0 1 0
+## W 0 0 0 0 1
+## U 0 0 0 0 0
+```
+]
+
+
+---
+
+# Basic Network Analysis in R
+
+.pull-left[
+![](https://live.staticflickr.com/65535/51195610656_d755898d56_o_d.png)
+]
+
+
+.pull-right[
+
+```r
+G &lt;- graph.adjacency( A, 
+                      mode="directed" )
+G
+```
+
+```
+## IGRAPH a762693 DN-- 5 6 -- 
+## + attr: name (v/c)
+## + edges from a762693 (vertex names):
+## [1] X-&gt;Y X-&gt;Z Y-&gt;X Y-&gt;Z Z-&gt;W W-&gt;U
+```
+
+```r
+vertex_attr( G )
+```
+
+```
+## $name
+## [1] "X" "Y" "Z" "W" "U"
+```
+
+```r
+edge_attr( G )
+```
+
+```
+## list()
+```
+]
+
+
+---
+
+
+```r
+plot(G)
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-3-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: center, middle
+
+# .red[Rule Based Networks]
+
+
+
+---
+
+# Genetic Distance
+
+- A metric that can be used to describe pair-wise structure of populations.  
+
+- Configured as a network, the topological shape of the network is a snapshot of structure.
+
+- Require specific rules for construction.
+
+---
+
+# *Posidonia oceanica* - clonal seagrass
+
+.pull-left[
+![](https://live.staticflickr.com/65535/51205458203_ec5d8d27c9_c_d.jpg)
+]
+
+
+.pull-right[
+
+![](https://live.staticflickr.com/65535/51205253741_fafc8f1c78_w_d.jpg)
+
+]
+
+---
+
+# *Posidonia oceanica* - clonal seagrass
+
+
+![](https://live.staticflickr.com/65535/51206024464_6fd31fb37d_c_d.jpg)
+
+
+---
+
+# Threshold Connectivities
+
+.pull-left[
+Edges are In/Out based upon geographic separation between sample locations.
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51204543827_59de1e1220_z_d.jpg)
+]
+
+
+
+---
+
+# Topological Rules - Graph Metrics
+
+Perhaps these networks are defined by graph-construction algorithms, many of which have been sucessful in describing other network structures (internet, epidemoloigcal disease networks, etc.)  In these models, the topological connections define the network connection rules.
+
+![](https://live.staticflickr.com/65535/51204551747_449d06f702_c_d.jpg)
+
+
+
+---
+
+# Challenges to Rules-Based Networks
+
+Rules based networks require `someone` to decide on the rules.
+
+
+- Male intuition?   
+
+- "Body of Knowledge"...
+
+--
+
+Making .redinline[arbitrary] decisions about modifying your data based upon your own *intuition* or *body of knowledge* is suspect.  
+
+- No matter what kind of *expert* you think you are in some system (with fancy papers to show off), your intuition is just a **guess**, nothing more.
+
+- Use **data**, **math**, and **experimentation** to verify the input into your models.
+
+
+
+
+
+
+--
+
+
+To what extent doe the .redinline[mechanisms that influence realized connectivity for a species] sampled among different locations operate in a way that is aligned with a fancy graph-construction algorithm thought up by some mathematician?
+
+
+
+
+---
+class: center, middle
+
+# .red[Population Graphs]
+
+### .red[Statistical Based Topologies]
+
+
+
+---
+
+# Model-Based Graph Construction
+
+
+- The raw data itself as valuable information about the *spatial distribution of genetic variation*.
+
+- The demographic processes that connect populations (or localles) is **exactly** the process that creates the genetic structure we observe.
+
+- Initiated by wanting to find a *post hoc* analysis on genetic structure statitics.
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203766_22810be269_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205410383_c244978b56_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205410543_424d303c3d_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203956_9a07fd9754_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203991_9ff8c40c09_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205972029_675cac0b89_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51206270395_40fb0f8cf2_c_d.jpg)
+
+
+---
+
+# Non-Uniqueness of Structure
+
+A structure statistic such as `\(F_{ST}\)` is a very powerful tool for understanding  connectivity.  However, there are some topological concerns related to its non-reversability.
+
+&amp;nbsp;
+
+
+![](https://live.staticflickr.com/65535/51205429223_32845ba2d1_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205970699_745cc3ba67_c_d.jpg)
+
+
+
+---
+
+
+
+.pull-left[
+# *Lophocereus schottii*
+
+Shape of genetic connectivity.
+
+
+![](https://live.staticflickr.com/65535/51205997584_08e1520193_o_d.png)
+]
+
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51205242571_989f485252_c_d.jpg)
+]
+
+
+
+---
+
+# Conditional Graph Distance As Surrogate 
+
+![](https://live.staticflickr.com/65535/51205494498_61f223f600_c_d.jpg)
+
+
+
+
+
+
+---
+
+# Visualizing Topologies
+
+
+```r
+library( popgraph ) 
+data( lopho ) 
+lopho
+```
+
+```
+## IGRAPH 6af7beb UNW- 21 52 -- 
+## + attr: name (v/c), size (v/n), color (v/c), Region (v/c), weight (e/n)
+## + edges from 6af7beb (vertex names):
+##  [1] BaC--LaV    BaC--Lig    BaC--PtC    BaC--PtP    BaC--SnE    BaC--SnI   
+##  [7] BaC--StR    Ctv--PtP    Ctv--SLG    Ctv--SnF    Ctv--SenBas LaV--Lig   
+## [13] LaV--PtC    LaV--SnE    LaV--SnF    LaV--TsS    Lig--PtC    Lig--SnI   
+## [19] Lig--StR    Lig--TsS    PtC--SnE    PtC--StR    PtC--TsS    PtC--SenBas
+## [25] PtP--SnF    PtP--SnI    PtP--SenBas SLG--SnF    SLG--SnI    SnE--StR   
+## [31] SnE--TsS    SnF--SnI    SnI--StR    StR--TsS    StR--SenBas CP --Seri  
+## [37] CP --SG     CP --SN     CP --TS     LF --PL     LF --SG     LF --SI    
+## [43] PL --SenBas PL --SG     PL --SI     PL --SN    
+## + ... omitted several edges
+```
+
+---
+
+
+```r
+plot( lopho )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-5-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+.footnote[ The default layout is based upon the *Fruchterman Reinghold* algorithm.]
+
+
+---
+
+# Customizing Layouts - Topological Layouts
+
+.pull-left[
+
+Projection onto 2-dimensional space based upon *spring* model of connectivity.  
+
+```r
+l &lt;- igraph::layout.kamada.kawai( lopho )
+head(l)
+```
+
+```
+##            [,1]      [,2]
+## [1,] -1.0095891 1.1397088
+## [2,]  0.1515580 0.8346170
+## [3,] -1.2728255 2.1898410
+## [4,] -1.4344552 1.8100753
+## [5,] -2.4123245 0.2252931
+## [6,] -0.1723895 0.8333827
+```
+
+]
+
+
+.pull-right[
+
+
+```r
+plot( lopho, layout = l )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-7-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+---
+
+# Customizing Network Plots
+
+.pull-left[
+
+```r
+plot( lopho, 
+      edge.color = "black", 
+      vertex.label.color = "darkred",
+      vertex.color = "gray",
+      vertex.label.dist = 2 )
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-9-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Interactive Visualization
+
+.pull-left[
+
+```r
+library( networkD3 )
+lopho.d3 &lt;- igraph_to_networkD3( lopho,
+                                 group=V(lopho)$Region)
+forceNetwork( Links = lopho.d3$links,
+              Nodes = lopho.d3$nodes,
+              Source = "source",
+              Target = 'target',
+              NodeID = 'name', 
+              Group = 'group')
+```
+
+]
+
+.pull-right[
+<div id="htmlwidget-355dd4592180dc6200b5" style="width:504px;height:504px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-355dd4592180dc6200b5">{"x":{"links":{"source":[0,0,2,13,2,3,0,0,1,1,4,14,5,10,12,13,16,12,14,17,13,14,1,12,14,16,18,4,0,2,1,5,6,2,0,3,8,5,6,0,3,9,7,4,18,19,12,10,4,3,2,7],"target":[2,3,3,14,4,4,4,5,5,15,15,15,15,15,16,17,17,17,17,18,18,18,6,19,19,19,19,7,7,7,8,8,8,8,9,9,9,9,9,10,10,10,10,10,20,20,20,11,11,11,11,11],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["BaC","Ctv","LaV","Lig","PtC","PtP","SLG","SnE","SnF","SnI","StR","TsS","CP","LF","PL","SenBas","Seri","SG","SI","SN","TS"],"group":["Baja","Baja","Baja","Baja","Baja","Baja","Baja","Baja","Baja","Baja","Baja","Baja","Sonora","Sonora","Sonora","Sonora","Sonora","Sonora","Sonora","Sonora","Sonora"]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":7,"fontFamily":"serif","clickTextSize":17.5,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":0.6,"zoom":false,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
+]
+
+
+---
+
+# Visualizing Topologies - Spatially
+
+
+
+```r
+data( baja )
+lopho &lt;- decorate_graph(lopho, baja)
+lopho
+```
+
+```
+## IGRAPH 6af7beb UNW- 21 52 -- 
+## + attr: name (v/c), size (v/n), color (v/c), Region (v/c), Latitude
+## | (v/n), Longitude (v/n), weight (e/n)
+## + edges from 6af7beb (vertex names):
+##  [1] BaC--LaV    BaC--Lig    BaC--PtC    BaC--PtP    BaC--SnE    BaC--SnI   
+##  [7] BaC--StR    Ctv--PtP    Ctv--SLG    Ctv--SnF    Ctv--SenBas LaV--Lig   
+## [13] LaV--PtC    LaV--SnE    LaV--SnF    LaV--TsS    Lig--PtC    Lig--SnI   
+## [19] Lig--StR    Lig--TsS    PtC--SnE    PtC--StR    PtC--TsS    PtC--SenBas
+## [25] PtP--SnF    PtP--SnI    PtP--SenBas SLG--SnF    SLG--SnI    SnE--StR   
+## [31] SnE--TsS    SnF--SnI    SnI--StR    StR--TsS    StR--SenBas CP --Seri  
+## [37] CP --SG     CP --SN     CP --TS     LF --PL     LF --SG     LF --SI    
+## + ... omitted several edges
+```
+
+---
+
+# Spatial Locations
+
+.pull-left[
+
+```r
+library( ggplot2 ) 
+p &lt;- ggplot() 
+p &lt;- p + geom_edgeset( aes(x=Longitude,y=Latitude), lopho)
+p
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+# Spatial Locations
+
+.pull-left[
+
+```r
+p &lt;- p + geom_nodeset( aes(x=Longitude,y=Latitude), lopho)
+p &lt;- p + coord_map() + xlab("Longitude") + ylab("Latitude")
+p
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-16-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+
+
+
+---
+
+# Overlaying onto Other Features
+
+.pull-left[
+
+```r
+map_data("world", "mexico") -&gt; map 
+ggplot() + 
+  geom_polygon( aes(long,lat, group=group), 
+                data=map, 
+                fill="gray") + 
+  geom_edgeset( aes(x=Longitude,y=Latitude), 
+                lopho, 
+                color="gray40") + 
+  geom_nodeset( aes(x=Longitude,y=Latitude, 
+                    color=Region,
+                    size=size, 
+                    alpha=0.7), 
+                lopho) +
+  coord_sf( xlim=c(-116,-109),
+            ylim=c(22,35), 
+            crs = 4326) 
+```
+
+]
+
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-18-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+---
+
+# Leaflet Overlays
+
+.pull-left[
+We can convert the node and edge sets into `sf` objects and then overlay them using the leaflet framework.
+
+
+```r
+nodes &lt;- to_sf(lopho, what="nodes" )
+edges &lt;- to_sf(lopho, what="edges" )
+```
+
+]
+
+.pull-right[
+
+```r
+head( nodes )
+```
+
+```
+## Simple feature collection with 6 features and 4 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: -114.72 ymin: 24.04 xmax: -109.99 ymax: 29.73
+## Geodetic CRS:  WGS 84
+##     name      size   color Region              geometry
+## BaC  BaC 12.158810 #FDAE61      1 POINT (-111.79 26.59)
+## Ctv  Ctv  3.880886 #FDAE61      1 POINT (-114.72 29.73)
+## LaV  LaV  3.533757 #FDAE61      1 POINT (-109.99 24.04)
+## Lig  Lig  4.731355 #FDAE61      1 POINT (-111.27 25.73)
+## PtC  PtC  4.684652 #FDAE61      1 POINT (-111.15 24.19)
+## PtP  PtP 10.925375 #FDAE61      1  POINT (-113.9 29.03)
+```
+
+
+```r
+head( edges )
+```
+
+```
+## Simple feature collection with 6 features and 2 fields
+## Geometry type: LINESTRING
+## Dimension:     XY
+## Bounding box:  xmin: -113.9 ymin: 24.04 xmax: -109.99 ymax: 29.03
+## Geodetic CRS:  WGS 84
+## # A tibble: 6 x 3
+##   EdgeGroup Weight                       geometry
+##   &lt;chr&gt;      &lt;dbl&gt;               &lt;LINESTRING [°]&gt;
+## 1 BaC-LaV     9.05 (-109.99 24.04, -111.79 26.59)
+## 2 BaC-Lig     9.72 (-111.27 25.73, -111.79 26.59)
+## 3 BaC-PtC    12.4  (-111.15 24.19, -111.79 26.59)
+## 4 BaC-PtP     6.54  (-113.9 29.03, -111.79 26.59)
+## 5 BaC-SnE     7.92  (-110.7 24.45, -111.79 26.59)
+## 6 BaC-SnI     6.96 (-113.02 27.29, -111.79 26.59)
+```
+
+
+]
+
+
+---
+
+# Leaflet Map
+
+.pull-left[
+
+```r
+library( leaflet )
+
+leaflet() %&gt;%
+  addProviderTiles( provider = providers$Esri.WorldImagery ) %&gt;%
+  addMarkers( data = nodes ) %&gt;%
+  addPolylines( data=edges, color="white" )
+```
+
+]
+
+
+.pull-right[
+<div id="htmlwidget-c471b8a0cd2145beef62" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c471b8a0cd2145beef62">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldImagery",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[26.59,29.73,24.04,25.73,24.19,29.03,29.59,24.45,30.76,27.29,24.91,23.58,27.95,30.68,30.39,31.95,28.88,29.4,29.75,28.82,28.41],[-111.79,-114.72,-109.99,-111.27,-111.15,-113.9,-114.4,-110.7,-114.73,-113.02,-111.62,-110.34,-110.66,-112.27,-112.58,-112.87,-111.96,-112.05,-112.5,-111.8,-111.37],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPolylines","args":[[[[{"lng":[-109.99,-111.79],"lat":[24.04,26.59]}]],[[{"lng":[-111.27,-111.79],"lat":[25.73,26.59]}]],[[{"lng":[-111.15,-111.79],"lat":[24.19,26.59]}]],[[{"lng":[-113.9,-111.79],"lat":[29.03,26.59]}]],[[{"lng":[-110.7,-111.79],"lat":[24.45,26.59]}]],[[{"lng":[-113.02,-111.79],"lat":[27.29,26.59]}]],[[{"lng":[-111.62,-111.79],"lat":[24.91,26.59]}]],[[{"lng":[-110.66,-111.96],"lat":[27.95,28.88]}]],[[{"lng":[-110.66,-112.05],"lat":[27.95,29.4]}]],[[{"lng":[-110.66,-111.8],"lat":[27.95,28.82]}]],[[{"lng":[-110.66,-111.37],"lat":[27.95,28.41]}]],[[{"lng":[-114.72,-113.9],"lat":[29.73,29.03]}]],[[{"lng":[-112.87,-114.72],"lat":[31.95,29.73]}]],[[{"lng":[-114.4,-114.72],"lat":[29.59,29.73]}]],[[{"lng":[-114.73,-114.72],"lat":[30.76,29.73]}]],[[{"lng":[-109.99,-111.27],"lat":[24.04,25.73]}]],[[{"lng":[-109.99,-111.15],"lat":[24.04,24.19]}]],[[{"lng":[-109.99,-110.7],"lat":[24.04,24.45]}]],[[{"lng":[-114.73,-109.99],"lat":[30.76,24.04]}]],[[{"lng":[-110.34,-109.99],"lat":[23.58,24.04]}]],[[{"lng":[-112.58,-112.27],"lat":[30.39,30.68]}]],[[{"lng":[-112.05,-112.27],"lat":[29.4,30.68]}]],[[{"lng":[-112.5,-112.27],"lat":[29.75,30.68]}]],[[{"lng":[-111.15,-111.27],"lat":[24.19,25.73]}]],[[{"lng":[-113.02,-111.27],"lat":[27.29,25.73]}]],[[{"lng":[-111.62,-111.27],"lat":[24.91,25.73]}]],[[{"lng":[-110.34,-111.27],"lat":[23.58,25.73]}]],[[{"lng":[-112.87,-112.58],"lat":[31.95,30.39]}]],[[{"lng":[-112.05,-112.58],"lat":[29.4,30.39]}]],[[{"lng":[-112.5,-112.58],"lat":[29.75,30.39]}]],[[{"lng":[-111.8,-112.58],"lat":[28.82,30.39]}]],[[{"lng":[-112.87,-111.15],"lat":[31.95,24.19]}]],[[{"lng":[-110.7,-111.15],"lat":[24.45,24.19]}]],[[{"lng":[-111.15,-111.62],"lat":[24.19,24.91]}]],[[{"lng":[-110.34,-111.15],"lat":[23.58,24.19]}]],[[{"lng":[-112.87,-113.9],"lat":[31.95,29.03]}]],[[{"lng":[-114.73,-113.9],"lat":[30.76,29.03]}]],[[{"lng":[-113.9,-113.02],"lat":[29.03,27.29]}]],[[{"lng":[-111.96,-112.05],"lat":[28.88,29.4]}]],[[{"lng":[-111.8,-111.96],"lat":[28.82,28.88]}]],[[{"lng":[-112.05,-112.5],"lat":[29.4,29.75]}]],[[{"lng":[-111.8,-112.5],"lat":[28.82,29.75]}]],[[{"lng":[-111.37,-112.5],"lat":[28.41,29.75]}]],[[{"lng":[-114.73,-114.4],"lat":[30.76,29.59]}]],[[{"lng":[-114.4,-113.02],"lat":[29.59,27.29]}]],[[{"lng":[-111.37,-111.8],"lat":[28.41,28.82]}]],[[{"lng":[-110.7,-111.62],"lat":[24.45,24.91]}]],[[{"lng":[-110.34,-110.7],"lat":[23.58,24.45]}]],[[{"lng":[-114.73,-113.02],"lat":[30.76,27.29]}]],[[{"lng":[-113.02,-111.62],"lat":[27.29,24.91]}]],[[{"lng":[-112.87,-111.62],"lat":[31.95,24.91]}]],[[{"lng":[-110.34,-111.62],"lat":[23.58,24.91]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"white","weight":5,"opacity":0.5,"fill":false,"fillColor":"white","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.58,31.95],"lng":[-114.73,-109.99]}},"evals":[],"jsHooks":[]}</script>
+]
+
+
+
+
+
+---
+
+# Connectivity &amp; Intervening Habitat
+
+If the network captures much of the underlying connectivity network, then the habitat types that connectivity edges traverse may be indicative of preferendes in paths of gene flow.  One way to test this while at the same time preserve any local habitat heterogeneity is to permute the edges.
+
+`\(H_O: Edges \; Random \; WRT \; Habitat\)`
+
+If this is true, then we should be able to permute edges across the landscape and `raster::extract()` the habitat types traversed.  The set of observed ones should be just a random sample of the randomized ones **if and only if** the null hypothesis is correct.
+
+See the function `?randomize_graph()` on how you can randomize the edges in a network.
+
+
+
+---
+
+# Ecological Edge Crossing
+
+![](https://live.staticflickr.com/65535/51205993197_ce1568ff05_c_d.jpg)
+
+.footnote[Dyer *et al.* (2012) [doi](https://doi.org/10.1007/s10980-011-9696-x) [pdf](https://drive.google.com/open?id=0B0T81CzLjtfPOXlQcXdLczM2c2c)]
+---
+
+# Ecological Edge Crossing
+
+![](https://live.staticflickr.com/65535/51207771575_7cd9da01fa_z_d.jpg)
+
+
+
+
+
+
+
+
+
+---
+class: center, middle
+
+# .redinline[Popgraph Topolgical Features]
+
+
+
+---
+
+# Topological Properties
+
+There are several different statistics measuring properties of nodes and edges.  Here are some examples:  
+
+- *Degree:* The number of edges connected to a node.  
+
+- *Closeness:* Standardized distance from a node to other nodes (firestation).
+
+- *Betweenness:* Standardized distance from everywhere else to the node/edge (library).
+
+
+
+---
+
+# Node-Specific Topological Features
+
+
+```r
+degree( lopho )
+```
+
+```
+##    BaC    Ctv    LaV    Lig    PtC    PtP    SLG    SnE    SnF    SnI    StR 
+##      7      4      6      6      7      5      3      5      5      6      7 
+##    TsS     CP     LF     PL SenBas   Seri     SG     SI     SN     TS 
+##      5      4      3      5      5      3      5      5      5      3
+```
+
+```r
+closeness( lopho )
+```
+
+```
+##         BaC         Ctv         LaV         Lig         PtC         PtP 
+## 0.002998006 0.003443042 0.002390148 0.002421674 0.002415027 0.003525405 
+##         SLG         SnE         SnF         SnI         StR         TsS 
+## 0.003268926 0.002469604 0.003226610 0.003134548 0.003220898 0.002193898 
+##          CP          LF          PL      SenBas        Seri          SG 
+## 0.002466197 0.002956398 0.003267921 0.003844318 0.002513050 0.002863083 
+##          SI          SN          TS 
+## 0.002918707 0.002702668 0.002430486
+```
+
+```r
+betweenness( lopho )
+```
+
+```
+##    BaC    Ctv    LaV    Lig    PtC    PtP    SLG    SnE    SnF    SnI    StR 
+##      9     31      4      0      0     25      3      0     16      8     30 
+##    TsS     CP     LF     PL SenBas   Seri     SG     SI     SN     TS 
+##      0      2      0     92     98      1     32     15      0      0
+```
+
+```r
+eigen_centrality( lopho )$vector 
+```
+
+```
+##          BaC          Ctv          LaV          Lig          PtC          PtP 
+## 0.6687298120 0.0567830271 0.7013285708 0.8081182427 1.0000000000 0.1514600463 
+##          SLG          SnE          SnF          SnI          StR          TsS 
+## 0.0347729211 0.6113445775 0.1620895869 0.3248050072 0.7041867362 0.7112031591 
+##           CP           LF           PL       SenBas         Seri           SG 
+## 0.0007395873 0.0028570764 0.0598602506 0.3783327302 0.0005974582 0.0040620964 
+##           SI           SN           TS 
+## 0.0038824940 0.0054114197 0.0007822407
+```
+
+
+
+
+---
+class: center, middle
+
+## .red[Draw it Dummy!]
+
+######  .red[ &amp;dash; Message from *Historical* Dyer to *Current* Dyer to Draw Graph Distance IBD]
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203386_e141b95821_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203411_25329895cd_c_d.jpg)
+
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51204488512_a795b7aa3e_c_d.jpg)
+
+
+---
+class: middle, center
+
+# .red[Topological Congruence]
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203086_f31a9dca94_c_d.jpg)
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51204488022_f78b237a1d_c_d.jpg)
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51205203226_519092c333_c_d.jpg)
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51204488267_4e3256cf7e_c_d.jpg)
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![](https://media.giphy.com/media/xUySTWhYy6KDZBEWsw/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about&lt;br/&gt; the content presented herein&lt;br/&gt; now is your time.  
+
+If you think of something later though, &lt;br/&gt;feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll&lt;br/&gt; get back to you as soon as possible.
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

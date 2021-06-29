@@ -1,5 +1,7 @@
 rm( list=ls() )
 library(tidyverse)
+library( knitr )
+library( stringr )
 
 #
 #  Open the "Terminal"
@@ -11,56 +13,40 @@ library(tidyverse)
 # Fix to break in rmarkdown and HTMLWidgets
 options(htmltools.preserve.raw = FALSE)
 
+# if this is the first time making this repository change the following to TRUE
+#  and it will go through and figure out which libraries you need to install.
+firstRun = FALSE
 
-<<<<<<< HEAD
-# Fix to break in rmarkdown and HTMLWidgets
-options(htmltools.preserve.raw = FALSE)
-
-
-=======
->>>>>>> c753669be163fd5b74cc0dda3543c8edc61894f2
-if ( 0 ) {
+if ( firstRun ) {
   
-  # look to make sure all the libraries are installed
+  libs <- c("library(tidyverse)",
+           "library(knitr)",
+           "library(stringr)",
+           "library(rmarkdown)",
+           "library(blogdown)") 
+  
   allRmd <- list.files("lectures",pattern = ".Rmd",recursive = TRUE,full.names = TRUE)
-  all_libs <- c("tidyverse","readtext", "stringr")
-  df.files <- readtext::readtext(allRmd, verbosity = 0)
-  pull_libraries <- function( file ) { 
-    lines <- strsplit(file, split="\n")[[1]]
-    idx <- grep( pattern = "^library\\(", x=lines)
-    libs <- lines[idx]
-    libs <- stringr::str_remove_all(libs,"library\\(")
-    libs <- stringr::str_remove_all(libs, "\\)")
-    libs <- stringr::str_remove_all(libs, " ")
-    all_libs <- c( all_libs, libs )
-    return( unique( all_libs ) ) 
+
+  for( file in allRmd) {
+    lines <- readLines(file,warn = FALSE)
+    if( any( grepl("^library", lines ) )) { 
+      libs <- c(libs, lines[ grepl("^library", lines ) ])
+    }
   }
+
+  libs %>% 
+    str_remove_all("library\\(") %>%
+    str_remove_all( "\\)") %>%
+    str_remove_all( "\"") %>%
+    str_trim() %>%
+    sort() %>%
+    unique() -> to_install
   
-  for( line in df.files$text) { 
-    
-  }
+  curr_packages <- installed.packages()
+  curr_packages <- names( is.na(curr_packages[,4]))
   
-  
-}
-
-
-
-
-if( FALSE ) {
-  # clean out all html files
-  system("rm -rf docs/*")
-  system("find lectures -iname '*.html' -delete")
-  system("find lectures -name 'libs' -type d -exec rm -rv {} + ")
-  system("find lectures -name 'slides_files' -type d -exec rm -rv {} + ")
-  system("find lectures -iname '*2.css' -delete")
-  system("find lectures -iname '*2.js' -delete")
-  system("find lectures -iname '*2.map' -delete")
-  system("find lectures -iname '*2.svg' -delete")
-  system("find lectures -iname '*2.html' -delete")
-  system("find lectures -iname '*3.css' -delete")
-  system("find lectures -iname '*3.js' -delete")
-  system("find lectures -iname '*3.map' -delete")
-  system("find lectures -name .DS_Store -delete")
+  needed <- setdiff( to_install, curr_packages)
+  install.packages( needed, ask=FALSE)
 }
 
 

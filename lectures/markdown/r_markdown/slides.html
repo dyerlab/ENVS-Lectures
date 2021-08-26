@@ -3,6 +3,7 @@
   <head>
     <title>R Markdown</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/middlebury.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/middlebury-fonts.css" rel="stylesheet" />
     <script src="libs/kePrint-0.0.1/kePrint.js"></script>
@@ -128,6 +129,14 @@ background-size: auto
 &amp;nbsp;
 
 Easily move from R Markdown to a wide range of output styles, both static and dynamic.
+
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+
+![golem](https://live.staticflickr.com/65535/51403874726_e05d443b51_m_d.jpg)
 ]
 
 ---
@@ -475,7 +484,7 @@ library( sf )
 ```
 
 ```
-## Linking to GEOS 3.8.1, GDAL 3.1.4, PROJ 6.3.1
+## Linking to GEOS 3.8.1, GDAL 3.2.1, PROJ 7.2.1
 ```
 
 ```r
@@ -483,12 +492,14 @@ nc &lt;- st_read(system.file("shape/nc.shp", package="sf"))
 ```
 
 ```
-## Reading layer `nc' from data source `/Library/Frameworks/R.framework/Versions/4.0/Resources/library/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source 
+##   `/Library/Frameworks/R.framework/Versions/4.0/Resources/library/sf/shape/nc.shp' 
+##   using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
-## geometry type:  MULTIPOLYGON
-## dimension:      XY
-## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
-## geographic CRS: NAD27
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
+## Geodetic CRS:  NAD27
 ```
 
 
@@ -740,6 +751,7 @@ background-size: auto
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
 .bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -902,12 +902,61 @@ geoTIFFS
 
 ---
 
-# From File Contents
-
-Or from the contents of an individual data file
+# Files & File Paths
 
 ```{r}
-beerStyles <- readLines( "../../../data/Beer_Styles.csv")
+file <- geoTIFFS[13]
+file
+```
+
+--
+
+
+
+```{r}
+basename(file)
+dirname( file )
+```
+
+---
+
+.pull-left[
+
+# `str_split()` Components
+
+When we split a string, it is returned as a `list` of objects.
+
+**Lists**
+
+- Lists are a kind of container
+
+- Allow different kinds of data 
+
+- Indexed by **either** number or character key
+
+- Uses 2 [[ and 2 ]] for indexes.
+]
+
+.pull-right[
+```{r}
+file_parts <- str_split( geoTIFFS, pattern="/")
+class( file_parts )
+length( file_parts )
+file_parts[1:5]
+file_parts[[1]][2]
+```
+]
+
+
+
+---
+
+# From File Contents
+
+Or from the contents of an individual data file.  This file can be local (as in `~/data/alt_22.tif` in the previous slide) or on a remote computer somewhere.  Here is a data file that I use in teaching and is located in my github repository.  It describes the 100 beer styles recognized for competition by the international Beer Judge Certification Program (BJCP and yes there is such an organization).
+
+```{r}
+beerStyles <- readLines( "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Beer_Styles.csv")
 beerStyles[1:10]
 ```
 

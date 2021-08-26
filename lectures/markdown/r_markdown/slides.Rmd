@@ -132,6 +132,14 @@ background-size: auto
 &nbsp;
 
 Easily move from R Markdown to a wide range of output styles, both static and dynamic.
+
+
+&nbsp;
+
+&nbsp;
+
+
+![golem](https://live.staticflickr.com/65535/51403874726_e05d443b51_m_d.jpg)
 ]
 
 ---

@@ -3,8 +3,12 @@
   <head>
     <title>The Title</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/middlebury.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/middlebury-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+    <link href="libs/str_view-0.1.0/str_view.css" rel="stylesheet" />
+    <script src="libs/str_view-binding-1.4.0/str_view.js"></script>
     <link rel="stylesheet" href="envs543-styles.css" type="text/css" />
   </head>
   <body>
@@ -17,7 +21,7 @@ background-position: right
 background-size: auto
 
 
-# Character Data
+# Character &amp; String Data
 
 
 
@@ -37,7 +41,514 @@ background-size: auto
 
 class: sectionTitle
 
-# String Operations
+# Textual Represenations
+
+---
+
+# String &amp; Character Data
+
+One of the most fundamental kinds of data we work with is textual data.
+
+- Population Names  
+
+- Genetic Sequences
+
+- Parsing Raw Files
+
+- Autmated Lexicographic Analyses
+
+
+
+---
+
+# Character Data Types
+
+In `R`, string and character data is represented as a sequence of objects *enclosed* within either single or double quotes.
+
+
+
+```r
+"Dyer"
+```
+
+```
+## [1] "Dyer"
+```
+
+
+
+```r
+'Rodney'
+```
+
+```
+## [1] "Rodney"
+```
+
+--  
+
+Notice that you .red[must] use the same quote character to start and finish the data within the sequence.
+
+
+---
+
+# First Gotcha 💥
+
+RStudio ties to match quotes (e.g., when you open as string with a quot glyph, it automatically puts in the matching closing one for you).  However if this fails, RStudio will continue to accept input (forever) until you finish with the closed quote character.
+
+--
+
+```
+&gt; "Bob 
++ 
++ 
++ 
++ help()
++ 
++ 
++ 
++ o crap, what is happening?
++
+```
+
+The .red[dead] giveaway is the the plus sign that is automatically put into the next line on the console.
+
+
+
+---
+
+# Creating String Variables
+
+In `R`, data is represented in *variables*, which is pretty handy so we do not need to type in a ton data each time we want to reference it.
+
+
+```r
+string1 &lt;- "Data Literacy is my favorite class!"
+```
+
+--
+
+Variable names should:
+
+- Be unique  
+
+- Start with a character  
+
+- Contain letters, numbers, and some symbols (e.g., `_`, `.`)
+
+- Unless transient, it should .red[describe the data it is representing]
+
+
+---
+
+# The Assignment Operator `&lt;-` (or equally valid as `-&gt;`)
+
+To assign values to a variable, we use either the left or right *assignment operator* consisting of a dash and a less than or greater than symbol.  Yes it is two symbols combined together (and in fact can point in either direction and have one or two of the *-than signs)
+
+
+```r
+x &lt;- "Bob"
+x
+```
+
+```
+## [1] "Bob"
+```
+
+```r
+"Alice" -&gt; y
+y
+```
+
+```
+## [1] "Alice"
+```
+
+--
+
+You can also use two directional signs to give emphasis.
+
+
+```r
+"Kingsley" -&gt;&gt; NedPlimptonsOtherName 
+NedPlimptonsOtherName 
+```
+
+```
+## [1] "Kingsley"
+```
+
+
+---
+
+# Why not the =?
+
+The grammar of `R` (neé `S`) was defined using assignment as a .red[directional] operator to help *readability*.   The equals sign is non-directional.
+
+
+--
+
+In some cases you could use `=` in place of `&lt;-` but it will not work properly .red[all the time].  For example if you look at `?Syntax`, the *Order of Operations* for assignment is different, with the equals sign below that of either `-&gt;` and `&lt;-`
+
+```
+-&gt; -&gt;&gt;  Rightwards Assignment
+&lt;- &lt;&lt;-  Leftwards Assignment
+=       Assignment (Right to Left)
+```
+
+This means that as things become more complex (which we will soon jump into), you can get some grammatical and logical errors if you .red[incorrectly insist] on using `=` instead of either `&lt;-` or `-&gt;` for assignment.
+
+
+---
+
+# Equality Operator
+
+While we are here with the equals sign, let's jump onto the issue of equality (e.g., testing to see if the data pointed by two or more variables are equal).  This is done by using .red[two equals signs].&lt;sup&gt;1&lt;/sup&gt;
+
+
+```r
+x == y
+```
+
+```
+## [1] FALSE
+```
+
+-- 
+
+For inequality, we use this.
+
+
+```r
+y != x
+```
+
+```
+## [1] TRUE
+```
+
+
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt;This is another reason why we do not use `=` for assignment, it is just too easy to have a typo when you were intending to ask `y = 42` (assignment) vs `y == 42` (test of equality).]
+
+
+---
+
+# Operations On Variables
+
+
+
+.pull-left[
+
+The purpose of `functions` are to *encapsulate* a bunch of code.  
+
+
+```r
+# Make some random data
+x &lt;- rnorm(100)
+y &lt;- rnorm(100)
+
+# Plot it in a scatter plot
+plot( x, y )
+```
+
+Consider how many things need to happen to make a simple scatter plot between two sets of random numbers.  The function `rnorm()` provides a set of random numbers drawn from a normal distribution with mean `\(0\)` and variance `\(1\)`.
+]
+
+.pull-right[
+
+![](slides_files/figure-html/plot-label-out-1.png)&lt;!-- --&gt;
+]
+
+
+
+---
+
+# Operations on Variable
+
+We can apply `functions` to variables (or to nothing) that do operations for us.  The form a function is 
+
+```
+functionName( varible1, variable2, ...)
+```
+
+--
+
+The name of the function come first followed by zero or more variables **within** parentheses—each separated by a comma.&lt;sup&gt;1&lt;/sup&gt;
+
+- Functions provide a nice way for us to **encapsulate** code that does stuff for us (often over and over to make our lives enjoyable).
+
+- To find out about the function, you can use the *Help* pane in `RStudio` or in the console type `?functionName` and it will show the help file for you.
+
+- ⚠️ Please make sure there is no space between the end of the name of the function and the opening parenthesis!
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt;The ellipsis is for additional stuff to be added if present.]
+
+
+
+
+---
+
+# Investigating Contents of String Variables 🤔
+
+There are times when we need to figure out properties of characters within a string object.
+
+
+
+```r
+NedPlimptonsOtherName
+```
+
+```
+## [1] "Kingsley"
+```
+
+&amp;nbsp;
+
+
+```r
+# Number of characters in the data pointed to by the variable NedPlimptonsOtherName
+nchar( NedPlimptonsOtherName )
+```
+
+```
+## [1] 8
+```
+
+.footnote[Programmers are .red[lazy] and whenever we can do something that allows us to type fewer characters, we will do it.  This reduces the opportunity for us screwing up and introducing errors into our code.]
+
+
+
+
+
+---
+class: reveal 
+
+# Special 'Escaped' Characters
+
+There are some keys on your keyboard that have some special meaning that cannot be represented by a single *glyph* in a text file.  There are various ways to display these.
+
+
+RStudio + Keyboard Input
+
+- Tab character (ascii keyboard input): ⇥ 
+
+- New Line (Carriage Return + Line Feed; ascii keyboard input as well): ↲
+
+- ASCII Escaped Characters (backslash escaping of special characters): ¯\\\_(ツ)\_/¯
+
+&amp;nbsp;
+
+`R` Interpreted Input
+
+- Greek and Latin Symbols (keyboard combinations or unicode): µ
+
+- Emoji (yes, there is a library to insert the poop emoji): 💩
+
+
+
+---
+
+# Quoting Quotes
+
+There are times that you need to actually use a quote character in our output.  To do this, we use the backslash escape.
+
+
+```r
+x &lt;- "\""
+x
+```
+
+```
+## [1] "\""
+```
+
+--
+
+By default, `R` will show you the escaped version as normal `R` code.  However, if you want to write it out as it would be if we saved it to a file, you can use the `writeLines()` function (the same applies for [unicode](https://unicode-table.com/en/) stuff).
+
+
+```r
+writeLines(x)
+```
+
+```
+## "
+```
+
+```r
+writeLines("\u2665")
+```
+
+```
+## ♥
+```
+
+
+---
+
+# Concatenating String Objects - Your First Function 😂
+
+The `c()` function is the first and shortest of built-in functions.  The purpose of this is to take more than one instance of a variable and concatenate them as a *vector*.
+
+
+```r
+names &lt;- c( "Ned", "Plimpton")
+names
+```
+
+```
+## [1] "Ned"      "Plimpton"
+```
+
+--
+
+To access them individually, we use square brackets `[` and `]` and a numerical index (beware these start counting at 1 you nascent python users).
+
+
+```r
+names[2]
+```
+
+```
+## [1] "Plimpton"
+```
+
+```r
+names[3]
+```
+
+```
+## [1] NA
+```
+
+---
+
+# Increasing Concatenation
+
+You can subsequently add more items to a vector by assignemnt to existing entries
+
+
+```r
+names[1] &lt;- "Kingsley"
+names
+```
+
+```
+## [1] "Kingsley" "Plimpton"
+```
+
+--
+
+Or to ones that are beyond the current range (a generally bad habit thought).
+
+
+```r
+names[4] &lt;- "Zissou"
+names
+```
+
+```
+## [1] "Kingsley" "Plimpton" NA         "Zissou"
+```
+
+&amp;nbsp;
+
+⚠️ There is a `NA` (which is missing data) in the 3&lt;sup&gt;&lt;u&gt;rd&lt;/u&gt;&lt;/sup&gt; position.
+
+
+---
+
+# Performance Recommendation 🏁
+
+If you are going to work with large vectors, it is in your best interest to not incrementally concatenate data.
+
+```
+x &lt;- 23
+x &lt;- c( x, 24 )
+x &lt;- c( x, 42 )
+...
+```
+
+--
+
+The best way is to preallocate your data vector to the size you need it and then fill it in.  Depending upon the kind of variable you are using, it will put in the default `null` value for each entry.  Then as you need it, fill it in.
+
+
+```r
+x &lt;- character( 12 )
+x
+```
+
+```
+##  [1] "" "" "" "" "" "" "" "" "" "" "" ""
+```
+
+
+
+---
+
+# Lengths of Things 📏
+
+We've already seen the `nchar()` function that gives the number of characters is a variable.
+
+
+```r
+names 
+```
+
+```
+## [1] "Kingsley" "Plimpton" NA         "Zissou"
+```
+
+```r
+nchar( names )
+```
+
+```
+## [1]  8  8 NA  6
+```
+
+
+--
+
+But if we want the number of entries in the vector itself, we use `length()`.
+
+
+```r
+length( names )
+```
+
+```
+## [1] 4
+```
+
+
+
+
+
+
+---
+
+# Built-In String Objects
+
+There are some built-in variables that provide string objects for you.
+
+
+```r
+LETTERS
+```
+
+```
+##  [1] "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"
+```
+
+
+The `LETTERS` object in `R` is a *variable* that contains data (in this case a sequence of letters).
+
+
+
+
 
 
 
@@ -46,7 +557,115 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Alignments
+# Packages
+
+### Extending Built-In Functionality with Someon Elses Efforts 👍
+
+
+---
+
+# Packages
+
+.pull-left[
+Packages are collections of code that can include:
+
+- Functions 
+
+- Help files
+
+- Example data
+
+- Images
+
+- Documentation
+
+- Vignettes
+]
+
+--
+
+.pull-right[
+
+You can install packages by typing the command `install.packages()` into the console.  Let's install a package that allows you to insert emoji's (why not) and another that will do some more specific string operations because we are trying to be serious here.
+
+The first packages is installed from Hadley's [Github](https://github.com/hadley/emo) repository and the second one is from the global [CRAN](https://cran.r-project.org) repository.
+
+
+```r
+remotes::install_github("hadley/emo")
+install.packages("stringr")
+```
+
+]
+
+
+
+---
+
+# Loading Packages
+
+Now that they are installed on your computer, you need to tell `R` when you want to use them.  By default, they are not loaded into memory because there can literally be too many packages on your machine for the limited amount of RAM you have.  I currently have 418 different packages installed onto my laptop as I'm typing this.
+
+To load them in, we use `library()`
+
+
+```r
+library(stringr)
+```
+
+Now all the functions in the `stringr` package are in memory.
+
+
+---
+
+# While We Are At It
+
+While we are here, let's just do this once and get it over with.  Instead of loading in the individuals parts of tidyverse, let's just get in the habit of loading it all in at the beginning.  So to install all of tidyverse, 
+
+
+```r
+install.packages("tidyverse")
+```
+
+Then when we start we can use:
+
+
+```r
+library( tidyverse )
+```
+To get everything in at the beginning so we don't have to worry about it later.
+
+
+---
+
+# Not Loading but Accessing
+
+There are times (and we will be very aware of this when we get to working with spatial data) when the process of loading in a bunch of functions from a package can cause some problems.  This is especially an issue when the name of functions in two or more libraries are the same.  How is `R` supposed to know which one to use?
+
+--
+
+### Package Namespaces
+
+What `R` has done is to create package namespaces that allow you to grab a function from a package without loading the whole package into memory.  To do this, we use the full package name and the function name connected by two colons (`::`).  
+
+```
+packageName::function()
+```
+
+--
+
+For the Emoji library (`emo`), this was used exclusively since it was thought that you'd never actually want to load them all into memory.
+
+
+```r
+emo::ji("poop")
+```
+
+```
+## 💩
+```
+
+
 
 
 
@@ -54,7 +673,223 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Mining Twitter
+# The `stringr` Library
+
+
+---
+
+# Exploring Package Functions
+
+Each package must have a large amount of help files and documentation before CRAN allows it to be put on the global servers.  You can find it using the built-in help in RStudio or by using 
+
+
+```r
+?stringr
+```
+
+or 
+
+
+```r
+help.search("stringr")
+```
+
+
+---
+
+# The Purpose of `stringr`
+
+The `stringr` package is part of a constellation of packages known as `tidyverse` that focues on string operations.  
+
+.pull-left[
+&gt; The tidyverse is an *opinionated* collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures.
+]
+
+.pull-right[
+&lt;img src="https://d33wubrfki0l68.cloudfront.net/b88ef926a004b0fce72b2526b0b5c4413666a4cb/ad0a8/images/cover.png" height=300&gt;
+]
+
+Some of the functions in `stringr` replicate built-in functions but since we are going to use tidyverse explicitly in this class, we will skip over them—a problem with the built-in stuff is *inconsistency*, which is why tidyverse was created.
+
+
+---
+
+# Common Prefix
+
+All of the functions in `stringr` start with `str_` as a prefix.  This is to help prevent *namespace collisions* as well as to make sure you are entirely confident that the functions you are using are the ones you think you are using.
+
+
+---
+
+# Length of String Objects
+
+Since `length` is such a common characteristic, `str_length` is what `nchar` does but in a more consistent taxonomic context.
+
+
+```r
+str_length( names )
+```
+
+```
+## [1]  8  8 NA  6
+```
+
+--
+
+For the length of the vector, we still use `length()` as it is asking for the number of elements in the vector, **not** the length of the string elements within it.
+
+
+```r
+length( names )
+```
+
+```
+## [1] 4
+```
+
+
+---
+
+# Concatenating Strings
+
+By default, concatenation is direct.
+
+
+```r
+str_c("Rodney","Dyer")
+```
+
+```
+## [1] "RodneyDyer"
+```
+
+But there are times when we need to insert some character into the concatenation so it works
+
+
+```r
+str_c( "Rodney", "Dyer", sep = " ")
+```
+
+```
+## [1] "Rodney Dyer"
+```
+
+---
+
+# Dropping Missing Values
+
+Missing data is a fact of life.  In fact, "If you do not have missing data somewhere, you are not trying hard enough..." said my advisor once.  In `R`, all missing data is encoded as `NA` (which is actually a data type)
+
+
+```r
+names
+```
+
+```
+## [1] "Kingsley" "Plimpton" NA         "Zissou"
+```
+
+--
+
+It can be identified.
+
+
+```r
+is.na( names )
+```
+
+```
+## [1] FALSE FALSE  TRUE FALSE
+```
+
+
+--
+
+And replaced
+
+
+```r
+str_replace_na(names, replacement = "Ned")
+```
+
+```
+## [1] "Kingsley" "Plimpton" "Ned"      "Zissou"
+```
+
+
+
+---
+
+# Vectorization
+
+Since .red[a lot] of the work we do in `R` is on vectors of data, the functions must also be *vectorized*.
+
+
+```r
+myClasses &lt;- str_c("ENVS", c(521, 543, 601, 602), sep="-" )
+myClasses
+```
+
+```
+## [1] "ENVS-521" "ENVS-543" "ENVS-601" "ENVS-602"
+```
+
+--
+
+Two Items of Interest here:
+
+1. Notice how the prefix `ENVS` was merged into with each element of the class vector and the `sep` indicates the separator between them.
+
+1. The numbers in the vector were converted (coerced) into character values directly.  Coercion is a one-directional monster and a string represenation of another data type is one of the lowest precidents.
+
+
+---
+
+# Collapsing = `\(\frac{1}{Vectorization}\)`
+
+You can go the other way in this and take a vector of results and collapse them back into a single string.
+
+
+```r
+str_c( myClasses, collapse=", ")
+```
+
+```
+## [1] "ENVS-521, ENVS-543, ENVS-601, ENVS-602"
+```
+
+
+
+---
+
+# Grabbing Subsets 
+
+Components within elements can be extracted using the numerical index of the first and last component of interest (n.b., both indices are inclusive).
+
+
+```r
+str_sub(myClasses, start = 6, end = 8) 
+```
+
+```
+## [1] "521" "543" "601" "602"
+```
+
+--
+
+Counting backwards too (notice I also can drop the names of the non-data variables too - but **must** be given in the order displayed in the help file!).
+
+
+```r
+str_sub(myClasses, -3, -1) 
+```
+
+```
+## [1] "521" "543" "601" "602"
+```
+
+
+
 
 
 
@@ -62,7 +897,437 @@ class: sectionTitle
 
 class: sectionTitle
 
-# Factors &amp; forcats
+# Regular Expressions
+
+
+## Searching with Wildcards
+
+
+
+---
+
+# Regular Expressions
+
+This could be a whole .red[frickin] class in itself.  I'm going to keep it very simple here so you have enough knowledge to get in trouble.
+
+&gt; Regular Expression is a sequence of characters that defines a search pattern.  These are **very terse** descriptions of textual patterns.
+
+
+--
+
+
+```r
+names[3] &lt;- "Ted Knight"
+names
+```
+
+```
+## [1] "Kingsley"   "Plimpton"   "Ted Knight" "Zissou"
+```
+
+
+--
+
+Matches for the letter *i*.
+
+
+```r
+str_view( names, "i")
+```
+
+<div id="htmlwidget-b46d629074a49ca1359e" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b46d629074a49ca1359e">{"x":{"html":"<ul>\n  <li>K<span class='match'>i<\/span>ngsley<\/li>\n  <li>Pl<span class='match'>i<\/span>mpton<\/li>\n  <li>Ted Kn<span class='match'>i<\/span>ght<\/li>\n  <li>Z<span class='match'>i<\/span>ssou<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Positional Matches
+
+Matching based upon position.  Here the `$` indicates that it is at the very end of the string.
+
+
+```r
+str_view( names, "n$")
+```
+
+<div id="htmlwidget-3adf9a0e6a9392c0695c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3adf9a0e6a9392c0695c">{"x":{"html":"<ul>\n  <li>Kingsley<\/li>\n  <li>Plimpto<span class='match'>n<\/span><\/li>\n  <li>Ted Knight<\/li>\n  <li>Zissou<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+--
+
+Or the `^` beginning of a string.
+
+
+```r
+str_view( names, "^K")
+```
+
+<div id="htmlwidget-f1279b525623579b922d" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f1279b525623579b922d">{"x":{"html":"<ul>\n  <li><span class='match'>K<\/span>ingsley<\/li>\n  <li>Plimpton<\/li>\n  <li>Ted Knight<\/li>\n  <li>Zissou<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Character Classes
+
+We can also match kinds of characters such as a number, whose shortcut is `\d`.  However, to have it match as a character class, we need to be careful of the `\` character.  
+
+There are some special characters such as `\t` (tab), `\r` (carrage return), and `\n` newline that are shorthand ways of indicating these non-printing entities on your keyboard.  As such, a `\` is treated .red[speically] to indicate that the next glyph will indicate a special character.  But if we try to use it like this:
+
+
+```r
+str_view( myClasses, "\d" )
+```
+.red[```Error: '\d' is an unrecognized escape in character string starting ""\d"```]
+
+
+Which is an error.  
+
+---
+
+# Character Classes
+
+This is because the digit indication for a regular expression includes a `\` not as a "escape character" but as part of it directly!  So, we need to escape it as well (confused yet?).
+
+So to match the first generic number in each of the entries, we would use
+
+
+```r
+str_view( myClasses, "\\d" )
+```
+
+<div id="htmlwidget-e7cfc5130b5e1cc505f4" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e7cfc5130b5e1cc505f4">{"x":{"html":"<ul>\n  <li>ENVS-<span class='match'>5<\/span>21<\/li>\n  <li>ENVS-<span class='match'>5<\/span>43<\/li>\n  <li>ENVS-<span class='match'>6<\/span>01<\/li>\n  <li>ENVS-<span class='match'>6<\/span>02<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Matching Sequences
+
+We can define sequences by enclosing them into parentheses.  So to search for all entries that have a `6` and a `0` right next to each other, we could.
+
+
+```r
+str_view( myClasses, "(60)")
+```
+
+<div id="htmlwidget-f20092a5b2643f2a9714" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f20092a5b2643f2a9714">{"x":{"html":"<ul>\n  <li>ENVS-521<\/li>\n  <li>ENVS-543<\/li>\n  <li>ENVS-<span class='match'>60<\/span>1<\/li>\n  <li>ENVS-<span class='match'>60<\/span>2<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+```r
+str_view( myClasses, "ENVS-(60)")
+```
+
+<div id="htmlwidget-8a299f36a12b49059822" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8a299f36a12b49059822">{"x":{"html":"<ul>\n  <li>ENVS-521<\/li>\n  <li>ENVS-543<\/li>\n  <li><span class='match'>ENVS-60<\/span>1<\/li>\n  <li><span class='match'>ENVS-60<\/span>2<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# Optional Characters
+
+This may be convienent when there are a few different kinds of spellings.
+
+
+```r
+str_view( c("gray", "grey"), "r(a|e)y")
+```
+
+<div id="htmlwidget-1fcdf155f2c21862c705" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1fcdf155f2c21862c705">{"x":{"html":"<ul>\n  <li>g<span class='match'>ray<\/span><\/li>\n  <li>g<span class='match'>rey<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Numbers of Matches
+
+Let's look at a larger set of words and do some actual detection where we are not intersted in showing the results (using `str_view()` but working with the answers themselves).  Let's use the built-in `words` data, which has ... words
+
+
+```r
+head( words )
+```
+
+```
+## [1] "a"        "able"     "about"    "absolute" "accept"   "account"
+```
+
+```r
+tail( words )
+```
+
+```
+## [1] "year"      "yes"       "yesterday" "yet"       "you"       "young"
+```
+
+```r
+length( words )
+```
+
+```
+## [1] 980
+```
+
+
+---
+
+# Counts of Items
+
+
+
+```r
+startingWithR &lt;- str_detect( words, "^r")
+sum( startingWithR )
+```
+
+```
+## [1] 46
+```
+
+--
+
+Could combine the two (looking at words ending in `r` this time) as: 
+
+
+```r
+sum( str_detect( words, "r$")    )
+```
+
+```
+## [1] 77
+```
+
+---
+
+# Negation (the opposite of)
+
+Fraction of words starting with a vowel in vowel
+
+
+```r
+mean( str_detect( words, "^[aeiou]")  )
+```
+
+```
+## [1] 0.1785714
+```
+
+--
+
+vs. the fraction that **DO NOT** start with a vowel
+
+
+```r
+mean( !str_detect( words, "^[aeiou]")  )
+```
+
+```
+## [1] 0.8214286
+```
+
+(n.b., these two numbers **better* sum to 1.0!)
+
+
+---
+
+# Selecting Elements
+
+The function `str_detect()` is commonly used to find elements in an array that match an expression and then use this result as an index on the sequences to pull them out.
+
+
+```r
+words[ str_detect( words, "r$")   ]
+```
+
+```
+##  [1] "after"      "air"        "another"    "answer"     "appear"     "bar"        "bear"       "bother"     "brother"    "car"        "chair"      "character" 
+## [13] "clear"      "colour"     "confer"     "consider"   "corner"     "cover"      "danger"     "dear"       "dinner"     "doctor"     "door"       "either"    
+## [25] "enter"      "ever"       "fair"       "far"        "father"     "favour"     "floor"      "for"        "four"       "further"    "hair"       "hear"      
+## [37] "hour"       "however"    "labour"     "letter"     "major"      "matter"     "member"     "minister"   "mister"     "mother"     "near"       "never"     
+## [49] "number"     "offer"      "or"         "order"      "other"      "over"       "pair"       "paper"      "particular" "per"        "poor"       "power"     
+## [61] "proper"     "quarter"    "rather"     "refer"      "remember"   "similar"    "sir"        "sister"     "summer"     "together"   "under"      "war"       
+## [73] "water"      "wear"       "whether"    "wonder"     "year"
+```
+
+
+
+
+---
+
+
+
+```r
+str_detect( words, "r$")
+```
+
+```
+##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+##  [28] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [55] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+##  [82] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [109] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [136] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [163] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [190] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE
+## [217] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [244] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [271] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [298] FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [325] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+## [352] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [379] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+## [406] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [433] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [460] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [487] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [514] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [541] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [568] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [595] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [622] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [649] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [676] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [703] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [730] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [757] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [784] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [811] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [838] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [865] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [892] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [919] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [946]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [973] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+```
+
+
+
+---
+
+# Splitting Strings
+
+It is common for us to try to split strings into sections.  It could be for files we get from a computer (relative to the starting:
+
+
+```r
+geoTIFFS &lt;- list.files(path = "/Users/rodney/Documents/github/classes/ENVS-Lectures", recursive = TRUE, pattern = "tif" )
+geoTIFFS
+```
+
+```
+##  [1] "data/alt_22.tif"                                                  "data/Annual_Precip_22.tif"                                       
+##  [3] "data/DEM_5m.tif"                                                  "data/Maximum_Precip.tif"                                         
+##  [5] "data/Maximum_Temp_22.tif"                                         "data/Mean_Temp_22.tif"                                           
+##  [7] "data/Minimum_Precip_22.tif"                                       "data/Minimum_Temp_22.tif"                                        
+##  [9] "data/NLCD_2011_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff" "data/NLCD_2013_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff"
+## [11] "data/NLCD_2016_Land_Cover_L48_20190424_qn2B1f8ganicJNKnJN0e.tiff" "docs/r_language/environment/data/alt_22.tif"                     
+## [13] "lectures/r_language/environment/data/alt_22.tif"
+```
+
+---
+
+# From File Contents
+
+Or from the contents of an individual data file
+
+
+```r
+beerStyles &lt;- readLines( "../../../data/Beer_Styles.csv")
+beerStyles[1:10]
+```
+
+```
+##  [1] "Styles,Yeast,ABV_Min,ABV_Max,IBU_Min,IBU_Max,SRM_Min,SRM_Max,OG_Min,OG_Max,FG_Min,FG_Max"
+##  [2] "American Light Lager,Lager,2.8,4.2,8,12,2,3,1.028,1.04,0.998,1.008"                      
+##  [3] "American Lager,Lager,4.2,5.3,8,18,2,4,1.04,1.05,1.004,1.01"                              
+##  [4] "Cream Ale,Ale,4.2,5.6,8,20,2.5,5,1.042,1.055,1.006,1.012"                                
+##  [5] "American Wheat Beer,Either,4,5.5,15,30,3,6,1.04,1.055,1.008,1.013"                       
+##  [6] "International Pale Lager,Either,4.6,6,18,25,2,6,1.042,1.05,1.008,1.012"                  
+##  [7] "International Amber Lager,Lager,4.6,6,8,25,7,14,1.042,1.055,1.008,1.014"                 
+##  [8] "International Dark Lager,Lager,4.2,6,8,20,14,22,1.044,1.056,1.008,1.012"                 
+##  [9] "Czech Pale Lager,Lager,3,4.1,20,35,3,6,1.028,1.044,1.008,1.014"                          
+## [10] "Czech Premium Pale Lager,Lager,4.2,5.8,30,45,3.5,6,1.044,1.06,1.013,1.017"
+```
+
+
+---
+
+
+```r
+read_csv("../../../data/Beer_Styles.csv")
+```
+
+```
+## Rows: 100 Columns: 12
+```
+
+```
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## Delimiter: ","
+## chr  (2): Styles, Yeast
+## dbl (10): ABV_Min, ABV_Max, IBU_Min, IBU_Max, SRM_Min, SRM_Max, OG_Min, OG_Max, FG_Min, FG_Max
+```
+
+```
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+
+```
+## # A tibble: 100 × 12
+##    Styles                    Yeast  ABV_Min ABV_Max IBU_Min IBU_Max SRM_Min SRM_Max OG_Min OG_Max FG_Min FG_Max
+##    &lt;chr&gt;                     &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1 American Light Lager      Lager      2.8     4.2       8      12     2         3   1.03   1.04  0.998   1.01
+##  2 American Lager            Lager      4.2     5.3       8      18     2         4   1.04   1.05  1.00    1.01
+##  3 Cream Ale                 Ale        4.2     5.6       8      20     2.5       5   1.04   1.06  1.01    1.01
+##  4 American Wheat Beer       Either     4       5.5      15      30     3         6   1.04   1.06  1.01    1.01
+##  5 International Pale Lager  Either     4.6     6        18      25     2         6   1.04   1.05  1.01    1.01
+##  6 International Amber Lager Lager      4.6     6         8      25     7        14   1.04   1.06  1.01    1.01
+##  7 International Dark Lager  Lager      4.2     6         8      20    14        22   1.04   1.06  1.01    1.01
+##  8 Czech Pale Lager          Lager      3       4.1      20      35     3         6   1.03   1.04  1.01    1.01
+##  9 Czech Premium Pale Lager  Lager      4.2     5.8      30      45     3.5       6   1.04   1.06  1.01    1.02
+## 10 Czech Amber Lager         Lager      4.4     5.8      20      35    10        16   1.04   1.06  1.01    1.02
+## # … with 90 more rows
+```
+
+
+.footnote[ `read_csv()` is in the `readr` library which is part of the `tidyverse.]
+
+---
+
+# Using Regular Expressions
+
+Now you know a few of the rules, lets apply them to a real world problem.  
+
+### Use Case
+
+You are doing some meta-work for the introduction to your masters thesis.  You have a bunch of manuscripts (say 100 of them) that you have identified as having data in them that you would like to use in your meta analysis.  You could:
+
+**Brue Force It:** Read 100 manuscripts and manually extract the data from each one, thereby using what Dyer calls the "Brute Force" method.  If every manuscript is 20 pages long, how long would it take to get through 2000 pages and extract all the data without error?
+
+--
+
+**Use R:** Automate the extraction of the text in the data and search for specific components you are interested in (then enjoy a frosty 🍺 while it runs and does it for you).  
+
+
+---
+
+# Identifying Matches
+
+Let's start with a simple example of
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -96,12 +1361,15 @@ background-size: auto
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
 .bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "highlightLines": true,
+"ratio": "16:9",
 "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {

@@ -873,6 +873,46 @@ str_view( text, "o{2,3}" )
 ```
 
 
+---
+
+# Locating the Position of Elements
+
+```{r}
+str_locate( text, "epoch")
+```
+
+---
+
+# Locating Every Instance of an Element
+
+Finding *all* the start and ending positions for a particular sequence.
+
+```{r}
+str_locate_all( text, "it was the")
+```
+
+--
+
+From this `str_sub()` can be used to extract elements within (or between) identified occurances.  Here is an example of the 
+
+```{r}
+str_sub( text, 80, 110)
+```
+
+
+
+
+
+---
+
+# Extracting Elements
+
+We can do a similar thing to pull out the components.
+
+```{r}
+str_extract( text, "epoch")
+str_extract_all( text, "it was the")
+```
 
 
 
@@ -972,7 +1012,6 @@ words[ str_detect( words, "r$")   ]
 ```{r}
 str_detect( words, "r$")
 ```
-
 
 
 ---

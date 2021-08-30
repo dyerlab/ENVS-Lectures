@@ -1,97 +1,129 @@
 ---
 title: "Character Data Activity"
-author: "Your Name Here"
+author: "Rodney Dyer"
 output: html_notebook
 ---
 
 ## Assignment
 
-OK, so lets start with some fun stuff.  In the code chunk below, create a variable called `name` and assign it a value equal to your name.
+
+Let's start by loading in a library that has some string functions and then do some smaller stuff just to warm up.
 
 ```{r}
-first_name <- ""
+library(stringr)
 ```
 
-Now, how any characters are in your name?  Don't count them by hand, use `nchar()` and put the code in the following chunk.
+In the code chunk below, create a variable called `first_name` and assign it a value equal to your name.
+
+```{r echo=TRUE}
+### your first name
+```
+
+Now, how any characters are in your name? 
 
 ```{r}
-### number of characters in your name
+### Characters in name
 ```
 
 Assign the variable `last_name` the value of your last name.
 
 ```{r}
-last_name <- ""
+### Last Name
 ```
 
-And in the following chunck, make a variable named `full_name` that uses `paste()` to put together your `first_name` and `last_name`.
+And in the following chunck, make a variable named `full_name` that combines your `first_name` and `last_name`.
 
 ```{r}
-### Your full name 
+### Your full name - Look Magic!
+
 ```
 
-Now pay attention, this is **very important**.  Take the output of the last chunk (e.g., your full name), and *copy it to the 3$^{rd}$ line of this document where it say `author: "Your Name Here"`!  That way I know whose work this is!  Nice Job! 
+Now pay attention, this is **very important**.  Take the output of the last chunk (e.g., your full name), and *copy it to the 3$^{rd}$ line of this document where it say `author: "Your Name Here"`!*  That way I know whose work this is!  Nice Job!^[You'd be surprised how many assignments are turned in without a name on it...]
 
 ## String Operations
 
 So we'll have a little fun with this one.  Here are the lyrics to a popular song from the Beetles, entitled *Hey Jude*.
 
 ```{r}
-lyrics <- "Hey Jude don't make it bad Take a sad song and make it better Remember to let her into your heart Then you can start to make it better Hey Jude don't be afraid You were made to go out and get her The minute you let her under your skin Then you begin to make it better And anytime you feel the pain Hey Jude refrain Don't carry the world upon your shoulders For well you know that it's a fool Who plays it cool By making his world a little colder Na na na na na Na na na na Hey Jude don't let me down You have found her now go and get her let it out and let it in Remember to let her into your heart hey Jude Then you can start to make it better So let it out and let it in Hey Jude begin You're waiting for someone to perform with And don't you know that it's just you Hey Jude you'll do The movement you need is on your shoulder Na na na na na Na na na na yeah Hey Jude don't make it bad Take a sad song and make it better Remember to let her under your skin Then you'll begin to make it better Better better better better better ah Na na na na na na na yeah Yeah yeah yeah yeah yeah yeah Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Jude Jude Judy Judy Judy Judy ow wow Na na na na na na na my my my Na na na na hey Jude Jude Jude Jude Jude Jude Na na na na na na na yeah yeah yeah Na na na na hey Jude yeah you know you can make it Jude Jude you're not gonna break it Na na na na na na na don't make it bad Jude take a sad song and make it better Na na na na hey Jude oh Jude Jude hey Jude wa Na na na na na na na oh Jude Na na na na hey Jude hey hey hey hey Na na na na na na na hey hey Na na na na hey Jude now Jude Jude Jude Jude Jude Na na na na na na na Jude yeah yeah yeah yeah Na na na na hey Jude Na na na na na na na Na na na na hey Jude na na na na na na na na na Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na yeah make it Jude Na na na na hey Jude yeah yeah yeah yeah yeah Yeah Yeah Yeah Yeah Na na na na na na na yeah yeah yeah yeah Yeah Yeah Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude"
+heyJude <- "Hey Jude don't make it bad Take a sad song and make it better Remember to let her into your heart Then you can start to make it better Hey Jude don't be afraid You were made to go out and get her The minute you let her under your skin Then you begin to make it better And anytime you feel the pain Hey Jude refrain Don't carry the world upon your shoulders For well you know that it's a fool Who plays it cool By making his world a little colder Na na na na na Na na na na Hey Jude don't let me down You have found her now go and get her let it out and let it in Remember to let her into your heart hey Jude Then you can start to make it better So let it out and let it in Hey Jude begin You're waiting for someone to perform with And don't you know that it's just you Hey Jude you'll do The movement you need is on your shoulder Na na na na na Na na na na yeah Hey Jude don't make it bad Take a sad song and make it better Remember to let her under your skin Then you'll begin to make it better Better better better better better ah Na na na na na na na yeah Yeah yeah yeah yeah yeah yeah Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Jude Jude Judy Judy Judy Judy ow wow Na na na na na na na my my my Na na na na hey Jude Jude Jude Jude Jude Jude Na na na na na na na yeah yeah yeah Na na na na hey Jude yeah you know you can make it Jude Jude you're not gonna break it Na na na na na na na don't make it bad Jude take a sad song and make it better Na na na na hey Jude oh Jude Jude hey Jude wa Na na na na na na na oh Jude Na na na na hey Jude hey hey hey hey Na na na na na na na hey hey Na na na na hey Jude now Jude Jude Jude Jude Jude Na na na na na na na Jude yeah yeah yeah yeah Na na na na hey Jude Na na na na na na na Na na na na hey Jude na na na na na na na na na Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na yeah make it Jude Na na na na hey Jude yeah yeah yeah yeah yeah Yeah Yeah Yeah Yeah Na na na na na na na yeah yeah yeah yeah Yeah Yeah Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude Na na na na na na na Na na na na hey Jude"
 ```
 
-I thought it would be interesting to take a look at word frequencies for this song.  To do so, we should probably first make everything the same case (in this case, I'll make it all lower case using the function `tolower()`.
+I thought it would be interesting to take a look at word frequencies for this song.  To do so, we should probably first make everything the same case so that `Hey` and `hay` are the same.  Look up the function `tolower` and make the lyrics in `heyJude` all lower cased.
 
 ```{r}
-## To remove case differences.
-lyrics <- tolower(lyrics)
+### Make all the text lower case
 ```
 
-Next, let's first start by loading in a library that has some string functions. 
+## Splitting Text into Words
+
+In the lecture, I showed how to split a string into sections using the function `str_split()` function.  Split the lyrics into a single vector as I showed in the recorded lecture and assign it to a variable named `words`.  In the talk I point out that you should add the optional argument `simplify=TRUE` to the optional values in the `str_split()` function, make sure to do that here as well.
 
 ```{r}
-library(stringr)
+### Split the song into individual words 
 ```
 
-In the recorded lecture, I showed how to split a string into sections using the function `str_split()` function.  Split the lyrics into a single vector as I showed in the recorded lecture and assign it to a variable named `words`.  In the talk I point out that you should add the optional argument `simplify=TRUE` to the optional values in the `str_split()` function, make sure to do that here as well.
 
-```{r}
-### Split the lyrics into a vector
-words <- str_split(lyrics, pattern = " ", simplify = TRUE )
-```
+## Summarizing Word Orders
 
 Now here is something new.  The function `table()` takes a vector of values and tallies the count of each element.  In this case, it will allow you to count each word in that song.  Make a new variable named `word.freqs` to hold the result and then print it out (by just typing the variable name by itself in the chunk and running the chunk).
 
 ```{r}
 ### Make a table of the words to get counts
-
 ```
 
 Here is another new thing.  You can use the `sort()` function to sort the word list by the magnitude of occurrences. It also has an optional argument `decreasing` that you can set to `TRUE` and have the results presented in decreasing order.  (You can see the help file for `sort()` by typing in the console `?sort` and hitting return).
 
 ```{r}
 ### Sort the words in decreasing order.
-
 ```
-
-### One-Million Point Question!
 
 What are the five most common words in that song?
 
 List of words in decreasing frequency (replace the {XXXX} stuff below to answer:  
 
-1. {most common has X}
-2. {second most common has X}
-3. {third most common has X}
-4. {fourth most common has X}
-5. {fifth most common has X}
+1. {most common word is X and occurs Y times}  
+2. {second most common word is X and occurs Y times} 
+3. {third most common word is X and occurs Y times} 
+4. {fourth most common word is X and occurs Y times} 
+5. {fifth most common word is X and occurs Y times} 
+
+
+## Finding Locations in the String
+
+Where is it the location in the full lyrics of the song where "Jude" is repeated three times?
+
+```{r}
+### Show where Jude x 3 occurs
+```
+
 
 ---
 
-That was easy, now let's do something hard.
+That was easy, now let's do something more in-depth.  The Clean Water Act of 1977 is an important document in our nations recognition that we may need to stop being jerks to the environment.  There is a textual copy found on my github site at the following url.
 
+Load in this document and we can do some textual findings.
 
 ```{r}
-clean_water_act <- "https://www3.epa.gov/npdes/pubs/cwatxt.txt"
+clean_water_act <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/clean_water_act.txt"
+text <- readLines( clean_water_act)
 ```
+
+
+
+The Clean Water Act consists of two main parts.  The first one authorizes federal funds to support the treatment of sewage and the second part defines the regulatory requirements for industrial and municipal dischargers.  I've formatted it such that each row in the file is a single element of the act (e.g., SEC. 101 [33 U.S.C. 1251] paragraph (a)(1) is entirely contained on its own line.
+
+How many times is the word `sewage` found (either as `sewage` or `Sewage`)?
+
+```{r}
+### Finding sewage
+```
+
+The great lakes were intimately involved in the formulation of this Act.  What is the official definition of the `Great Lakes` as it pertains to bodies of water covered by the Clean Water Act?
+
+```{r}
+### The great lakes...  Why are they so great?
+```
+
+
+
 

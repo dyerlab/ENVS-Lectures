@@ -205,9 +205,11 @@ The purpose of `functions` are to *encapsulate* a bunch of code.
 
 ```{r plot-label, eval=FALSE}
 
+
 # Make some random data
-x <- rnorm(100)
-y <- rnorm(100)
+N <- 100 
+x <- rnorm( N )
+y <- rnorm( N )
 
 # Plot it in a scatter plot
 plot( x, y )
@@ -244,7 +246,7 @@ The name of the function come first followed by zero or more variables **within*
 
 - `r emo::ji("warning")` Please make sure there is no space between the end of the name of the function and the opening parenthesis!
 
-.footnote[<sup>1</sup>The ellipsis is for additional stuff to be added if present.]
+.footnote[<sup>1</sup>The ellipsis is for additional stuff to be added if present and is used to allow the user to pass additional information to *downstream* operations.]
 
 
 
@@ -472,8 +474,8 @@ You can install packages by typing the command `install.packages()` into the con
 The first packages is installed from Hadley's [Github](https://github.com/hadley/emo) repository and the second one is from the global [CRAN](https://cran.r-project.org) repository.
 
 ```{r eval=FALSE}
-remotes::install_github("hadley/emo")
 install.packages("stringr")
+remotes::install_github("hadley/emo")
 ```
 
 ]
@@ -755,9 +757,11 @@ Matching based upon position.  Here the `$` indicates that it is at the very end
 str_view( names, "n$")
 ```
 
---
+---
 
-Or the `^` beginning of a string.
+# Positional Matches
+
+And the `^` character marks the beginning of a string.
 
 ```{r}
 str_view( names, "^K")
@@ -775,7 +779,7 @@ There are some special characters such as `\t` (tab), `\r` (carrage return), and
 ```{r error = FALSE, eval=FALSE}
 str_view( myClasses, "\d" )
 ```
-.red[```Error: '\d' is an unrecognized escape in character string starting ""\d"```]
+.red[```#  Error: '\d' is an unrecognized escape in character string starting ""\d"```]
 
 
 Which is an error.  
@@ -784,13 +788,92 @@ Which is an error.
 
 # Character Classes
 
-This is because the digit indication for a regular expression includes a `\` not as a "escape character" but as part of it directly!  So, we need to escape it as well (confused yet?).
+This is because the digit indication for a regular expression includes a `\` not as a "escape character" but as part of it directly!  So, we need to escape it as well (confused yet?  stick with me, it will get better).
 
 So to match the first generic number in each of the entries, we would use
 
 ```{r}
 str_view( myClasses, "\\d" )
 ```
+
+---
+
+# Number of Character Classes
+
+You can match more than one of the characters.
+
+```{r}
+str_view(myClasses, "\\d\\d")
+```
+
+---
+
+# Matching "other" 
+
+The `"."` character indicates another glyph (of any type) 
+
+```{r}
+str_view( myClasses, "\\d.+")
+```
+
+
+---
+
+# Finding Words
+
+We can also match on 'words' or 'whitespace'.
+
+```{r}
+text <- "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of light, it was the season of darkness, it was the spring of hope, it was the winter of despair."
+```
+
+This grabs the first word (grabbed by the `\\w` that is immediately followed by a comma.)
+```{r}
+str_view( text, "\\w\\,")
+```
+
+
+```{r}
+str_view( text, "\\w\\s(belief)")
+```
+
+---
+
+# Numbers of matches
+
+We can match things by the number of occurrences.  Consider the following searches for the lowercase letter `o`.
+
+- `o*` Finding zero or more times
+- `o+` Finding one or more times.
+- `o?` Either 0 or 1 times
+
+```{r}
+str_view( text, "o+")
+```
+
+
+---
+
+# Finding `N` items.
+
+```{r}
+year_1888 <- "MDCCCLXXXVIII"
+str_view( year_1888, "X{3}")
+```
+
+
+--- 
+
+# Variable Numbers of Matches
+
+How about finding where the string contains either 2 consecutive lowercase 'o' values? 
+
+```{r}
+str_view( text, "o{2,3}" )
+```
+
+
+
 
 
 ---
@@ -808,7 +891,7 @@ str_view( myClasses, "ENVS-(60)")
 
 # Optional Characters
 
-This may be convienent when there are a few different kinds of spellings.
+This may be convenient when there are a few different kinds of spellings.
 
 ```{r}
 str_view( c("gray", "grey"), "r(a|e)y")
@@ -817,7 +900,7 @@ str_view( c("gray", "grey"), "r(a|e)y")
 
 ---
 
-# Numbers of Matches
+# Numbers of Matches in a Sequence
 
 Let's look at a larger set of words and do some actual detection where we are not intersted in showing the results (using `str_view()` but working with the answers themselves).  Let's use the built-in `words` data, which has ... words
 
@@ -832,6 +915,9 @@ length( words )
 
 # Counts of Items
 
+Simply finding something may be good for determining if something exists.  However, we may want to count how many occurances of something are in the text string.  
+
+Here is an example where we use `str_detect()` to return `TRUE/FALSE` for matching the pattern and then count how many `TRUE` results there are.
 
 ```{r}
 startingWithR <- str_detect( words, "^r")
@@ -864,7 +950,7 @@ vs. the fraction that **DO NOT** start with a vowel
 mean( !str_detect( words, "^[aeiou]")  )
 ```
 
-(n.b., these two numbers **better* sum to 1.0!)
+(n.b., these two numbers *better* sum to 1.0!)
 
 
 ---
@@ -911,6 +997,7 @@ file
 
 --
 
+It is so common to deal with file names (and so problematic because of the folder specifier is `\` but one platform incorrectly uses `/`)
 
 
 ```{r}
@@ -964,36 +1051,11 @@ beerStyles[1:10]
 ---
 
 ```{r}
-read_csv("../../../data/Beer_Styles.csv")
+read_csv("https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Beer_Styles.csv")
 ```
 
 
 .footnote[ `read_csv()` is in the `readr` library which is part of the `tidyverse.]
-
----
-
-# Using Regular Expressions
-
-Now you know a few of the rules, lets apply them to a real world problem.  
-
-### Use Case
-
-You are doing some meta-work for the introduction to your masters thesis.  You have a bunch of manuscripts (say 100 of them) that you have identified as having data in them that you would like to use in your meta analysis.  You could:
-
-**Brue Force It:** Read 100 manuscripts and manually extract the data from each one, thereby using what Dyer calls the "Brute Force" method.  If every manuscript is 20 pages long, how long would it take to get through 2000 pages and extract all the data without error?
-
---
-
-**Use R:** Automate the extraction of the text in the data and search for specific components you are interested in (then enjoy a frosty `r emo::ji("beer")` while it runs and does it for you).  
-
-
----
-
-# Identifying Matches
-
-Let's start with a simple example of
-
-
 
 
 

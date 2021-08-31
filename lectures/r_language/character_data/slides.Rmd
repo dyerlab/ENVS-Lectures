@@ -54,7 +54,7 @@ One of the most fundamental kinds of data we work with is textual data.
 
 - Parsing Raw Files
 
-- Autmated Lexicographic Analyses
+- Automated Lexicographic Analyses
 
 
 
@@ -83,7 +83,7 @@ Notice that you .red[must] use the same quote character to start and finish the 
 
 # First Gotcha `r emo::ji("explode")`
 
-RStudio ties to match quotes (e.g., when you open as string with a quot glyph, it automatically puts in the matching closing one for you).  However if this fails, RStudio will continue to accept input (forever) until you finish with the closed quote character.
+RStudio ties to match quotes (e.g., when you open as string with a quote glyph, it automatically puts in the matching closing one for you).  However if this fails, RStudio will continue to accept input (forever) until you finish with the closed quote character.
 
 --
 
@@ -374,9 +374,9 @@ names
 If you are going to work with large vectors, it is in your best interest to not incrementally concatenate data.
 
 ```
-x <- 23
-x <- c( x, 24 )
-x <- c( x, 42 )
+x <- "Bob"
+x <- c( x, "Alice" )
+x <- c( x, "Roger" )
 ...
 ```
 
@@ -412,7 +412,7 @@ length( names )
 ```
 
 
-
+.footnote[We will see shortly when we jump into using `stringr` that we can disambiguate these things a bit.]
 
 
 
@@ -442,7 +442,7 @@ class: sectionTitle
 
 # Packages
 
-### Extending Built-In Functionality with Someon Elses Efforts `r emo::ji("+1")`
+### Extending Built-In Functionality with Someone Elses Efforts `r emo::ji("+1")`
 
 
 ---
@@ -610,6 +610,8 @@ length( names )
 ```
 
 
+.footnote[ See, this is much better than remembering `nchar` vs `lenght`.]
+
 ---
 
 # Concatenating Strings
@@ -705,7 +707,7 @@ Counting backwards too (notice I also can drop the names of the non-data variabl
 str_sub(myClasses, -3, -1) 
 ```
 
-
+.red[Look mom, I'm going backwards 🤪 !]
 
 
 
@@ -738,9 +740,13 @@ names
 ```
 
 
---
+---
 
-Matches for the letter *i*.
+# Visualizing Matches for Learning
+
+The function `str_view()` is designed to **only** show you where matches are made to help you learn regex, we **never** actually use it in practice.  
+
+Visualizing matches for the letter *i* 
 
 ```{r warning=FALSE, message=FALSE}
 str_view( names, "i")
@@ -751,7 +757,7 @@ str_view( names, "i")
 
 # Positional Matches
 
-Matching based upon position.  Here the `$` indicates that it is at the very end of the string.
+Matching based upon position can be used with the addition of a special character.  Here the `$` indicates that it is at the .red[very end] of the string.
 
 ```{r}
 str_view( names, "n$")
@@ -761,12 +767,13 @@ str_view( names, "n$")
 
 # Positional Matches
 
-And the `^` character marks the beginning of a string.
+And the `^` character marks .red[the beginning] of a string.
 
 ```{r}
 str_view( names, "^K")
 ```
 
+Notice how it *does not* match the 'K' in Knight.
 
 ---
 
@@ -862,7 +869,8 @@ str_view( year_1888, "X{3}")
 ```
 
 
---- 
+
+---
 
 # Variable Numbers of Matches
 
@@ -871,6 +879,19 @@ How about finding where the string contains either 2 consecutive lowercase 'o' v
 ```{r}
 str_view( text, "o{2,3}" )
 ```
+
+
+---
+
+# A Greedy Algorithm
+
+Given the opportunity, it will identify the location of the longest match.
+
+
+```{r}
+str_view( year_1888, "C{1,4}")
+```
+
 
 
 ---
@@ -915,6 +936,40 @@ str_extract_all( text, "it was the")
 ```
 
 
+---
+
+# Some More Options
+
+It will be more exciting if we could use `str_extract()` in a way that allows us to capture more than just **exactly** what we asked for it to find.  
+
+--
+Item | Definition
+-----|-----------------------------
+`^`  | The start of a string match  
+`$`  | The end of a string match  
+`(`  | The start of a capture group
+`)`  | The end of a capture group
+
+---
+
+# More Exciting, no?
+
+So, if we want to find the .red[word] that occurs right before the comma in the text, we create a *capture group* representing one or more word elements (`\w`) followed by a comma. 
+
+
+```{r}
+str_extract_all( text, "(\\w*)," )
+```
+
+--
+
+Simplifying the result a bit.
+
+```{r}
+str_extract_all( text, "(\\w*),", simplify = TRUE)
+```
+
+
 
 ---
 
@@ -929,7 +984,7 @@ str_view( myClasses, "ENVS-(60)")
 
 ---
 
-# Optional Characters
+# Optional Characters - This OR That
 
 This may be convenient when there are a few different kinds of spellings.
 
@@ -942,7 +997,9 @@ str_view( c("gray", "grey"), "r(a|e)y")
 
 # Numbers of Matches in a Sequence
 
-Let's look at a larger set of words and do some actual detection where we are not intersted in showing the results (using `str_view()` but working with the answers themselves).  Let's use the built-in `words` data, which has ... words
+Let's look at a larger set of words and do some actual detection where we are not intersted in showing the results (using `str_view()` but working with the answers themselves).  
+
+Let's use the built-in `words` data, which has ... words
 
 ```{r}
 head( words )
@@ -955,7 +1012,7 @@ length( words )
 
 # Counts of Items
 
-Simply finding something may be good for determining if something exists.  However, we may want to count how many occurances of something are in the text string.  
+Simply finding something may be good for determining if something exists.  However, we may want to count how many occurrences of something are in the text string.  
 
 Here is an example where we use `str_detect()` to return `TRUE/FALSE` for matching the pattern and then count how many `TRUE` results there are.
 

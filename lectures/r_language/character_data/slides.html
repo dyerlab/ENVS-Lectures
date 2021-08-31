@@ -55,7 +55,7 @@ One of the most fundamental kinds of data we work with is textual data.
 
 - Parsing Raw Files
 
-- Autmated Lexicographic Analyses
+- Automated Lexicographic Analyses
 
 
 
@@ -94,7 +94,7 @@ Notice that you .red[must] use the same quote character to start and finish the 
 
 # First Gotcha 💥
 
-RStudio ties to match quotes (e.g., when you open as string with a quot glyph, it automatically puts in the matching closing one for you).  However if this fails, RStudio will continue to accept input (forever) until you finish with the closed quote character.
+RStudio ties to match quotes (e.g., when you open as string with a quote glyph, it automatically puts in the matching closing one for you).  However if this fails, RStudio will continue to accept input (forever) until you finish with the closed quote character.
 
 --
 
@@ -465,9 +465,9 @@ names
 If you are going to work with large vectors, it is in your best interest to not incrementally concatenate data.
 
 ```
-x &lt;- 23
-x &lt;- c( x, 24 )
-x &lt;- c( x, 42 )
+x &lt;- "Bob"
+x &lt;- c( x, "Alice" )
+x &lt;- c( x, "Roger" )
 ...
 ```
 
@@ -489,7 +489,7 @@ x
 
 ---
 
-# Lengths of Things 📏
+# Lengths of Things 📐
 
 We've already seen the `nchar()` function that gives the number of characters is a variable.
 
@@ -525,7 +525,7 @@ length( names )
 ```
 
 
-
+.footnote[We will see shortly when we jump into using `stringr` that we can disambiguate these things a bit.]
 
 
 
@@ -541,8 +541,7 @@ LETTERS
 ```
 
 ```
-##  [1] "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S"
-## [20] "T" "U" "V" "W" "X" "Y" "Z"
+##  [1] "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"
 ```
 
 
@@ -561,7 +560,7 @@ class: sectionTitle
 
 # Packages
 
-### Extending Built-In Functionality with Someon Elses Efforts 👍
+### Extending Built-In Functionality with Someone Elses Efforts 👍
 
 
 ---
@@ -634,23 +633,6 @@ Then when we start we can use:
 
 ```r
 library( tidyverse )
-```
-
-```
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-```
-
-```
-## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.3     ✓ dplyr   1.0.7
-## ✓ tidyr   1.1.3     ✓ forcats 0.5.1
-## ✓ readr   2.0.1
-```
-
-```
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
 ```
 To get everything in at the beginning so we don't have to worry about it later.
 
@@ -766,6 +748,8 @@ length( names )
 ## [1] 4
 ```
 
+
+.footnote[ See, this is much better than remembering `nchar` vs `lenght`.]
 
 ---
 
@@ -907,7 +891,7 @@ str_sub(myClasses, -3, -1)
 ## [1] "521" "543" "601" "602"
 ```
 
-
+.red[Look mom, I'm going backwards 🤪 !]
 
 
 
@@ -945,47 +929,52 @@ names
 ```
 
 
---
+---
 
-Matches for the letter *i*.
+# Visualizing Matches for Learning
+
+The function `str_view()` is designed to **only** show you where matches are made to help you learn regex, we **never** actually use it in practice.  
+
+Visualizing matches for the letter *i* 
 
 
 ```r
 str_view( names, "i")
 ```
 
-<div id="htmlwidget-8529cd7c7afa9a40e72c" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8529cd7c7afa9a40e72c">{"x":{"html":"<ul>\n  <li>K<span class='match'>i<\/span>ngsley<\/li>\n  <li>Pl<span class='match'>i<\/span>mpton<\/li>\n  <li>Ted Kn<span class='match'>i<\/span>ght<\/li>\n  <li>Z<span class='match'>i<\/span>ssou<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ee59203ffd293929c9bb" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ee59203ffd293929c9bb">{"x":{"html":"<ul>\n  <li>K<span class='match'>i<\/span>ngsley<\/li>\n  <li>Pl<span class='match'>i<\/span>mpton<\/li>\n  <li>Ted Kn<span class='match'>i<\/span>ght<\/li>\n  <li>Z<span class='match'>i<\/span>ssou<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 
 ---
 
 # Positional Matches
 
-Matching based upon position.  Here the `$` indicates that it is at the very end of the string.
+Matching based upon position can be used with the addition of a special character.  Here the `$` indicates that it is at the .red[very end] of the string.
 
 
 ```r
 str_view( names, "n$")
 ```
 
-<div id="htmlwidget-0c10035d1b08aff1328b" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0c10035d1b08aff1328b">{"x":{"html":"<ul>\n  <li>Kingsley<\/li>\n  <li>Plimpto<span class='match'>n<\/span><\/li>\n  <li>Ted Knight<\/li>\n  <li>Zissou<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-9bb035ec924423efb8dd" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9bb035ec924423efb8dd">{"x":{"html":"<ul>\n  <li>Kingsley<\/li>\n  <li>Plimpto<span class='match'>n<\/span><\/li>\n  <li>Ted Knight<\/li>\n  <li>Zissou<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
 # Positional Matches
 
-And the `^` character marks the beginning of a string.
+And the `^` character marks .red[the beginning] of a string.
 
 
 ```r
 str_view( names, "^K")
 ```
 
-<div id="htmlwidget-3c126b1865e7cab11d4e" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3c126b1865e7cab11d4e">{"x":{"html":"<ul>\n  <li><span class='match'>K<\/span>ingsley<\/li>\n  <li>Plimpton<\/li>\n  <li>Ted Knight<\/li>\n  <li>Zissou<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8c5b8bfa451f4177db26" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8c5b8bfa451f4177db26">{"x":{"html":"<ul>\n  <li><span class='match'>K<\/span>ingsley<\/li>\n  <li>Plimpton<\/li>\n  <li>Ted Knight<\/li>\n  <li>Zissou<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
+Notice how it *does not* match the 'K' in Knight.
 
 ---
 
@@ -1017,8 +1006,8 @@ So to match the first generic number in each of the entries, we would use
 str_view( myClasses, "\\d" )
 ```
 
-<div id="htmlwidget-193fb4aff6440c1735f4" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-193fb4aff6440c1735f4">{"x":{"html":"<ul>\n  <li>ENVS-<span class='match'>5<\/span>21<\/li>\n  <li>ENVS-<span class='match'>5<\/span>43<\/li>\n  <li>ENVS-<span class='match'>6<\/span>01<\/li>\n  <li>ENVS-<span class='match'>6<\/span>02<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-77e2c3851fdbd0c14e57" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-77e2c3851fdbd0c14e57">{"x":{"html":"<ul>\n  <li>ENVS-<span class='match'>5<\/span>21<\/li>\n  <li>ENVS-<span class='match'>5<\/span>43<\/li>\n  <li>ENVS-<span class='match'>6<\/span>01<\/li>\n  <li>ENVS-<span class='match'>6<\/span>02<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1031,8 +1020,8 @@ You can match more than one of the characters.
 str_view(myClasses, "\\d\\d")
 ```
 
-<div id="htmlwidget-cff26ab16186da5c3f1c" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-cff26ab16186da5c3f1c">{"x":{"html":"<ul>\n  <li>ENVS-<span class='match'>52<\/span>1<\/li>\n  <li>ENVS-<span class='match'>54<\/span>3<\/li>\n  <li>ENVS-<span class='match'>60<\/span>1<\/li>\n  <li>ENVS-<span class='match'>60<\/span>2<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5ba4bdcca51679f59557" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5ba4bdcca51679f59557">{"x":{"html":"<ul>\n  <li>ENVS-<span class='match'>52<\/span>1<\/li>\n  <li>ENVS-<span class='match'>54<\/span>3<\/li>\n  <li>ENVS-<span class='match'>60<\/span>1<\/li>\n  <li>ENVS-<span class='match'>60<\/span>2<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1045,8 +1034,8 @@ The `"."` character indicates another glyph (of any type)
 str_view( myClasses, "\\d.+")
 ```
 
-<div id="htmlwidget-562e186af46a95d1b163" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-562e186af46a95d1b163">{"x":{"html":"<ul>\n  <li>ENVS-<span class='match'>521<\/span><\/li>\n  <li>ENVS-<span class='match'>543<\/span><\/li>\n  <li>ENVS-<span class='match'>601<\/span><\/li>\n  <li>ENVS-<span class='match'>602<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-e5a9d41b4014a3ed1a65" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e5a9d41b4014a3ed1a65">{"x":{"html":"<ul>\n  <li>ENVS-<span class='match'>521<\/span><\/li>\n  <li>ENVS-<span class='match'>543<\/span><\/li>\n  <li>ENVS-<span class='match'>601<\/span><\/li>\n  <li>ENVS-<span class='match'>602<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 
 ---
@@ -1066,8 +1055,8 @@ This grabs the first word (grabbed by the `\\w` that is immediately followed by 
 str_view( text, "\\w\\,")
 ```
 
-<div id="htmlwidget-1a58412aa625bf35816b" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1a58412aa625bf35816b">{"x":{"html":"<ul>\n  <li>It was the best of time<span class='match'>s,<\/span> it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of light, it was the season of darkness, it was the spring of hope, it was the winter of despair.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b9a3cdff22228771c5a4" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b9a3cdff22228771c5a4">{"x":{"html":"<ul>\n  <li>It was the best of time<span class='match'>s,<\/span> it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of light, it was the season of darkness, it was the spring of hope, it was the winter of despair.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 
 
@@ -1075,8 +1064,8 @@ str_view( text, "\\w\\,")
 str_view( text, "\\w\\s(belief)")
 ```
 
-<div id="htmlwidget-d524cabd39579ee13665" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d524cabd39579ee13665">{"x":{"html":"<ul>\n  <li>It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch o<span class='match'>f belief<\/span>, it was the epoch of incredulity, it was the season of light, it was the season of darkness, it was the spring of hope, it was the winter of despair.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-10272a50b209ddb327fe" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-10272a50b209ddb327fe">{"x":{"html":"<ul>\n  <li>It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch o<span class='match'>f belief<\/span>, it was the epoch of incredulity, it was the season of light, it was the season of darkness, it was the spring of hope, it was the winter of despair.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1093,8 +1082,8 @@ We can match things by the number of occurrences.  Consider the following search
 str_view( text, "o+")
 ```
 
-<div id="htmlwidget-0f0191c72c9e578dd105" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0f0191c72c9e578dd105">{"x":{"html":"<ul>\n  <li>It was the best <span class='match'>o<\/span>f times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of light, it was the season of darkness, it was the spring of hope, it was the winter of despair.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b73554b40177701fe702" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b73554b40177701fe702">{"x":{"html":"<ul>\n  <li>It was the best <span class='match'>o<\/span>f times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of light, it was the season of darkness, it was the spring of hope, it was the winter of despair.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 
 ---
@@ -1107,11 +1096,12 @@ year_1888 &lt;- "MDCCCLXXXVIII"
 str_view( year_1888, "X{3}")
 ```
 
-<div id="htmlwidget-635a4e16757eceb14c98" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-635a4e16757eceb14c98">{"x":{"html":"<ul>\n  <li>MDCCCL<span class='match'>XXX<\/span>VIII<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-92ce13d0aeb935ac2ce8" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-92ce13d0aeb935ac2ce8">{"x":{"html":"<ul>\n  <li>MDCCCL<span class='match'>XXX<\/span>VIII<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 
---- 
+
+---
 
 # Variable Numbers of Matches
 
@@ -1122,8 +1112,25 @@ How about finding where the string contains either 2 consecutive lowercase 'o' v
 str_view( text, "o{2,3}" )
 ```
 
-<div id="htmlwidget-86fd7c58f3742ce24dd8" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-86fd7c58f3742ce24dd8">{"x":{"html":"<ul>\n  <li>It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of f<span class='match'>oo<\/span>lishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of light, it was the season of darkness, it was the spring of hope, it was the winter of despair.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2368c13c555d979bfef4" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2368c13c555d979bfef4">{"x":{"html":"<ul>\n  <li>It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of f<span class='match'>oo<\/span>lishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of light, it was the season of darkness, it was the spring of hope, it was the winter of despair.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# A Greedy Algorithm
+
+Given the opportunity, it will identify the location of the longest match.
+
+
+
+```r
+str_view( year_1888, "C{1,4}")
+```
+
+<div id="htmlwidget-3f35de46b2003ab04f93" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3f35de46b2003ab04f93">{"x":{"html":"<ul>\n  <li>MD<span class='match'>CCC<\/span>LXXXVIII<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
 
 
 ---
@@ -1203,8 +1210,54 @@ str_extract_all( text, "it was the")
 
 ```
 ## [[1]]
-## [1] "it was the" "it was the" "it was the" "it was the" "it was the"
-## [6] "it was the" "it was the" "it was the" "it was the"
+## [1] "it was the" "it was the" "it was the" "it was the" "it was the" "it was the" "it was the" "it was the" "it was the"
+```
+
+
+---
+
+# Some More Options
+
+It will be more exciting if we could use `str_extract()` in a way that allows us to capture more than just **exactly** what we asked for it to find.  
+
+--
+Item | Definition
+-----|-----------------------------
+`^`  | The start of a string match  
+`$`  | The end of a string match  
+`(`  | The start of a capture group
+`)`  | The end of a capture group
+
+---
+
+# More Exciting, no?
+
+So, if we want to find the .red[word] that occurs right before the comma in the text, we create a *capture group* representing one or more word elements (`\w`) followed by a comma. 
+
+
+
+```r
+str_extract_all( text, "(\\w*)," )
+```
+
+```
+## [[1]]
+## [1] "times,"       "times,"       "wisdom,"      "foolishness," "belief,"      "incredulity," "light,"      
+## [8] "darkness,"    "hope,"
+```
+
+--
+
+Simplifying the result a bit.
+
+
+```r
+str_extract_all( text, "(\\w*),", simplify = TRUE)
+```
+
+```
+##      [,1]     [,2]     [,3]      [,4]           [,5]      [,6]           [,7]     [,8]        [,9]   
+## [1,] "times," "times," "wisdom," "foolishness," "belief," "incredulity," "light," "darkness," "hope,"
 ```
 
 
@@ -1220,19 +1273,19 @@ We can define sequences by enclosing them into parentheses.  So to search for al
 str_view( myClasses, "(60)")
 ```
 
-<div id="htmlwidget-f0320785da654ee6157b" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f0320785da654ee6157b">{"x":{"html":"<ul>\n  <li>ENVS-521<\/li>\n  <li>ENVS-543<\/li>\n  <li>ENVS-<span class='match'>60<\/span>1<\/li>\n  <li>ENVS-<span class='match'>60<\/span>2<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6b86714e08191a1f6449" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6b86714e08191a1f6449">{"x":{"html":"<ul>\n  <li>ENVS-521<\/li>\n  <li>ENVS-543<\/li>\n  <li>ENVS-<span class='match'>60<\/span>1<\/li>\n  <li>ENVS-<span class='match'>60<\/span>2<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ```r
 str_view( myClasses, "ENVS-(60)")
 ```
 
-<div id="htmlwidget-107199ba40199a1e46fe" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-107199ba40199a1e46fe">{"x":{"html":"<ul>\n  <li>ENVS-521<\/li>\n  <li>ENVS-543<\/li>\n  <li><span class='match'>ENVS-60<\/span>1<\/li>\n  <li><span class='match'>ENVS-60<\/span>2<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-96bf6e88901754d78060" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-96bf6e88901754d78060">{"x":{"html":"<ul>\n  <li>ENVS-521<\/li>\n  <li>ENVS-543<\/li>\n  <li><span class='match'>ENVS-60<\/span>1<\/li>\n  <li><span class='match'>ENVS-60<\/span>2<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
-# Optional Characters
+# Optional Characters - This OR That
 
 This may be convenient when there are a few different kinds of spellings.
 
@@ -1241,15 +1294,17 @@ This may be convenient when there are a few different kinds of spellings.
 str_view( c("gray", "grey"), "r(a|e)y")
 ```
 
-<div id="htmlwidget-f29c7e8f8bda72889864" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f29c7e8f8bda72889864">{"x":{"html":"<ul>\n  <li>g<span class='match'>ray<\/span><\/li>\n  <li>g<span class='match'>rey<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-91dfcbd3099a920b4361" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-91dfcbd3099a920b4361">{"x":{"html":"<ul>\n  <li>g<span class='match'>ray<\/span><\/li>\n  <li>g<span class='match'>rey<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 
 ---
 
 # Numbers of Matches in a Sequence
 
-Let's look at a larger set of words and do some actual detection where we are not intersted in showing the results (using `str_view()` but working with the answers themselves).  Let's use the built-in `words` data, which has ... words
+Let's look at a larger set of words and do some actual detection where we are not intersted in showing the results (using `str_view()` but working with the answers themselves).  
+
+Let's use the built-in `words` data, which has ... words
 
 
 ```r
@@ -1281,7 +1336,7 @@ length( words )
 
 # Counts of Items
 
-Simply finding something may be good for determining if something exists.  However, we may want to count how many occurances of something are in the text string.  
+Simply finding something may be good for determining if something exists.  However, we may want to count how many occurrences of something are in the text string.  
 
 Here is an example where we use `str_detect()` to return `TRUE/FALSE` for matching the pattern and then count how many `TRUE` results there are.
 
@@ -1351,22 +1406,16 @@ words[ str_detect( words, "r$")   ]
 ```
 
 ```
-##  [1] "after"      "air"        "another"    "answer"     "appear"    
-##  [6] "bar"        "bear"       "bother"     "brother"    "car"       
-## [11] "chair"      "character"  "clear"      "colour"     "confer"    
-## [16] "consider"   "corner"     "cover"      "danger"     "dear"      
-## [21] "dinner"     "doctor"     "door"       "either"     "enter"     
-## [26] "ever"       "fair"       "far"        "father"     "favour"    
-## [31] "floor"      "for"        "four"       "further"    "hair"      
-## [36] "hear"       "hour"       "however"    "labour"     "letter"    
-## [41] "major"      "matter"     "member"     "minister"   "mister"    
-## [46] "mother"     "near"       "never"      "number"     "offer"     
-## [51] "or"         "order"      "other"      "over"       "pair"      
-## [56] "paper"      "particular" "per"        "poor"       "power"     
-## [61] "proper"     "quarter"    "rather"     "refer"      "remember"  
-## [66] "similar"    "sir"        "sister"     "summer"     "together"  
-## [71] "under"      "war"        "water"      "wear"       "whether"   
-## [76] "wonder"     "year"
+##  [1] "after"      "air"        "another"    "answer"     "appear"     "bar"        "bear"       "bother"    
+##  [9] "brother"    "car"        "chair"      "character"  "clear"      "colour"     "confer"     "consider"  
+## [17] "corner"     "cover"      "danger"     "dear"       "dinner"     "doctor"     "door"       "either"    
+## [25] "enter"      "ever"       "fair"       "far"        "father"     "favour"     "floor"      "for"       
+## [33] "four"       "further"    "hair"       "hear"       "hour"       "however"    "labour"     "letter"    
+## [41] "major"      "matter"     "member"     "minister"   "mister"     "mother"     "near"       "never"     
+## [49] "number"     "offer"      "or"         "order"      "other"      "over"       "pair"       "paper"     
+## [57] "particular" "per"        "poor"       "power"      "proper"     "quarter"    "rather"     "refer"     
+## [65] "remember"   "similar"    "sir"        "sister"     "summer"     "together"   "under"      "war"       
+## [73] "water"      "wear"       "whether"    "wonder"     "year"
 ```
 
 
@@ -1381,88 +1430,58 @@ str_detect( words, "r$")
 ```
 
 ```
-##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [13] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [25] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [37] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
-##  [49] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [61] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [73]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [85] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [97] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [109] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
-## [121] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
-## [133] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE
-## [145] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [157]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [169]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [181] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
-## [193] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
-## [205] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE
-## [217] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [229] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE
-## [241] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [253] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
-## [265] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
-## [277] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [289] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
-## [301] FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
-## [313] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [325] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
-## [337] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [349]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [361] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [373] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [385] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [397] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE
-## [409] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [421] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [433] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [445] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
-## [457] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [469] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [481] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [493] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
-## [505] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
-## [517] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE
-## [529] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
-## [541] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
-## [553] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
-## [565] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
-## [577] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE
-## [589] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
-## [601] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
-## [613] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [625] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
-## [637] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [649] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
-## [661] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
-## [673] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [685] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE
-## [697] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [709] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [721] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [733] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [745] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [757] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE
-## [769] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [781] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [793] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [805] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [817] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
-## [829] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [841] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [853] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [865] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
-## [877] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [889] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [901] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [913] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [925] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE
-## [937] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
-## [949] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [961] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [973] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+##  [20] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [39]  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [58] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+##  [77]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [96] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [115]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [134] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [153] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+## [172] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [191] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [210]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [229] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [248] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [267] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [286] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE
+## [305]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [324] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [343] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [362] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [381] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [400] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [419] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [438] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [457] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [476] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [495] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [514] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [533] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [552] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+## [571] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE
+## [590] FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [609] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [628] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [647] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [666]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [685] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [704] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [723] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [742] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [761] FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [780] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [799] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [818] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [837] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [856] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [875] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [894] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [913] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [932]  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [951] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [970] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
 ```
 
 
@@ -1638,10 +1657,10 @@ read_csv("https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Beer_Styles.c
 ```
 
 ```
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: ","
 ## chr  (2): Styles, Yeast
-## dbl (10): ABV_Min, ABV_Max, IBU_Min, IBU_Max, SRM_Min, SRM_Max, OG_Min, OG_M...
+## dbl (10): ABV_Min, ABV_Max, IBU_Min, IBU_Max, SRM_Min, SRM_Max, OG_Min, OG_Max, FG_Min, FG_Max
 ```
 
 ```
@@ -1652,19 +1671,19 @@ read_csv("https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Beer_Styles.c
 
 ```
 ## # A tibble: 100 × 12
-##    Styles    Yeast ABV_Min ABV_Max IBU_Min IBU_Max SRM_Min SRM_Max OG_Min OG_Max
-##    &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-##  1 American… Lager     2.8     4.2       8      12     2         3   1.03   1.04
-##  2 American… Lager     4.2     5.3       8      18     2         4   1.04   1.05
-##  3 Cream Ale Ale       4.2     5.6       8      20     2.5       5   1.04   1.06
-##  4 American… Eith…     4       5.5      15      30     3         6   1.04   1.06
-##  5 Internat… Eith…     4.6     6        18      25     2         6   1.04   1.05
-##  6 Internat… Lager     4.6     6         8      25     7        14   1.04   1.06
-##  7 Internat… Lager     4.2     6         8      20    14        22   1.04   1.06
-##  8 Czech Pa… Lager     3       4.1      20      35     3         6   1.03   1.04
-##  9 Czech Pr… Lager     4.2     5.8      30      45     3.5       6   1.04   1.06
-## 10 Czech Am… Lager     4.4     5.8      20      35    10        16   1.04   1.06
-## # … with 90 more rows, and 2 more variables: FG_Min &lt;dbl&gt;, FG_Max &lt;dbl&gt;
+##    Styles                    Yeast  ABV_Min ABV_Max IBU_Min IBU_Max SRM_Min SRM_Max OG_Min OG_Max FG_Min FG_Max
+##    &lt;chr&gt;                     &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1 American Light Lager      Lager      2.8     4.2       8      12     2         3   1.03   1.04  0.998   1.01
+##  2 American Lager            Lager      4.2     5.3       8      18     2         4   1.04   1.05  1.00    1.01
+##  3 Cream Ale                 Ale        4.2     5.6       8      20     2.5       5   1.04   1.06  1.01    1.01
+##  4 American Wheat Beer       Either     4       5.5      15      30     3         6   1.04   1.06  1.01    1.01
+##  5 International Pale Lager  Either     4.6     6        18      25     2         6   1.04   1.05  1.01    1.01
+##  6 International Amber Lager Lager      4.6     6         8      25     7        14   1.04   1.06  1.01    1.01
+##  7 International Dark Lager  Lager      4.2     6         8      20    14        22   1.04   1.06  1.01    1.01
+##  8 Czech Pale Lager          Lager      3       4.1      20      35     3         6   1.03   1.04  1.01    1.01
+##  9 Czech Premium Pale Lager  Lager      4.2     5.8      30      45     3.5       6   1.04   1.06  1.01    1.02
+## 10 Czech Amber Lager         Lager      4.4     5.8      20      35    10        16   1.04   1.06  1.01    1.02
+## # … with 90 more rows
 ```
 
 

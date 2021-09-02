@@ -48,7 +48,6 @@ In `R`, numerical data is largely represented by a data type called `numeric`.
 - Magnitude determined by your computer (my MacBook can handle `r format(.Machine$double.xmin)` - `r format(.Machine$double.xmax)`).  
 
 
-
 ---
 
 # Operators
@@ -64,6 +63,8 @@ x * y
 x / y
 ```
 
+
+---
 
 # Exponential Operators
 

@@ -942,13 +942,13 @@ str_extract_all( text, "it was the")
 
 It will be more exciting if we could use `str_extract()` in a way that allows us to capture more than just **exactly** what we asked for it to find.  
 
---
+
 Item | Definition
------|-----------------------------
+-----|-----------------------------  
 `^`  | The start of a string match  
 `$`  | The end of a string match  
-`(`  | The start of a capture group
-`)`  | The end of a capture group
+`(`  | The start of a capture group  
+`)`  | The end of a capture group  
 
 ---
 

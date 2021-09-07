@@ -26,7 +26,7 @@ Before you turn it in, save it and hit the "Preview" button on the toolbar at th
 lat.office <- 37.5445796
 lon.office <- -77.454640
 lat.belmont <- 37.554462
-lon.belmont <- 77.479170
+lon.belmont <- -77.479170
 ```
 
 

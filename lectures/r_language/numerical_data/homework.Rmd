@@ -30,6 +30,7 @@ lon.belmont <- 77.479170
 ```
 
 
-*4. External Content: Insert an image below (funny memes would be awesome).*
+*4. Coerce the character representation of this very large number `x <- "1.739275e+18"` into a numeric data type and take the natural logarithm.*
 
 
+*5. How does `R` represent the square root of -1?*

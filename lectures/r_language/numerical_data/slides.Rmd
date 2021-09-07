@@ -10,6 +10,7 @@ output:
       titleSlideClass: ["center","middle"]
       highlightStyle: github
       highlightLines: true
+      ratio: '16:9'
       countIncrementalSlides: false
 ---
 

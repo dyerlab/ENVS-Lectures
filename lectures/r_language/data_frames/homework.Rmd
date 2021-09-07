@@ -6,23 +6,32 @@ output: html_notebook
 
 ## Vectors & Data Frames
 
-Vectors and data frames are the foundation of data analysis in R.  Essentially, most everything we work with will be contained within one of these container types.  As such, it is important for us to get a good understanding and gain a high level of comfort and understaning of how to access and set data in these structures.
+Vectors and data frames are the foundation of data analysis in R.  Essentially, most everything we work with will be contained within one of these container types.  As such, it is important for us to get a good understanding and gain a high level of comfort and understanding of how to access and set data in these structures. 
+
+In this and most of the following homework and presentations, I will use the generic term "data frame"  to indicate a suite of data that has several records and individual measurements on each record.  These will typically be `tibble` objects rather than the older `data.frame` ones unless otherwise stated. As such, we shall need to import `tidyverse` at the beginning.
+
+
+```{r}
+library( tidyverse )
+```
+
 
 ### Creating 
 
-In the chunk below, I have create a three vectors of data.  Use these data to create a data frame named `df` and then show a summary of `df`.
+In the chunk below, create three vectors of data.  one for for names, one for age, and another for grade.
 
 ```{r}
-names <- c("Bob","Alice","Jane")
-age <- c(22,65,36)
-flag <- c(FALSE, FALSE, TRUE)
-
-## Make df and summarize here
-##
-
+# vectors of different types
 ```
 
-Add a new column of data to this data frame (you can make it up, which is what I did with the data above...).  Then summarize.
+Now, create a tibble from these vectors.
+
+```{r}
+# tibble
+```
+
+
+Add a new column of data to this data frame (you can make it up, which is what I did with the data above...). 
 
 ```{r}
 ## Add new column
@@ -39,31 +48,49 @@ Add a new row of data to the `data.frame` then summarize it.
 
 ### Manipulating Data
 
-In reality, we spend very little time working with data as small as this, so let's jump into a slightly larger data set.  There is a built-in data set measuing air quality in New York entitled `airquality` (I know, tricky right?).  It is available on every stock installation and this is what it looks like.
+In reality, we spend very little time working with data as small as this, so let's jump into a slightly larger data set.  There is a built-in data set measuring air quality in New York entitled `airquality` (I know, tricky right?).  It is available on every stock installation and this is what it looks like.
 
 ```{r}
 summary( airquality )
 ```
 
+Let's make a copy of these built-in data and turn it into a tibble.  
+
+```{r}
+data <- as_tibble( airquality )
+summary( data  )
+```
+
+
+
+
 Manipulate the data frame in the following ways:  
 
-1. These data were collected in 1973.  Create a new column of data that represents a textual version of the date (month, day, and year) then drop (delete) the columns Month and Day.  
-2. Change the `Temp` column to `Temperature` (no need to not use the whole word) and convert the data in it Celsius.  
+1. These data were collected in 1973.  Create a new column of data that represents a textual version of the date (month, day, and year) then drop (delete) the columns Month and Day.
+
+```{r}
+## New Column for compound dates
+```
+
+
+2. Conver the temperature from F to C.
+
+```{r}
+# Convert F -> C 
+```
+
+
+3. Change the name of the `Temp` column to `Temperature °C` and the `Solar.R` to `Solar Radiation` in an attempt to practice what is known as '[Literate Programming](http://www.literateprogramming.com)'.
 
 
 ```{r}
-## manipulate airquality data frame (make text date column and convert f -> c)
-
-
-
-
+# set proper names for columns 
 ```
 
-And show your creation.
+And show your creation by using `head()` to reveal the first 6 rows.
 
 ```{r}
 ### Show the first few rows
-head( airquality )
 ```
 
 

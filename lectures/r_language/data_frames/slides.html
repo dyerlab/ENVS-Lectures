@@ -6,8 +6,17 @@
     <script src="libs/header-attrs-2.10/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/middlebury.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/middlebury-fonts.css" rel="stylesheet" />
-    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
-    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+    <script src="libs/jquery-1.12.4/jquery.min.js"></script>
+    <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-1.3.1/leaflet.js"></script>
+    <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+    <script src="libs/proj4-2.6.2/proj4.min.js"></script>
+    <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+    <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+    <script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
     <link rel="stylesheet" href="envs543-styles.css" type="text/css" />
   </head>
   <body>
@@ -20,9 +29,9 @@ background-position: right
 background-size: auto
 
 
-# Markdown &amp; Notebooks
+# Data Containers
 
-### Merging Data, Verbiage, Analyses, &amp; Results
+### Vectors, Matrices, Data Frames, &amp; Tibbles
 
 
 
@@ -34,564 +43,487 @@ background-size: auto
 &lt;img src="images/logo1.svg" width="400px"&gt;
 
 ---
+class: middle 
 
-class: sectionTitle
-
-# But WHY?
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50880814503_4efb8e1b8e_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50881637532_84832f6ab5_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50881533096_6773eb1ffc_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50881532926_6a4b11ef29_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
----
-background-image: url("https://live.staticflickr.com/65535/50881637242_2679ab5371_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
----
-background-image: url("https://live.staticflickr.com/65535/50881674822_fa6bcb2acd_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
----
-background-image: url("https://live.staticflickr.com/65535/50881658837_8729965515_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
-
----
-
-# Reproducible Research
-
-One of the prime goals for us as scientists is to produce quality, *reproducible* research.  One of the easiest ways to do this is to put the data, analyses, and interpretation as close to each other as possible.
-
-
---
-
-![](https://live.staticflickr.com/65535/50881988332_683e0f3313_o_d.png)
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50881870486_ce99a1f7b2_o_d.png)
-background-position: right
-background-size: auto
-
-# One Document to Rule them All
-
-
-.pull-left[
+##  Vectors and data frames are the foundation of data analysis in R.
 
 &amp;nbsp;
 
 &amp;nbsp;
 
-&amp;nbsp;
-
-Easily move from R Markdown to a wide range of output styles, both static and dynamic.
-]
-
----
-background-image: url("https://live.staticflickr.com/65535/50881919942_aa77880202_w_d.jpg")
-background-position: right
-background-size: contain
-
-# Markdown &amp; Ohter Formats
-
-Pandoc
-
-- Universal "Rosetta Stone"
-
-- Converts Between Types
-
-- Built into RStudio
-
-
-
-
-
----
-
-# Creating A Markdown Document
-
-
-.pull-left[
-File `\(\to\)` New File `\(\to\)` R Markdown (.red[OR] R Notebook)
-
-
-- Built-in Templates
-
-- Documents, applications, and presentations
-
-]
-
-.pull-right[
-![](https://live.staticflickr.com/65535/50882088207_6fe14769f0_o_d.png)
-]
-
-
-
-
-
----
-# Notebooks vs Markdown
-
-Two different types of markdown documents.  
-
-
-*Markdown Document* - A Document that can be turned into HTML, Word, PDF, Powerpoint, etc.
-
-*Markdown Notebook* - A markdown document that contains the underlying RMD file itself.
-
-
-
-&amp;nbsp;
-
-&amp;nbsp;
-
-
-## Demo Time!!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Almost .red[everything] we work with will be contained within one of these container types.  As such, it is important for us to get a good understanding and gain a high level of comfort and functionality of how to set and access and set data stored in these structures.
 
 ---
 
 class: sectionTitle
 
-# Markdown
+# But Vectors?
 
 
 ---
-# Textual Representations
 
-&gt; Text is text, nothing more, nothing less.
+# The Vector Object
 
---
+Vectors have the following characteristics:  
 
-.pull-left[ 
-### Markdown 
-`This is text`
-]
-.pull-right[
-### Shows As
-This is text
-]
+- *Single type:* Vectors can only contain a single type of data (e.g., all numeric or all character or all logical, etc.).
 
+&amp;nbsp;
 
 --
 
-.pull-left[ 
-`*Homo sapien*`
-]
-.pull-right[
-*Homo sapien*
-]
+- *Variable Length:* Vectors can have as many objects in them as you have memory in your computer.
+
+&amp;nbsp;
 
 --
 
-.pull-left[ 
-`**Stuff**`
-]
-.pull-right[
-**Stuff**
-]
+- *Pre-allocation:*  You can (and should) pre-allocate a vector of a specific type by calling the function named after the data type with the number of requested elements.
 
 
---
-
-.pull-left[ 
-`&gt; To be, or not to be...`
-]
-.pull-right[
-&gt; To be, or not to be...
-]
-
-
-
-
-
----
-# Textual Representations - Headers
-
-
-
-.pull-left[ 
-### Markdown 
-`# Primary Heading`
-]
-.pull-right[
-### Shows As
-# Primary Heading
-]
-
-
---
-.pull-left[ 
-`## Secondary Heading`
-]
-.pull-right[
-## Secondary Heading
-]
-
-
---
-.pull-left[ 
-`### Tertiary Heading`
-]
-.pull-right[
-### Tertiary Heading
-]
-
-
-
-
-
-
-
-
-
-
----
-# Lists Representations
-
-&gt; Just type them out
-
---
-
-.pull-left[ 
-### Markdown 
-&lt;pre&gt;
-- Thing
-- Other Thing
-&lt;/pre&gt;
-]
-.pull-right[
-### Shows As
-- Thing  
-- Other Thing
-]
-
-
-.pull-left[ 
-&lt;pre&gt;
-1. First thing in ordered list
-2. Next thing
-&lt;/pre&gt;
-]
-.pull-right[
-1. First thing in ordered list  
-2. Next thing  
-]
-
-
-
----
-# Links &amp; URL's
-
-RMarkdown is smart enough to make a raw link into a clickable link.  See https://rmarkdown.rstudio.com for more information on how markdown is implemented in RStudio.
-
-
---
-
-.pull-left[ 
-### Markdown 
-`This is [my website](https://dyerlab.org)` 
-]
-.pull-right[
-### Shows As
-This is [my website](https://dyerlab.org)
-]
-
---
-
-.pull-left[ 
-`![Mr. Snuggles](https://bit.ly/3colMKu)` 
-]
-.pull-right[
-![Mr. Snuggles](https://live.staticflickr.com/65535/50881616521_464293dcb8_w_d.jpg)
-]
-
-
-
----
-# Tables
-
-Tables can be statically written in markdown by defining the columns using the pipe character and the header by dashes.
-
-
-.pull-left[
-
-### Raw Text 
+```r
+numeric(10) -&gt; y 
+y
 ```
-Source | df | SS
--------|----|-----  
-Model  | 1  | 23.23  
-Error  | 41 | 232.32
-Total  | 42 | 255.55
+
 ```
-]
+##  [1] 0 0 0 0 0 0 0 0 0 0
+```
 
---
 
 
-.pull-right[
-### Becomes
+---
 
-Source | df | SS
--------|----|-----  
-Model  | 1  | 23.23  
-Error  | 41 | 232.32
-Total  | 42 | 255.55
-]
+# Making Vectors from Repeating Items
+
+We can easily create a vector of objects by `rep()`etition.
+
+
+```r
+rep( "ENVS 543 is awesome", times=3 )
+```
+
+```
+## [1] "ENVS 543 is awesome" "ENVS 543 is awesome" "ENVS 543 is awesome"
+```
+
+
+---
+
+# Repeating Elements 
+
+Vectors can be used as items to repeat, either as a whole chunck.
+
+
+```r
+rep( c("A","B","C"), times = 2 )
+```
+
+```
+## [1] "A" "B" "C" "A" "B" "C"
+```
 
 --
 
 &amp;nbsp;
 
-.red[Important:] The end of each row in a table needs 2 spaces.
+Or as an element-wise repeat.
+
+
+```r
+rep( c("A","B","C"), each = 2 )
+```
+
+```
+## [1] "A" "A" "B" "B" "C" "C"
+```
 
 
 ---
-# HTML Encodings ([characters](https://www.w3schools.com/html/html_charset.asp) &amp; [emoji](https://www.w3schools.com/charsets/ref_emoji.asp))
+
+# Numerical Sequences
+
+As a shorthand, we can create sequences of numerical values using the shorthand ":" notation.
 
 
-You can embed content as raw HTML into R Markdown and it will convert it.
+```r
+x &lt;- 1:3 
+x
+```
 
-### `&amp;copy;` `\(\to\)` &amp;copy;  
-### - `&amp;beta;` `\(\to\)` &amp;beta;
-### - ` &amp;#128169;` `\(\to\)`  &amp;#128169; 
-### - `&amp;#x1F37A;` `\(\to\)` &amp;#x1F37A;
+```
+## [1] 1 2 3
+```
+
+--
+
+By default, this produces a step count of `1`.  If you'd like to have a different set for creating the vectors, we use the function `seq()`
+
+
+```r
+seq( 1, 100, by = 23) 
+```
+
+```
+## [1]  1 24 47 70 93
+```
+
+--
+
+
+```r
+seq( 100, 1, by = -13)
+```
+
+```
+## [1] 100  87  74  61  48  35  22   9
+```
+
+---
+
+# Sequences of a Specific Length
+
+We can also specify the length of the resulting vector, rather than the step size (it will figure it out internally).
+
+
+```r
+seq( 1, 100, length.out = 28 )
+```
+
+```
+##  [1]   1.000000   4.666667   8.333333  12.000000  15.666667  19.333333
+##  [7]  23.000000  26.666667  30.333333  34.000000  37.666667  41.333333
+## [13]  45.000000  48.666667  52.333333  56.000000  59.666667  63.333333
+## [19]  67.000000  70.666667  74.333333  78.000000  81.666667  85.333333
+## [25]  89.000000  92.666667  96.333333 100.000000
+```
+
+
 
 
 
 ---
-# Embedding Videos
 
-You can use iframes to embed videos
-
+# Combining Columns of Vectors
 
 .pull-left[
-`&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;`
+
+```r
+d &lt;- 1:3
+rows &lt;- rep( d, each=3 )
+cols &lt;- rep( d, times=3 )
+rows
+```
+
+```
+## [1] 1 1 1 2 2 2 3 3 3
+```
+
+```r
+cols
+```
+
+```
+## [1] 1 2 3 1 2 3 1 2 3
+```
+
 ]
-.pull-right[
-&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+.pull-right[ 
+
+```r
+coords &lt;- cbind( rows, cols )
+coords 
+```
+
+```
+##       rows cols
+##  [1,]    1    1
+##  [2,]    1    2
+##  [3,]    1    3
+##  [4,]    2    1
+##  [5,]    2    2
+##  [6,]    2    3
+##  [7,]    3    1
+##  [8,]    3    2
+##  [9,]    3    3
+```
+
+```r
+class( coords )
+```
+
+```
+## [1] "matrix" "array"
+```
+
+```r
+dim( coords )
+```
+
+```
+## [1] 9 2
+```
+
 ]
+
+
+---
+
+# Row and Column Names
+
+We can add meta-data to a matrix by specifying `rownames()` and `colnames()`.
+
+
+```r
+colnames( coords )
+```
+
+```
+## [1] "rows" "cols"
+```
+
+```r
+rownames( coords ) 
+```
+
+```
+## NULL
+```
+
+
+--
+
+
+```r
+rownames( coords ) &lt;- LETTERS[1:9]
+coords
+```
+
+```
+##   rows cols
+## A    1    1
+## B    1    2
+## C    1    3
+## D    2    1
+## E    2    2
+## F    2    3
+## G    3    1
+## H    3    2
+## I    3    3
+```
+
+
+
 
 
 
 ---
-# Embedding Live Pages
 
-You can use iframes to embed other web pages (like this presentation with an embed of itself).
+# Matrices &amp; Arrays
 
-
-.pull-left[
-`&lt;iframe width="560" height="315" src="https://dyerlab.github.io/ENVS-Lectures/markdown/markdown/slides.html#1"&gt;&lt;/iframe&gt;`
-]
-.pull-right[
-&lt;iframe width="560" height="315" src="https://dyerlab.github.io/ENVS-Lectures/markdown/markdown/slides.html#1"&gt;&lt;/iframe&gt;
-]
-
-
-
-
----
-class: sectionTitle
-
-# Code &amp; Markdown
-
-
-
-
-
-
-
-
----
-# Code Chunks
-
-A set of code can be inserted as a single chunk.  (Keyboard Shortcut: CMD+OPT+i)
-
-![chunk](https://live.staticflickr.com/65535/50881114688_c1c25b06c5_o_d.png)
-
-
-becomes 
+A matrix is just a vector with more than one dimension.  Access to elements are 
 
 
 
 ```r
-library( sf )
+coords[1,1]
 ```
 
 ```
-## Linking to GEOS 3.8.1, GDAL 3.2.1, PROJ 7.2.1
+## [1] 1
 ```
-
-```r
-nc &lt;- st_read(system.file("shape/nc.shp", package="sf"))
-```
-
-```
-## Reading layer `nc' from data source 
-##   `/Library/Frameworks/R.framework/Versions/4.0/Resources/library/sf/shape/nc.shp' 
-##   using driver `ESRI Shapefile'
-## Simple feature collection with 100 features and 14 fields
-## Geometry type: MULTIPOLYGON
-## Dimension:     XY
-## Bounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
-## Geodetic CRS:  NAD27
-```
-
-
-
-
-
-
----
-# Code Chunks
-
-Several options exist to modify the characteristics of a chunk.
-
-- Visibility/Invisibility  
-
-- Code is executed or not
-
-- Output options (figure size, DPI, etc.)
-
-- Warning &amp; Error message suppression
-
-- Global or Local options.
-
-
-
-
----
-
-# Inline Code
-
-You can insert code into text and have it evaluated by surrounding it with single backticks, the first of which is postpended by the letter `r`.
-
-&lt;pre&gt;The *nc* data set has a longitudinal boundary of &amp;#96;r st_bbox(nc)[1]&amp;#96;. &lt;/pre&gt; 
 
 --
 
-Is rendered as:
-
-The *nc* data set has a longitudinal boundary of -84.324. 
-
-&amp;nbsp;
+Slices of data
 
 
-Which is .red[very] helpful when writing manuscripts and integrating components of your analyses into the text.
+```r
+coords[1,]
+```
 
+```
+## rows cols 
+##    1    1
+```
 
+```r
+coords[,1]
+```
 
----
-# Figures 
+```
+## A B C D E F G H I 
+## 1 1 1 2 2 2 3 3 3
+```
 
-.pull-left[
-&lt;pre&gt;
-&amp;#96;&amp;#96;&amp;#96;{r echo=FALSE}
-plot( nc["SID79"], axes=TRUE )
-&amp;#96;&amp;#96;&amp;#96;
-&lt;/pre&gt;
-]
-
-.pull-right[
-![](slides_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
-]
 
 
 
 ---
-# Table
+
+# The Recycling Rule
+
+Operations on vectors that expect a particular length are handled (somewhat gracefully) using the 
+
+&lt;div class="box-green"&gt;&lt;i&gt;Recycling Rule:&lt;/i&gt; The shorter of the two vectors will be stretched by reusing values from the start to equal the length of the larger vector.&lt;/div&gt;
+
+--
+
+
+```r
+x &lt;- c(10,20,30)
+y &lt;- c(1,2,3,4,5,6,7,8,9) 
+x + y
+```
+
+```
+## [1] 11 22 33 14 25 36 17 28 39
+```
+
+--
+
+If the shorter vector length is not a clean multiple of the larger one, it will issue a warning to let you know in case these dangling parts could cause problems.
+
+
+```r
+y &lt;- 1:10
+x + y
+```
+
+```
+## Warning in x + y: longer object length is not a multiple of shorter object
+## length
+```
+
+```
+##  [1] 11 22 33 14 25 36 17 28 39 20
+```
+
+
+
+
+
+---
+
+class: sectionTitle
+
+# Data Frames!
+
+### Data frames are the *lingua franca* for `R`
+
+
+
+---
+
+# Data Frames &amp; Related Materials
+
+
+&gt; Data frames are a structure that can hold many different data types in one simple structure.
+
+Data frames are the *lingua franca* for `R`, especially once we start getting into more complicated analysis and manipulation.  For simplicity, one can consider a `data.frame` object much like a spreadsheet.  Each row represents a record on some object and each column—consisting of different kinds of data—are measurements on that object.  
+
+
+---
+
+# Creating Raw Data Frames
+
+Data frames can hold different kinds data types in a grid-like format.  *Rows* are records for observations and *Columns* represent individual measurements on each object.  
+
+
+```r
+site &lt;- c( "Const","ESan", "Aqu")
+longitude &lt;- c( -111.675, -110.3686, -110.1043)
+latitude &lt;- c(25.0247, 24.45879, 23.2855)
+```
+
+--
+
+
+```r
+sites &lt;- data.frame( Site = site,
+                     Longitude = longitude,
+                     Latitude = latitude )
+class( sites )
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+dim( sites ) 
+```
+
+```
+## [1] 3 3
+```
+
+```r
+names( sites ) # shorthand for colnames
+```
+
+```
+## [1] "Site"      "Longitude" "Latitude"
+```
+
+
+---
+
+# Viewing Data Frame Objects.
+
+If the data are small enough, we can visualize it all by printing out the elements.  It is also possible have each column of data to summarize itself.
+
 
 
 .pull-left[
 
-The `knitr` library has built-in formatting for making tables that can be inserted into the document.
+```r
+sites
+```
 
-The following code produces table on the right.
-
-&lt;font size="-1"&gt;
-&lt;pre&gt;
-&amp;#96;&amp;#96;&amp;#96;{r echo=FALSE}
-library(tidyverse)
-library(knitr)
-library(kableExtra)
-
-link &lt;- "https://haozhu233.github.io/kableExtra/"
-caption &lt;- "Table X: Data from the first eight cars in
-the `mtcars` data set that is included in the base `R` install."
-
-mtcars[1:8, 1:8] %&gt;%
-  kable( caption = caption ) %&gt;%
-  kable_paper(full_width = F) %&gt;%
-  column_spec(2, 
-    color = spec_color(mtcars$mpg[1:8]),
-    link = link) %&gt;%
-  column_spec(6, 
-    color = "white",
-    background = spec_color( mtcars$drat[1:8], end = 0.7),
-    popover = paste("am:", mtcars$am[1:8]))
-&amp;#96;&amp;#96;&amp;#96;
-&lt;/pre&gt;
-&lt;/font&gt;
+```
+##    Site Longitude Latitude
+## 1 Const -111.6750 25.02470
+## 2  ESan -110.3686 24.45879
+## 3   Aqu -110.1043 23.28550
+```
 ]
 
 
+--
+
 .pull-right[
+
+
+```r
+summary( sites )
+```
+
+```
+##      Site             Longitude         Latitude    
+##  Length:3           Min.   :-111.7   Min.   :23.29  
+##  Class :character   1st Qu.:-111.0   1st Qu.:23.87  
+##  Mode  :character   Median :-110.4   Median :24.46  
+##                     Mean   :-110.7   Mean   :24.26  
+##                     3rd Qu.:-110.2   3rd Qu.:24.74  
+##                     Max.   :-110.1   Max.   :25.02
+```
+
+]
+
+
+
+---
+
+# Tidy Data - Tibbles
+
+Since this course is focusing on modern data wrangling, we are going to use a new version of a `data.frame` that is defined in the `tidyverse` packages.  
+
+
+```r
+library( tidyverse )
+```
 
 ```
 ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
@@ -610,143 +542,1928 @@ mtcars[1:8, 1:8] %&gt;%
 ## x dplyr::lag()    masks stats::lag()
 ```
 
-```
-## 
-## Attaching package: 'kableExtra'
+---
+
+# Tibble
+
+The new data structure is a derivative of a `data.frame` and is called a `tibble`.  Tibbles can be created by either coercion **or** as the result of any function in *tidyverse* that returns a `data.frame`-like object.
+
+
+```r
+as_tibble( sites )
 ```
 
 ```
-## The following object is masked from 'package:dplyr':
-## 
-##     group_rows
+## # A tibble: 3 × 3
+##   Site  Longitude Latitude
+##   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Const     -112.     25.0
+## 2 ESan      -110.     24.5
+## 3 Aqu       -110.     23.3
 ```
 
-&lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
-&lt;caption&gt;Table X: Data from the first eight cars in the `mtcars` data set that is included in the base `R` install.&lt;/caption&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; mpg &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; cyl &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; disp &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; hp &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; drat &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; wt &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; qsec &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; vs &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mazda RX4 &lt;/td&gt;
-   &lt;td style="text-align:right;color: rgba(52, 182, 121, 1) !important;"&gt;
-&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(52, 182, 121, 1) !important;"&gt; 21.0 &lt;/a&gt;
-&lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 160.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: rgba(67, 191, 113, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 1"&gt; 3.90 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2.620 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16.46 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mazda RX4 Wag &lt;/td&gt;
-   &lt;td style="text-align:right;color: rgba(52, 182, 121, 1) !important;"&gt;
-&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(52, 182, 121, 1) !important;"&gt; 21.0 &lt;/a&gt;
-&lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 160.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: rgba(67, 191, 113, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 1"&gt; 3.90 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2.875 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17.02 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Datsun 710 &lt;/td&gt;
-   &lt;td style="text-align:right;color: rgba(149, 216, 64, 1) !important;"&gt;
-&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(149, 216, 64, 1) !important;"&gt; 22.8 &lt;/a&gt;
-&lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 108.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 93 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: rgba(55, 184, 120, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 1"&gt; 3.85 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2.320 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18.61 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Hornet 4 Drive &lt;/td&gt;
-   &lt;td style="text-align:right;color: rgba(68, 191, 112, 1) !important;"&gt;
-&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(68, 191, 112, 1) !important;"&gt; 21.4 &lt;/a&gt;
-&lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 258.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: rgba(65, 67, 135, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 0"&gt; 3.08 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.215 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 19.44 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Hornet Sportabout &lt;/td&gt;
-   &lt;td style="text-align:right;color: rgba(38, 129, 142, 1) !important;"&gt;
-&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(38, 129, 142, 1) !important;"&gt; 18.7 &lt;/a&gt;
-&lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 360.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 175 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: rgba(60, 79, 138, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 0"&gt; 3.15 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.440 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17.02 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Valiant &lt;/td&gt;
-   &lt;td style="text-align:right;color: rgba(44, 114, 142, 1) !important;"&gt;
-&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(44, 114, 142, 1) !important;"&gt; 18.1 &lt;/a&gt;
-&lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 225.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 105 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: rgba(68, 1, 84, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 0"&gt; 2.76 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.460 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20.22 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Duster 360 &lt;/td&gt;
-   &lt;td style="text-align:right;color: rgba(68, 1, 84, 1) !important;"&gt;
-&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(68, 1, 84, 1) !important;"&gt; 14.3 &lt;/a&gt;
-&lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 360.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 245 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: rgba(55, 90, 140, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 0"&gt; 3.21 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.570 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15.84 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Merc 240D &lt;/td&gt;
-   &lt;td style="text-align:right;color: rgba(253, 231, 37, 1) !important;"&gt;
-&lt;a href="https://haozhu233.github.io/kableExtra/" style="color: rgba(253, 231, 37, 1) !important;"&gt; 24.4 &lt;/a&gt;
-&lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 146.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 62 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: rgba(31, 161, 135, 1) !important;" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" data-content="am: 0"&gt; 3.69 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.190 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20.00 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+---
+
+# Creating *de novo* Tibbles
+
+
+
+```r
+tibble(
+  site = c( "Const","ESan", "Aqu"),
+  longitude = c( -111.675, -110.3686, -110.1043),
+  latitude = c(25.0247, 24.45879, 23.2855)
+) -&gt; sites
+```
+
+Notice the definition followed by the assignment operator.  This is a pretty common pattern in making tibbles and working with tidy data.
+
+--
+
+
+```r
+sites
+```
+
+```
+## # A tibble: 3 × 3
+##   site  longitude latitude
+##   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Const     -112.     25.0
+## 2 ESan      -110.     24.5
+## 3 Aqu       -110.     23.3
+```
+
+
+
+
+---
+
+# Tribble from Tables
+
+For legibility, we can even define a tibble based upon a table format.   
+
+- All data is taken row-wise, 
+
+- All columns must have the same type of data and named by prepending a tilda `~`,
+
+- Each row must have the same number of elements, and
+
+- The header is just a comment to increase readability.
+
+
+```r
+tribble( 
+  ~Site , ~Longitude , ~Latitude,
+  #-----|------------|-----------
+  "Const", -111.6750,  25.02470,
+  "ESan",  -110.3686,  24.45879,
+  "Aqu",   -110.1043,  23.28550	
+  )
+```
+
+```
+## # A tibble: 3 × 3
+##   Site  Longitude Latitude
+##   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Const     -112.     25.0
+## 2 ESan      -110.     24.5
+## 3 Aqu       -110.     23.3
+```
+
+
+---
+
+# Superficial Differences - Sane Printing
+
+.pull-left[
+
+```r
+data.frame( X = 1:1000, Y = 1:1000, Z = 1:1000 )
+```
+
+```
+##         X    Y    Z
+## 1       1    1    1
+## 2       2    2    2
+## 3       3    3    3
+## 4       4    4    4
+## 5       5    5    5
+## 6       6    6    6
+## 7       7    7    7
+## 8       8    8    8
+## 9       9    9    9
+## 10     10   10   10
+## 11     11   11   11
+## 12     12   12   12
+## 13     13   13   13
+## 14     14   14   14
+## 15     15   15   15
+## 16     16   16   16
+## 17     17   17   17
+## 18     18   18   18
+## 19     19   19   19
+## 20     20   20   20
+## 21     21   21   21
+## 22     22   22   22
+## 23     23   23   23
+## 24     24   24   24
+## 25     25   25   25
+## 26     26   26   26
+## 27     27   27   27
+## 28     28   28   28
+## 29     29   29   29
+## 30     30   30   30
+## 31     31   31   31
+## 32     32   32   32
+## 33     33   33   33
+## 34     34   34   34
+## 35     35   35   35
+## 36     36   36   36
+## 37     37   37   37
+## 38     38   38   38
+## 39     39   39   39
+## 40     40   40   40
+## 41     41   41   41
+## 42     42   42   42
+## 43     43   43   43
+## 44     44   44   44
+## 45     45   45   45
+## 46     46   46   46
+## 47     47   47   47
+## 48     48   48   48
+## 49     49   49   49
+## 50     50   50   50
+## 51     51   51   51
+## 52     52   52   52
+## 53     53   53   53
+## 54     54   54   54
+## 55     55   55   55
+## 56     56   56   56
+## 57     57   57   57
+## 58     58   58   58
+## 59     59   59   59
+## 60     60   60   60
+## 61     61   61   61
+## 62     62   62   62
+## 63     63   63   63
+## 64     64   64   64
+## 65     65   65   65
+## 66     66   66   66
+## 67     67   67   67
+## 68     68   68   68
+## 69     69   69   69
+## 70     70   70   70
+## 71     71   71   71
+## 72     72   72   72
+## 73     73   73   73
+## 74     74   74   74
+## 75     75   75   75
+## 76     76   76   76
+## 77     77   77   77
+## 78     78   78   78
+## 79     79   79   79
+## 80     80   80   80
+## 81     81   81   81
+## 82     82   82   82
+## 83     83   83   83
+## 84     84   84   84
+## 85     85   85   85
+## 86     86   86   86
+## 87     87   87   87
+## 88     88   88   88
+## 89     89   89   89
+## 90     90   90   90
+## 91     91   91   91
+## 92     92   92   92
+## 93     93   93   93
+## 94     94   94   94
+## 95     95   95   95
+## 96     96   96   96
+## 97     97   97   97
+## 98     98   98   98
+## 99     99   99   99
+## 100   100  100  100
+## 101   101  101  101
+## 102   102  102  102
+## 103   103  103  103
+## 104   104  104  104
+## 105   105  105  105
+## 106   106  106  106
+## 107   107  107  107
+## 108   108  108  108
+## 109   109  109  109
+## 110   110  110  110
+## 111   111  111  111
+## 112   112  112  112
+## 113   113  113  113
+## 114   114  114  114
+## 115   115  115  115
+## 116   116  116  116
+## 117   117  117  117
+## 118   118  118  118
+## 119   119  119  119
+## 120   120  120  120
+## 121   121  121  121
+## 122   122  122  122
+## 123   123  123  123
+## 124   124  124  124
+## 125   125  125  125
+## 126   126  126  126
+## 127   127  127  127
+## 128   128  128  128
+## 129   129  129  129
+## 130   130  130  130
+## 131   131  131  131
+## 132   132  132  132
+## 133   133  133  133
+## 134   134  134  134
+## 135   135  135  135
+## 136   136  136  136
+## 137   137  137  137
+## 138   138  138  138
+## 139   139  139  139
+## 140   140  140  140
+## 141   141  141  141
+## 142   142  142  142
+## 143   143  143  143
+## 144   144  144  144
+## 145   145  145  145
+## 146   146  146  146
+## 147   147  147  147
+## 148   148  148  148
+## 149   149  149  149
+## 150   150  150  150
+## 151   151  151  151
+## 152   152  152  152
+## 153   153  153  153
+## 154   154  154  154
+## 155   155  155  155
+## 156   156  156  156
+## 157   157  157  157
+## 158   158  158  158
+## 159   159  159  159
+## 160   160  160  160
+## 161   161  161  161
+## 162   162  162  162
+## 163   163  163  163
+## 164   164  164  164
+## 165   165  165  165
+## 166   166  166  166
+## 167   167  167  167
+## 168   168  168  168
+## 169   169  169  169
+## 170   170  170  170
+## 171   171  171  171
+## 172   172  172  172
+## 173   173  173  173
+## 174   174  174  174
+## 175   175  175  175
+## 176   176  176  176
+## 177   177  177  177
+## 178   178  178  178
+## 179   179  179  179
+## 180   180  180  180
+## 181   181  181  181
+## 182   182  182  182
+## 183   183  183  183
+## 184   184  184  184
+## 185   185  185  185
+## 186   186  186  186
+## 187   187  187  187
+## 188   188  188  188
+## 189   189  189  189
+## 190   190  190  190
+## 191   191  191  191
+## 192   192  192  192
+## 193   193  193  193
+## 194   194  194  194
+## 195   195  195  195
+## 196   196  196  196
+## 197   197  197  197
+## 198   198  198  198
+## 199   199  199  199
+## 200   200  200  200
+## 201   201  201  201
+## 202   202  202  202
+## 203   203  203  203
+## 204   204  204  204
+## 205   205  205  205
+## 206   206  206  206
+## 207   207  207  207
+## 208   208  208  208
+## 209   209  209  209
+## 210   210  210  210
+## 211   211  211  211
+## 212   212  212  212
+## 213   213  213  213
+## 214   214  214  214
+## 215   215  215  215
+## 216   216  216  216
+## 217   217  217  217
+## 218   218  218  218
+## 219   219  219  219
+## 220   220  220  220
+## 221   221  221  221
+## 222   222  222  222
+## 223   223  223  223
+## 224   224  224  224
+## 225   225  225  225
+## 226   226  226  226
+## 227   227  227  227
+## 228   228  228  228
+## 229   229  229  229
+## 230   230  230  230
+## 231   231  231  231
+## 232   232  232  232
+## 233   233  233  233
+## 234   234  234  234
+## 235   235  235  235
+## 236   236  236  236
+## 237   237  237  237
+## 238   238  238  238
+## 239   239  239  239
+## 240   240  240  240
+## 241   241  241  241
+## 242   242  242  242
+## 243   243  243  243
+## 244   244  244  244
+## 245   245  245  245
+## 246   246  246  246
+## 247   247  247  247
+## 248   248  248  248
+## 249   249  249  249
+## 250   250  250  250
+## 251   251  251  251
+## 252   252  252  252
+## 253   253  253  253
+## 254   254  254  254
+## 255   255  255  255
+## 256   256  256  256
+## 257   257  257  257
+## 258   258  258  258
+## 259   259  259  259
+## 260   260  260  260
+## 261   261  261  261
+## 262   262  262  262
+## 263   263  263  263
+## 264   264  264  264
+## 265   265  265  265
+## 266   266  266  266
+## 267   267  267  267
+## 268   268  268  268
+## 269   269  269  269
+## 270   270  270  270
+## 271   271  271  271
+## 272   272  272  272
+## 273   273  273  273
+## 274   274  274  274
+## 275   275  275  275
+## 276   276  276  276
+## 277   277  277  277
+## 278   278  278  278
+## 279   279  279  279
+## 280   280  280  280
+## 281   281  281  281
+## 282   282  282  282
+## 283   283  283  283
+## 284   284  284  284
+## 285   285  285  285
+## 286   286  286  286
+## 287   287  287  287
+## 288   288  288  288
+## 289   289  289  289
+## 290   290  290  290
+## 291   291  291  291
+## 292   292  292  292
+## 293   293  293  293
+## 294   294  294  294
+## 295   295  295  295
+## 296   296  296  296
+## 297   297  297  297
+## 298   298  298  298
+## 299   299  299  299
+## 300   300  300  300
+## 301   301  301  301
+## 302   302  302  302
+## 303   303  303  303
+## 304   304  304  304
+## 305   305  305  305
+## 306   306  306  306
+## 307   307  307  307
+## 308   308  308  308
+## 309   309  309  309
+## 310   310  310  310
+## 311   311  311  311
+## 312   312  312  312
+## 313   313  313  313
+## 314   314  314  314
+## 315   315  315  315
+## 316   316  316  316
+## 317   317  317  317
+## 318   318  318  318
+## 319   319  319  319
+## 320   320  320  320
+## 321   321  321  321
+## 322   322  322  322
+## 323   323  323  323
+## 324   324  324  324
+## 325   325  325  325
+## 326   326  326  326
+## 327   327  327  327
+## 328   328  328  328
+## 329   329  329  329
+## 330   330  330  330
+## 331   331  331  331
+## 332   332  332  332
+## 333   333  333  333
+## 334   334  334  334
+## 335   335  335  335
+## 336   336  336  336
+## 337   337  337  337
+## 338   338  338  338
+## 339   339  339  339
+## 340   340  340  340
+## 341   341  341  341
+## 342   342  342  342
+## 343   343  343  343
+## 344   344  344  344
+## 345   345  345  345
+## 346   346  346  346
+## 347   347  347  347
+## 348   348  348  348
+## 349   349  349  349
+## 350   350  350  350
+## 351   351  351  351
+## 352   352  352  352
+## 353   353  353  353
+## 354   354  354  354
+## 355   355  355  355
+## 356   356  356  356
+## 357   357  357  357
+## 358   358  358  358
+## 359   359  359  359
+## 360   360  360  360
+## 361   361  361  361
+## 362   362  362  362
+## 363   363  363  363
+## 364   364  364  364
+## 365   365  365  365
+## 366   366  366  366
+## 367   367  367  367
+## 368   368  368  368
+## 369   369  369  369
+## 370   370  370  370
+## 371   371  371  371
+## 372   372  372  372
+## 373   373  373  373
+## 374   374  374  374
+## 375   375  375  375
+## 376   376  376  376
+## 377   377  377  377
+## 378   378  378  378
+## 379   379  379  379
+## 380   380  380  380
+## 381   381  381  381
+## 382   382  382  382
+## 383   383  383  383
+## 384   384  384  384
+## 385   385  385  385
+## 386   386  386  386
+## 387   387  387  387
+## 388   388  388  388
+## 389   389  389  389
+## 390   390  390  390
+## 391   391  391  391
+## 392   392  392  392
+## 393   393  393  393
+## 394   394  394  394
+## 395   395  395  395
+## 396   396  396  396
+## 397   397  397  397
+## 398   398  398  398
+## 399   399  399  399
+## 400   400  400  400
+## 401   401  401  401
+## 402   402  402  402
+## 403   403  403  403
+## 404   404  404  404
+## 405   405  405  405
+## 406   406  406  406
+## 407   407  407  407
+## 408   408  408  408
+## 409   409  409  409
+## 410   410  410  410
+## 411   411  411  411
+## 412   412  412  412
+## 413   413  413  413
+## 414   414  414  414
+## 415   415  415  415
+## 416   416  416  416
+## 417   417  417  417
+## 418   418  418  418
+## 419   419  419  419
+## 420   420  420  420
+## 421   421  421  421
+## 422   422  422  422
+## 423   423  423  423
+## 424   424  424  424
+## 425   425  425  425
+## 426   426  426  426
+## 427   427  427  427
+## 428   428  428  428
+## 429   429  429  429
+## 430   430  430  430
+## 431   431  431  431
+## 432   432  432  432
+## 433   433  433  433
+## 434   434  434  434
+## 435   435  435  435
+## 436   436  436  436
+## 437   437  437  437
+## 438   438  438  438
+## 439   439  439  439
+## 440   440  440  440
+## 441   441  441  441
+## 442   442  442  442
+## 443   443  443  443
+## 444   444  444  444
+## 445   445  445  445
+## 446   446  446  446
+## 447   447  447  447
+## 448   448  448  448
+## 449   449  449  449
+## 450   450  450  450
+## 451   451  451  451
+## 452   452  452  452
+## 453   453  453  453
+## 454   454  454  454
+## 455   455  455  455
+## 456   456  456  456
+## 457   457  457  457
+## 458   458  458  458
+## 459   459  459  459
+## 460   460  460  460
+## 461   461  461  461
+## 462   462  462  462
+## 463   463  463  463
+## 464   464  464  464
+## 465   465  465  465
+## 466   466  466  466
+## 467   467  467  467
+## 468   468  468  468
+## 469   469  469  469
+## 470   470  470  470
+## 471   471  471  471
+## 472   472  472  472
+## 473   473  473  473
+## 474   474  474  474
+## 475   475  475  475
+## 476   476  476  476
+## 477   477  477  477
+## 478   478  478  478
+## 479   479  479  479
+## 480   480  480  480
+## 481   481  481  481
+## 482   482  482  482
+## 483   483  483  483
+## 484   484  484  484
+## 485   485  485  485
+## 486   486  486  486
+## 487   487  487  487
+## 488   488  488  488
+## 489   489  489  489
+## 490   490  490  490
+## 491   491  491  491
+## 492   492  492  492
+## 493   493  493  493
+## 494   494  494  494
+## 495   495  495  495
+## 496   496  496  496
+## 497   497  497  497
+## 498   498  498  498
+## 499   499  499  499
+## 500   500  500  500
+## 501   501  501  501
+## 502   502  502  502
+## 503   503  503  503
+## 504   504  504  504
+## 505   505  505  505
+## 506   506  506  506
+## 507   507  507  507
+## 508   508  508  508
+## 509   509  509  509
+## 510   510  510  510
+## 511   511  511  511
+## 512   512  512  512
+## 513   513  513  513
+## 514   514  514  514
+## 515   515  515  515
+## 516   516  516  516
+## 517   517  517  517
+## 518   518  518  518
+## 519   519  519  519
+## 520   520  520  520
+## 521   521  521  521
+## 522   522  522  522
+## 523   523  523  523
+## 524   524  524  524
+## 525   525  525  525
+## 526   526  526  526
+## 527   527  527  527
+## 528   528  528  528
+## 529   529  529  529
+## 530   530  530  530
+## 531   531  531  531
+## 532   532  532  532
+## 533   533  533  533
+## 534   534  534  534
+## 535   535  535  535
+## 536   536  536  536
+## 537   537  537  537
+## 538   538  538  538
+## 539   539  539  539
+## 540   540  540  540
+## 541   541  541  541
+## 542   542  542  542
+## 543   543  543  543
+## 544   544  544  544
+## 545   545  545  545
+## 546   546  546  546
+## 547   547  547  547
+## 548   548  548  548
+## 549   549  549  549
+## 550   550  550  550
+## 551   551  551  551
+## 552   552  552  552
+## 553   553  553  553
+## 554   554  554  554
+## 555   555  555  555
+## 556   556  556  556
+## 557   557  557  557
+## 558   558  558  558
+## 559   559  559  559
+## 560   560  560  560
+## 561   561  561  561
+## 562   562  562  562
+## 563   563  563  563
+## 564   564  564  564
+## 565   565  565  565
+## 566   566  566  566
+## 567   567  567  567
+## 568   568  568  568
+## 569   569  569  569
+## 570   570  570  570
+## 571   571  571  571
+## 572   572  572  572
+## 573   573  573  573
+## 574   574  574  574
+## 575   575  575  575
+## 576   576  576  576
+## 577   577  577  577
+## 578   578  578  578
+## 579   579  579  579
+## 580   580  580  580
+## 581   581  581  581
+## 582   582  582  582
+## 583   583  583  583
+## 584   584  584  584
+## 585   585  585  585
+## 586   586  586  586
+## 587   587  587  587
+## 588   588  588  588
+## 589   589  589  589
+## 590   590  590  590
+## 591   591  591  591
+## 592   592  592  592
+## 593   593  593  593
+## 594   594  594  594
+## 595   595  595  595
+## 596   596  596  596
+## 597   597  597  597
+## 598   598  598  598
+## 599   599  599  599
+## 600   600  600  600
+## 601   601  601  601
+## 602   602  602  602
+## 603   603  603  603
+## 604   604  604  604
+## 605   605  605  605
+## 606   606  606  606
+## 607   607  607  607
+## 608   608  608  608
+## 609   609  609  609
+## 610   610  610  610
+## 611   611  611  611
+## 612   612  612  612
+## 613   613  613  613
+## 614   614  614  614
+## 615   615  615  615
+## 616   616  616  616
+## 617   617  617  617
+## 618   618  618  618
+## 619   619  619  619
+## 620   620  620  620
+## 621   621  621  621
+## 622   622  622  622
+## 623   623  623  623
+## 624   624  624  624
+## 625   625  625  625
+## 626   626  626  626
+## 627   627  627  627
+## 628   628  628  628
+## 629   629  629  629
+## 630   630  630  630
+## 631   631  631  631
+## 632   632  632  632
+## 633   633  633  633
+## 634   634  634  634
+## 635   635  635  635
+## 636   636  636  636
+## 637   637  637  637
+## 638   638  638  638
+## 639   639  639  639
+## 640   640  640  640
+## 641   641  641  641
+## 642   642  642  642
+## 643   643  643  643
+## 644   644  644  644
+## 645   645  645  645
+## 646   646  646  646
+## 647   647  647  647
+## 648   648  648  648
+## 649   649  649  649
+## 650   650  650  650
+## 651   651  651  651
+## 652   652  652  652
+## 653   653  653  653
+## 654   654  654  654
+## 655   655  655  655
+## 656   656  656  656
+## 657   657  657  657
+## 658   658  658  658
+## 659   659  659  659
+## 660   660  660  660
+## 661   661  661  661
+## 662   662  662  662
+## 663   663  663  663
+## 664   664  664  664
+## 665   665  665  665
+## 666   666  666  666
+## 667   667  667  667
+## 668   668  668  668
+## 669   669  669  669
+## 670   670  670  670
+## 671   671  671  671
+## 672   672  672  672
+## 673   673  673  673
+## 674   674  674  674
+## 675   675  675  675
+## 676   676  676  676
+## 677   677  677  677
+## 678   678  678  678
+## 679   679  679  679
+## 680   680  680  680
+## 681   681  681  681
+## 682   682  682  682
+## 683   683  683  683
+## 684   684  684  684
+## 685   685  685  685
+## 686   686  686  686
+## 687   687  687  687
+## 688   688  688  688
+## 689   689  689  689
+## 690   690  690  690
+## 691   691  691  691
+## 692   692  692  692
+## 693   693  693  693
+## 694   694  694  694
+## 695   695  695  695
+## 696   696  696  696
+## 697   697  697  697
+## 698   698  698  698
+## 699   699  699  699
+## 700   700  700  700
+## 701   701  701  701
+## 702   702  702  702
+## 703   703  703  703
+## 704   704  704  704
+## 705   705  705  705
+## 706   706  706  706
+## 707   707  707  707
+## 708   708  708  708
+## 709   709  709  709
+## 710   710  710  710
+## 711   711  711  711
+## 712   712  712  712
+## 713   713  713  713
+## 714   714  714  714
+## 715   715  715  715
+## 716   716  716  716
+## 717   717  717  717
+## 718   718  718  718
+## 719   719  719  719
+## 720   720  720  720
+## 721   721  721  721
+## 722   722  722  722
+## 723   723  723  723
+## 724   724  724  724
+## 725   725  725  725
+## 726   726  726  726
+## 727   727  727  727
+## 728   728  728  728
+## 729   729  729  729
+## 730   730  730  730
+## 731   731  731  731
+## 732   732  732  732
+## 733   733  733  733
+## 734   734  734  734
+## 735   735  735  735
+## 736   736  736  736
+## 737   737  737  737
+## 738   738  738  738
+## 739   739  739  739
+## 740   740  740  740
+## 741   741  741  741
+## 742   742  742  742
+## 743   743  743  743
+## 744   744  744  744
+## 745   745  745  745
+## 746   746  746  746
+## 747   747  747  747
+## 748   748  748  748
+## 749   749  749  749
+## 750   750  750  750
+## 751   751  751  751
+## 752   752  752  752
+## 753   753  753  753
+## 754   754  754  754
+## 755   755  755  755
+## 756   756  756  756
+## 757   757  757  757
+## 758   758  758  758
+## 759   759  759  759
+## 760   760  760  760
+## 761   761  761  761
+## 762   762  762  762
+## 763   763  763  763
+## 764   764  764  764
+## 765   765  765  765
+## 766   766  766  766
+## 767   767  767  767
+## 768   768  768  768
+## 769   769  769  769
+## 770   770  770  770
+## 771   771  771  771
+## 772   772  772  772
+## 773   773  773  773
+## 774   774  774  774
+## 775   775  775  775
+## 776   776  776  776
+## 777   777  777  777
+## 778   778  778  778
+## 779   779  779  779
+## 780   780  780  780
+## 781   781  781  781
+## 782   782  782  782
+## 783   783  783  783
+## 784   784  784  784
+## 785   785  785  785
+## 786   786  786  786
+## 787   787  787  787
+## 788   788  788  788
+## 789   789  789  789
+## 790   790  790  790
+## 791   791  791  791
+## 792   792  792  792
+## 793   793  793  793
+## 794   794  794  794
+## 795   795  795  795
+## 796   796  796  796
+## 797   797  797  797
+## 798   798  798  798
+## 799   799  799  799
+## 800   800  800  800
+## 801   801  801  801
+## 802   802  802  802
+## 803   803  803  803
+## 804   804  804  804
+## 805   805  805  805
+## 806   806  806  806
+## 807   807  807  807
+## 808   808  808  808
+## 809   809  809  809
+## 810   810  810  810
+## 811   811  811  811
+## 812   812  812  812
+## 813   813  813  813
+## 814   814  814  814
+## 815   815  815  815
+## 816   816  816  816
+## 817   817  817  817
+## 818   818  818  818
+## 819   819  819  819
+## 820   820  820  820
+## 821   821  821  821
+## 822   822  822  822
+## 823   823  823  823
+## 824   824  824  824
+## 825   825  825  825
+## 826   826  826  826
+## 827   827  827  827
+## 828   828  828  828
+## 829   829  829  829
+## 830   830  830  830
+## 831   831  831  831
+## 832   832  832  832
+## 833   833  833  833
+## 834   834  834  834
+## 835   835  835  835
+## 836   836  836  836
+## 837   837  837  837
+## 838   838  838  838
+## 839   839  839  839
+## 840   840  840  840
+## 841   841  841  841
+## 842   842  842  842
+## 843   843  843  843
+## 844   844  844  844
+## 845   845  845  845
+## 846   846  846  846
+## 847   847  847  847
+## 848   848  848  848
+## 849   849  849  849
+## 850   850  850  850
+## 851   851  851  851
+## 852   852  852  852
+## 853   853  853  853
+## 854   854  854  854
+## 855   855  855  855
+## 856   856  856  856
+## 857   857  857  857
+## 858   858  858  858
+## 859   859  859  859
+## 860   860  860  860
+## 861   861  861  861
+## 862   862  862  862
+## 863   863  863  863
+## 864   864  864  864
+## 865   865  865  865
+## 866   866  866  866
+## 867   867  867  867
+## 868   868  868  868
+## 869   869  869  869
+## 870   870  870  870
+## 871   871  871  871
+## 872   872  872  872
+## 873   873  873  873
+## 874   874  874  874
+## 875   875  875  875
+## 876   876  876  876
+## 877   877  877  877
+## 878   878  878  878
+## 879   879  879  879
+## 880   880  880  880
+## 881   881  881  881
+## 882   882  882  882
+## 883   883  883  883
+## 884   884  884  884
+## 885   885  885  885
+## 886   886  886  886
+## 887   887  887  887
+## 888   888  888  888
+## 889   889  889  889
+## 890   890  890  890
+## 891   891  891  891
+## 892   892  892  892
+## 893   893  893  893
+## 894   894  894  894
+## 895   895  895  895
+## 896   896  896  896
+## 897   897  897  897
+## 898   898  898  898
+## 899   899  899  899
+## 900   900  900  900
+## 901   901  901  901
+## 902   902  902  902
+## 903   903  903  903
+## 904   904  904  904
+## 905   905  905  905
+## 906   906  906  906
+## 907   907  907  907
+## 908   908  908  908
+## 909   909  909  909
+## 910   910  910  910
+## 911   911  911  911
+## 912   912  912  912
+## 913   913  913  913
+## 914   914  914  914
+## 915   915  915  915
+## 916   916  916  916
+## 917   917  917  917
+## 918   918  918  918
+## 919   919  919  919
+## 920   920  920  920
+## 921   921  921  921
+## 922   922  922  922
+## 923   923  923  923
+## 924   924  924  924
+## 925   925  925  925
+## 926   926  926  926
+## 927   927  927  927
+## 928   928  928  928
+## 929   929  929  929
+## 930   930  930  930
+## 931   931  931  931
+## 932   932  932  932
+## 933   933  933  933
+## 934   934  934  934
+## 935   935  935  935
+## 936   936  936  936
+## 937   937  937  937
+## 938   938  938  938
+## 939   939  939  939
+## 940   940  940  940
+## 941   941  941  941
+## 942   942  942  942
+## 943   943  943  943
+## 944   944  944  944
+## 945   945  945  945
+## 946   946  946  946
+## 947   947  947  947
+## 948   948  948  948
+## 949   949  949  949
+## 950   950  950  950
+## 951   951  951  951
+## 952   952  952  952
+## 953   953  953  953
+## 954   954  954  954
+## 955   955  955  955
+## 956   956  956  956
+## 957   957  957  957
+## 958   958  958  958
+## 959   959  959  959
+## 960   960  960  960
+## 961   961  961  961
+## 962   962  962  962
+## 963   963  963  963
+## 964   964  964  964
+## 965   965  965  965
+## 966   966  966  966
+## 967   967  967  967
+## 968   968  968  968
+## 969   969  969  969
+## 970   970  970  970
+## 971   971  971  971
+## 972   972  972  972
+## 973   973  973  973
+## 974   974  974  974
+## 975   975  975  975
+## 976   976  976  976
+## 977   977  977  977
+## 978   978  978  978
+## 979   979  979  979
+## 980   980  980  980
+## 981   981  981  981
+## 982   982  982  982
+## 983   983  983  983
+## 984   984  984  984
+## 985   985  985  985
+## 986   986  986  986
+## 987   987  987  987
+## 988   988  988  988
+## 989   989  989  989
+## 990   990  990  990
+## 991   991  991  991
+## 992   992  992  992
+## 993   993  993  993
+## 994   994  994  994
+## 995   995  995  995
+## 996   996  996  996
+## 997   997  997  997
+## 998   998  998  998
+## 999   999  999  999
+## 1000 1000 1000 1000
+```
+]
+
+--
+
+.pull-right[
+
+```r
+tibble( X = 1:1000, Y = 1:1000, Z = 1:1000)
+```
+
+```
+## # A tibble: 1,000 × 3
+##        X     Y     Z
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1     1     1     1
+##  2     2     2     2
+##  3     3     3     3
+##  4     4     4     4
+##  5     5     5     5
+##  6     6     6     6
+##  7     7     7     7
+##  8     8     8     8
+##  9     9     9     9
+## 10    10    10    10
+## # … with 990 more rows
+```
 
 ]
 
 
+---
+
+# Importing Data
+
+In reality, we rarely type the data into `R` directly and instead read it from some external source (either a file in the local computer, one from some server elsewhere, or from a database).
+
+
+```r
+url &lt;- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv"
+```
+
+--
+
+As part of `tidyverse`, the `readr` library defines several built-in functions for loading in files with specific formats.  In this case the file has *comma separated values* (hence the `.csv` suffix).
+
+
+```r
+samples &lt;- read_csv( url )
+```
+
+```
+## Rows: 39 Columns: 3
+```
+
+```
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: ","
+## chr (1): Stratum
+## dbl (2): Longitude, Latitude
+```
+
+```
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+
+
+
+---
+
+# Showing the Data
+
+
+```r
+summary( samples )
+```
+
+```
+##    Stratum            Longitude         Latitude    
+##  Length:39          Min.   :-114.3   Min.   :23.08  
+##  Class :character   1st Qu.:-112.9   1st Qu.:24.52  
+##  Mode  :character   Median :-111.5   Median :26.21  
+##                     Mean   :-111.7   Mean   :26.14  
+##                     3rd Qu.:-110.4   3rd Qu.:27.47  
+##                     Max.   :-109.1   Max.   :29.33
+```
+
+--
+
+Since `read_csv()` produces a tibble itself as output (as do *all functions in tidyverse*), there is no need to convert it from being a vanilla `data.frame`.
+
+
+```r
+class( samples )
+```
+
+```
+## [1] "spec_tbl_df" "tbl_df"      "tbl"         "data.frame"
+```
+
+
+
+---
+
+# Sizes of Data Objects
+
+Both `data.frame` and `tibble` objects have a number of rows and columns that make up their dimensions.
+
+
+```r
+nrow( samples )
+```
+
+```
+## [1] 39
+```
+
+```r
+ncol( samples )
+```
+
+```
+## [1] 3
+```
+
+```r
+dim( samples )
+```
+
+```
+## [1] 39  3
+```
+
+```r
+names( samples )
+```
+
+```
+## [1] "Stratum"   "Longitude" "Latitude"
+```
+
+
+
+
+---
+
+.pull-left[
+# Visualizing These Data 
+
+One of the first things I like to do is to look at the data that is being imported and see if there are any obvious problems.  These data have spatial coordinates for sites, so here I'll map it interactively (we'll get to this in a few weeks).
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+<div id="htmlwidget-fa57cdfe23101626016d" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fa57cdfe23101626016d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["OpenTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[29.32541,29.01457,28.96651,28.72796,28.66056,28.40846,28.22308,28.03661,27.52944,27.3632,27.40498,27.2028,27.18232,27.0367,26.94589,26.24905,26.20876,26.0155,25.91409,25.60521,25.55757,25.34819,25.0247,24.87611,24.74642,24.58843,24.2115,24.45879,24.13389,24.21441,24.0438,24.0195,24.00789,23.2855,23.08984,23.0757,27.90509,26.63783,26.38014],[-114.2935,-113.9449,-113.6679,-113.4897,-113.9914,-112.8698,-113.1826,-113.3999,-113.3161,-112.964,-112.5296,-112.408,-112.6655,-112.986,-112.0461,-112.4095,-111.3783,-111.3547,-112.0806,-111.3264,-111.2156,-111.6006,-111.675,-110.6917,-111.5441,-110.746,-110.951,-110.3686,-110.4624,-110.2725,-109.989,-110.096,-109.8507,-110.1043,-110.1091,-109.6487,-110.5744,-109.327,-109.1263],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["88","9","84","175","177","173","171","89","159","SFr","160","162","12","161","93","165","169","58","166","64","168","51","Const","77","164","75","163","ESan","153","48","156","157","73","Aqu","Mat","98","101","32","102"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.0757,29.32541],"lng":[-114.2935,-109.1263]}},"evals":[],"jsHooks":[]}</script>
+]
+
+
+
+---
+
+# Small Items - Skipping Metadata
+
+Sometimes there are meta-data rows at the top that must be skiped
+
+
+```r
+read_csv( "Collected on 7 September 2021
+ By RJ Dyer
+ Site, Longitude , Latitude
+ Const, -111.6750,  25.02470
+ ESan,  -110.3686,  24.45879
+ Aqu,   -110.1043,  23.28550", skip=2)
+```
+
+```
+## Rows: 3 Columns: 3
+```
+
+```
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: ","
+## chr (1): Site
+## dbl (2): Longitude, Latitude
+```
+
+```
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+
+```
+## # A tibble: 3 × 3
+##   Site  Longitude Latitude
+##   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Const     -112.     25.0
+## 2 ESan      -110.     24.5
+## 3 Aqu       -110.     23.3
+```
+
+
+
+---
+
+# Small Items - No Column Names
+
+
+```r
+read_csv( "Const, -111.6750,  25.02470
+ ESan,  -110.3686,  24.45879
+ Aqu,   -110.1043,  23.28550", col_names = FALSE )
+```
+
+```
+## Rows: 3 Columns: 3
+```
+
+```
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: ","
+## chr (1): X1
+## dbl (2): X2, X3
+```
+
+```
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+
+```
+## # A tibble: 3 × 3
+##   X1       X2    X3
+##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Const -112.  25.0
+## 2 ESan  -110.  24.5
+## 3 Aqu   -110.  23.3
+```
+
+---
+
+# Small Items - No Column Names
+
+
+```r
+read_csv( "Const, -111.6750,  25.02470
+ ESan,  -110.3686,  24.45879
+ Aqu,   -110.1043,  23.28550", col_names = c("Site","Longitude","Latitude") )
+```
+
+```
+## Rows: 3 Columns: 3
+```
+
+```
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: ","
+## chr (1): Site
+## dbl (2): Longitude, Latitude
+```
+
+```
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+
+```
+## # A tibble: 3 × 3
+##   Site  Longitude Latitude
+##   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Const     -112.     25.0
+## 2 ESan      -110.     24.5
+## 3 Aqu       -110.     23.3
+```
+
+
+
+---
+
+# Small Items - Missing Data
+
+
+```r
+read_csv( "Site, Longitude , Latitude
+ Const, ,  25.02470
+ ESan,  -110.3686,  
+ Aqu,   -110.1043,  23.28550")
+```
+
+```
+## Rows: 3 Columns: 3
+```
+
+```
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: ","
+## chr (1): Site
+## dbl (2): Longitude, Latitude
+```
+
+```
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+
+```
+## # A tibble: 3 × 3
+##   Site  Longitude Latitude
+##   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Const       NA      25.0
+## 2 ESan      -110.     NA  
+## 3 Aqu       -110.     23.3
+```
+
+
+
+---
+
+# Small Items - Missing Data Non-Traditional
+
+
+```r
+read_csv( "Site, Longitude , Latitude
+ Const, -9 ,  25.02470
+ ESan,  -110.3686,  -9 
+ Aqu,   -110.1043,  23.28550", na="-9")
+```
+
+```
+## Rows: 3 Columns: 3
+```
+
+```
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: ","
+## chr (1): Site
+## dbl (2): Longitude, Latitude
+```
+
+```
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+
+```
+## # A tibble: 3 × 3
+##   Site  Longitude Latitude
+##   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Const       NA      25.0
+## 2 ESan      -110.     NA  
+## 3 Aqu       -110.     23.3
+```
+
+---
+
+# Slicing and Dicing
+
+When we take a slice of data from a `tibble` (or `data.frame`), how we ask for it may determine the nature of what is returned to us. 
+
+
+```r
+summary( samples )
+```
+
+```
+##    Stratum            Longitude         Latitude    
+##  Length:39          Min.   :-114.3   Min.   :23.08  
+##  Class :character   1st Qu.:-112.9   1st Qu.:24.52  
+##  Mode  :character   Median :-111.5   Median :26.21  
+##                     Mean   :-111.7   Mean   :26.14  
+##                     3rd Qu.:-110.4   3rd Qu.:27.47  
+##                     Max.   :-109.1   Max.   :29.33
+```
+
+
+
+```r
+class( samples$Stratum )
+```
+
+```
+## [1] "character"
+```
+
+```r
+class( samples[,1])
+```
+
+```
+## [1] "tbl_df"     "tbl"        "data.frame"
+```
+
+
+
+---
+
+# Subsets by Position
+
+
+```r
+samples[1:10, ]
+```
+
+```
+## # A tibble: 10 × 3
+##    Stratum Longitude Latitude
+##    &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+##  1 88          -114.     29.3
+##  2 9           -114.     29.0
+##  3 84          -114.     29.0
+##  4 175         -113.     28.7
+##  5 177         -114.     28.7
+##  6 173         -113.     28.4
+##  7 171         -113.     28.2
+##  8 89          -113.     28.0
+##  9 159         -113.     27.5
+## 10 SFr         -113.     27.4
+```
+
+
+
+
+---
+
+# Filtering By Logic
+
+So far, we've used the actual row numbers to grab data from the tibble.  We can also use logic based upon data within the table itself.
+
+Remember, that a relational operator will return `TRUE` or `FALSE` and we can use that to filter the whole thing.  Here is how we'd find all data where the latitude was greater than -110.
+
+
+```r
+samples[ samples$Longitude &gt; -110,]
+```
+
+```
+## # A tibble: 5 × 3
+##   Stratum Longitude Latitude
+##   &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+## 1 156         -110.     24.0
+## 2 73          -110.     24.0
+## 3 98          -110.     23.1
+## 4 32          -109.     26.6
+## 5 102         -109.     26.4
+```
+
+Notice the columns designation is left blank (so we are getting all of them.)
+
+
+---
+
+# Filtering Individual Data
+
+We can use some of the fancy string stuff we learned previously to pull out only the names of the sites that match a certain regular expression (here they must start with either `C`, `E`, or `S`).  Using the `$` notation returns the results as a vector.
+
+
+```r
+samples$Stratum[ str_detect( samples$Stratum, "^[CES]") ]
+```
+
+```
+## [1] "SFr"   "Const" "ESan"
+```
+
+--
+
+But using the square bracket notation (rows and indicating numerically which column), returns the result as a tibble.
+
+
+```r
+samples[str_detect( samples$Stratum, "^[CES]"),1]
+```
+
+```
+## # A tibble: 3 × 1
+##   Stratum
+##   &lt;chr&gt;  
+## 1 SFr    
+## 2 Const  
+## 3 ESan
+```
+
+
+
+
+
+---
+
+# Adding New Data Columns
+
+Adding new columns always post-pends them onto the right side of the tibble.
+
+
+```r
+samples$ID &lt;- 1:39
+samples
+```
+
+```
+## # A tibble: 39 × 4
+##    Stratum Longitude Latitude    ID
+##    &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;
+##  1 88          -114.     29.3     1
+##  2 9           -114.     29.0     2
+##  3 84          -114.     29.0     3
+##  4 175         -113.     28.7     4
+##  5 177         -114.     28.7     5
+##  6 173         -113.     28.4     6
+##  7 171         -113.     28.2     7
+##  8 89          -113.     28.0     8
+##  9 159         -113.     27.5     9
+## 10 SFr         -113.     27.4    10
+## # … with 29 more rows
+```
+
+
+---
+
+# Changing Individual Values
+
+.pull-left[
+By column variable name 
+
+
+```r
+samples$ID[2] &lt;- 42
+samples
+```
+
+```
+## # A tibble: 39 × 4
+##    Stratum Longitude Latitude    ID
+##    &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+##  1 88          -114.     29.3     1
+##  2 9           -114.     29.0    42
+##  3 84          -114.     29.0     3
+##  4 175         -113.     28.7     4
+##  5 177         -114.     28.7     5
+##  6 173         -113.     28.4     6
+##  7 171         -113.     28.2     7
+##  8 89          -113.     28.0     8
+##  9 159         -113.     27.5     9
+## 10 SFr         -113.     27.4    10
+## # … with 29 more rows
+```
+
+]
+
+--
+
+.pull-right[
+By index coordinate.
+
+
+```r
+samples[2,4] &lt;- 24
+samples
+```
+
+```
+## # A tibble: 39 × 4
+##    Stratum Longitude Latitude    ID
+##    &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+##  1 88          -114.     29.3     1
+##  2 9           -114.     29.0    24
+##  3 84          -114.     29.0     3
+##  4 175         -113.     28.7     4
+##  5 177         -114.     28.7     5
+##  6 173         -113.     28.4     6
+##  7 171         -113.     28.2     7
+##  8 89          -113.     28.0     8
+##  9 159         -113.     27.5     9
+## 10 SFr         -113.     27.4    10
+## # … with 29 more rows
+```
+
+]
+
+
+
+---
+
+# Forced Coercion
+
+
+```r
+samples$ID[2] &lt;- "Bob"
+samples
+```
+
+```
+## # A tibble: 39 × 4
+##    Stratum Longitude Latitude ID   
+##    &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;
+##  1 88          -114.     29.3 1    
+##  2 9           -114.     29.0 Bob  
+##  3 84          -114.     29.0 3    
+##  4 175         -113.     28.7 4    
+##  5 177         -114.     28.7 5    
+##  6 173         -113.     28.4 6    
+##  7 171         -113.     28.2 7    
+##  8 89          -113.     28.0 8    
+##  9 159         -113.     27.5 9    
+## 10 SFr         -113.     27.4 10   
+## # … with 29 more rows
+```
+
+
+
+
+---
+
+# Deleting Content
+
+.pull-left[
+Individual values in a column can be deleted by assigning it `NA`, a missing value.  The *Recycle Rule* we saw above, will repeat the `NA` throughout the whole column.
+
+
+```r
+samples$ID &lt;- NA 
+samples 
+```
+
+```
+## # A tibble: 39 × 4
+##    Stratum Longitude Latitude ID   
+##    &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;lgl&gt;
+##  1 88          -114.     29.3 NA   
+##  2 9           -114.     29.0 NA   
+##  3 84          -114.     29.0 NA   
+##  4 175         -113.     28.7 NA   
+##  5 177         -114.     28.7 NA   
+##  6 173         -113.     28.4 NA   
+##  7 171         -113.     28.2 NA   
+##  8 89          -113.     28.0 NA   
+##  9 159         -113.     27.5 NA   
+## 10 SFr         -113.     27.4 NA   
+## # … with 29 more rows
+```
+]
+
+
+.pull-right[
+
+To entirely delete the column, instead of just assigning all the elemnets to be missing, can be accomplished by setting the whole column equal to `NULL`
+
+
+```r
+samples$ID &lt;- NULL 
+samples 
+```
+
+```
+## # A tibble: 39 × 3
+##    Stratum Longitude Latitude
+##    &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+##  1 88          -114.     29.3
+##  2 9           -114.     29.0
+##  3 84          -114.     29.0
+##  4 175         -113.     28.7
+##  5 177         -114.     28.7
+##  6 173         -113.     28.4
+##  7 171         -113.     28.2
+##  8 89          -113.     28.0
+##  9 159         -113.     27.5
+## 10 SFr         -113.     27.4
+## # … with 29 more rows
+```
+]
+
+
+
+
+---
+
+# Adding Rows of Content
+
+To add additional Rows of content, we need to put the new data into their own `data.frame` or `tibble` 
+
+
+```r
+tibble( 
+  Stratum = c("Los Barriles","Comondu"),
+  Longitude = c(-109.7026, -111.8442),
+  Latitude = c(23.6811, 26.0708) 
+) -&gt; newSites
+newSites
+```
+
+```
+## # A tibble: 2 × 3
+##   Stratum      Longitude Latitude
+##   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Los Barriles     -110.     23.7
+## 2 Comondu          -112.     26.1
+```
+
+
+---
+
+# Adding Rows of Content
+
+And then `bind` it onto the existing sample.
+
+
+```r
+samples &lt;- rbind( samples, newSites)
+
+tail( samples )
+```
+
+```
+## # A tibble: 6 × 3
+##   Stratum      Longitude Latitude
+##   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;
+## 1 98               -110.     23.1
+## 2 101              -111.     27.9
+## 3 32               -109.     26.6
+## 4 102              -109.     26.4
+## 5 Los Barriles     -110.     23.7
+## 6 Comondu          -112.     26.1
+```
+
+
+---
+
+# Deleting Rows
+
+To delete rows, you use negative row indices.
+
+
+```r
+dim(samples)
+```
+
+```
+## [1] 41  3
+```
+
+```r
+samples &lt;- samples[-41:-39,]
+dim(samples)
+```
+
+```
+## [1] 38  3
+```
+
+Notice: For all of this "add on" and "delete" stuff, if we want it to **persist** we .red[must] reassign the values back onto the original variable.
+
+
+---
+
+# Real Names
+
+While not quite critical here, we often have the need to use more descriptive names for our data columns, some of which need to have spaces to be fully descriptive.  One of the last benefits of a `tibble` I'll discuss here, is that it allows for spaces in the names of data columns.
+
+
+```r
+names(samples)
+```
+
+```
+## [1] "Stratum"   "Longitude" "Latitude"
+```
+
+```r
+names( samples )[1] &lt;- "Population Name"
+samples 
+```
+
+```
+## # A tibble: 38 × 3
+##    `Population Name` Longitude Latitude
+##    &lt;chr&gt;                 &lt;dbl&gt;    &lt;dbl&gt;
+##  1 88                    -114.     29.3
+##  2 9                     -114.     29.0
+##  3 84                    -114.     29.0
+##  4 175                   -113.     28.7
+##  5 177                   -114.     28.7
+##  6 173                   -113.     28.4
+##  7 171                   -113.     28.2
+##  8 89                    -113.     28.0
+##  9 159                   -113.     27.5
+## 10 SFr                   -113.     27.4
+## # … with 28 more rows
+```
+
+
+
+---
+
+# Accessing Spaced Out Columns
+
+`RStudio` will properly autoinsert all valid column names if you hit the tab button for you.  However, if you are doing it manually, surround the name of the data column in a backtick (that is the character on the upper left corner of your keyboard).
+
+
+```r
+samples$`Population Name`
+```
+
+```
+##  [1] "88"    "9"     "84"    "175"   "177"   "173"   "171"   "89"    "159"  
+## [10] "SFr"   "160"   "162"   "12"    "161"   "93"    "165"   "169"   "58"   
+## [19] "166"   "64"    "168"   "51"    "Const" "77"    "164"   "75"    "163"  
+## [28] "ESan"  "153"   "48"    "156"   "157"   "73"    "Aqu"   "Mat"   "98"   
+## [37] "101"   "32"
+```
 
 
 

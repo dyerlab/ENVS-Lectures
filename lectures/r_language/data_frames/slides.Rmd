@@ -20,9 +20,9 @@ background-position: right
 background-size: auto
 
 
-# Markdown & Notebooks
+# Data Containers
 
-### Merging Data, Verbiage, Analyses, & Results
+### Vectors, Matrices, Data Frames, & Tibbles
 
 
 
@@ -34,565 +34,739 @@ background-size: auto
 <img src="images/logo1.svg" width="400px">
 
 ---
+class: middle 
 
-class: sectionTitle
-
-# But WHY?
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50880814503_4efb8e1b8e_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50881637532_84832f6ab5_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50881533096_6773eb1ffc_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50881532926_6a4b11ef29_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
----
-background-image: url("https://live.staticflickr.com/65535/50881637242_2679ab5371_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
----
-background-image: url("https://live.staticflickr.com/65535/50881674822_fa6bcb2acd_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
----
-background-image: url("https://live.staticflickr.com/65535/50881658837_8729965515_o_d.png")
-background-position: left
-background-size: auto
-
-# How do we communicate about our data?
-
-
-
----
-
-# Reproducible Research
-
-One of the prime goals for us as scientists is to produce quality, *reproducible* research.  One of the easiest ways to do this is to put the data, analyses, and interpretation as close to each other as possible.
-
-
---
-
-![](https://live.staticflickr.com/65535/50881988332_683e0f3313_o_d.png)
-
-
----
-background-image: url("https://live.staticflickr.com/65535/50881870486_ce99a1f7b2_o_d.png)
-background-position: right
-background-size: auto
-
-# One Document to Rule them All
-
-
-.pull-left[
+##  Vectors and data frames are the foundation of data analysis in R.
 
 &nbsp;
 
 &nbsp;
 
-&nbsp;
-
-Easily move from R Markdown to a wide range of output styles, both static and dynamic.
-]
-
----
-background-image: url("https://live.staticflickr.com/65535/50881919942_aa77880202_w_d.jpg")
-background-position: right
-background-size: contain
-
-# Markdown & Ohter Formats
-
-Pandoc
-
-- Universal "Rosetta Stone"
-
-- Converts Between Types
-
-- Built into RStudio
-
-
-
-
-
----
-
-# Creating A Markdown Document
-
-
-.pull-left[
-File $\to$ New File $\to$ R Markdown (.red[OR] R Notebook)
-
-
-- Built-in Templates
-
-- Documents, applications, and presentations
-
-]
-
-.pull-right[
-![](https://live.staticflickr.com/65535/50882088207_6fe14769f0_o_d.png)
-]
-
-
-
-
-
----
-# Notebooks vs Markdown
-
-Two different types of markdown documents.  
-
-
-*Markdown Document* - A Document that can be turned into HTML, Word, PDF, Powerpoint, etc.
-
-*Markdown Notebook* - A markdown document that contains the underlying RMD file itself.
-
-
-
-&nbsp;
-
-&nbsp;
-
-
-## Demo Time!!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Almost .red[everything] we work with will be contained within one of these container types.  As such, it is important for us to get a good understanding and gain a high level of comfort and functionality of how to set and access and set data stored in these structures.
 
 ---
 
 class: sectionTitle
 
-# Markdown
+# But Vectors?
 
 
 ---
-# Textual Representations
 
-> Text is text, nothing more, nothing less.
+# The Vector Object
 
---
+Vectors have the following characteristics:  
 
-.pull-left[ 
-### Markdown 
-`This is text`
-]
-.pull-right[
-### Shows As
-This is text
-]
+- *Single type:* Vectors can only contain a single type of data (e.g., all numeric or all character or all logical, etc.).
 
+&nbsp;
 
 --
 
-.pull-left[ 
-`*Homo sapien*`
-]
-.pull-right[
-*Homo sapien*
-]
+- *Variable Length:* Vectors can have as many objects in them as you have memory in your computer.
+
+&nbsp;
 
 --
 
-.pull-left[ 
-`**Stuff**`
-]
-.pull-right[
-**Stuff**
-]
+- *Pre-allocation:*  You can (and should) pre-allocate a vector of a specific type by calling the function named after the data type with the number of requested elements.
 
-
---
-
-.pull-left[ 
-`> To be, or not to be...`
-]
-.pull-right[
-> To be, or not to be...
-]
-
-
-
-
-
----
-# Textual Representations - Headers
-
-
-
-.pull-left[ 
-### Markdown 
-`# Primary Heading`
-]
-.pull-right[
-### Shows As
-# Primary Heading
-]
-
-
---
-.pull-left[ 
-`## Secondary Heading`
-]
-.pull-right[
-## Secondary Heading
-]
-
-
---
-.pull-left[ 
-`### Tertiary Heading`
-]
-.pull-right[
-### Tertiary Heading
-]
-
-
-
-
-
-
-
-
-
-
----
-# Lists Representations
-
-> Just type them out
-
---
-
-.pull-left[ 
-### Markdown 
-<pre>
-- Thing
-- Other Thing
-</pre>
-]
-.pull-right[
-### Shows As
-- Thing  
-- Other Thing
-]
-
-
-.pull-left[ 
-<pre>
-1. First thing in ordered list
-2. Next thing
-</pre>
-]
-.pull-right[
-1. First thing in ordered list  
-2. Next thing  
-]
-
-
-
----
-# Links & URL's
-
-RMarkdown is smart enough to make a raw link into a clickable link.  See https://rmarkdown.rstudio.com for more information on how markdown is implemented in RStudio.
-
-
---
-
-.pull-left[ 
-### Markdown 
-`This is [my website](https://dyerlab.org)` 
-]
-.pull-right[
-### Shows As
-This is [my website](https://dyerlab.org)
-]
-
---
-
-.pull-left[ 
-`![Mr. Snuggles](https://bit.ly/3colMKu)` 
-]
-.pull-right[
-![Mr. Snuggles](https://live.staticflickr.com/65535/50881616521_464293dcb8_w_d.jpg)
-]
-
-
-
----
-# Tables
-
-Tables can be statically written in markdown by defining the columns using the pipe character and the header by dashes.
-
-
-.pull-left[
-
-### Raw Text 
+```{r}
+numeric(10) -> y 
+y
 ```
-Source | df | SS
--------|----|-----  
-Model  | 1  | 23.23  
-Error  | 41 | 232.32
-Total  | 42 | 255.55
+
+
+
+---
+
+# Making Vectors from Repeating Items
+
+We can easily create a vector of objects by `rep()`etition.
+
+```{r}
+rep( "ENVS 543 is awesome", times=3 )
 ```
-]
-
---
 
 
-.pull-right[
-### Becomes
+---
 
-Source | df | SS
--------|----|-----  
-Model  | 1  | 23.23  
-Error  | 41 | 232.32
-Total  | 42 | 255.55
-]
+# Repeating Elements 
+
+Vectors can be used as items to repeat, either as a whole chunck.
+
+```{r}
+rep( c("A","B","C"), times = 2 )
+
+```
 
 --
 
 &nbsp;
 
-.red[Important:] The end of each row in a table needs 2 spaces.
+Or as an element-wise repeat.
+
+```{r}
+rep( c("A","B","C"), each = 2 )
+```
 
 
 ---
-# HTML Encodings ([characters](https://www.w3schools.com/html/html_charset.asp) & [emoji](https://www.w3schools.com/charsets/ref_emoji.asp))
+
+# Numerical Sequences
+
+As a shorthand, we can create sequences of numerical values using the shorthand ":" notation.
+
+```{r}
+x <- 1:3 
+x
+```
+
+--
+
+By default, this produces a step count of `1`.  If you'd like to have a different set for creating the vectors, we use the function `seq()`
+
+```{r}
+seq( 1, 100, by = 23) 
+```
+
+--
+
+```{r}
+seq( 100, 1, by = -13)
+```
+
+---
+
+# Sequences of a Specific Length
+
+We can also specify the length of the resulting vector, rather than the step size (it will figure it out internally).
+
+```{r}
+seq( 1, 100, length.out = 28 )
+```
 
 
-You can embed content as raw HTML into R Markdown and it will convert it.
-
-### `&copy;` $\to$ &copy;  
-### - `&beta;` $\to$ &beta;
-### - ` &#128169;` $\to$  &#128169; 
-### - `&#x1F37A;` $\to$ &#x1F37A;
 
 
 
 ---
-# Embedding Videos
 
-You can use iframes to embed videos
-
+# Combining Columns of Vectors
 
 .pull-left[
-`<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+```{r}
+d <- 1:3
+rows <- rep( d, each=3 )
+cols <- rep( d, times=3 )
+rows
+cols
+```
+
 ]
-.pull-right[
-<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+.pull-right[ 
+```{r}
+coords <- cbind( rows, cols )
+coords 
+class( coords )
+dim( coords )
+```
+
 ]
+
+
+---
+
+# Row and Column Names
+
+We can add meta-data to a matrix by specifying `rownames()` and `colnames()`.
+
+```{r}
+colnames( coords )
+rownames( coords ) 
+```
+
+
+--
+
+```{r}
+rownames( coords ) <- LETTERS[1:9]
+coords
+```
+
+
+
 
 
 
 ---
-# Embedding Live Pages
 
-You can use iframes to embed other web pages (like this presentation with an embed of itself).
+# Matrices & Arrays
 
-
-.pull-left[
-`<iframe width="560" height="315" src="https://dyerlab.github.io/ENVS-Lectures/markdown/markdown/slides.html#1"></iframe>`
-]
-.pull-right[
-<iframe width="560" height="315" src="https://dyerlab.github.io/ENVS-Lectures/markdown/markdown/slides.html#1"></iframe>
-]
-
-
-
-
----
-class: sectionTitle
-
-# Code & Markdown
-
-
-
-
-
-
-
-
----
-# Code Chunks
-
-A set of code can be inserted as a single chunk.  (Keyboard Shortcut: CMD+OPT+i)
-
-![chunk](https://live.staticflickr.com/65535/50881114688_c1c25b06c5_o_d.png)
-
-
-becomes 
+A matrix is just a vector with more than one dimension.  Access to elements are 
 
 
 ```{r}
-library( sf )
-nc <- st_read(system.file("shape/nc.shp", package="sf"))
+coords[1,1]
 ```
-
-
-
-
-
-
----
-# Code Chunks
-
-Several options exist to modify the characteristics of a chunk.
-
-- Visibility/Invisibility  
-
-- Code is executed or not
-
-- Output options (figure size, DPI, etc.)
-
-- Warning & Error message suppression
-
-- Global or Local options.
-
-
-
-
----
-
-# Inline Code
-
-You can insert code into text and have it evaluated by surrounding it with single backticks, the first of which is postpended by the letter `r`.
-
-<pre>The *nc* data set has a longitudinal boundary of &#96;r st_bbox(nc)[1]&#96;. </pre> 
 
 --
 
-Is rendered as:
+Slices of data
 
-The *nc* data set has a longitudinal boundary of `r format(st_bbox(nc)[1], digits=5)`. 
+```{r}
+coords[1,]
+coords[,1]
+```
+
+
+
+
+---
+
+# The Recycling Rule
+
+Operations on vectors that expect a particular length are handled (somewhat gracefully) using the 
+
+<div class="box-green"><i>Recycling Rule:</i> The shorter of the two vectors will be stretched by reusing values from the start to equal the length of the larger vector.</div>
+
+--
+
+```{r}
+x <- c(10,20,30)
+y <- c(1,2,3,4,5,6,7,8,9) 
+x + y
+```
+
+--
+
+If the shorter vector length is not a clean multiple of the larger one, it will issue a warning to let you know in case these dangling parts could cause problems.
+
+```{r}
+y <- 1:10
+x + y
+```
+
+
+
+
+
+---
+
+class: sectionTitle
+
+# Data Frames!
+
+### Data frames are the *lingua franca* for `R`
+
+
+
+---
+
+# Data Frames & Related Materials
+
+
+> Data frames are a structure that can hold many different data types in one simple structure.
+
+Data frames are the *lingua franca* for `R`, especially once we start getting into more complicated analysis and manipulation.  For simplicity, one can consider a `data.frame` object much like a spreadsheet.  Each row represents a record on some object and each column—consisting of different kinds of data—are measurements on that object.  
+
+
+---
+
+# Creating Raw Data Frames
+
+Data frames can hold different kinds data types in a grid-like format.  *Rows* are records for observations and *Columns* represent individual measurements on each object.  
+
+```{r}
+site <- c( "Const","ESan", "Aqu")
+longitude <- c( -111.675, -110.3686, -110.1043)
+latitude <- c(25.0247, 24.45879, 23.2855)
+```
+
+--
+
+```{r}
+sites <- data.frame( Site = site,
+                     Longitude = longitude,
+                     Latitude = latitude )
+class( sites )
+dim( sites ) 
+names( sites ) # shorthand for colnames
+```
+
+
+---
+
+# Viewing Data Frame Objects.
+
+If the data are small enough, we can visualize it all by printing out the elements.  It is also possible have each column of data to summarize itself.
+
+
+
+.pull-left[
+```{r}
+sites
+```
+]
+
+
+--
+
+.pull-right[
+
+```{r}
+summary( sites )
+```
+
+]
+
+
+
+---
+
+# Tidy Data - Tibbles
+
+Since this course is focusing on modern data wrangling, we are going to use a new version of a `data.frame` that is defined in the `tidyverse` packages.  
+
+```{r}
+library( tidyverse )
+```
+
+---
+
+# Tibble
+
+The new data structure is a derivative of a `data.frame` and is called a `tibble`.  Tibbles can be created by either coercion **or** as the result of any function in *tidyverse* that returns a `data.frame`-like object.
+
+```{r}
+as_tibble( sites )
+```
+
+
+---
+
+# Creating *de novo* Tibbles
+
+
+```{r}
+tibble(
+  site = c( "Const","ESan", "Aqu"),
+  longitude = c( -111.675, -110.3686, -110.1043),
+  latitude = c(25.0247, 24.45879, 23.2855)
+) -> sites
+```
+
+Notice the definition followed by the assignment operator.  This is a pretty common pattern in making tibbles and working with tidy data.
+
+--
+
+```{r}
+sites
+```
+
+
+
+
+---
+
+# Tribble from Tables
+
+For legibility, we can even define a tibble based upon a table format.   
+
+- All data is taken row-wise, 
+
+- All columns must have the same type of data and named by prepending a tilda `~`,
+
+- Each row must have the same number of elements, and
+
+- The header is just a comment to increase readability.
+
+```{r}
+tribble( 
+  ~Site , ~Longitude , ~Latitude,
+  #-----|------------|-----------
+  "Const", -111.6750,  25.02470,
+  "ESan",  -110.3686,  24.45879,
+  "Aqu",   -110.1043,  23.28550	
+  )
+```
+
+
+---
+
+# Superficial Differences - Sane Printing
+
+.pull-left[
+```{r}
+data.frame( X = 1:1000, Y = 1:1000, Z = 1:1000 )
+```
+]
+
+--
+
+.pull-right[
+```{r}
+tibble( X = 1:1000, Y = 1:1000, Z = 1:1000)
+```
+
+]
+
+
+---
+
+# Importing Data
+
+In reality, we rarely type the data into `R` directly and instead read it from some external source (either a file in the local computer, one from some server elsewhere, or from a database).
+
+```{r}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv"
+```
+
+--
+
+As part of `tidyverse`, the `readr` library defines several built-in functions for loading in files with specific formats.  In this case the file has *comma separated values* (hence the `.csv` suffix).
+
+```{r}
+samples <- read_csv( url )
+```
+
+
+
+---
+
+# Showing the Data
+
+```{r}
+summary( samples )
+```
+
+--
+
+Since `read_csv()` produces a tibble itself as output (as do *all functions in tidyverse*), there is no need to convert it from being a vanilla `data.frame`.
+
+```{r}
+class( samples )
+```
+
+
+
+---
+
+# Sizes of Data Objects
+
+Both `data.frame` and `tibble` objects have a number of rows and columns that make up their dimensions.
+
+```{r}
+nrow( samples )
+ncol( samples )
+dim( samples )
+names( samples )
+```
+
+
+
+
+---
+
+.pull-left[
+# Visualizing These Data 
+
+One of the first things I like to do is to look at the data that is being imported and see if there are any obvious problems.  These data have spatial coordinates for sites, so here I'll map it interactively (we'll get to this in a few weeks).
+]
+
+.pull-right[
 
 &nbsp;
 
+&nbsp;
 
-Which is .red[very] helpful when writing manuscripts and integrating components of your analyses into the text.
-
-
-
----
-# Figures 
-
-.pull-left[
-<pre>
-&#96;&#96;&#96;{r echo=FALSE}
-plot( nc["SID79"], axes=TRUE )
-&#96;&#96;&#96;
-</pre>
-]
-
-.pull-right[
 ```{r echo=FALSE}
-plot( nc["SID79"], axes=TRUE )
+library( leaflet )
+samples %>% 
+  leaflet() %>%
+  addProviderTiles("OpenTopoMap") %>%
+  addMarkers(~Longitude, ~Latitude, popup = ~Stratum) 
 ```
 ]
 
 
 
 ---
-# Table
 
+# Small Items - Skipping Metadata
+
+Sometimes there are meta-data rows at the top that must be skiped
+
+```{r}
+read_csv( "Collected on 7 September 2021
+ By RJ Dyer
+ Site, Longitude , Latitude
+ Const, -111.6750,  25.02470
+ ESan,  -110.3686,  24.45879
+ Aqu,   -110.1043,  23.28550", skip=2)
+```
+
+
+
+---
+
+# Small Items - No Column Names
+
+```{r}
+read_csv( "Const, -111.6750,  25.02470
+ ESan,  -110.3686,  24.45879
+ Aqu,   -110.1043,  23.28550", col_names = FALSE )
+```
+
+---
+
+# Small Items - No Column Names
+
+```{r}
+read_csv( "Const, -111.6750,  25.02470
+ ESan,  -110.3686,  24.45879
+ Aqu,   -110.1043,  23.28550", col_names = c("Site","Longitude","Latitude") )
+```
+
+
+
+---
+
+# Small Items - Missing Data
+
+```{r}
+read_csv( "Site, Longitude , Latitude
+ Const, ,  25.02470
+ ESan,  -110.3686,  
+ Aqu,   -110.1043,  23.28550")
+```
+
+
+
+---
+
+# Small Items - Missing Data Non-Traditional
+
+```{r}
+read_csv( "Site, Longitude , Latitude
+ Const, -9 ,  25.02470
+ ESan,  -110.3686,  -9 
+ Aqu,   -110.1043,  23.28550", na="-9")
+```
+
+---
+
+# Slicing and Dicing
+
+When we take a slice of data from a `tibble` (or `data.frame`), how we ask for it may determine the nature of what is returned to us. 
+
+```{r}
+summary( samples )
+```
+
+
+```{r}
+class( samples$Stratum )
+class( samples[,1])
+```
+
+
+
+---
+
+# Subsets by Position
+
+```{r}
+samples[1:10, ]
+```
+
+
+
+
+---
+
+# Filtering By Logic
+
+So far, we've used the actual row numbers to grab data from the tibble.  We can also use logic based upon data within the table itself.
+
+Remember, that a relational operator will return `TRUE` or `FALSE` and we can use that to filter the whole thing.  Here is how we'd find all data where the latitude was greater than -110.
+
+```{r}
+samples[ samples$Longitude > -110,]
+```
+
+Notice the columns designation is left blank (so we are getting all of them.)
+
+
+---
+
+# Filtering Individual Data
+
+We can use some of the fancy string stuff we learned previously to pull out only the names of the sites that match a certain regular expression (here they must start with either `C`, `E`, or `S`).  Using the `$` notation returns the results as a vector.
+
+```{r}
+samples$Stratum[ str_detect( samples$Stratum, "^[CES]") ]
+```
+
+--
+
+But using the square bracket notation (rows and indicating numerically which column), returns the result as a tibble.
+
+```{r}
+samples[str_detect( samples$Stratum, "^[CES]"),1]
+```
+
+
+
+
+
+---
+
+# Adding New Data Columns
+
+Adding new columns always post-pends them onto the right side of the tibble.
+
+```{r}
+samples$ID <- 1:39
+samples
+```
+
+
+---
+
+# Changing Individual Values
 
 .pull-left[
+By column variable name 
 
-The `knitr` library has built-in formatting for making tables that can be inserted into the document.
+```{r}
+samples$ID[2] <- 42
+samples
+```
 
-The following code produces table on the right.
-
-<font size="-1">
-<pre>
-&#96;&#96;&#96;{r echo=FALSE}
-library(tidyverse)
-library(knitr)
-library(kableExtra)
-
-link <- "https://haozhu233.github.io/kableExtra/"
-caption <- "Table X: Data from the first eight cars in
-the `mtcars` data set that is included in the base `R` install."
-
-mtcars[1:8, 1:8] %>%
-  kable( caption = caption ) %>%
-  kable_paper(full_width = F) %>%
-  column_spec(2, 
-    color = spec_color(mtcars$mpg[1:8]),
-    link = link) %>%
-  column_spec(6, 
-    color = "white",
-    background = spec_color( mtcars$drat[1:8], end = 0.7),
-    popover = paste("am:", mtcars$am[1:8]))
-&#96;&#96;&#96;
-</pre>
-</font>
 ]
 
+--
 
 .pull-right[
-```{r echo=FALSE}
-library(tidyverse)
-library(knitr)
-library(kableExtra)
+By index coordinate.
 
-mtcars[1:8, 1:8] %>%
-  kable(caption = "Table X: Data from the first eight cars in the `mtcars` data set that is included in the base `R` install.") %>%
-  kable_paper(full_width = F) %>%
-  column_spec(2, color = spec_color(mtcars$mpg[1:8]),
-              link = "https://haozhu233.github.io/kableExtra/") %>%
-  column_spec(6, color = "white",
-              background = spec_color(mtcars$drat[1:8], end = 0.7),
-              popover = paste("am:", mtcars$am[1:8]))
+```{r}
+samples[2,4] <- 24
+samples
 ```
 
 ]
 
 
+
+---
+
+# Forced Coercion
+
+```{r}
+samples$ID[2] <- "Bob"
+samples
+```
+
+
+
+
+---
+
+# Deleting Content
+
+.pull-left[
+Individual values in a column can be deleted by assigning it `NA`, a missing value.  The *Recycle Rule* we saw above, will repeat the `NA` throughout the whole column.
+
+```{r}
+samples$ID <- NA 
+samples 
+```
+]
+
+
+.pull-right[
+
+To entirely delete the column, instead of just assigning all the elemnets to be missing, can be accomplished by setting the whole column equal to `NULL`
+
+```{r}
+samples$ID <- NULL 
+samples 
+```
+]
+
+
+
+
+---
+
+# Adding Rows of Content
+
+To add additional Rows of content, we need to put the new data into their own `data.frame` or `tibble` 
+
+```{r}
+tibble( 
+  Stratum = c("Los Barriles","Comondu"),
+  Longitude = c(-109.7026, -111.8442),
+  Latitude = c(23.6811, 26.0708) 
+) -> newSites
+newSites
+```
+
+
+---
+
+# Adding Rows of Content
+
+And then `bind` it onto the existing sample.
+
+```{r}
+samples <- rbind( samples, newSites)
+
+tail( samples )
+```
+
+
+---
+
+# Deleting Rows
+
+To delete rows, you use negative row indices.
+
+```{r}
+dim(samples)
+samples <- samples[-41:-39,]
+dim(samples)
+```
+
+Notice: For all of this "add on" and "delete" stuff, if we want it to **persist** we .red[must] reassign the values back onto the original variable.
+
+
+---
+
+# Real Names
+
+While not quite critical here, we often have the need to use more descriptive names for our data columns, some of which need to have spaces to be fully descriptive.  One of the last benefits of a `tibble` I'll discuss here, is that it allows for spaces in the names of data columns.
+
+```{r}
+names(samples)
+names( samples )[1] <- "Population Name"
+samples 
+```
+
+
+
+---
+
+# Accessing Spaced Out Columns
+
+`RStudio` will properly autoinsert all valid column names if you hit the tab button for you.  However, if you are doing it manually, surround the name of the data column in a backtick (that is the character on the upper left corner of your keyboard).
+
+```{r}
+samples$`Population Name`
+```
 
 
 

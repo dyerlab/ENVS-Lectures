@@ -16,7 +16,16 @@ Before you turn it in, save it and hit the "Preview" button on the toolbar at th
 
 ## Activities
 
-*1. Define Data: Insert a chunk and define two variables, $N_A$ and $N_B$, which define the number of samples taken from the field.*  
+*1. Define Data: Insert a chunk and define two variables, $N_A$ and $N_B$, which define the number of samples taken from the field.*
+
+_**bob**_
+
+*__alice__*
+
+___rodney___
+
+***rodney***
+
 
 *2. Inline R: Write a paragraph of text that mimics something like the methods section of a scientific paper where you indicate how many total samples were collected and how many were sampled from sites $A$ and $B$.  These should be 'in-line' R code, use the variables directly.*
 

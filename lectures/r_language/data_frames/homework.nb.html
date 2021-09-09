@@ -223,9 +223,23 @@ pre code {
 <p>In this and most of the following homework and presentations, I will use the generic term “data frame” to indicate a suite of data that has several records and individual measurements on each record. These will typically be <code>tibble</code> objects rather than the older <code>data.frame</code> ones unless otherwise stated. As such, we shall need to import <code>tidyverse</code> at the beginning.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSggdGlkeXZlcnNlIClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoibGlicmFyeSggdGlkeXZlcnNlICkifQ== -->
 <pre class="r"><code>library( tidyverse )</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoi4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4xIOKUgOKUgFxuIn0= -->
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoi4pyTIGdncGxvdDIgMy4zLjUgICAgIOKckyBwdXJyciAgIDAuMy40XG7inJMgdGliYmxlICAzLjEuNCAgICAg4pyTIGRwbHlyICAgMS4wLjdcbuKckyB0aWR5ciAgIDEuMS4zICAgICDinJMgc3RyaW5nciAxLjQuMFxu4pyTIHJlYWRyICAgMi4wLjEgICAgIOKckyBmb3JjYXRzIDAuNS4xXG4ifQ== -->
+<pre><code>✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+✓ tibble  3.1.4     ✓ dplyr   1.0.7
+✓ tidyr   1.1.3     ✓ stringr 1.4.0
+✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoi4pSA4pSAIENvbmZsaWN0cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlX2NvbmZsaWN0cygpIOKUgOKUgFxueCBkcGx5cjo6ZmlsdGVyKCkgbWFza3Mgc3RhdHM6OmZpbHRlcigpXG54IGRwbHlyOjpsYWcoKSAgICBtYXNrcyBzdGF0czo6bGFnKClcbiJ9 -->
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
+<!-- rnb-message-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="creating" class="section level3">
@@ -233,20 +247,15 @@ pre code {
 <p>In the chunk below, create three vectors of data. one for for names, one for age, and another for grade.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMgPC0gYyhcXEJvYlxcLFxcQWxpY2VcXCxcXEphbmVcXClcbmFnZSA8LSBjKDIyLDY1LDM2KVxuZmxhZyA8LSBjKEZBTFNFLCBGQUxTRSwgVFJVRSlcblxuIyMgTWFrZSBkZiBhbmQgc3VtbWFyaXplIGhlcmVcbiMjXG5gYGAifQ== -->
-<pre class="r"><code>names &lt;- c(\Bob\,\Alice\,\Jane\)
-age &lt;- c(22,65,36)
-flag &lt;- c(FALSE, FALSE, TRUE)
-
-## Make df and summarize here
-##</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiIyB2ZWN0b3JzIG9mIGRpZmZlcmVudCB0eXBlcyJ9 -->
+<pre class="r"><code># vectors of different types</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Now, create a tibble from these vectors.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyB0aWJibGVcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyB0aWJibGUifQ== -->
 <pre class="r"><code># tibble</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -254,7 +263,7 @@ flag &lt;- c(FALSE, FALSE, TRUE)
 <p>Add a new column of data to this data frame (you can make it up, which is what I did with the data above…).</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgQWRkIG5ldyBjb2x1bW5cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyMgQWRkIG5ldyBjb2x1bW4ifQ== -->
 <pre class="r"><code>## Add new column</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -262,7 +271,7 @@ flag &lt;- c(FALSE, FALSE, TRUE)
 <p>Add a new row of data to the <code>data.frame</code> then summarize it.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgQWRkIG5ldyByb3dcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyMgQWRkIG5ldyByb3cifQ== -->
 <pre class="r"><code>## Add new row</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -273,7 +282,7 @@ flag &lt;- c(FALSE, FALSE, TRUE)
 <p>In reality, we spend very little time working with data as small as this, so let’s jump into a slightly larger data set. There is a built-in data set measuring air quality in New York entitled <code>airquality</code> (I know, tricky right?). It is available on every stock installation and this is what it looks like.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeSggYWlycXVhbGl0eSApXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoic3VtbWFyeSggYWlycXVhbGl0eSApIn0= -->
 <pre class="r"><code>summary( airquality )</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICBPem9uZSAgICAgICAgICAgU29sYXIuUiAgICAgICAgICAgV2luZCAgICAgICAgICAgICBUZW1wICAgICAgXG4gTWluLiAgIDogIDEuMDAgICBNaW4uICAgOiAgNy4wICAgTWluLiAgIDogMS43MDAgICBNaW4uICAgOjU2LjAwICBcbiAxc3QgUXUuOiAxOC4wMCAgIDFzdCBRdS46MTE1LjggICAxc3QgUXUuOiA3LjQwMCAgIDFzdCBRdS46NzIuMDAgIFxuIE1lZGlhbiA6IDMxLjUwICAgTWVkaWFuIDoyMDUuMCAgIE1lZGlhbiA6IDkuNzAwICAgTWVkaWFuIDo3OS4wMCAgXG4gTWVhbiAgIDogNDIuMTMgICBNZWFuICAgOjE4NS45ICAgTWVhbiAgIDogOS45NTggICBNZWFuICAgOjc3Ljg4ICBcbiAzcmQgUXUuOiA2My4yNSAgIDNyZCBRdS46MjU4LjggICAzcmQgUXUuOjExLjUwMCAgIDNyZCBRdS46ODUuMDAgIFxuIE1heC4gICA6MTY4LjAwICAgTWF4LiAgIDozMzQuMCAgIE1heC4gICA6MjAuNzAwICAgTWF4LiAgIDo5Ny4wMCAgXG4gTkEncyAgIDozNyAgICAgICBOQSdzICAgOjcgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgTW9udGggICAgICAgICAgICBEYXkgICAgICBcbiBNaW4uICAgOjUuMDAwICAgTWluLiAgIDogMS4wICBcbiAxc3QgUXUuOjYuMDAwICAgMXN0IFF1LjogOC4wICBcbiBNZWRpYW4gOjcuMDAwICAgTWVkaWFuIDoxNi4wICBcbiBNZWFuICAgOjYuOTkzICAgTWVhbiAgIDoxNS44ICBcbiAzcmQgUXUuOjguMDAwICAgM3JkIFF1LjoyMy4wICBcbiBNYXguICAgOjkuMDAwICAgTWF4LiAgIDozMS4wICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiJ9 -->
@@ -299,27 +308,27 @@ flag &lt;- c(FALSE, FALSE, TRUE)
 <p>Let’s make a copy of these built-in data and turn it into a tibble.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeSggZGF0YSAgKVxuXG5gYGAifQ== -->
-<pre class="r"><code>summary( data  )
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjpbImRhdGEgPC0gYXNfdGliYmxlKCBhaXJxdWFsaXR5ICkiLCJzdW1tYXJ5KCBkYXRhICApIl19 -->
+<pre class="r"><code>data &lt;- as_tibble( airquality )
+summary( data  )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICBPem9uZSAgICAgICAgICAgU29sYXIuUiAgICAgICAgICAgV2luZCAgICAgICAgICAgICBUZW1wICAgICAgICAgICBNb250aCAgICAgIFxuIE1pbi4gICA6ICAxLjAwICAgTWluLiAgIDogIDcuMCAgIE1pbi4gICA6IDEuNzAwICAgTWluLiAgIDo1Ni4wMCAgIE1pbi4gICA6NS4wMDAgIFxuIDFzdCBRdS46IDE4LjAwICAgMXN0IFF1LjoxMTUuOCAgIDFzdCBRdS46IDcuNDAwICAgMXN0IFF1Ljo3Mi4wMCAgIDFzdCBRdS46Ni4wMDAgIFxuIE1lZGlhbiA6IDMxLjUwICAgTWVkaWFuIDoyMDUuMCAgIE1lZGlhbiA6IDkuNzAwICAgTWVkaWFuIDo3OS4wMCAgIE1lZGlhbiA6Ny4wMDAgIFxuIE1lYW4gICA6IDQyLjEzICAgTWVhbiAgIDoxODUuOSAgIE1lYW4gICA6IDkuOTU4ICAgTWVhbiAgIDo3Ny44OCAgIE1lYW4gICA6Ni45OTMgIFxuIDNyZCBRdS46IDYzLjI1ICAgM3JkIFF1LjoyNTguOCAgIDNyZCBRdS46MTEuNTAwICAgM3JkIFF1Ljo4NS4wMCAgIDNyZCBRdS46OC4wMDAgIFxuIE1heC4gICA6MTY4LjAwICAgTWF4LiAgIDozMzQuMCAgIE1heC4gICA6MjAuNzAwICAgTWF4LiAgIDo5Ny4wMCAgIE1heC4gICA6OS4wMDAgIFxuIE5BJ3MgICA6MzcgICAgICAgTkEncyAgIDo3ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgICAgRGF5ICAgICAgXG4gTWluLiAgIDogMS4wICBcbiAxc3QgUXUuOiA4LjAgIFxuIE1lZGlhbiA6MTYuMCAgXG4gTWVhbiAgIDoxNS44ICBcbiAzcmQgUXUuOjIzLjAgIFxuIE1heC4gICA6MzEuMCAgXG4gICAgICAgICAgICAgICBcbiJ9 -->
-<pre><code>     Ozone           Solar.R           Wind             Temp           Month      
- Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00   Min.   :5.000  
- 1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00   1st Qu.:6.000  
- Median : 31.50   Median :205.0   Median : 9.700   Median :79.00   Median :7.000  
- Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88   Mean   :6.993  
- 3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00   3rd Qu.:8.000  
- Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00   Max.   :9.000  
- NA&#39;s   :37       NA&#39;s   :7                                                       
-      Day      
- Min.   : 1.0  
- 1st Qu.: 8.0  
- Median :16.0  
- Mean   :15.8  
- 3rd Qu.:23.0  
- Max.   :31.0  
-               </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBPem9uZSAgICAgICAgICAgU29sYXIuUiAgICAgICAgICAgV2luZCAgICAgICAgICAgICBUZW1wICAgICAgXG4gTWluLiAgIDogIDEuMDAgICBNaW4uICAgOiAgNy4wICAgTWluLiAgIDogMS43MDAgICBNaW4uICAgOjU2LjAwICBcbiAxc3QgUXUuOiAxOC4wMCAgIDFzdCBRdS46MTE1LjggICAxc3QgUXUuOiA3LjQwMCAgIDFzdCBRdS46NzIuMDAgIFxuIE1lZGlhbiA6IDMxLjUwICAgTWVkaWFuIDoyMDUuMCAgIE1lZGlhbiA6IDkuNzAwICAgTWVkaWFuIDo3OS4wMCAgXG4gTWVhbiAgIDogNDIuMTMgICBNZWFuICAgOjE4NS45ICAgTWVhbiAgIDogOS45NTggICBNZWFuICAgOjc3Ljg4ICBcbiAzcmQgUXUuOiA2My4yNSAgIDNyZCBRdS46MjU4LjggICAzcmQgUXUuOjExLjUwMCAgIDNyZCBRdS46ODUuMDAgIFxuIE1heC4gICA6MTY4LjAwICAgTWF4LiAgIDozMzQuMCAgIE1heC4gICA6MjAuNzAwICAgTWF4LiAgIDo5Ny4wMCAgXG4gTkEncyAgIDozNyAgICAgICBOQSdzICAgOjcgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgTW9udGggICAgICAgICAgICBEYXkgICAgICBcbiBNaW4uICAgOjUuMDAwICAgTWluLiAgIDogMS4wICBcbiAxc3QgUXUuOjYuMDAwICAgMXN0IFF1LjogOC4wICBcbiBNZWRpYW4gOjcuMDAwICAgTWVkaWFuIDoxNi4wICBcbiBNZWFuICAgOjYuOTkzICAgTWVhbiAgIDoxNS44ICBcbiAzcmQgUXUuOjguMDAwICAgM3JkIFF1LjoyMy4wICBcbiBNYXguICAgOjkuMDAwICAgTWF4LiAgIDozMS4wICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiJ9 -->
+<pre><code>     Ozone           Solar.R           Wind             Temp      
+ Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
+ 1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00  
+ Median : 31.50   Median :205.0   Median : 9.700   Median :79.00  
+ Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88  
+ 3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00  
+ Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00  
+ NA&#39;s   :37       NA&#39;s   :7                                       
+     Month            Day      
+ Min.   :5.000   Min.   : 1.0  
+ 1st Qu.:6.000   1st Qu.: 8.0  
+ Median :7.000   Median :16.0  
+ Mean   :6.993   Mean   :15.8  
+ 3rd Qu.:8.000   3rd Qu.:23.0  
+ Max.   :9.000   Max.   :31.0  
+                               </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -329,7 +338,7 @@ flag &lt;- c(FALSE, FALSE, TRUE)
 </ol>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgTmV3IENvbHVtbiBmb3IgY29tcG91bmQgZGF0ZXNcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyMgTmV3IENvbHVtbiBmb3IgY29tcG91bmQgZGF0ZXMifQ== -->
 <pre class="r"><code>## New Column for compound dates</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -339,7 +348,7 @@ flag &lt;- c(FALSE, FALSE, TRUE)
 </ol>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDb252ZXJ0IEYgLT4gQyBcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiIyBDb252ZXJ0IEYgLT4gQyAifQ== -->
 <pre class="r"><code># Convert F -&gt; C </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -349,17 +358,16 @@ flag &lt;- c(FALSE, FALSE, TRUE)
 </ol>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgbWFuaXB1bGF0ZSBhaXJxdWFsaXR5IGRhdGEgZnJhbWUgKG1ha2UgdGV4dCBkYXRlIGNvbHVtbiBhbmQgY29udmVydCBmIC0+IGMpXG5gYGAifQ== -->
-<pre class="r"><code>## manipulate airquality data frame (make text date column and convert f -&gt; c)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiIyBzZXQgcHJvcGVyIG5hbWVzIGZvciBjb2x1bW5zICJ9 -->
+<pre class="r"><code># set proper names for columns </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>And show your creation by using <code>head()</code> to reveal the first 6 rows.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMjIFNob3cgdGhlIGZpcnN0IGZldyByb3dzXG5oZWFkKCBhaXJxdWFsaXR5IClcbmBgYCJ9 -->
-<pre class="r"><code>### Show the first few rows
-head( airquality )</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiIyMjIFNob3cgdGhlIGZpcnN0IGZldyByb3dzIn0= -->
+<pre class="r"><code>### Show the first few rows</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->

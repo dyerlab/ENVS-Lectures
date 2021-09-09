@@ -233,8 +233,8 @@ pre code {
 <h3>Creating <code>data.frame</code> Objects <em>de novo</em></h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2l0ZSA8LSBjKCBcXENvbnN0XFwsXFxFU2FuXFwsIFxcQXF1XFwpXG5sb25naXR1ZGUgPC0gYyggLTExMS42NzUsIC0xMTAuMzY4NiwgLTExMC4xMDQzKVxubGF0aXR1ZGUgPC0gYygyNS4wMjQ3LCAyNC40NTg3OSwgMjMuMjg1NSlcblxuc2l0ZXMgPC0gZGF0YS5mcmFtZSggU2l0ZSA9IHNpdGUsXG4gICAgICAgICAgICAgICAgICAgICBMb25naXR1ZGUgPSBsb25naXR1ZGUsXG4gICAgICAgICAgICAgICAgICAgICBMYXRpdHVkZSA9IGxhdGl0dWRlIClcbnNpdGVzXG5gYGAifQ== -->
-<pre class="r"><code>site &lt;- c( \Const\,\ESan\, \Aqu\)
+<!-- rnb-source-begin eyJkYXRhIjpbInNpdGUgPC0gYyggXCJDb25zdFwiLFwiRVNhblwiLCBcIkFxdVwiKSIsImxvbmdpdHVkZSA8LSBjKCAtMTExLjY3NSwgLTExMC4zNjg2LCAtMTEwLjEwNDMpIiwibGF0aXR1ZGUgPC0gYygyNS4wMjQ3LCAyNC40NTg3OSwgMjMuMjg1NSkiLCIiLCJzaXRlcyA8LSBkYXRhLmZyYW1lKCBTaXRlID0gc2l0ZSxcbiAgICAgICAgICAgICAgICAgICAgIExvbmdpdHVkZSA9IGxvbmdpdHVkZSxcbiAgICAgICAgICAgICAgICAgICAgIExhdGl0dWRlID0gbGF0aXR1ZGUgKSIsInNpdGVzIl19 -->
+<pre class="r"><code>site &lt;- c( &quot;Const&quot;,&quot;ESan&quot;, &quot;Aqu&quot;)
 longitude &lt;- c( -111.675, -110.3686, -110.1043)
 latitude &lt;- c(25.0247, 24.45879, 23.2855)
 
@@ -243,12 +243,17 @@ sites &lt;- data.frame( Site = site,
                      Latitude = latitude )
 sites</code></pre>
 <!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Site"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Const","2":"-111.6750","3":"25.02470"},{"1":"ESan","2":"-110.3686","3":"24.45879"},{"1":"Aqu","2":"-110.1043","3":"23.28550"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>The thing about <code>data.frame</code> objects is that the know how to organize and summarize their component variables.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShzaXRlcylcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoic3VtbWFyeShzaXRlcykifQ== -->
 <pre class="r"><code>summary(sites)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICBTaXRlICAgICAgICAgICAgIExvbmdpdHVkZSAgICAgICAgIExhdGl0dWRlICAgIFxuIExlbmd0aDozICAgICAgICAgICBNaW4uICAgOi0xMTEuNyAgIE1pbi4gICA6MjMuMjkgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOi0xMTEuMCAgIDFzdCBRdS46MjMuODcgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOi0xMTAuNCAgIE1lZGlhbiA6MjQuNDYgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOi0xMTAuNyAgIE1lYW4gICA6MjQuMjYgIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOi0xMTAuMiAgIDNyZCBRdS46MjQuNzQgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOi0xMTAuMSAgIE1heC4gICA6MjUuMDIgIFxuIn0= -->
@@ -270,15 +275,15 @@ sites</code></pre>
 <p>Here is the full version of those data loaded above. It is located on a <a href="https://github.com/dyerlab/ENVS-Lectures">Github</a> website and is accessible to anyone with an internet connection.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudXJsIDwtIFxcaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9tYXN0ZXIvZGF0YS9hcmFwYXQuY3N2XFxcbmBgYCJ9 -->
-<pre class="r"><code>url &lt;- \https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv\</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoidXJsIDwtIFwiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9tYXN0ZXIvZGF0YS9hcmFwYXQuY3N2XCIifQ== -->
+<pre class="r"><code>url &lt;- &quot;https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv&quot;</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Once we have the url or file as a <code>character</code> object, we can use the built-in <code>read.csv()</code> function to load the data into a local variable. Here is what that looks like.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2FtcGxlcyA8LSByZWFkLmNzdih1cmwpXG5zdW1tYXJ5KCBTYW1wbGVzIClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMgPC0gcmVhZC5jc3YodXJsKSIsInN1bW1hcnkoIFNhbXBsZXMgKSJdfQ== -->
 <pre class="r"><code>Samples &lt;- read.csv(url)
 summary( Samples )</code></pre>
 <!-- rnb-source-end -->
@@ -300,13 +305,13 @@ summary( Samples )</code></pre>
 <p>A variable representing a <code>data.frame</code> has properties and constituents just like a vector. The size of the <code>data.frame</code> is defined as the <code>dim</code>ensions of it and represents the number of <em>rows</em> and <em>columns</em> it contains.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubnJvdyggU2FtcGxlcyApXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoibnJvdyggU2FtcGxlcyApIn0= -->
 <pre class="r"><code>nrow( Samples )</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDM5XG4ifQ== -->
 <pre><code>[1] 39</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmNvbCggU2FtcGxlcyApXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoibmNvbCggU2FtcGxlcyApIn0= -->
 <pre class="r"><code>ncol( Samples )</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDNcbiJ9 -->
@@ -317,7 +322,7 @@ summary( Samples )</code></pre>
 <p>or use the <code>dim()</code> function which returns both of them.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGltKCBTYW1wbGVzIClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiZGltKCBTYW1wbGVzICkifQ== -->
 <pre class="r"><code>dim( Samples )</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDM5ICAzXG4ifQ== -->
@@ -328,12 +333,14 @@ summary( Samples )</code></pre>
 <p>Each variable within the <code>data.frame</code> is represented by the name we gave it when we added it to the <code>data.frame</code>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoIFNhbXBsZXMgKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoibmFtZXMoIFNhbXBsZXMgKSJ9 -->
 <pre class="r"><code>names( Samples )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFxcU3RyYXR1bVxcICAgXFxMb25naXR1ZGVcXCBcXExhdGl0dWRlXFwgXG5TdHJhdHVtXG5cbkxvbmdpdHVkZVxuXG5MYXRpdHVkZVxuIn0= -->
-<pre><code>[1] \Stratum\   \Longitude\ \Latitude\ 
-Stratum
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiU3RyYXR1bVwiICAgXCJMb25naXR1ZGVcIiBcIkxhdGl0dWRlXCIgXG4ifQ== -->
+<pre><code>[1] &quot;Stratum&quot;   &quot;Longitude&quot; &quot;Latitude&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjpbIlN0cmF0dW1cbiIsIkxvbmdpdHVkZVxuIiwiTGF0aXR1ZGVcbiJdfQ== -->
+<pre><code>Stratum
 
 Longitude
 
@@ -344,24 +351,28 @@ Latitude</code></pre>
 <p>The individual elements are available using the square bracket notation, just like for <a href="../vectors/narriative.nb.html">vectors</a> <em>with the exception that</em> we have two coordinates instead of just one. The first coordinate is for <em>row</em> and the second is for <em>column</em>. So to grab the 10<span class="math inline">\(^{th}\)</span> <code>Stratum</code> name (row), which is the 1<span class="math inline">\(^{st}\)</span> variable (column) in the <code>data.frame</code>, we use:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2FtcGxlc1sxMCwxXVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiU2FtcGxlc1sxMCwxXSJ9 -->
 <pre class="r"><code>Samples[10,1]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFxcU0ZyXFxcblNGclxuIn0= -->
-<pre><code>[1] \SFr\
-SFr</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiU0ZyXCJcbiJ9 -->
+<pre><code>[1] &quot;SFr&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU0ZyXG4ifQ== -->
+<pre><code>SFr</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>While this is OK, it assumes we remember that the <code>Stratum</code> variable is the first variable in the <code>data.frame</code>. If you have data sets with thousands of columns of data in them, it becomes less-than-optimal to use variable numbers to index, which is why we can use the variable name itself in the following format.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2FtcGxlcyRTdHJhdHVtWzEwXVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiU2FtcGxlcyRTdHJhdHVtWzEwXSJ9 -->
 <pre class="r"><code>Samples$Stratum[10]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFxcU0ZyXFxcblNGclxuIn0= -->
-<pre><code>[1] \SFr\
-SFr</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiU0ZyXCJcbiJ9 -->
+<pre><code>[1] &quot;SFr&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU0ZyXG4ifQ== -->
+<pre><code>SFr</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -372,25 +383,40 @@ For readability, it is advised that you use the dollar-sign notation to get and 
 <p>Similar to for <a href="../vectors/narriative.nb.html">vectors</a>, we can grab the head and tail of the whole data frame.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZCggU2FtcGxlcyApXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiaGVhZCggU2FtcGxlcyApIn0= -->
 <pre class="r"><code>head( Samples )</code></pre>
 <!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"88","2":"-114.2935","3":"29.32541","_rn_":"1"},{"1":"9","2":"-113.9449","3":"29.01457","_rn_":"2"},{"1":"84","2":"-113.6679","3":"28.96651","_rn_":"3"},{"1":"175","2":"-113.4897","3":"28.72796","_rn_":"4"},{"1":"177","2":"-113.9914","3":"28.66056","_rn_":"5"},{"1":"173","2":"-112.8698","3":"28.40846","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFpbChTYW1wbGVzLCBuPTQpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoidGFpbChTYW1wbGVzLCBuPTQpIn0= -->
 <pre class="r"><code>tail(Samples, n=4)</code></pre>
 <!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"98","2":"-109.6487","3":"23.07570","_rn_":"36"},{"1":"101","2":"-110.5744","3":"27.90509","_rn_":"37"},{"1":"32","2":"-109.3270","3":"26.63783","_rn_":"38"},{"1":"102","2":"-109.1263","3":"26.38014","_rn_":"39"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>We can use the same approach for setting values within a <code>data.frame</code>. Here I’ll expand the <em>SFr</em> notion to represent the full location name.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2FtcGxlcyRTdHJhdHVtWzEwXSA8LSBcXFNhbiBGcmFuY2lzcXVpdG9cXFxuaGVhZCggU2FtcGxlcywgbj0xMClcbmBgYCJ9 -->
-<pre class="r"><code>Samples$Stratum[10] &lt;- \San Francisquito\
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMkU3RyYXR1bVsxMF0gPC0gXCJTYW4gRnJhbmNpc3F1aXRvXCIiLCJoZWFkKCBTYW1wbGVzLCBuPTEwKSJdfQ== -->
+<pre class="r"><code>Samples$Stratum[10] &lt;- &quot;San Francisquito&quot;
 head( Samples, n=10)</code></pre>
 <!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"88","2":"-114.2935","3":"29.32541","_rn_":"1"},{"1":"9","2":"-113.9449","3":"29.01457","_rn_":"2"},{"1":"84","2":"-113.6679","3":"28.96651","_rn_":"3"},{"1":"175","2":"-113.4897","3":"28.72796","_rn_":"4"},{"1":"177","2":"-113.9914","3":"28.66056","_rn_":"5"},{"1":"173","2":"-112.8698","3":"28.40846","_rn_":"6"},{"1":"171","2":"-113.1826","3":"28.22308","_rn_":"7"},{"1":"89","2":"-113.3999","3":"28.03661","_rn_":"8"},{"1":"159","2":"-113.3161","3":"27.52944","_rn_":"9"},{"1":"San Francisquito","2":"-112.9640","3":"27.36320","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div class="box-red">
@@ -414,14 +440,28 @@ In `[&lt;-.factor`(`*tmp*`, 10, value = c(30L, 32L, 29L, 19L, 20L,  :
 <p>For example, taking from a single column in the <code>data.frame</code> returns a slice of that particular variable type.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueSA8LSBTYW1wbGVzWzEsIDE6M11cbnlcbmNsYXNzKHkpXG5gYGAifQ== -->
-<pre class="r"><code>y &lt;- Samples[1, 1:3]
-y
-class(y)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjpbInggPC0gU2FtcGxlc1sxOjMsIDFdIiwieCJdfQ== -->
+<pre class="r"><code>x &lt;- Samples[1:3, 1]
+x</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFxcZGF0YS5mcmFtZVxcXG5kYXRhLmZyYW1lXG4ifQ== -->
-<pre><code>[1] \data.frame\
-data.frame</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiODhcIiBcIjlcIiAgXCI4NFwiXG4ifQ== -->
+<pre><code>[1] &quot;88&quot; &quot;9&quot;  &quot;84&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjpbIjg4XG4iLCI5XG4iLCI4NFxuIl19 -->
+<pre><code>88
+
+9
+
+84</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiY2xhc3MoeCkifQ== -->
+<pre class="r"><code>class(x)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiY2hhcmFjdGVyXCJcbiJ9 -->
+<pre><code>[1] &quot;character&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiY2hhcmFjdGVyXG4ifQ== -->
+<pre><code>character</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -429,7 +469,57 @@ data.frame</code></pre>
 <p>You can ask <code>R</code> to return it as a <code>data.frame</code> rather than just a vector (in case you need to have a data.frame to work with) by passing an optional argument to the square brackets. You will notice it retains the row numbers.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2FtcGxlcyRJRCA8LSAxOm5yb3coU2FtcGxlcylcbnN1bW1hcnkoIFNhbXBsZXMgKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjpbIngxIDwtIFNhbXBsZXNbIDE6MywgMSwgZHJvcD1GQUxTRV0iLCJ4MSJdfQ== -->
+<pre class="r"><code>x1 &lt;- Samples[ 1:3, 1, drop=FALSE]
+x1</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"88","_rn_":"1"},{"1":"9","_rn_":"2"},{"1":"84","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-source-begin eyJkYXRhIjoiY2xhc3MoeDEpIn0= -->
+<pre class="r"><code>class(x1)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5mcmFtZVwiXG4ifQ== -->
+<pre><code>[1] &quot;data.frame&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiZGF0YS5mcmFtZVxuIn0= -->
+<pre><code>data.frame</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>However, if we take the same number of object but from a row instead of a column, we can <em>only</em> get a <code>data.frame</code> object in return.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbInkgPC0gU2FtcGxlc1sxLCAxOjNdIiwieSJdfQ== -->
+<pre class="r"><code>y &lt;- Samples[1, 1:3]
+y</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"88","2":"-114.2935","3":"29.32541","_rn_":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-source-begin eyJkYXRhIjoiY2xhc3MoeSkifQ== -->
+<pre class="r"><code>class(y)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZGF0YS5mcmFtZVwiXG4ifQ== -->
+<pre><code>[1] &quot;data.frame&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiZGF0YS5mcmFtZVxuIn0= -->
+<pre><code>data.frame</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>because this time, we are asking for the three variables representing the first record. Because these values are being drawn from across different columns of data, <code>R</code> does not concatenate these into a single vector and coearce them to the least common data type. Rather it makes a new <code>data.frame</code> object for you and returns that.</p>
+</div>
+<div id="modifying-existing-data-frames" class="section level3">
+<h3>Modifying Existing Data Frames</h3>
+<p>Once we have a <code>data.frame</code> in memory, we can also add to it. If we are adding columns, we can append a single varible onto it and <code>R</code> will put it on the far right side of the <code>data.frame</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMkSUQgPC0gMTpucm93KFNhbXBsZXMpIiwic3VtbWFyeSggU2FtcGxlcyApIl19 -->
 <pre class="r"><code>Samples$ID &lt;- 1:nrow(Samples)
 summary( Samples )</code></pre>
 <!-- rnb-source-end -->
@@ -444,15 +534,17 @@ summary( Samples )</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>However, if we take the same number of object but from a row instead of a column, we can <em>only</em> get a <code>data.frame</code> object in return.</p>
+<p>If we want to add rows to the <code>data.frame</code>, it is a bit more involved because we are going to have to either a list object whose variables are of the same order as the original <code>data.frame</code> or anoher entire <code>data.frame</code> (whose names are identical to the original)</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoU2FtcGxlcylcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoibmFtZXMoU2FtcGxlcykifQ== -->
 <pre class="r"><code>names(Samples)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFxcU3RyYXR1bVxcICAgXFxMb25naXR1ZGVcXCBcXExhdGl0dWRlXFwgIFxcSURcXCAgICAgICBcblN0cmF0dW1cblxuTG9uZ2l0dWRlXG5cbkxhdGl0dWRlXG5cbklEXG4ifQ== -->
-<pre><code>[1] \Stratum\   \Longitude\ \Latitude\  \ID\       
-Stratum
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiU3RyYXR1bVwiICAgXCJMb25naXR1ZGVcIiBcIkxhdGl0dWRlXCIgIFwiSURcIiAgICAgICBcbiJ9 -->
+<pre><code>[1] &quot;Stratum&quot;   &quot;Longitude&quot; &quot;Latitude&quot;  &quot;ID&quot;       </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjpbIlN0cmF0dW1cbiIsIkxvbmdpdHVkZVxuIiwiTGF0aXR1ZGVcbiIsIklEXG4iXX0= -->
+<pre><code>Stratum
 
 Longitude
 
@@ -462,33 +554,36 @@ ID</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>because this time, we are asking for the three variables representing the first record. Because these values are being drawn from across different columns of data, <code>R</code> does not concatenate these into a single vector and coearce them to the least common data type. Rather it makes a new <code>data.frame</code> object for you and returns that.</p>
-</div>
-<div id="modifying-existing-data-frames" class="section level3">
-<h3>Modifying Existing Data Frames</h3>
-<p>Once we have a <code>data.frame</code> in memory, we can also add to it. If we are adding columns, we can append a single varible onto it and <code>R</code> will put it on the far right side of the <code>data.frame</code>.</p>
+<p>To add a single row, we use <code>rbind()</code> and pass it the <code>data.frame</code> and a new <a href="../lists/narriative.nb.html">list</a> object.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2FtcGxlcyA8LSByYmluZCggU2FtcGxlcywgbGlzdChcXExvcyBDYWJvc1xcLC0xMDkuNzEyNCwgMjMuMDc5OSwgNDApKVxudGFpbChTYW1wbGVzKVxuYGBgIn0= -->
-<pre class="r"><code>Samples &lt;- rbind( Samples, list(\Los Cabos\,-109.7124, 23.0799, 40))
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMgPC0gcmJpbmQoIFNhbXBsZXMsIGxpc3QoXCJMb3MgQ2Fib3NcIiwtMTA5LjcxMjQsIDIzLjA3OTksIDQwKSkiLCJ0YWlsKFNhbXBsZXMpIl19 -->
+<pre class="r"><code>Samples &lt;- rbind( Samples, list(&quot;Los Cabos&quot;,-109.7124, 23.0799, 40))
 tail(Samples)</code></pre>
 <!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["ID"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Mat","2":"-110.1091","3":"23.08984","4":"35","_rn_":"35"},{"1":"98","2":"-109.6487","3":"23.07570","4":"36","_rn_":"36"},{"1":"101","2":"-110.5744","3":"27.90509","4":"37","_rn_":"37"},{"1":"32","2":"-109.3270","3":"26.63783","4":"38","_rn_":"38"},{"1":"102","2":"-109.1263","3":"26.38014","4":"39","_rn_":"39"},{"1":"Los Cabos","2":"-109.7124","3":"23.07990","4":"40","_rn_":"40"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>If we want to add rows to the <code>data.frame</code>, it is a bit more involved because we are going to have to either a list object whose variables are of the same order as the original <code>data.frame</code> or anoher entire <code>data.frame</code> (whose names are identical to the original)</p>
+<p>You can also use another <code>data.frame</code>, which in this case must have the same named varaibles as the original.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW9yZXNpdGVzIDwtIGRhdGEuZnJhbWUoIElEID0gNDE6NDIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgU3RyYXR1bSA9IGMoXFxMb3MgQmFycmlsZXNcXCxcXENvbW9uZHVcXCksXG4gICAgICAgICAgICAgICAgICAgICAgICAgTG9uZ2l0dWRlID0gYygtMTA5LjcwMjYsIC0xMTEuODQ0MiksXG4gICAgICAgICAgICAgICAgICAgICAgICAgTGF0aXR1ZGUgPSBjKDIzLjY4MTEsIDI2LjA3MDgpIFxuICAgICAgICAgICAgICAgICAgICAgICAgIClcbm5hbWVzKG1vcmVzaXRlcylcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjpbIm1vcmVzaXRlcyA8LSBkYXRhLmZyYW1lKCBJRCA9IDQxOjQyLFxuICAgICAgICAgICAgICAgICAgICAgICAgIFN0cmF0dW0gPSBjKFwiTG9zIEJhcnJpbGVzXCIsXCJDb21vbmR1XCIpLFxuICAgICAgICAgICAgICAgICAgICAgICAgIExvbmdpdHVkZSA9IGMoLTEwOS43MDI2LCAtMTExLjg0NDIpLFxuICAgICAgICAgICAgICAgICAgICAgICAgIExhdGl0dWRlID0gYygyMy42ODExLCAyNi4wNzA4KSBcbiAgICAgICAgICAgICAgICAgICAgICAgICApIiwibmFtZXMobW9yZXNpdGVzKSJdfQ== -->
 <pre class="r"><code>moresites &lt;- data.frame( ID = 41:42,
-                         Stratum = c(\Los Barriles\,\Comondu\),
+                         Stratum = c(&quot;Los Barriles&quot;,&quot;Comondu&quot;),
                          Longitude = c(-109.7026, -111.8442),
                          Latitude = c(23.6811, 26.0708) 
                          )
 names(moresites)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFxcSURcXCAgICAgICAgXFxTdHJhdHVtXFwgICBcXExvbmdpdHVkZVxcIFxcTGF0aXR1ZGVcXCBcbklEXG5cblN0cmF0dW1cblxuTG9uZ2l0dWRlXG5cbkxhdGl0dWRlXG4ifQ== -->
-<pre><code>[1] \ID\        \Stratum\   \Longitude\ \Latitude\ 
-ID
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiSURcIiAgICAgICAgXCJTdHJhdHVtXCIgICBcIkxvbmdpdHVkZVwiIFwiTGF0aXR1ZGVcIiBcbiJ9 -->
+<pre><code>[1] &quot;ID&quot;        &quot;Stratum&quot;   &quot;Longitude&quot; &quot;Latitude&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjpbIklEXG4iLCJTdHJhdHVtXG4iLCJMb25naXR1ZGVcbiIsIkxhdGl0dWRlXG4iXX0= -->
+<pre><code>ID
 
 Stratum
 
@@ -498,19 +593,24 @@ Latitude</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>To add a single row, we use <code>rbind()</code> and pass it the <code>data.frame</code> and a new <a href="../lists/narriative.nb.html">list</a> object.</p>
+<p>However, notice that the order in which these varaibles in <code>moresites</code> is different than those in <code>Samples</code>. The <code>rbind()</code> function rearranges the order when it concatenates onto the rows.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2FtcGxlcyA8LSByYmluZCggU2FtcGxlcywgbW9yZXNpdGVzKVxudGFpbCggU2FtcGxlcyApXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMgPC0gcmJpbmQoIFNhbXBsZXMsIG1vcmVzaXRlcykiLCJ0YWlsKCBTYW1wbGVzICkiXX0= -->
 <pre class="r"><code>Samples &lt;- rbind( Samples, moresites)
 tail( Samples )</code></pre>
 <!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Stratum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["ID"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"101","2":"-110.5744","3":"27.90509","4":"37","_rn_":"37"},{"1":"32","2":"-109.3270","3":"26.63783","4":"38","_rn_":"38"},{"1":"102","2":"-109.1263","3":"26.38014","4":"39","_rn_":"39"},{"1":"Los Cabos","2":"-109.7124","3":"23.07990","4":"40","_rn_":"40"},{"1":"Los Barriles","2":"-109.7026","3":"23.68110","4":"41","_rn_":"41"},{"1":"Comondu","2":"-111.8442","3":"26.07080","4":"42","_rn_":"42"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>You can also use another <code>data.frame</code>, which in this case must have the same named varaibles as the original.</p>
+<p>To delete a column of data, assign it the value of <code>NULL</code>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2FtcGxlcyRJRCA8LSBOVUxMXG5zdW1tYXJ5KFNhbXBsZXMpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMkSUQgPC0gTlVMTCIsInN1bW1hcnkoU2FtcGxlcykiXX0= -->
 <pre class="r"><code>Samples$ID &lt;- NULL
 summary(Samples)</code></pre>
 <!-- rnb-source-end -->
@@ -525,10 +625,10 @@ summary(Samples)</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>However, notice that the order in which these varaibles in <code>moresites</code> is different than those in <code>Samples</code>. The <code>rbind()</code> function rearranges the order when it concatenates onto the rows.</p>
+<p>or use negative indices to delete rows.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2FtcGxlcyA8LSBTYW1wbGVzWyAtNDI6LTQwLCBdXG5zdW1tYXJ5KFNhbXBsZXMpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbIlNhbXBsZXMgPC0gU2FtcGxlc1sgLTQyOi00MCwgXSIsInN1bW1hcnkoU2FtcGxlcykiXX0= -->
 <pre class="r"><code>Samples &lt;- Samples[ -42:-40, ]
 summary(Samples)</code></pre>
 <!-- rnb-source-end -->
@@ -543,31 +643,13 @@ summary(Samples)</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>To delete a column of data, assign it the value of <code>NULL</code>.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2FtcGxlcyRJRCA8LSBOVUxMXG5zdW1tYXJ5KFNhbXBsZXMpXG5gYGAifQ== -->
-<pre class="r"><code>Samples$ID &lt;- NULL
-summary(Samples)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>or use negative indices to delete rows.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2FtcGxlcyA8LSBTYW1wbGVzWyAtNDI6LTQwLCBdXG5zdW1tYXJ5KFNhbXBsZXMpXG5gYGAifQ== -->
-<pre class="r"><code>Samples &lt;- Samples[ -42:-40, ]
-summary(Samples)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
 <hr />
 <p>The <code>data.frame</code> object is a fundamental component of your <code>R</code> work flow and being able to manipulate data within it and extract data from it are a huge part of becoming data literate.</p>
 <!-- rnb-text-end -->
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRGF0YSBGcmFtZXMiCm91dHB1dDogCiAgaHRtbF9ub3RlYm9vazoKICAgICAgY3NzOiAiZW52czU0My1zdHlsZXMuY3NzIgotLS0KCj4gRGF0YSBmcmFtZXMgYXJlIGEgc3RydWN0dXJlIHRoYXQgY2FuIGhvbGQgbWFueSBkaWZmZXJlbnQgZGF0YSB0eXBlcyBpbiBvbmUgc2ltcGxlIHN0cnVjdHVyZS4KCkRhdGEgZnJhbWVzIGFyZSB0aGUgKmxpbmd1YSBmcmFuY2EqIGZvciBgUmAsIGVzcGVjaWFsbHkgb25jZSB3ZSBzdGFydCBnZXR0aW5nIGludG8gbW9yZSBjb21wbGljYXRlZCBhbmFseXNpcyBhbmQgbWFuaXB1bGF0aW9uLiAgRm9yIHNpbXBsaWNpdHksIG9uZSBjYW4gY29uc2lkZXIgYSBgZGF0YS5mcmFtZWAgb2JqZWN0IG11Y2ggbGlrZSBhIHNwcmVhZHNoZWV0LiAgRWFjaCByb3cgcmVwcmVzZW50cyBhIHJlY29yZCBvbiBzb21lIG9iamVjdCBhbmQgZWFjaCBjb2x1bW7igJRjb25zaXN0aW5nIG9mIGRpZmZlcmVudCBraW5kcyBvZiBkYXRh4oCUYXJlIG1lYXN1cmVtZW50cyBvbiB0aGF0IG9iamVjdC4gIAoKQnkgaW4gbGFyZ2UsIHlvdSB3aWxsIGxvYWQgeW91ciBkYXRhIGludG8gdGhlc2Ugc3RydWN0dXJlcyBhbmQgcGFzcyB0aGVtIHRvIGZ1bmN0aW9ucyBmb3IgcGxvdHRpbmcsIHNpbXVsYXRpb24sIHBsb3R0aW5nLCBldGMuICBJdCBpcyBhIGdvb2QgaWRlYSB0byBnZXQgdXNlZCB0byB0aGVzZS4KCgojIyBDcmVhdGluZyBgZGF0YS5mcmFtZWAgT2JqZWN0cwoKVG8gbWFrZSBhIGBkYXRhLmZyYW1lYCB3ZSBuZWVkIHRvIGVpdGhlcjoKCiAgMS4gTWFrZSBpdCBmcm9tIHNjcmF0Y2ggdXNpbmcgdmVjdG9ycyAodGhlIG1vcmUgY29tcGxpY2F0ZWQpLgogIDIuIExvYWQgaXQgZnJvbSBhIGZpbGUgKHBlcmhhcHMgdGhlIGVhc2llc3Qgd2F5KS4KCldlIHNoYWxsIHN0YXJ0IHdpdGggdGhlIG1vc3QgY29tcGxpY2F0ZWQgY2FzZS4gIAoKIyMjIENyZWF0aW5nIGBkYXRhLmZyYW1lYCBPYmplY3RzICpkZSBub3ZvKgoKYGBge3J9CnNpdGUgPC0gYyggIkNvbnN0IiwiRVNhbiIsICJBcXUiKQpsb25naXR1ZGUgPC0gYyggLTExMS42NzUsIC0xMTAuMzY4NiwgLTExMC4xMDQzKQpsYXRpdHVkZSA8LSBjKDI1LjAyNDcsIDI0LjQ1ODc5LCAyMy4yODU1KQoKc2l0ZXMgPC0gZGF0YS5mcmFtZSggU2l0ZSA9IHNpdGUsCiAgICAgICAgICAgICAgICAgICAgIExvbmdpdHVkZSA9IGxvbmdpdHVkZSwKICAgICAgICAgICAgICAgICAgICAgTGF0aXR1ZGUgPSBsYXRpdHVkZSApCnNpdGVzCmBgYAoKVGhlIHRoaW5nIGFib3V0IGBkYXRhLmZyYW1lYCBvYmplY3RzIGlzIHRoYXQgdGhlIGtub3cgaG93IHRvIG9yZ2FuaXplIGFuZCBzdW1tYXJpemUgdGhlaXIgY29tcG9uZW50IHZhcmlhYmxlcy4KCmBgYHtyfQpzdW1tYXJ5KHNpdGVzKQpgYGAKCk5vdGljZSB0aGF0IGVhY2ggdmFyaWFibGUgaXMgc3VtbWFyaXplZCBhIHdheSB0aGF0IGdpdmVzIGFzIG11Y2ggaW5mb3JtYXRpb24gYWJvdXQgdGhlIGNvbnRuZXRzIG9mIHRoYXQgdmFyaWFibGUuIFRoZSBgc3VtbWFyeSgpYCBmdW5jdGlvbiBpcyBjcml0aWNhbCBhbmQgb25lIHdlIHdpbGwgdXNlIG92ZXIgYW5kIG92ZXIgYWdhaW4uCgojIyMgTG9hZGluZyBmcm9tIEZpbGUgYW5kL29yIFVSTAoKWW91IGNhbiBhbHNvIGxvYWQgYSBgZGF0YS5mcmFtZWAgaW4gdXNpbmcgYSBsb2NhbCBmaWxlIG9yIGEgVVJMIHRvIGEgZmlsZSBzb21ld2hlcmUgb24gdGhlIGludGVybmV0LiAgVGhlIGVhc2llc3Qgd2F5IHRvIGRvIHRoaXMgaXMgdG8gaGF2ZSB5b3VyIGZpbGUgYXMgYSBDU1YgKENvbW1hLVNlcGFyYXRlZC1WYWx1ZSkgZm9ybWF0LiAgVGhpcyBpcyB1c3VhbGx5IGEgJEZpbGUgXHRvIFNhdmVcO0FzJCBraW5kIG9mIHJvdXRpbmUuICBJdCBpcyBpbXBvcnRhbnQgZm9yIHJlcHJvZHVjaWJpbGl0eSBhbmQgY29sbGFib3JhdGlvbiB0byAxKSBIYXZlIG9ubHkgb25lIHZlcnNpb24gb2YgeW91ciBkYXRhIHNldCwgYW5kIDIpIEtlZXAgaXQgaW4gYSBmb3JtYXQgdGhhdCBpcyBhY2Nlc3NpYmxlIHN1Y2ggYXMgcGxhaW4gdGV4dC4KCkhlcmUgaXMgdGhlIGZ1bGwgdmVyc2lvbiBvZiB0aG9zZSBkYXRhIGxvYWRlZCBhYm92ZS4gIEl0IGlzIGxvY2F0ZWQgb24gYSBbR2l0aHViXShodHRwczovL2dpdGh1Yi5jb20vZHllcmxhYi9FTlZTLUxlY3R1cmVzKSB3ZWJzaXRlIGFuZCBpcyBhY2Nlc3NpYmxlIHRvIGFueW9uZSB3aXRoIGFuIGludGVybmV0IGNvbm5lY3Rpb24uCgpgYGB7cn0KdXJsIDwtICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vZHllcmxhYi9FTlZTLUxlY3R1cmVzL21hc3Rlci9kYXRhL2FyYXBhdC5jc3YiCmBgYAoKT25jZSB3ZSBoYXZlIHRoZSB1cmwgb3IgZmlsZSBhcyBhIGBjaGFyYWN0ZXJgIG9iamVjdCwgd2UgY2FuIHVzZSB0aGUgYnVpbHQtaW4gYHJlYWQuY3N2KClgIGZ1bmN0aW9uIHRvIGxvYWQgdGhlIGRhdGEgaW50byBhIGxvY2FsIHZhcmlhYmxlLiAgSGVyZSBpcyB3aGF0IHRoYXQgbG9va3MgbGlrZS4KCmBgYHtyfQpTYW1wbGVzIDwtIHJlYWQuY3N2KHVybCkKc3VtbWFyeSggU2FtcGxlcyApCmBgYAoKCgojIyBXb3JraW5nIHdpdGggYGRhdGEuZnJhbWVgIE9iamVjdHMKCkEgdmFyaWFibGUgcmVwcmVzZW50aW5nIGEgYGRhdGEuZnJhbWVgIGhhcyBwcm9wZXJ0aWVzIGFuZCBjb25zdGl0dWVudHMganVzdCBsaWtlIGEgdmVjdG9yLiAgVGhlIHNpemUgb2YgdGhlIGBkYXRhLmZyYW1lYCBpcyBkZWZpbmVkIGFzIHRoZSBgZGltYGVuc2lvbnMgb2YgaXQgYW5kIHJlcHJlc2VudHMgdGhlIG51bWJlciBvZiAqcm93cyogYW5kICpjb2x1bW5zKiBpdCBjb250YWlucy4KCmBgYHtyfQpucm93KCBTYW1wbGVzICkKbmNvbCggU2FtcGxlcyApCmBgYAoKb3IgdXNlIHRoZSBgZGltKClgIGZ1bmN0aW9uIHdoaWNoIHJldHVybnMgYm90aCBvZiB0aGVtLgoKYGBge3J9CmRpbSggU2FtcGxlcyApCmBgYAoKCkVhY2ggdmFyaWFibGUgd2l0aGluIHRoZSBgZGF0YS5mcmFtZWAgaXMgcmVwcmVzZW50ZWQgYnkgdGhlIG5hbWUgd2UgZ2F2ZSBpdCB3aGVuIHdlIGFkZGVkIGl0IHRvIHRoZSBgZGF0YS5mcmFtZWAuCgpgYGB7cn0KbmFtZXMoIFNhbXBsZXMgKQpgYGAKClRoZSBpbmRpdmlkdWFsIGVsZW1lbnRzIGFyZSBhdmFpbGFibGUgdXNpbmcgdGhlIHNxdWFyZSBicmFja2V0IG5vdGF0aW9uLCBqdXN0IGxpa2UgZm9yIFt2ZWN0b3JzXSguLi92ZWN0b3JzL25hcnJpYXRpdmUubmIuaHRtbCkgKndpdGggdGhlIGV4Y2VwdGlvbiB0aGF0KiB3ZSBoYXZlIHR3byBjb29yZGluYXRlcyBpbnN0ZWFkIG9mIGp1c3Qgb25lLiAgVGhlIGZpcnN0IGNvb3JkaW5hdGUgaXMgZm9yICpyb3cqIGFuZCB0aGUgc2Vjb25kIGlzIGZvciAqY29sdW1uKi4gIFNvIHRvIGdyYWIgdGhlIDEwJF57dGh9JCBgU3RyYXR1bWAgbmFtZSAocm93KSwgd2hpY2ggaXMgdGhlIDEkXntzdH0kIHZhcmlhYmxlIChjb2x1bW4pIGluIHRoZSBgZGF0YS5mcmFtZWAsIHdlIHVzZToKCmBgYHtyfQpTYW1wbGVzWzEwLDFdCmBgYAoKV2hpbGUgdGhpcyBpcyBPSywgaXQgYXNzdW1lcyB3ZSByZW1lbWJlciB0aGF0IHRoZSBgU3RyYXR1bWAgdmFyaWFibGUgaXMgdGhlIGZpcnN0IHZhcmlhYmxlIGluIHRoZSBgZGF0YS5mcmFtZWAuICBJZiB5b3UgaGF2ZSBkYXRhIHNldHMgd2l0aCB0aG91c2FuZHMgb2YgY29sdW1ucyBvZiBkYXRhIGluIHRoZW0sIGl0IGJlY29tZXMgbGVzcy10aGFuLW9wdGltYWwgdG8gdXNlIHZhcmlhYmxlIG51bWJlcnMgdG8gaW5kZXgsIHdoaWNoIGlzIHdoeSB3ZSBjYW4gdXNlIHRoZSB2YXJpYWJsZSBuYW1lIGl0c2VsZiBpbiB0aGUgZm9sbG93aW5nIGZvcm1hdC4KCmBgYHtyfQpTYW1wbGVzJFN0cmF0dW1bMTBdCmBgYAoKSGVyZSwgd2UgdXNlIHRoZSBuYW1lIG9mIHRoZSBgZGF0YS5mcmFtZWAgY29ubmVjdGVkIHRvIHRoZSBuYW1lIG9mIHRoZSB2YXJpYWJsZSB1c2luZyB0aGUgZG9sbGFyIHNpZ24gKFwkKSB0byBob29rIHRoZW0gdXAuICAKCjxkaXYgY2xhc3M9ImJveC15ZWxsb3ciPkZvciByZWFkYWJpbGl0eSwgaXQgaXMgYWR2aXNlZCB0aGF0IHlvdSB1c2UgdGhlIGRvbGxhci1zaWduIG5vdGF0aW9uIHRvIGdldCBhbmQgc2V0IHZhbHVlcyB3aXRoaW4gYSBgZGF0YS5mcmFtZWAuICBJdCB3aWxsIGFsd2F5cyBiZSBtb3JlIGNsZWFyIHRvIHlvdSBhbmQgYW55b25lIHdobyByZWFkcyB5b3VyIGNvZGUgaWYgeW91IGFyZSBhcyB2ZXJib3NlIGFzIHlvdSBjYW4gYmUgaW4geW91ciBjb2RlLiAgVHJ1c3QgbWUsIHlvdXIgKmZ1dHVyZSBzZWxmKiB3aWxsIGxpa2UgeW91IG11Y2ggYmV0dGVyIGlmIHlvdSBhZG9wdCB0aGlzIGhhYml0IGFzIHNvb24gYXMgcG9zc2libGUuPC9kaXY+CgoKU2ltaWxhciB0byBmb3IgW3ZlY3RvcnNdKC4uL3ZlY3RvcnMvbmFycmlhdGl2ZS5uYi5odG1sKSwgd2UgY2FuIGdyYWIgdGhlIGhlYWQgYW5kIHRhaWwgb2YgdGhlIHdob2xlIGRhdGEgZnJhbWUuCgpgYGB7cn0KaGVhZCggU2FtcGxlcyApCmBgYAoKYGBge3J9CnRhaWwoU2FtcGxlcywgbj00KQpgYGAKCgpXZSBjYW4gdXNlIHRoZSBzYW1lIGFwcHJvYWNoIGZvciBzZXR0aW5nIHZhbHVlcyB3aXRoaW4gYSBgZGF0YS5mcmFtZWAuICBIZXJlIEknbGwgZXhwYW5kIHRoZSAqU0ZyKiBub3Rpb24gdG8gcmVwcmVzZW50IHRoZSBmdWxsIGxvY2F0aW9uIG5hbWUuCgpgYGB7cn0KU2FtcGxlcyRTdHJhdHVtWzEwXSA8LSAiU2FuIEZyYW5jaXNxdWl0byIKaGVhZCggU2FtcGxlcywgbj0xMCkKYGBgCgo8ZGl2IGNsYXNzPSJib3gtcmVkIj4KKipBTEVSVDoqKiAgSWYgeW91IHJlY2VpdmVkIGFuIGVycm9yIG1lc3NhZ2Ugd2l0aCBzb21lIGxpa2UgCmBgYApXYXJuaW5nIG1lc3NhZ2U6CkluIGBbPC0uZmFjdG9yYChgKnRtcCpgLCAxMCwgdmFsdWUgPSBjKDMwTCwgMzJMLCAyOUwsIDE5TCwgMjBMLCAgOgogIGludmFsaWQgZmFjdG9yIGxldmVsLCBOQSBnZW5lcmF0ZWQKYGBgCkl0IGlzIGJlY2F1c2UgdGhlIGByZWFkLmNzdigpYCBmdW5jdGlvbiBoYXMgYSBkZWZhdWx0IHZhbHVlIHRoYXQgY29udmVydHMgYW55IGNvbHVtbiB3aXRoIGEgYGNoYXJhY3RlcmAgdmFyaWFibGUgdHlwZSBpbnRvIGEgYGZhY3RvcmAgZGF0YSB0eXBlLi4uICBUaGlzIGlzIGEgKipzdHVwaWQqKiBkZWZhdWx0IG9wdGlvbiBhbmQgeW91IHNob3VsZCBjaGFuZ2UgdGhlIGRlZmF1bHQgdmFsdWUgaW4geW91ciBgUmAgb3B0aW9ucyBmaWxlIC0gVG8gZml4IHRoaXMgaXNzdWUsIHNlZSBbciBlbnZpcm9ubWVudF0oLi4vZW52aXJvbm1lbnQvbmFycmlhdGl2ZS5uYi5odG1sKSBmb3Igb3IgcmVtZW1iZXIgdGhhdCAqZXZlcnkgdGltZSB5b3UgbG9hZCBpbiBkYXRhKiwgeW91IG11c3QgYWRkIHRoZSBvcHRpb25hbCBhcmd1bWVudCBgc3RyaW5nc0FzRmFjdG9ycz1GQUxTRWAgdG8gdGhlIGByZWFkLmNzdigpYCBmdW5jdGlvbiBjYWxsLgoKYGBge3IgZXZhbD1GQUxTRX0KU2FtcGxlcyA8LSByZWFkLmNzdih1cmwsIHN0cmluZ0FzRmFjdG9ycz1GQUxTRSkKYGBgCgpSdW4gdGhhdCBhbmQgdHJ5IHRvIHJlcGxhY2UgdGhlIFN0cmF0dW0gbmFtZSBhcyBhYm92ZS4KPC9kaXY+CgoKCiMjIyBTbGljZXMKCkp1c3QgbGlrZSBmb3IgW3ZlY3RvcnNdKC4uL3ZlY3RvcnMvbmFycmlhdGl2ZS5uYi5odG1sKSwgd2UgY2FuIGFsc28gdGFrZSBzbGljZXMgb2YgY29tcG9uZW50cyBmcm9tIGBkYXRhLmZyYW1lYCBvYmplY3RzLiAgSG93ZXZlciwgd2hhdCB3ZSBnZXQgaW4gcmV0dXJuIGRlcGVuZHMgb24gc3BlY2lmaWNhbGx5IHdoYXQgd2UgYXNrIGZvci4gIAoKRm9yIGV4YW1wbGUsIHRha2luZyBmcm9tIGEgc2luZ2xlIGNvbHVtbiBpbiB0aGUgYGRhdGEuZnJhbWVgIHJldHVybnMgYSBzbGljZSBvZiB0aGF0IHBhcnRpY3VsYXIgdmFyaWFibGUgdHlwZS4KCmBgYHtyfQp4IDwtIFNhbXBsZXNbMTozLCAxXQp4CmNsYXNzKHgpCmBgYAoKVGhpcyBpcyBiZWNhdXNlIGFsbCB0aGUgcmV0dXJuZWQgdmFsdWVzIGFyZSBmcm9tIGEgc2luZ2xlIGRhdGEgY29sdW1uLCB3aGljaCBieSBkZWZpbml0aW9uICptdXN0KiBiZSB0aGUgc2FtZSBraW5kIG9mIGRhdGEuICAKCllvdSBjYW4gYXNrIGBSYCB0byByZXR1cm4gaXQgYXMgYSBgZGF0YS5mcmFtZWAgcmF0aGVyIHRoYW4ganVzdCBhIHZlY3RvciAoaW4gY2FzZSB5b3UgbmVlZCB0byBoYXZlIGEgZGF0YS5mcmFtZSB0byB3b3JrIHdpdGgpIGJ5IHBhc3NpbmcgYW4gb3B0aW9uYWwgYXJndW1lbnQgdG8gdGhlIHNxdWFyZSBicmFja2V0cy4gIFlvdSB3aWxsIG5vdGljZSBpdCByZXRhaW5zIHRoZSByb3cgbnVtYmVycy4KCmBgYHtyfQp4MSA8LSBTYW1wbGVzWyAxOjMsIDEsIGRyb3A9RkFMU0VdCngxCmNsYXNzKHgxKQpgYGAKCgpIb3dldmVyLCBpZiB3ZSB0YWtlIHRoZSBzYW1lIG51bWJlciBvZiBvYmplY3QgYnV0IGZyb20gYSByb3cgaW5zdGVhZCBvZiBhIGNvbHVtbiwgd2UgY2FuICpvbmx5KiBnZXQgYSBgZGF0YS5mcmFtZWAgb2JqZWN0IGluIHJldHVybi4KCmBgYHtyfQp5IDwtIFNhbXBsZXNbMSwgMTozXQp5CmNsYXNzKHkpCmBgYAoKYmVjYXVzZSB0aGlzIHRpbWUsIHdlIGFyZSBhc2tpbmcgZm9yIHRoZSB0aHJlZSB2YXJpYWJsZXMgcmVwcmVzZW50aW5nIHRoZSBmaXJzdCByZWNvcmQuICBCZWNhdXNlIHRoZXNlIHZhbHVlcyBhcmUgYmVpbmcgZHJhd24gZnJvbSBhY3Jvc3MgZGlmZmVyZW50IGNvbHVtbnMgb2YgZGF0YSwgYFJgIGRvZXMgbm90IGNvbmNhdGVuYXRlIHRoZXNlIGludG8gYSBzaW5nbGUgdmVjdG9yIGFuZCBjb2VhcmNlIHRoZW0gdG8gdGhlIGxlYXN0IGNvbW1vbiBkYXRhIHR5cGUuIFJhdGhlciBpdCBtYWtlcyBhIG5ldyBgZGF0YS5mcmFtZWAgb2JqZWN0IGZvciB5b3UgYW5kIHJldHVybnMgdGhhdC4KCgojIyMgTW9kaWZ5aW5nIEV4aXN0aW5nIERhdGEgRnJhbWVzCgpPbmNlIHdlIGhhdmUgYSBgZGF0YS5mcmFtZWAgaW4gbWVtb3J5LCB3ZSBjYW4gYWxzbyBhZGQgdG8gaXQuICBJZiB3ZSBhcmUgYWRkaW5nIGNvbHVtbnMsIHdlIGNhbiBhcHBlbmQgYSBzaW5nbGUgdmFyaWJsZSBvbnRvIGl0IGFuZCBgUmAgd2lsbCBwdXQgaXQgb24gdGhlIGZhciByaWdodCBzaWRlIG9mIHRoZSBgZGF0YS5mcmFtZWAuCgpgYGB7cn0KU2FtcGxlcyRJRCA8LSAxOm5yb3coU2FtcGxlcykKc3VtbWFyeSggU2FtcGxlcyApCmBgYAoKCklmIHdlIHdhbnQgdG8gYWRkIHJvd3MgdG8gdGhlIGBkYXRhLmZyYW1lYCwgaXQgaXMgYSBiaXQgbW9yZSBpbnZvbHZlZCBiZWNhdXNlIHdlIGFyZSBnb2luZyB0byBoYXZlIHRvIGVpdGhlciBhIGxpc3Qgb2JqZWN0IHdob3NlIHZhcmlhYmxlcyBhcmUgb2YgdGhlIHNhbWUgb3JkZXIgYXMgdGhlIG9yaWdpbmFsIGBkYXRhLmZyYW1lYCBvciBhbm9oZXIgZW50aXJlIGBkYXRhLmZyYW1lYCAod2hvc2UgbmFtZXMgYXJlIGlkZW50aWNhbCB0byB0aGUgb3JpZ2luYWwpCgpgYGB7cn0KbmFtZXMoU2FtcGxlcykKYGBgCgpUbyBhZGQgYSBzaW5nbGUgcm93LCB3ZSB1c2UgYHJiaW5kKClgIGFuZCBwYXNzIGl0IHRoZSBgZGF0YS5mcmFtZWAgYW5kIGEgbmV3IFtsaXN0XSguLi9saXN0cy9uYXJyaWF0aXZlLm5iLmh0bWwpIG9iamVjdC4KCmBgYHtyfQpTYW1wbGVzIDwtIHJiaW5kKCBTYW1wbGVzLCBsaXN0KCJMb3MgQ2Fib3MiLC0xMDkuNzEyNCwgMjMuMDc5OSwgNDApKQp0YWlsKFNhbXBsZXMpCmBgYAoKWW91IGNhbiBhbHNvIHVzZSBhbm90aGVyIGBkYXRhLmZyYW1lYCwgd2hpY2ggaW4gdGhpcyBjYXNlIG11c3QgaGF2ZSB0aGUgc2FtZSBuYW1lZCB2YXJhaWJsZXMgYXMgdGhlIG9yaWdpbmFsLiAgCgpgYGB7cn0KbW9yZXNpdGVzIDwtIGRhdGEuZnJhbWUoIElEID0gNDE6NDIsCiAgICAgICAgICAgICAgICAgICAgICAgICBTdHJhdHVtID0gYygiTG9zIEJhcnJpbGVzIiwiQ29tb25kdSIpLAogICAgICAgICAgICAgICAgICAgICAgICAgTG9uZ2l0dWRlID0gYygtMTA5LjcwMjYsIC0xMTEuODQ0MiksCiAgICAgICAgICAgICAgICAgICAgICAgICBMYXRpdHVkZSA9IGMoMjMuNjgxMSwgMjYuMDcwOCkgCiAgICAgICAgICAgICAgICAgICAgICAgICApCm5hbWVzKG1vcmVzaXRlcykKYGBgCgpIb3dldmVyLCBub3RpY2UgdGhhdCB0aGUgb3JkZXIgaW4gd2hpY2ggdGhlc2UgdmFyYWlibGVzIGluIGBtb3Jlc2l0ZXNgIGlzIGRpZmZlcmVudCB0aGFuIHRob3NlIGluIGBTYW1wbGVzYC4gIFRoZSBgcmJpbmQoKWAgZnVuY3Rpb24gcmVhcnJhbmdlcyB0aGUgb3JkZXIgd2hlbiBpdCBjb25jYXRlbmF0ZXMgb250byB0aGUgcm93cy4KCmBgYHtyfQpTYW1wbGVzIDwtIHJiaW5kKCBTYW1wbGVzLCBtb3Jlc2l0ZXMpCnRhaWwoIFNhbXBsZXMgKQpgYGAKClRvIGRlbGV0ZSBhIGNvbHVtbiBvZiBkYXRhLCBhc3NpZ24gaXQgdGhlIHZhbHVlIG9mIGBOVUxMYC4KCmBgYHtyfQpTYW1wbGVzJElEIDwtIE5VTEwKc3VtbWFyeShTYW1wbGVzKQpgYGAKCm9yIHVzZSBuZWdhdGl2ZSBpbmRpY2VzIHRvIGRlbGV0ZSByb3dzLgoKYGBge3J9ClNhbXBsZXMgPC0gU2FtcGxlc1sgLTQyOi00MCwgXQpzdW1tYXJ5KFNhbXBsZXMpCmBgYAoKLS0tCgpUaGUgYGRhdGEuZnJhbWVgIG9iamVjdCBpcyBhIGZ1bmRhbWVudGFsIGNvbXBvbmVudCBvZiB5b3VyIGBSYCB3b3JrIGZsb3cgYW5kIGJlaW5nIGFibGUgdG8gbWFuaXB1bGF0ZSBkYXRhIHdpdGhpbiBpdCBhbmQgZXh0cmFjdCBkYXRhIGZyb20gaXQgYXJlIGEgaHVnZSBwYXJ0IG9mIGJlY29taW5nIGRhdGEgbGl0ZXJhdGUuCgoKCgoKCgoKCgoKCgoKCgoKCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRGF0YSBGcmFtZXMiCm91dHB1dDogCiAgaHRtbF9ub3RlYm9vazoKICAgIGNzczogImVudnM1NDMtc3R5bGVzLmNzcyIKLS0tCgo+IERhdGEgZnJhbWVzIGFyZSBhIHN0cnVjdHVyZSB0aGF0IGNhbiBob2xkIG1hbnkgZGlmZmVyZW50IGRhdGEgdHlwZXMgaW4gb25lIHNpbXBsZSBzdHJ1Y3R1cmUuCgpEYXRhIGZyYW1lcyBhcmUgdGhlICpsaW5ndWEgZnJhbmNhKiBmb3IgYFJgLCBlc3BlY2lhbGx5IG9uY2Ugd2Ugc3RhcnQgZ2V0dGluZyBpbnRvIG1vcmUgY29tcGxpY2F0ZWQgYW5hbHlzaXMgYW5kIG1hbmlwdWxhdGlvbi4gIEZvciBzaW1wbGljaXR5LCBvbmUgY2FuIGNvbnNpZGVyIGEgYGRhdGEuZnJhbWVgIG9iamVjdCBtdWNoIGxpa2UgYSBzcHJlYWRzaGVldC4gIEVhY2ggcm93IHJlcHJlc2VudHMgYSByZWNvcmQgb24gc29tZSBvYmplY3QgYW5kIGVhY2ggY29sdW1u4oCUY29uc2lzdGluZyBvZiBkaWZmZXJlbnQga2luZHMgb2YgZGF0YeKAlGFyZSBtZWFzdXJlbWVudHMgb24gdGhhdCBvYmplY3QuICAKCkJ5IGluIGxhcmdlLCB5b3Ugd2lsbCBsb2FkIHlvdXIgZGF0YSBpbnRvIHRoZXNlIHN0cnVjdHVyZXMgYW5kIHBhc3MgdGhlbSB0byBmdW5jdGlvbnMgZm9yIHBsb3R0aW5nLCBzaW11bGF0aW9uLCBwbG90dGluZywgZXRjLiAgSXQgaXMgYSBnb29kIGlkZWEgdG8gZ2V0IHVzZWQgdG8gdGhlc2UuCgoKIyMgQ3JlYXRpbmcgYGRhdGEuZnJhbWVgIE9iamVjdHMKClRvIG1ha2UgYSBgZGF0YS5mcmFtZWAgd2UgbmVlZCB0byBlaXRoZXI6CgogIDEuIE1ha2UgaXQgZnJvbSBzY3JhdGNoIHVzaW5nIHZlY3RvcnMgKHRoZSBtb3JlIGNvbXBsaWNhdGVkKS4KICAyLiBMb2FkIGl0IGZyb20gYSBmaWxlIChwZXJoYXBzIHRoZSBlYXNpZXN0IHdheSkuCgpXZSBzaGFsbCBzdGFydCB3aXRoIHRoZSBtb3N0IGNvbXBsaWNhdGVkIGNhc2UuICAKCiMjIyBDcmVhdGluZyBgZGF0YS5mcmFtZWAgT2JqZWN0cyAqZGUgbm92byoKCmBgYHtyfQpzaXRlIDwtIGMoICJDb25zdCIsIkVTYW4iLCAiQXF1IikKbG9uZ2l0dWRlIDwtIGMoIC0xMTEuNjc1LCAtMTEwLjM2ODYsIC0xMTAuMTA0MykKbGF0aXR1ZGUgPC0gYygyNS4wMjQ3LCAyNC40NTg3OSwgMjMuMjg1NSkKCnNpdGVzIDwtIGRhdGEuZnJhbWUoIFNpdGUgPSBzaXRlLAogICAgICAgICAgICAgICAgICAgICBMb25naXR1ZGUgPSBsb25naXR1ZGUsCiAgICAgICAgICAgICAgICAgICAgIExhdGl0dWRlID0gbGF0aXR1ZGUgKQpzaXRlcwpgYGAKClRoZSB0aGluZyBhYm91dCBgZGF0YS5mcmFtZWAgb2JqZWN0cyBpcyB0aGF0IHRoZSBrbm93IGhvdyB0byBvcmdhbml6ZSBhbmQgc3VtbWFyaXplIHRoZWlyIGNvbXBvbmVudCB2YXJpYWJsZXMuCgpgYGB7cn0Kc3VtbWFyeShzaXRlcykKYGBgCgpOb3RpY2UgdGhhdCBlYWNoIHZhcmlhYmxlIGlzIHN1bW1hcml6ZWQgYSB3YXkgdGhhdCBnaXZlcyBhcyBtdWNoIGluZm9ybWF0aW9uIGFib3V0IHRoZSBjb250bmV0cyBvZiB0aGF0IHZhcmlhYmxlLiBUaGUgYHN1bW1hcnkoKWAgZnVuY3Rpb24gaXMgY3JpdGljYWwgYW5kIG9uZSB3ZSB3aWxsIHVzZSBvdmVyIGFuZCBvdmVyIGFnYWluLgoKIyMjIExvYWRpbmcgZnJvbSBGaWxlIGFuZC9vciBVUkwKCllvdSBjYW4gYWxzbyBsb2FkIGEgYGRhdGEuZnJhbWVgIGluIHVzaW5nIGEgbG9jYWwgZmlsZSBvciBhIFVSTCB0byBhIGZpbGUgc29tZXdoZXJlIG9uIHRoZSBpbnRlcm5ldC4gIFRoZSBlYXNpZXN0IHdheSB0byBkbyB0aGlzIGlzIHRvIGhhdmUgeW91ciBmaWxlIGFzIGEgQ1NWIChDb21tYS1TZXBhcmF0ZWQtVmFsdWUpIGZvcm1hdC4gIFRoaXMgaXMgdXN1YWxseSBhICRGaWxlIFx0byBTYXZlXDtBcyQga2luZCBvZiByb3V0aW5lLiAgSXQgaXMgaW1wb3J0YW50IGZvciByZXByb2R1Y2liaWxpdHkgYW5kIGNvbGxhYm9yYXRpb24gdG8gMSkgSGF2ZSBvbmx5IG9uZSB2ZXJzaW9uIG9mIHlvdXIgZGF0YSBzZXQsIGFuZCAyKSBLZWVwIGl0IGluIGEgZm9ybWF0IHRoYXQgaXMgYWNjZXNzaWJsZSBzdWNoIGFzIHBsYWluIHRleHQuCgpIZXJlIGlzIHRoZSBmdWxsIHZlcnNpb24gb2YgdGhvc2UgZGF0YSBsb2FkZWQgYWJvdmUuICBJdCBpcyBsb2NhdGVkIG9uIGEgW0dpdGh1Yl0oaHR0cHM6Ly9naXRodWIuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcykgd2Vic2l0ZSBhbmQgaXMgYWNjZXNzaWJsZSB0byBhbnlvbmUgd2l0aCBhbiBpbnRlcm5ldCBjb25uZWN0aW9uLgoKYGBge3J9CnVybCA8LSAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2R5ZXJsYWIvRU5WUy1MZWN0dXJlcy9tYXN0ZXIvZGF0YS9hcmFwYXQuY3N2IgpgYGAKCk9uY2Ugd2UgaGF2ZSB0aGUgdXJsIG9yIGZpbGUgYXMgYSBgY2hhcmFjdGVyYCBvYmplY3QsIHdlIGNhbiB1c2UgdGhlIGJ1aWx0LWluIGByZWFkLmNzdigpYCBmdW5jdGlvbiB0byBsb2FkIHRoZSBkYXRhIGludG8gYSBsb2NhbCB2YXJpYWJsZS4gIEhlcmUgaXMgd2hhdCB0aGF0IGxvb2tzIGxpa2UuCgpgYGB7cn0KU2FtcGxlcyA8LSByZWFkLmNzdih1cmwpCnN1bW1hcnkoIFNhbXBsZXMgKQpgYGAKCgoKIyMgV29ya2luZyB3aXRoIGBkYXRhLmZyYW1lYCBPYmplY3RzCgpBIHZhcmlhYmxlIHJlcHJlc2VudGluZyBhIGBkYXRhLmZyYW1lYCBoYXMgcHJvcGVydGllcyBhbmQgY29uc3RpdHVlbnRzIGp1c3QgbGlrZSBhIHZlY3Rvci4gIFRoZSBzaXplIG9mIHRoZSBgZGF0YS5mcmFtZWAgaXMgZGVmaW5lZCBhcyB0aGUgYGRpbWBlbnNpb25zIG9mIGl0IGFuZCByZXByZXNlbnRzIHRoZSBudW1iZXIgb2YgKnJvd3MqIGFuZCAqY29sdW1ucyogaXQgY29udGFpbnMuCgpgYGB7cn0KbnJvdyggU2FtcGxlcyApCm5jb2woIFNhbXBsZXMgKQpgYGAKCm9yIHVzZSB0aGUgYGRpbSgpYCBmdW5jdGlvbiB3aGljaCByZXR1cm5zIGJvdGggb2YgdGhlbS4KCmBgYHtyfQpkaW0oIFNhbXBsZXMgKQpgYGAKCgpFYWNoIHZhcmlhYmxlIHdpdGhpbiB0aGUgYGRhdGEuZnJhbWVgIGlzIHJlcHJlc2VudGVkIGJ5IHRoZSBuYW1lIHdlIGdhdmUgaXQgd2hlbiB3ZSBhZGRlZCBpdCB0byB0aGUgYGRhdGEuZnJhbWVgLgoKYGBge3J9Cm5hbWVzKCBTYW1wbGVzICkKYGBgCgpUaGUgaW5kaXZpZHVhbCBlbGVtZW50cyBhcmUgYXZhaWxhYmxlIHVzaW5nIHRoZSBzcXVhcmUgYnJhY2tldCBub3RhdGlvbiwganVzdCBsaWtlIGZvciBbdmVjdG9yc10oLi4vdmVjdG9ycy9uYXJyaWF0aXZlLm5iLmh0bWwpICp3aXRoIHRoZSBleGNlcHRpb24gdGhhdCogd2UgaGF2ZSB0d28gY29vcmRpbmF0ZXMgaW5zdGVhZCBvZiBqdXN0IG9uZS4gIFRoZSBmaXJzdCBjb29yZGluYXRlIGlzIGZvciAqcm93KiBhbmQgdGhlIHNlY29uZCBpcyBmb3IgKmNvbHVtbiouICBTbyB0byBncmFiIHRoZSAxMCRee3RofSQgYFN0cmF0dW1gIG5hbWUgKHJvdyksIHdoaWNoIGlzIHRoZSAxJF57c3R9JCB2YXJpYWJsZSAoY29sdW1uKSBpbiB0aGUgYGRhdGEuZnJhbWVgLCB3ZSB1c2U6CgpgYGB7cn0KU2FtcGxlc1sxMCwxXQpgYGAKCldoaWxlIHRoaXMgaXMgT0ssIGl0IGFzc3VtZXMgd2UgcmVtZW1iZXIgdGhhdCB0aGUgYFN0cmF0dW1gIHZhcmlhYmxlIGlzIHRoZSBmaXJzdCB2YXJpYWJsZSBpbiB0aGUgYGRhdGEuZnJhbWVgLiAgSWYgeW91IGhhdmUgZGF0YSBzZXRzIHdpdGggdGhvdXNhbmRzIG9mIGNvbHVtbnMgb2YgZGF0YSBpbiB0aGVtLCBpdCBiZWNvbWVzIGxlc3MtdGhhbi1vcHRpbWFsIHRvIHVzZSB2YXJpYWJsZSBudW1iZXJzIHRvIGluZGV4LCB3aGljaCBpcyB3aHkgd2UgY2FuIHVzZSB0aGUgdmFyaWFibGUgbmFtZSBpdHNlbGYgaW4gdGhlIGZvbGxvd2luZyBmb3JtYXQuCgpgYGB7cn0KU2FtcGxlcyRTdHJhdHVtWzEwXQpgYGAKCkhlcmUsIHdlIHVzZSB0aGUgbmFtZSBvZiB0aGUgYGRhdGEuZnJhbWVgIGNvbm5lY3RlZCB0byB0aGUgbmFtZSBvZiB0aGUgdmFyaWFibGUgdXNpbmcgdGhlIGRvbGxhciBzaWduIChcJCkgdG8gaG9vayB0aGVtIHVwLiAgCgo8ZGl2IGNsYXNzPSJib3gteWVsbG93Ij5Gb3IgcmVhZGFiaWxpdHksIGl0IGlzIGFkdmlzZWQgdGhhdCB5b3UgdXNlIHRoZSBkb2xsYXItc2lnbiBub3RhdGlvbiB0byBnZXQgYW5kIHNldCB2YWx1ZXMgd2l0aGluIGEgYGRhdGEuZnJhbWVgLiAgSXQgd2lsbCBhbHdheXMgYmUgbW9yZSBjbGVhciB0byB5b3UgYW5kIGFueW9uZSB3aG8gcmVhZHMgeW91ciBjb2RlIGlmIHlvdSBhcmUgYXMgdmVyYm9zZSBhcyB5b3UgY2FuIGJlIGluIHlvdXIgY29kZS4gIFRydXN0IG1lLCB5b3VyICpmdXR1cmUgc2VsZiogd2lsbCBsaWtlIHlvdSBtdWNoIGJldHRlciBpZiB5b3UgYWRvcHQgdGhpcyBoYWJpdCBhcyBzb29uIGFzIHBvc3NpYmxlLjwvZGl2PgoKClNpbWlsYXIgdG8gZm9yIFt2ZWN0b3JzXSguLi92ZWN0b3JzL25hcnJpYXRpdmUubmIuaHRtbCksIHdlIGNhbiBncmFiIHRoZSBoZWFkIGFuZCB0YWlsIG9mIHRoZSB3aG9sZSBkYXRhIGZyYW1lLgoKYGBge3J9CmhlYWQoIFNhbXBsZXMgKQpgYGAKCmBgYHtyfQp0YWlsKFNhbXBsZXMsIG49NCkKYGBgCgoKV2UgY2FuIHVzZSB0aGUgc2FtZSBhcHByb2FjaCBmb3Igc2V0dGluZyB2YWx1ZXMgd2l0aGluIGEgYGRhdGEuZnJhbWVgLiAgSGVyZSBJJ2xsIGV4cGFuZCB0aGUgKlNGciogbm90aW9uIHRvIHJlcHJlc2VudCB0aGUgZnVsbCBsb2NhdGlvbiBuYW1lLgoKYGBge3J9ClNhbXBsZXMkU3RyYXR1bVsxMF0gPC0gIlNhbiBGcmFuY2lzcXVpdG8iCmhlYWQoIFNhbXBsZXMsIG49MTApCmBgYAoKPGRpdiBjbGFzcz0iYm94LXJlZCI+CioqQUxFUlQ6KiogIElmIHlvdSByZWNlaXZlZCBhbiBlcnJvciBtZXNzYWdlIHdpdGggc29tZSBsaWtlIApgYGAKV2FybmluZyBtZXNzYWdlOgpJbiBgWzwtLmZhY3RvcmAoYCp0bXAqYCwgMTAsIHZhbHVlID0gYygzMEwsIDMyTCwgMjlMLCAxOUwsIDIwTCwgIDoKICBpbnZhbGlkIGZhY3RvciBsZXZlbCwgTkEgZ2VuZXJhdGVkCmBgYApJdCBpcyBiZWNhdXNlIHRoZSBgcmVhZC5jc3YoKWAgZnVuY3Rpb24gaGFzIGEgZGVmYXVsdCB2YWx1ZSB0aGF0IGNvbnZlcnRzIGFueSBjb2x1bW4gd2l0aCBhIGBjaGFyYWN0ZXJgIHZhcmlhYmxlIHR5cGUgaW50byBhIGBmYWN0b3JgIGRhdGEgdHlwZS4uLiAgVGhpcyBpcyBhICoqc3R1cGlkKiogZGVmYXVsdCBvcHRpb24gYW5kIHlvdSBzaG91bGQgY2hhbmdlIHRoZSBkZWZhdWx0IHZhbHVlIGluIHlvdXIgYFJgIG9wdGlvbnMgZmlsZSAtIFRvIGZpeCB0aGlzIGlzc3VlLCBzZWUgW3IgZW52aXJvbm1lbnRdKC4uL2Vudmlyb25tZW50L25hcnJpYXRpdmUubmIuaHRtbCkgZm9yIG9yIHJlbWVtYmVyIHRoYXQgKmV2ZXJ5IHRpbWUgeW91IGxvYWQgaW4gZGF0YSosIHlvdSBtdXN0IGFkZCB0aGUgb3B0aW9uYWwgYXJndW1lbnQgYHN0cmluZ3NBc0ZhY3RvcnM9RkFMU0VgIHRvIHRoZSBgcmVhZC5jc3YoKWAgZnVuY3Rpb24gY2FsbC4KCmBgYHtyIGV2YWw9RkFMU0V9ClNhbXBsZXMgPC0gcmVhZC5jc3YodXJsLCBzdHJpbmdBc0ZhY3RvcnM9RkFMU0UpCmBgYAoKUnVuIHRoYXQgYW5kIHRyeSB0byByZXBsYWNlIHRoZSBTdHJhdHVtIG5hbWUgYXMgYWJvdmUuCjwvZGl2PgoKCgojIyMgU2xpY2VzCgpKdXN0IGxpa2UgZm9yIFt2ZWN0b3JzXSguLi92ZWN0b3JzL25hcnJpYXRpdmUubmIuaHRtbCksIHdlIGNhbiBhbHNvIHRha2Ugc2xpY2VzIG9mIGNvbXBvbmVudHMgZnJvbSBgZGF0YS5mcmFtZWAgb2JqZWN0cy4gIEhvd2V2ZXIsIHdoYXQgd2UgZ2V0IGluIHJldHVybiBkZXBlbmRzIG9uIHNwZWNpZmljYWxseSB3aGF0IHdlIGFzayBmb3IuICAKCkZvciBleGFtcGxlLCB0YWtpbmcgZnJvbSBhIHNpbmdsZSBjb2x1bW4gaW4gdGhlIGBkYXRhLmZyYW1lYCByZXR1cm5zIGEgc2xpY2Ugb2YgdGhhdCBwYXJ0aWN1bGFyIHZhcmlhYmxlIHR5cGUuCgpgYGB7cn0KeCA8LSBTYW1wbGVzWzE6MywgMV0KeApjbGFzcyh4KQpgYGAKClRoaXMgaXMgYmVjYXVzZSBhbGwgdGhlIHJldHVybmVkIHZhbHVlcyBhcmUgZnJvbSBhIHNpbmdsZSBkYXRhIGNvbHVtbiwgd2hpY2ggYnkgZGVmaW5pdGlvbiAqbXVzdCogYmUgdGhlIHNhbWUga2luZCBvZiBkYXRhLiAgCgpZb3UgY2FuIGFzayBgUmAgdG8gcmV0dXJuIGl0IGFzIGEgYGRhdGEuZnJhbWVgIHJhdGhlciB0aGFuIGp1c3QgYSB2ZWN0b3IgKGluIGNhc2UgeW91IG5lZWQgdG8gaGF2ZSBhIGRhdGEuZnJhbWUgdG8gd29yayB3aXRoKSBieSBwYXNzaW5nIGFuIG9wdGlvbmFsIGFyZ3VtZW50IHRvIHRoZSBzcXVhcmUgYnJhY2tldHMuICBZb3Ugd2lsbCBub3RpY2UgaXQgcmV0YWlucyB0aGUgcm93IG51bWJlcnMuCgpgYGB7cn0KeDEgPC0gU2FtcGxlc1sgMTozLCAxLCBkcm9wPUZBTFNFXQp4MQpjbGFzcyh4MSkKYGBgCgoKSG93ZXZlciwgaWYgd2UgdGFrZSB0aGUgc2FtZSBudW1iZXIgb2Ygb2JqZWN0IGJ1dCBmcm9tIGEgcm93IGluc3RlYWQgb2YgYSBjb2x1bW4sIHdlIGNhbiAqb25seSogZ2V0IGEgYGRhdGEuZnJhbWVgIG9iamVjdCBpbiByZXR1cm4uCgpgYGB7cn0KeSA8LSBTYW1wbGVzWzEsIDE6M10KeQpjbGFzcyh5KQpgYGAKCmJlY2F1c2UgdGhpcyB0aW1lLCB3ZSBhcmUgYXNraW5nIGZvciB0aGUgdGhyZWUgdmFyaWFibGVzIHJlcHJlc2VudGluZyB0aGUgZmlyc3QgcmVjb3JkLiAgQmVjYXVzZSB0aGVzZSB2YWx1ZXMgYXJlIGJlaW5nIGRyYXduIGZyb20gYWNyb3NzIGRpZmZlcmVudCBjb2x1bW5zIG9mIGRhdGEsIGBSYCBkb2VzIG5vdCBjb25jYXRlbmF0ZSB0aGVzZSBpbnRvIGEgc2luZ2xlIHZlY3RvciBhbmQgY29lYXJjZSB0aGVtIHRvIHRoZSBsZWFzdCBjb21tb24gZGF0YSB0eXBlLiBSYXRoZXIgaXQgbWFrZXMgYSBuZXcgYGRhdGEuZnJhbWVgIG9iamVjdCBmb3IgeW91IGFuZCByZXR1cm5zIHRoYXQuCgoKIyMjIE1vZGlmeWluZyBFeGlzdGluZyBEYXRhIEZyYW1lcwoKT25jZSB3ZSBoYXZlIGEgYGRhdGEuZnJhbWVgIGluIG1lbW9yeSwgd2UgY2FuIGFsc28gYWRkIHRvIGl0LiAgSWYgd2UgYXJlIGFkZGluZyBjb2x1bW5zLCB3ZSBjYW4gYXBwZW5kIGEgc2luZ2xlIHZhcmlibGUgb250byBpdCBhbmQgYFJgIHdpbGwgcHV0IGl0IG9uIHRoZSBmYXIgcmlnaHQgc2lkZSBvZiB0aGUgYGRhdGEuZnJhbWVgLgoKYGBge3J9ClNhbXBsZXMkSUQgPC0gMTpucm93KFNhbXBsZXMpCnN1bW1hcnkoIFNhbXBsZXMgKQpgYGAKCgpJZiB3ZSB3YW50IHRvIGFkZCByb3dzIHRvIHRoZSBgZGF0YS5mcmFtZWAsIGl0IGlzIGEgYml0IG1vcmUgaW52b2x2ZWQgYmVjYXVzZSB3ZSBhcmUgZ29pbmcgdG8gaGF2ZSB0byBlaXRoZXIgYSBsaXN0IG9iamVjdCB3aG9zZSB2YXJpYWJsZXMgYXJlIG9mIHRoZSBzYW1lIG9yZGVyIGFzIHRoZSBvcmlnaW5hbCBgZGF0YS5mcmFtZWAgb3IgYW5vaGVyIGVudGlyZSBgZGF0YS5mcmFtZWAgKHdob3NlIG5hbWVzIGFyZSBpZGVudGljYWwgdG8gdGhlIG9yaWdpbmFsKQoKYGBge3J9Cm5hbWVzKFNhbXBsZXMpCmBgYAoKVG8gYWRkIGEgc2luZ2xlIHJvdywgd2UgdXNlIGByYmluZCgpYCBhbmQgcGFzcyBpdCB0aGUgYGRhdGEuZnJhbWVgIGFuZCBhIG5ldyBbbGlzdF0oLi4vbGlzdHMvbmFycmlhdGl2ZS5uYi5odG1sKSBvYmplY3QuCgpgYGB7cn0KU2FtcGxlcyA8LSByYmluZCggU2FtcGxlcywgbGlzdCgiTG9zIENhYm9zIiwtMTA5LjcxMjQsIDIzLjA3OTksIDQwKSkKdGFpbChTYW1wbGVzKQpgYGAKCllvdSBjYW4gYWxzbyB1c2UgYW5vdGhlciBgZGF0YS5mcmFtZWAsIHdoaWNoIGluIHRoaXMgY2FzZSBtdXN0IGhhdmUgdGhlIHNhbWUgbmFtZWQgdmFyYWlibGVzIGFzIHRoZSBvcmlnaW5hbC4gIAoKYGBge3J9Cm1vcmVzaXRlcyA8LSBkYXRhLmZyYW1lKCBJRCA9IDQxOjQyLAogICAgICAgICAgICAgICAgICAgICAgICAgU3RyYXR1bSA9IGMoIkxvcyBCYXJyaWxlcyIsIkNvbW9uZHUiKSwKICAgICAgICAgICAgICAgICAgICAgICAgIExvbmdpdHVkZSA9IGMoLTEwOS43MDI2LCAtMTExLjg0NDIpLAogICAgICAgICAgICAgICAgICAgICAgICAgTGF0aXR1ZGUgPSBjKDIzLjY4MTEsIDI2LjA3MDgpIAogICAgICAgICAgICAgICAgICAgICAgICAgKQpuYW1lcyhtb3Jlc2l0ZXMpCmBgYAoKSG93ZXZlciwgbm90aWNlIHRoYXQgdGhlIG9yZGVyIGluIHdoaWNoIHRoZXNlIHZhcmFpYmxlcyBpbiBgbW9yZXNpdGVzYCBpcyBkaWZmZXJlbnQgdGhhbiB0aG9zZSBpbiBgU2FtcGxlc2AuICBUaGUgYHJiaW5kKClgIGZ1bmN0aW9uIHJlYXJyYW5nZXMgdGhlIG9yZGVyIHdoZW4gaXQgY29uY2F0ZW5hdGVzIG9udG8gdGhlIHJvd3MuCgpgYGB7cn0KU2FtcGxlcyA8LSByYmluZCggU2FtcGxlcywgbW9yZXNpdGVzKQp0YWlsKCBTYW1wbGVzICkKYGBgCgpUbyBkZWxldGUgYSBjb2x1bW4gb2YgZGF0YSwgYXNzaWduIGl0IHRoZSB2YWx1ZSBvZiBgTlVMTGAuCgpgYGB7cn0KU2FtcGxlcyRJRCA8LSBOVUxMCnN1bW1hcnkoU2FtcGxlcykKYGBgCgpvciB1c2UgbmVnYXRpdmUgaW5kaWNlcyB0byBkZWxldGUgcm93cy4KCmBgYHtyfQpTYW1wbGVzIDwtIFNhbXBsZXNbIC00MjotNDAsIF0Kc3VtbWFyeShTYW1wbGVzKQpgYGAKCi0tLQoKVGhlIGBkYXRhLmZyYW1lYCBvYmplY3QgaXMgYSBmdW5kYW1lbnRhbCBjb21wb25lbnQgb2YgeW91ciBgUmAgd29yayBmbG93IGFuZCBiZWluZyBhYmxlIHRvIG1hbmlwdWxhdGUgZGF0YSB3aXRoaW4gaXQgYW5kIGV4dHJhY3QgZGF0YSBmcm9tIGl0IGFyZSBhIGh1Z2UgcGFydCBvZiBiZWNvbWluZyBkYXRhIGxpdGVyYXRlLgoKCgoKCgoKCgoKCgoKCgoKCgoK</div>
 
 
 

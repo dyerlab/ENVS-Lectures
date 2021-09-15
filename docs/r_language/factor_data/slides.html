@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>The Title</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/middlebury.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/middlebury-fonts.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="envs543-styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: left, bottom
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+
+
+
+
+
+# Factor Data Type
+
+
+
+### Categorical Data, Ordered &amp; Unordered
+
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;img src="images/logo1.svg" width="400px"&gt;
+
+
+
+
+---
+
+class: sectionTitle
+
+# Categorical Data
+
+---
+background-image: url("https://live.staticflickr.com/65535/51479744159_93f1660faf_o_d.jpg")
+background-position: center
+background-size: cover
+
+
+
+---
+
+# Making Some Categorical Data Types
+
+.left-column[
+Unique and individual groupsing that can be applied to a study design.  
+
+- Case sensitive  
+- Can be ordinal  
+- Typically defined as `character` type
+]
+
+.right-column[
+
+```r
+weekdays &lt;- c("Monday","Tuesday","Wednesday",
+              "Thursday","Friday","Saturday", 
+              "Sunday")
+class( weekdays )
+```
+
+```
+## [1] "character"
+```
+
+```r
+weekdays
+```
+
+```
+## [1] "Monday"    "Tuesday"   "Wednesday" "Thursday"  "Friday"    "Saturday" 
+## [7] "Sunday"
+```
+
+]
+
+---
+
+# Making Up Some Data 🤷🏻‍
+
+The function `sample()` allows us to take a random sample of elements from a vector of potential values.  
+
+
+
+```r
+chooseOne &lt;- sample( c("Heads","Tails"), size=1 )
+chooseOne
+```
+
+```
+## [1] "Heads"
+```
+
+--
+
+However, if we want a large number items, we can have them with or without replacement.
+
+
+```r
+sample( c("Heads","Tails"), size=10, replace=TRUE )
+```
+
+```
+##  [1] "Heads" "Heads" "Heads" "Heads" "Tails" "Tails" "Tails" "Tails" "Heads"
+## [10] "Tails"
+```
+
+---
+
+# Weekdays as example 
+
+We'll pretend we have a bunch of data related to the day of the week.
+
+
+```r
+days &lt;- sample( weekdays, size=40, replace=TRUE)
+summary( days )
+```
+
+```
+##    Length     Class      Mode 
+##        40 character character
+```
+
+```r
+days
+```
+
+```
+##  [1] "Tuesday"   "Monday"    "Wednesday" "Wednesday" "Thursday"  "Friday"   
+##  [7] "Wednesday" "Friday"    "Monday"    "Tuesday"   "Thursday"  "Saturday" 
+## [13] "Saturday"  "Monday"    "Tuesday"   "Wednesday" "Thursday"  "Friday"   
+## [19] "Friday"    "Thursday"  "Monday"    "Wednesday" "Tuesday"   "Wednesday"
+## [25] "Saturday"  "Sunday"    "Sunday"    "Monday"    "Wednesday" "Thursday" 
+## [31] "Tuesday"   "Tuesday"   "Friday"    "Monday"    "Saturday"  "Saturday" 
+## [37] "Saturday"  "Friday"    "Friday"    "Thursday"
+```
+
+---
+
+# Turn it into a `factor`
+
+
+```r
+data &lt;- factor( days )
+is.factor( data )
+```
+
+```
+## [1] TRUE
+```
+
+```r
+class( data )
+```
+
+```
+## [1] "factor"
+```
+
+
+---
+
+# Data Type Specific Printing &amp; Summaries
+
+
+
+```r
+data
+```
+
+```
+##  [1] Tuesday   Monday    Wednesday Wednesday Thursday  Friday    Wednesday
+##  [8] Friday    Monday    Tuesday   Thursday  Saturday  Saturday  Monday   
+## [15] Tuesday   Wednesday Thursday  Friday    Friday    Thursday  Monday   
+## [22] Wednesday Tuesday   Wednesday Saturday  Sunday    Sunday    Monday   
+## [29] Wednesday Thursday  Tuesday   Tuesday   Friday    Monday    Saturday 
+## [36] Saturday  Saturday  Friday    Friday    Thursday 
+## Levels: Friday Monday Saturday Sunday Thursday Tuesday Wednesday
+```
+
+--
+
+
+```r
+summary( data )
+```
+
+```
+##    Friday    Monday  Saturday    Sunday  Thursday   Tuesday Wednesday 
+##         7         6         6         2         6         6         7
+```
+
+---
+
+# Factor Levels
+
+Each factor variable is defined by the `levels` that constitute the data.  This is a .red[finite] set of unique values
+
+
+```r
+levels( data)
+```
+
+```
+## [1] "Friday"    "Monday"    "Saturday"  "Sunday"    "Thursday"  "Tuesday"  
+## [7] "Wednesday"
+```
+
+
+
+---
+
+# Factors Ordination
+
+.pull-left[
+Examples of conditions where ordination matters:
+
+- Fertilizer Treatments in KG of N&lt;sub&gt;2&lt;/sub&gt; per hectare: 10 kg N&lt;sub&gt;2&lt;/sub&gt;, 20 N&lt;sub&gt;2&lt;/sub&gt;, 30 N&lt;sub&gt;2&lt;/sub&gt;, 
+
+- Days of the Week: `Friday` is not followed by `Monday`, 
+
+- Life History Stage: seed, seedling, juvenile, adult, etc.
+]
+
+.pull-right[
+Examples where Ordination is Irrelevant
+
+- River 
+
+- State or Region
+
+- Sample Location
+]
+
+
+---
+
+# Factor Ordination
+
+If a factor is ordinal, it allows us to use relational comparison operators.
+
+
+```r
+data[1] &lt; data[2]
+```
+.red[\# Warning message:  ]  
+.red[ In Ops.factor(data[1], data[2]) : '&lt;' not meaningful for factors]
+
+--
+
+
+```r
+is.ordered(data)
+```
+
+```
+## [1] FALSE
+```
+
+
+
+---
+
+# Making Ordered Factors
+
+To make them just ordered.
+
+
+```r
+data &lt;- factor( days, ordered = TRUE)
+is.ordered( data )
+```
+
+```
+## [1] TRUE
+```
+
+
+--
+
+
+
+```r
+data 
+```
+
+```
+##  [1] Tuesday   Monday    Wednesday Wednesday Thursday  Friday    Wednesday
+##  [8] Friday    Monday    Tuesday   Thursday  Saturday  Saturday  Monday   
+## [15] Tuesday   Wednesday Thursday  Friday    Friday    Thursday  Monday   
+## [22] Wednesday Tuesday   Wednesday Saturday  Sunday    Sunday    Monday   
+## [29] Wednesday Thursday  Tuesday   Tuesday   Friday    Monday    Saturday 
+## [36] Saturday  Saturday  Friday    Friday    Thursday 
+## 7 Levels: Friday &lt; Monday &lt; Saturday &lt; Sunday &lt; Thursday &lt; ... &lt; Wednesday
+```
+
+.red[Problem:] it orders things in *alphabetical* order.
+
+
+
+---
+
+# Specifying the Order of Ordinal Factors
+
+
+
+
+```r
+data &lt;- factor( days, ordered = TRUE, levels = weekdays)
+data
+```
+
+```
+##  [1] Tuesday   Monday    Wednesday Wednesday Thursday  Friday    Wednesday
+##  [8] Friday    Monday    Tuesday   Thursday  Saturday  Saturday  Monday   
+## [15] Tuesday   Wednesday Thursday  Friday    Friday    Thursday  Monday   
+## [22] Wednesday Tuesday   Wednesday Saturday  Sunday    Sunday    Monday   
+## [29] Wednesday Thursday  Tuesday   Tuesday   Friday    Monday    Saturday 
+## [36] Saturday  Saturday  Friday    Friday    Thursday 
+## 7 Levels: Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; Friday &lt; ... &lt; Sunday
+```
+
+--
+
+&amp;nbsp;
+
+&lt;center&gt;&lt;img src="https://media.giphy.com/media/KEYbcgR8oKQzwpwvLU/giphy-downsized-large.gif?cid=ecf05e47pagn8g10iwyysc86x07tgew8evhr1dbkahub7cuu&amp;rid=giphy-downsized-large.gif&amp;ct=g" height=200&gt;&lt;/center&gt;
+
+
+
+---
+
+# Sorting 
+
+
+```r
+sort( data )
+```
+
+```
+##  [1] Monday    Monday    Monday    Monday    Monday    Monday    Tuesday  
+##  [8] Tuesday   Tuesday   Tuesday   Tuesday   Tuesday   Wednesday Wednesday
+## [15] Wednesday Wednesday Wednesday Wednesday Wednesday Thursday  Thursday 
+## [22] Thursday  Thursday  Thursday  Thursday  Friday    Friday    Friday   
+## [29] Friday    Friday    Friday    Friday    Saturday  Saturday  Saturday 
+## [36] Saturday  Saturday  Saturday  Sunday    Sunday   
+## 7 Levels: Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; Friday &lt; ... &lt; Sunday
+```
+
+
+---
+
+# Fixed Set of States
+
+
+```r
+data[3] &lt;- "Bob"
+data
+```
+
+```
+##  [1] Tuesday   Monday    &lt;NA&gt;      Wednesday Thursday  Friday    Wednesday
+##  [8] Friday    Monday    Tuesday   Thursday  Saturday  Saturday  Monday   
+## [15] Tuesday   Wednesday Thursday  Friday    Friday    Thursday  Monday   
+## [22] Wednesday Tuesday   Wednesday Saturday  Sunday    Sunday    Monday   
+## [29] Wednesday Thursday  Tuesday   Tuesday   Friday    Monday    Saturday 
+## [36] Saturday  Saturday  Friday    Friday    Thursday 
+## 7 Levels: Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; Friday &lt; ... &lt; Sunday
+```
+
+
+
+
+
+
+
+
+
+
+---
+
+class: sectionTitle
+
+# forcats
+
+### rep( <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:steelblue;overflow:visible;position:relative;"><path d="M290.59 192c-20.18 0-106.82 1.98-162.59 85.95V192c0-52.94-43.06-96-96-96-17.67 0-32 14.33-32 32s14.33 32 32 32c17.64 0 32 14.36 32 32v256c0 35.3 28.7 64 64 64h176c8.84 0 16-7.16 16-16v-16c0-17.67-14.33-32-32-32h-32l128-96v144c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16V289.86c-10.29 2.67-20.89 4.54-32 4.54-61.81 0-113.52-44.05-125.41-102.4zM448 96h-64l-64-64v134.4c0 53.02 42.98 96 96 96s96-42.98 96-96V32l-64 64zm-72 80c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16zm80 0c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16z"/></svg>, times = 4) 
+
+
+
+
+---
+# The `forcats` library
+
+Part of the `tidyverse` group of packages.
+
+
+```r
+library(forcats)
+```
+
+This library has a lot of helper functions that make working with factors a bit easier.  I'm going to give you a few examples here but .red[strongly] encourage you to look a the cheat sheet for all the other options.
+
+
+
+---
+
+# Counting Factors
+
+
+```r
+fct_count( data )
+```
+
+```
+## # A tibble: 8 × 2
+##   f             n
+##   &lt;fct&gt;     &lt;int&gt;
+## 1 Monday        6
+## 2 Tuesday       6
+## 3 Wednesday     6
+## 4 Thursday      6
+## 5 Friday        7
+## 6 Saturday      6
+## 7 Sunday        2
+## 8 &lt;NA&gt;          1
+```
+
+
+---
+
+# Lumping Factors
+
+
+```r
+lumped &lt;- fct_lump_min( data, min = 5)
+fct_count(  lumped )
+```
+
+```
+## # A tibble: 8 × 2
+##   f             n
+##   &lt;fct&gt;     &lt;int&gt;
+## 1 Monday        6
+## 2 Tuesday       6
+## 3 Wednesday     6
+## 4 Thursday      6
+## 5 Friday        7
+## 6 Saturday      6
+## 7 Other         2
+## 8 &lt;NA&gt;          1
+```
+
+---
+
+# Reordering Factors
+
+We can reorder by *appearance order*, *observations*, or *numeric*
+
+*By Frequency*
+
+
+```r
+freq &lt;- fct_infreq( data )
+levels( freq )
+```
+
+```
+## [1] "Friday"    "Monday"    "Tuesday"   "Wednesday" "Thursday"  "Saturday" 
+## [7] "Sunday"
+```
+
+
+*By Order of Appearance*
+
+```r
+ordered &lt;- fct_inorder( data )
+levels( ordered )
+```
+
+```
+## [1] "Tuesday"   "Monday"    "Wednesday" "Thursday"  "Friday"    "Saturday" 
+## [7] "Sunday"
+```
+
+
+---
+
+# Reorder Specific Levels
+
+
+```r
+newWeek &lt;- fct_relevel( data, "Saturday", "Sunday")
+levels( newWeek )
+```
+
+```
+## [1] "Saturday"  "Sunday"    "Monday"    "Tuesday"   "Wednesday" "Thursday" 
+## [7] "Friday"
+```
+
+
+
+---
+
+# Dropping Missing Levels
+
+
+```r
+data &lt;- sample( weekdays[1:5], size=40, replace=TRUE )
+data &lt;- factor( data, ordered=TRUE, levels = weekdays )
+summary( data )
+```
+
+```
+##    Monday   Tuesday Wednesday  Thursday    Friday  Saturday    Sunday 
+##         9         7         8         9         7         0         0
+```
+
+--
+
+
+```r
+fct_drop( data ) -&gt; dropped
+summary( dropped )
+```
+
+```
+##    Monday   Tuesday Wednesday  Thursday    Friday 
+##         9         7         8         9         7
+```
+
+
+
+
+
+
+---
+
+class: sectionTitle
+
+# Fancy Tables
+
+### `knitr` + `table` = `kable` 
+
+
+
+---
+# Fancy Tables `kable`
+
+We've already learned how to make tables by hand using `---|---` and such, however, it may be important to work with `data.frame` and `tibble` objects and allow them to become nicely presented tables.  
+
+
+```r
+library( knitr )
+```
+
+The function `knitr::kable()` will take a data frame and output a wide variety of tabular data.  To do this, the essence is that we need to make a data frame whose rows and columns are exactly what we'd like to have translated into markdown and presented.
+
+
+---
+
+# Example data `iris`
+
+.pull-left[
+![Ronald Fisher](https://live.staticflickr.com/65535/51479325426_ee1d73fc4b_o_d.jpg)
+]
+
+.pull-right[
+## Ronald Aylmer Fisher
+1890 - 1962
+
+British polymath, mathematician, statistican, geneticist, and academic.  Founded things such as:
+
+ - Fundamental Theorem of Natural Selection,
+ - The `F` test,
+ - The `Exact` test,
+ - Linear Discriminant Analysis,
+ - Inverse probability
+ - Intra-class correlations
+ - Sexy son hypothesis.... 🥰
+]
+
+
+
+---
+
+# Iris
+
+
+
+```r
+head( iris )
+```
+
+```
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa
+```
+
+--
+
+
+```r
+summary( iris )
+```
+
+```
+##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## 
+```
+
+
+---
+
+# Factors and `by()`
+
+One common thing to use factors for is to grab a group of data and perform an operation on them.
+
+**Question: What is mean and variance in sepal length for the three iris species.**
+
+--
+
+The general form of the `by()` function.
+
+
+```r
+by( data, index, function)
+```
+
+
+---
+
+
+```r
+by( iris$Sepal.Length, iris$Species, mean ) -&gt; meanLength
+meanLength 
+```
+
+```
+## iris$Species: setosa
+## [1] 5.006
+## ------------------------------------------------------------ 
+## iris$Species: versicolor
+## [1] 5.936
+## ------------------------------------------------------------ 
+## iris$Species: virginica
+## [1] 6.588
+```
+--
+
+
+```r
+by( iris$Sepal.Length, iris$Species, var ) -&gt; varLength 
+varLength 
+```
+
+```
+## iris$Species: setosa
+## [1] 0.124249
+## ------------------------------------------------------------ 
+## iris$Species: versicolor
+## [1] 0.2664327
+## ------------------------------------------------------------ 
+## iris$Species: virginica
+## [1] 0.4043429
+```
+
+
+---
+
+# Creating a Data Frame
+
+
+```r
+library( tidyverse )
+df &lt;- tibble( Species = levels( iris$Species ), 
+              Average = meanLength,
+              Variance = varLength 
+              )
+df
+```
+
+```
+## # A tibble: 3 × 3
+##   Species    Average Variance 
+##   &lt;chr&gt;      &lt;by&gt;    &lt;by&gt;     
+## 1 setosa     5.006   0.1242490
+## 2 versicolor 5.936   0.2664327
+## 3 virginica  6.588   0.4043429
+```
+
+
+---
+
+# A Basic Table Using `kable`
+
+
+```r
+kable(df)
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Adding A Caption to the table
+
+
+```r
+irisTable &lt;- kable( df, caption = "Mean and variance in sepal length for three iris species." )
+irisTable
+```
+
+&lt;table&gt;
+&lt;caption&gt;Mean and variance in sepal length for three iris species.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Even Fancier Stuff with `kableExtras`
+
+This library contains a bunch of additional helper functions that take a `kable` object and make it look better.
+
+
+```r
+library( kableExtra)
+```
+
+You must go check out [this](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html) webpage (which is an RMarkdown page by the way) to see all the other ways you can fancy up your tables.
+
+
+---
+
+# Table Themes
+
+
+```r
+kable_paper( irisTable )
+```
+
+&lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Mean and variance in sepal length for three iris species.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Table Themes
+
+
+```r
+kable_classic( irisTable )
+```
+
+&lt;table class=" lightable-classic" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Mean and variance in sepal length for three iris species.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+
+# Table Themes
+
+
+```r
+kable_classic_2( irisTable )
+```
+
+&lt;table class=" lightable-classic-2" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Mean and variance in sepal length for three iris species.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+---
+
+# Table Themes
+
+
+```r
+kable_minimal( irisTable )
+```
+
+&lt;table class=" lightable-minimal" style='font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Mean and variance in sepal length for three iris species.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+
+# Table Themes
+
+
+```r
+kable_material( irisTable,lightable_options = c("striped", "hover") )
+```
+
+&lt;table class=" lightable-material lightable-striped lightable-hover" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Mean and variance in sepal length for three iris species.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+
+# Table Themes
+
+
+```r
+kable_material_dark( irisTable )
+```
+
+&lt;table class=" lightable-material-dark" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Mean and variance in sepal length for three iris species.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+---
+
+# Table Sizes
+
+
+```r
+kable_paper(irisTable, full_width = FALSE )
+```
+
+&lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Mean and variance in sepal length for three iris species.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Table Positions
+
+
+```r
+kable_paper( irisTable, full_width=FALSE, position="right")
+```
+
+&lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-right: 0; margin-left: auto'&gt;
+&lt;caption&gt;Mean and variance in sepal length for three iris species.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Floating Tables - `position = "float_right"`
+
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut blandit libero sit amet porta elementum. In imperdiet tellus non odio porttitor auctor ac sit amet diam. Suspendisse eleifend vel nisi nec efficitur. Ut varius urna lectus, ac iaculis velit bibendum eget. Curabitur dignissim magna eu odio sagittis blandit. Vivamus sed ipsum mi. Etiam est leo, mollis ultrices dolor eget, consectetur euismod augue. In hac habitasse platea dictumst. Integer blandit ante magna, quis volutpat velit varius hendrerit. Vestibulum sit amet lacinia magna. Sed at varius nisl. Donec eu porta tellus, vitae rhoncus velit.
+
+&lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; float: right; margin-left: 10px;'&gt;
+&lt;caption&gt;Mean and variance in sepal length for three iris species.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+Maecenas euismod mattis neque. Ut at sapien lacinia, vehicula felis vitae, laoreet odio. Cras ut magna sed sapien scelerisque auctor maximus tincidunt arcu. Praesent vel accumsan leo. Etiam tempor leo placerat, commodo ante eu, posuere ligula. Sed purus justo, feugiat vel volutpat in, faucibus quis sem. Vivamus enim lacus, ultrices id erat in, posuere fringilla est. Nulla porttitor ac nunc nec efficitur. Duis tincidunt metus leo, at lacinia orci tristique in.
+
+Nulla nec elementum nibh, quis congue augue. Vivamus fermentum nec mauris nec vehicula. Proin laoreet sapien quis orci mollis, et condimentum ante tempor. Vivamus hendrerit ut sem a iaculis. Quisque mauris enim, accumsan sit amet fermentum quis, convallis a nisl. Donec elit orci, consectetur id vestibulum in, elementum nec magna. In lobortis erat velit. Nam sit amet finibus arcu.
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/51478614622_7b6fd7fe08_c_d.jpg")
+background-position: center
+background-size: contain
+
+
+---
+
+# Even Fancier Grouped Headers
+
+
+```r
+classic &lt;- kable_paper( irisTable )
+add_header_above( classic, c(" " = 1, "Sepal Length (cm)" = 2))
+```
+
+&lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;caption&gt;Mean and variance in sepal length for three iris species.&lt;/caption&gt;
+ &lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="empty-cells: hide;" colspan="1"&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2"&gt;&lt;div style="border-bottom: 1px solid #00000020; padding-bottom: 5px; "&gt;Sepal Length (cm)&lt;/div&gt;&lt;/th&gt;
+&lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Average &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Variance &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1242490 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.936 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2664327 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4043429 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# Questions?
+
+
+![Peter Sellers](images/peter_sellers.gif)
+]
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

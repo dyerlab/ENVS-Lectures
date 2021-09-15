@@ -1,0 +1,636 @@
+---
+title: "The Title"
+subtitle: "The Subtitle"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [envs543-styles.css, middlebury, middlebury-fonts]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: github
+      highlightLines: true
+      ratio: '16:9'
+      countIncrementalSlides: false
+---
+
+class: left, bottom
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE,
+                       fig.align="center")
+library( knitr )
+options(knitr.table.format = "html")
+library( tidyverse )
+library( fontawesome )
+
+options(htmltools.preserve.raw = FALSE)
+```
+
+
+
+
+# Factor Data Type
+
+
+
+### Categorical Data, Ordered & Unordered
+
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<img src="images/logo1.svg" width="400px">
+
+
+
+
+---
+
+class: sectionTitle
+
+# Categorical Data
+
+---
+background-image: url("https://live.staticflickr.com/65535/51479744159_93f1660faf_o_d.jpg")
+background-position: center
+background-size: cover
+
+
+
+---
+
+# Making Some Categorical Data Types
+
+.left-column[
+Unique and individual groupsing that can be applied to a study design.  
+
+- Case sensitive  
+- Can be ordinal  
+- Typically defined as `character` type
+]
+
+.right-column[
+```{r}
+weekdays <- c("Monday","Tuesday","Wednesday",
+              "Thursday","Friday","Saturday", 
+              "Sunday")
+class( weekdays )
+weekdays
+```
+
+]
+
+---
+
+# Making Up Some Data 🤷🏻‍
+
+The function `sample()` allows us to take a random sample of elements from a vector of potential values.  
+
+
+```{r}
+chooseOne <- sample( c("Heads","Tails"), size=1 )
+chooseOne
+```
+
+--
+
+However, if we want a large number items, we can have them with or without replacement.
+
+```{r}
+sample( c("Heads","Tails"), size=10, replace=TRUE )
+```
+
+---
+
+# Weekdays as example 
+
+We'll pretend we have a bunch of data related to the day of the week.
+
+```{r}
+days <- sample( weekdays, size=40, replace=TRUE)
+summary( days )
+days
+```
+
+---
+
+# Turn it into a `factor`
+
+```{r}
+data <- factor( days )
+is.factor( data )
+class( data )
+```
+
+
+---
+
+# Data Type Specific Printing & Summaries
+
+
+```{r}
+data
+```
+
+--
+
+```{r}
+summary( data )
+```
+
+---
+
+# Factor Levels
+
+Each factor variable is defined by the `levels` that constitute the data.  This is a .red[finite] set of unique values
+
+```{r}
+levels( data)
+```
+
+
+
+---
+
+# Factors Ordination
+
+.pull-left[
+Examples of conditions where ordination matters:
+
+- Fertilizer Treatments in KG of N<sub>2</sub> per hectare: 10 kg N<sub>2</sub>, 20 N<sub>2</sub>, 30 N<sub>2</sub>, 
+
+- Days of the Week: `Friday` is not followed by `Monday`, 
+
+- Life History Stage: seed, seedling, juvenile, adult, etc.
+]
+
+.pull-right[
+Examples where Ordination is Irrelevant
+
+- River 
+
+- State or Region
+
+- Sample Location
+]
+
+
+---
+
+# Factor Ordination
+
+If a factor is ordinal, it allows us to use relational comparison operators.
+
+```{r eval=FALSE}
+data[1] < data[2]
+```
+.red[\# Warning message:  ]  
+.red[ In Ops.factor(data[1], data[2]) : '<' not meaningful for factors]
+
+--
+
+```{r}
+is.ordered(data)
+```
+
+
+
+---
+
+# Making Ordered Factors
+
+To make them just ordered.
+
+```{r}
+data <- factor( days, ordered = TRUE)
+is.ordered( data )
+```
+
+
+--
+
+
+```{r}
+data 
+```
+
+.red[Problem:] it orders things in *alphabetical* order.
+
+
+
+---
+
+# Specifying the Order of Ordinal Factors
+
+
+
+```{r}
+data <- factor( days, ordered = TRUE, levels = weekdays)
+data
+```
+
+--
+
+&nbsp;
+
+<center><img src="https://media.giphy.com/media/KEYbcgR8oKQzwpwvLU/giphy-downsized-large.gif?cid=ecf05e47pagn8g10iwyysc86x07tgew8evhr1dbkahub7cuu&rid=giphy-downsized-large.gif&ct=g" height=200></center>
+
+
+
+---
+
+# Sorting 
+
+```{r}
+sort( data )
+```
+
+
+---
+
+# Fixed Set of States
+
+```{r}
+data[3] <- "Bob"
+data
+```
+
+
+
+
+
+
+
+
+
+
+---
+
+class: sectionTitle
+
+# forcats
+
+### rep( `r fa(name='cat', fill='steelblue')`, times = 4) 
+
+
+
+
+---
+# The `forcats` library
+
+Part of the `tidyverse` group of packages.
+
+```{r}
+library(forcats)
+```
+
+This library has a lot of helper functions that make working with factors a bit easier.  I'm going to give you a few examples here but .red[strongly] encourage you to look a the cheat sheet for all the other options.
+
+
+
+---
+
+# Counting Factors
+
+```{r}
+fct_count( data )
+```
+
+
+---
+
+# Lumping Factors
+
+```{r}
+lumped <- fct_lump_min( data, min = 5)
+fct_count(  lumped )
+```
+
+---
+
+# Reordering Factors
+
+We can reorder by *appearance order*, *observations*, or *numeric*
+
+*By Frequency*
+
+```{r}
+freq <- fct_infreq( data )
+levels( freq )
+```
+
+
+*By Order of Appearance*
+```{r}
+ordered <- fct_inorder( data )
+levels( ordered )
+```
+
+
+---
+
+# Reorder Specific Levels
+
+```{r}
+newWeek <- fct_relevel( data, "Saturday", "Sunday")
+levels( newWeek )
+```
+
+
+
+---
+
+# Dropping Missing Levels
+
+```{r}
+data <- sample( weekdays[1:5], size=40, replace=TRUE )
+data <- factor( data, ordered=TRUE, levels = weekdays )
+summary( data )
+```
+
+--
+
+```{r}
+fct_drop( data ) -> dropped
+summary( dropped )
+```
+
+
+
+
+
+
+---
+
+class: sectionTitle
+
+# Fancy Tables
+
+### `knitr` + `table` = `kable` 
+
+
+
+---
+# Fancy Tables `kable`
+
+We've already learned how to make tables by hand using `---|---` and such, however, it may be important to work with `data.frame` and `tibble` objects and allow them to become nicely presented tables.  
+
+```{r}
+library( knitr )
+```
+
+The function `knitr::kable()` will take a data frame and output a wide variety of tabular data.  To do this, the essence is that we need to make a data frame whose rows and columns are exactly what we'd like to have translated into markdown and presented.
+
+
+---
+
+# Example data `iris`
+
+.pull-left[
+![Ronald Fisher](https://live.staticflickr.com/65535/51479325426_ee1d73fc4b_o_d.jpg)
+]
+
+.pull-right[
+## Ronald Aylmer Fisher
+1890 - 1962
+
+British polymath, mathematician, statistican, geneticist, and academic.  Founded things such as:
+
+ - Fundamental Theorem of Natural Selection,
+ - The `F` test,
+ - The `Exact` test,
+ - Linear Discriminant Analysis,
+ - Inverse probability
+ - Intra-class correlations
+ - Sexy son hypothesis.... 🥰
+]
+
+
+
+---
+
+# Iris
+
+
+```{r}
+head( iris )
+```
+
+--
+
+```{r}
+summary( iris )
+```
+
+
+---
+
+# Factors and `by()`
+
+One common thing to use factors for is to grab a group of data and perform an operation on them.
+
+**Question: What is mean and variance in sepal length for the three iris species.**
+
+--
+
+The general form of the `by()` function.
+
+```{r eval=FALSE}
+by( data, index, function)
+```
+
+
+---
+
+```{r}
+by( iris$Sepal.Length, iris$Species, mean ) -> meanLength
+meanLength 
+```
+--
+
+```{r}
+by( iris$Sepal.Length, iris$Species, var ) -> varLength 
+varLength 
+```
+
+
+---
+
+# Creating a Data Frame
+
+```{r}
+library( tidyverse )
+df <- tibble( Species = levels( iris$Species ), 
+              Average = meanLength,
+              Variance = varLength 
+              )
+df
+```
+
+
+---
+
+# A Basic Table Using `kable`
+
+```{r}
+kable(df)
+```
+
+---
+
+# Adding A Caption to the table
+
+```{r}
+irisTable <- kable( df, caption = "Mean and variance in sepal length for three iris species." )
+irisTable
+```
+
+---
+
+# Even Fancier Stuff with `kableExtras`
+
+This library contains a bunch of additional helper functions that take a `kable` object and make it look better.
+
+```{r}
+library( kableExtra)
+```
+
+You must go check out [this](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html) webpage (which is an RMarkdown page by the way) to see all the other ways you can fancy up your tables.
+
+
+---
+
+# Table Themes
+
+```{r}
+kable_paper( irisTable )
+```
+
+---
+
+# Table Themes
+
+```{r}
+kable_classic( irisTable )
+```
+
+
+---
+
+# Table Themes
+
+```{r}
+kable_classic_2( irisTable )
+```
+
+
+
+---
+
+# Table Themes
+
+```{r}
+kable_minimal( irisTable )
+```
+
+
+---
+
+# Table Themes
+
+```{r}
+kable_material( irisTable,lightable_options = c("striped", "hover") )
+```
+
+
+---
+
+# Table Themes
+
+```{r}
+kable_material_dark( irisTable )
+```
+
+
+
+
+
+---
+
+# Table Sizes
+
+```{r}
+kable_paper(irisTable, full_width = FALSE )
+```
+
+---
+
+# Table Positions
+
+```{r}
+kable_paper( irisTable, full_width=FALSE, position="right")
+```
+
+---
+
+# Floating Tables - `position = "float_right"`
+
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut blandit libero sit amet porta elementum. In imperdiet tellus non odio porttitor auctor ac sit amet diam. Suspendisse eleifend vel nisi nec efficitur. Ut varius urna lectus, ac iaculis velit bibendum eget. Curabitur dignissim magna eu odio sagittis blandit. Vivamus sed ipsum mi. Etiam est leo, mollis ultrices dolor eget, consectetur euismod augue. In hac habitasse platea dictumst. Integer blandit ante magna, quis volutpat velit varius hendrerit. Vestibulum sit amet lacinia magna. Sed at varius nisl. Donec eu porta tellus, vitae rhoncus velit.
+
+```{r echo=FALSE}
+kable_paper( irisTable, full_width=FALSE, position = "float_right")
+```
+
+Maecenas euismod mattis neque. Ut at sapien lacinia, vehicula felis vitae, laoreet odio. Cras ut magna sed sapien scelerisque auctor maximus tincidunt arcu. Praesent vel accumsan leo. Etiam tempor leo placerat, commodo ante eu, posuere ligula. Sed purus justo, feugiat vel volutpat in, faucibus quis sem. Vivamus enim lacus, ultrices id erat in, posuere fringilla est. Nulla porttitor ac nunc nec efficitur. Duis tincidunt metus leo, at lacinia orci tristique in.
+
+Nulla nec elementum nibh, quis congue augue. Vivamus fermentum nec mauris nec vehicula. Proin laoreet sapien quis orci mollis, et condimentum ante tempor. Vivamus hendrerit ut sem a iaculis. Quisque mauris enim, accumsan sit amet fermentum quis, convallis a nisl. Donec elit orci, consectetur id vestibulum in, elementum nec magna. In lobortis erat velit. Nam sit amet finibus arcu.
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/51478614622_7b6fd7fe08_c_d.jpg")
+background-position: center
+background-size: contain
+
+
+---
+
+# Even Fancier Grouped Headers
+
+```{r}
+classic <- kable_paper( irisTable )
+add_header_above( classic, c(" " = 1, "Sepal Length (cm)" = 2))
+```
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+# Questions?
+
+
+![Peter Sellers](images/peter_sellers.gif)
+]
+
+<p>&nbsp;</p>
+
+.bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](https://docs.google.com/forms/d/e/1FAIpQLScrAGM5Zl8vZTPqV8DVSnSrf_5enypyp0717jG4PZiTlVHDjQ/viewform?usp=sf_link) and I'll get back to you as soon as possible.]
+
+

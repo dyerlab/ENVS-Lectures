@@ -3,3 +3,367 @@ title: "Factor Data"
 output: html_notebook
 ---
 
+Factors allow us to represent a type of data that exclusive and categorical.  These data may, or may not, be ordered and in most cases, we can think of these kinds of data to represent things like, treatment levels, sampling locations, etc.
+
+
+I'm going to start with some days of the week because they are *exclusive* (e.g., you cannot be in both Monday and Wednesday at the same time).  Factors are initially created from string objects, though you could use `numeric` data but that would be *stupid* because you should use things that are descriptive and strings are much better than that.
+
+```{r}
+weekdays <- c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday", "Sunday")
+class( weekdays )
+```
+
+I'm going to take these days and random sample them to create a vector of 40 elements.  This is something we do all the time and there is a `sample()` function that allows us to draw random samples either with or without replacement (e.g., can you select the same value more than once).
+
+```{r}
+data <- sample( weekdays, size=40, replace=TRUE)
+data
+```
+These data are still 
+
+```{r}
+class( data )
+```
+
+To turn them into a factor, we use.... `factor()`
+
+```{r}
+days <- factor( data )
+is.factor( days )
+class( days )
+```
+
+
+Now when we look at the data, it looks a lot like it did before *except for the last line* which shows you the unique levels for elements in the vector.
+
+```{r}
+days
+summary( days )
+```
+
+We can put them into data frames and they know how to summarize themselves properly by counting the number of occurances of each level.
+
+```{r}
+df <- data.frame( ID = 1:40, Weekdays = days )
+summary( df )
+```
+
+And we can directly access the unique levels 
+
+```{r}
+levels( days )
+```
+
+So factors can be categorical (e.g., one is just different than the next) and compared via `==` and `!=` values.  Or they can be ordinal such that `>` and `<` make sense.
+
+By default, a `factor` is not ordered.
+
+```{r}
+is.ordered( days )
+days[1] < days[2]
+```
+
+```{r}
+data <- factor( days, ordered=TRUE )
+data 
+```
+
+So that if we go and try to order them, the only way they can be sorted is alphabetically.
+
+```{r}
+sort( data )
+```
+
+However, this does not make sense.  Who in their right mind would like to have `Friday` followed immediately by `Monday`?  That is just not right!
+
+To establish an ordinal variable with a specified sequence of values that are *not alphabetical* we need to pass along the levels themselves.
+
+
+```{r}
+data <- factor( days, ordered=TRUE, levels = weekdays )
+data
+```
+
+Now they'll sort properly.
+
+```{r}
+sort( data )
+```
+## Exclusivity of Factor Levels
+
+Once you establish a factor, you cannot set the values to anyting that is outside of the pre-defined levels.  If you do, it will just put in missing data `NA`.
+
+```{r}
+days[3] <- "Bob"
+days
+```
+
+That being said, we can have more levels in the factor than observed in the data.  Here is an example of just grabbing the work days from the week but making the levels equal to all the potential weekdays.
+
+```{r}
+workdays <- sample( weekdays[1:5], size=40, replace = TRUE )
+workdays <- factor( workdays, ordered=TRUE, levels = weekdays )
+```
+
+And when we summarize it, we see that while it is possible that days may be named `Saturday` and `Sunday`, they are not recoreded in the data we have for workdays.
+
+```{r}
+summary( workdays )
+```
+
+We can drop the levels that have no representation
+
+
+
+```{r}
+workdays <- droplevels( workdays ) 
+summary( workdays )
+
+```
+
+## `forcats`
+
+The `forcats` library has a bunch of helper functions for working with factors.  This is a relatively small library in `tidyverse` but a powerful one.  I would recommend looking at the [cheatsheet]() for it to get a more broad understanding of what functions in this library can do.
+
+```{r}
+library( forcats )
+```
+
+--
+
+Just like `stringr` had the `str_` prefix, all the functions here have the `fct_` prefix.  Here are some examples.
+
+*Counting how many of each factor*
+
+```{r}
+fct_count( data )
+```
+
+
+*Lumping Rare Factors*
+
+```{r}
+lumped <- fct_lump_min( data, min = 5 )
+fct_count( lumped )
+```
+
+*Reordering Factor Levels by Frequency* 
+
+```{r}
+freq <- fct_infreq( data )
+levels( freq )
+```
+
+
+*Reordering by Order of Appearance*
+
+```{r}
+ordered <- fct_inorder( data )
+levels( ordered )
+```
+
+
+*Reordering Specific Levels*
+
+```{r}
+newWeek <- fct_relevel( data, "Sunday")
+levels( newWeek )
+```
+
+*Dropping Unobserved Levels* - just like `droplevels()`
+
+```{r}
+dropped <- fct_drop( workdays )
+summary( dropped )
+```
+
+
+
+
+## Using Factors 
+
+It is common to use factors as an organizing princple in our data.  For example, let's say we went out and sampled three different species of plants and measured characteristics of their flower size.  The `iris` data set from R.A. Fisher is a classid data set that is include in `R` and it looks like this.
+
+
+```{r}
+iris
+```
+
+By default it is a `data.frame` object.
+
+```{r}
+class( iris )
+```
+
+### By  the by
+
+One helpful function in base `R` is the `by()` function.  It has the following form.
+
+```
+by( data, index, function)
+```
+
+The `data` is the raw data you are using, the `index` is a vector that we are using to differentiate among the species (the factor), and the function is what function we want to use.
+
+So for example, if I were interesed in the mean length of the Sepal for each species, I could write.
+
+```{r}
+meanSepalLength <- by( iris$Sepal.Length, iris$Species, mean )
+class( meanSepalLength )
+meanSepalLength
+```
+I could also do the same thing with the variance in sepal length.
+
+```{r}
+by( iris[,2], iris[,5], var ) -> varSepalLength
+varSepalLength 
+```
+
+
+Using these kinds of functions we can create a summary data frame.
+
+```{r}
+df <- tibble( Species = levels( iris$Species), 
+              Average = meanSepalLength,
+              Variance = varSepalLength
+)
+df
+```
+
+
+## Fancy Tables
+
+Making data frames like that above is a *classic* maneuver in `R` and I'm going to use this to introduce the use of the `knitr` library to show you how to take a set of data and turn it into a table for your manuscript.
+
+```{r}
+library( knitr )
+```
+
+Now we can make a table as:
+
+```{r}
+kable( df )
+```
+
+We can even add a caption to it.
+
+```{r}
+irisTable <- kable( df, caption = "The mean and variance in measured sepal length (in cm) for three species of Iris.")
+irisTable
+```
+
+
+In addition to this basic library, there is an `kableExtra` one that allows us to get even more fancy.  You must go check out [this](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html) webpage (which is an RMarkdown page by the way) to see all the other ways you can fancy up your tables.
+
+
+```{r}
+library( kableExtra)
+```
+
+
+### Table Themes 
+
+Here are some examples Themes
+
+```{r}
+kable_paper( irisTable )
+```
+
+```{r}
+kable_classic( irisTable )
+```
+
+```{r}
+kable_classic_2( irisTable )
+```
+
+
+```{r}
+kable_minimal( irisTable )
+```
+
+```{r}
+kable_material( irisTable,lightable_options = c("striped", "hover") )
+```
+
+```{r}
+kable_material_dark( irisTable )
+```
+
+
+## Table Sizes and Positions
+
+We can be specific about the size and location of the whole table.
+
+
+```{r}
+kable_paper(irisTable, full_width = FALSE )
+```
+
+```{r}
+kable_paper( irisTable, full_width=FALSE, position="right")
+```
+
+And even embed it in a bunch of text and float it to left or right (I added `echo=FALSE` to the chunck header so it hides itself).  
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut blandit libero sit amet porta elementum. In imperdiet tellus non odio porttitor auctor ac sit amet diam. Suspendisse eleifend vel nisi nec efficitur. Ut varius urna lectus, ac iaculis velit bibendum eget. Curabitur dignissim magna eu odio sagittis blandit. Vivamus sed ipsum mi. Etiam est leo, mollis ultrices dolor eget, consectetur euismod augue. In hac habitasse platea dictumst. Integer blandit ante magna, quis volutpat velit varius hendrerit. Vestibulum sit amet lacinia magna. Sed at varius nisl. Donec eu porta tellus, vitae rhoncus velit.
+
+```{r echo=FALSE}
+kable_paper( irisTable, full_width=FALSE, position = "float_right")
+```
+
+Maecenas euismod mattis neque. Ut at sapien lacinia, vehicula felis vitae, laoreet odio. Cras ut magna sed sapien scelerisque auctor maximus tincidunt arcu. Praesent vel accumsan leo. Etiam tempor leo placerat, commodo ante eu, posuere ligula. Sed purus justo, feugiat vel volutpat in, faucibus quis sem. Vivamus enim lacus, ultrices id erat in, posuere fringilla est. Nulla porttitor ac nunc nec efficitur. Duis tincidunt metus leo, at lacinia orci tristique in.
+
+Nulla nec elementum nibh, quis congue augue. Vivamus fermentum nec mauris nec vehicula. Proin laoreet sapien quis orci mollis, et condimentum ante tempor. Vivamus hendrerit ut sem a iaculis. Quisque mauris enim, accumsan sit amet fermentum quis, convallis a nisl. Donec elit orci, consectetur id vestibulum in, elementum nec magna. In lobortis erat velit. Nam sit amet finibus arcu.
+
+### Heading Judo
+
+We can do some really cool stuff on row and column headings.  Here is an example where I add another row above the data columns for output.
+
+```{r}
+classic <- kable_paper( irisTable )
+add_header_above( classic, c(" " = 1, "Sepal Length (cm)" = 2))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

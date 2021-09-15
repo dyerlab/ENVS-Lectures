@@ -127,7 +127,9 @@ sum( str_detect(tolower(text), "sewage") )
 The great lakes were intimately involved in the formulation of this Act.  What is the official definition of the `Great Lakes` as it pertains to bodies of water covered by the Clean Water Act?
 
 ```{r}
-text[ str_detect( text, "Great Lakes") ]
+# find the index 
+idx <- str_detect( text, "Great Lakes") 
+
 ```
 
 

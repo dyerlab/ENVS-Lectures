@@ -103,7 +103,7 @@ chooseOne
 ```
 
 ```
-## [1] "Heads"
+## [1] "Tails"
 ```
 
 --
@@ -116,7 +116,7 @@ sample( c("Heads","Tails"), size=10, replace=TRUE )
 ```
 
 ```
-##  [1] "Heads" "Heads" "Heads" "Heads" "Tails" "Tails" "Tails" "Tails" "Heads"
+##  [1] "Heads" "Heads" "Tails" "Tails" "Tails" "Tails" "Heads" "Heads" "Tails"
 ## [10] "Tails"
 ```
 
@@ -142,13 +142,13 @@ days
 ```
 
 ```
-##  [1] "Tuesday"   "Monday"    "Wednesday" "Wednesday" "Thursday"  "Friday"   
-##  [7] "Wednesday" "Friday"    "Monday"    "Tuesday"   "Thursday"  "Saturday" 
-## [13] "Saturday"  "Monday"    "Tuesday"   "Wednesday" "Thursday"  "Friday"   
-## [19] "Friday"    "Thursday"  "Monday"    "Wednesday" "Tuesday"   "Wednesday"
-## [25] "Saturday"  "Sunday"    "Sunday"    "Monday"    "Wednesday" "Thursday" 
-## [31] "Tuesday"   "Tuesday"   "Friday"    "Monday"    "Saturday"  "Saturday" 
-## [37] "Saturday"  "Friday"    "Friday"    "Thursday"
+##  [1] "Wednesday" "Wednesday" "Wednesday" "Wednesday" "Saturday"  "Friday"   
+##  [7] "Wednesday" "Monday"    "Saturday"  "Monday"    "Monday"    "Monday"   
+## [13] "Thursday"  "Sunday"    "Friday"    "Wednesday" "Monday"    "Thursday" 
+## [19] "Sunday"    "Tuesday"   "Saturday"  "Monday"    "Wednesday" "Saturday" 
+## [25] "Friday"    "Wednesday" "Monday"    "Monday"    "Thursday"  "Friday"   
+## [31] "Tuesday"   "Thursday"  "Friday"    "Monday"    "Monday"    "Wednesday"
+## [37] "Wednesday" "Friday"    "Thursday"  "Sunday"
 ```
 
 ---
@@ -185,12 +185,12 @@ data
 ```
 
 ```
-##  [1] Tuesday   Monday    Wednesday Wednesday Thursday  Friday    Wednesday
-##  [8] Friday    Monday    Tuesday   Thursday  Saturday  Saturday  Monday   
-## [15] Tuesday   Wednesday Thursday  Friday    Friday    Thursday  Monday   
-## [22] Wednesday Tuesday   Wednesday Saturday  Sunday    Sunday    Monday   
-## [29] Wednesday Thursday  Tuesday   Tuesday   Friday    Monday    Saturday 
-## [36] Saturday  Saturday  Friday    Friday    Thursday 
+##  [1] Wednesday Wednesday Wednesday Wednesday Saturday  Friday    Wednesday
+##  [8] Monday    Saturday  Monday    Monday    Monday    Thursday  Sunday   
+## [15] Friday    Wednesday Monday    Thursday  Sunday    Tuesday   Saturday 
+## [22] Monday    Wednesday Saturday  Friday    Wednesday Monday    Monday   
+## [29] Thursday  Friday    Tuesday   Thursday  Friday    Monday    Monday   
+## [36] Wednesday Wednesday Friday    Thursday  Sunday   
 ## Levels: Friday Monday Saturday Sunday Thursday Tuesday Wednesday
 ```
 
@@ -203,7 +203,7 @@ summary( data )
 
 ```
 ##    Friday    Monday  Saturday    Sunday  Thursday   Tuesday Wednesday 
-##         7         6         6         2         6         6         7
+##         6        10         4         3         5         2        10
 ```
 
 ---
@@ -301,12 +301,12 @@ data
 ```
 
 ```
-##  [1] Tuesday   Monday    Wednesday Wednesday Thursday  Friday    Wednesday
-##  [8] Friday    Monday    Tuesday   Thursday  Saturday  Saturday  Monday   
-## [15] Tuesday   Wednesday Thursday  Friday    Friday    Thursday  Monday   
-## [22] Wednesday Tuesday   Wednesday Saturday  Sunday    Sunday    Monday   
-## [29] Wednesday Thursday  Tuesday   Tuesday   Friday    Monday    Saturday 
-## [36] Saturday  Saturday  Friday    Friday    Thursday 
+##  [1] Wednesday Wednesday Wednesday Wednesday Saturday  Friday    Wednesday
+##  [8] Monday    Saturday  Monday    Monday    Monday    Thursday  Sunday   
+## [15] Friday    Wednesday Monday    Thursday  Sunday    Tuesday   Saturday 
+## [22] Monday    Wednesday Saturday  Friday    Wednesday Monday    Monday   
+## [29] Thursday  Friday    Tuesday   Thursday  Friday    Monday    Monday   
+## [36] Wednesday Wednesday Friday    Thursday  Sunday   
 ## 7 Levels: Friday &lt; Monday &lt; Saturday &lt; Sunday &lt; Thursday &lt; ... &lt; Wednesday
 ```
 
@@ -327,12 +327,12 @@ data
 ```
 
 ```
-##  [1] Tuesday   Monday    Wednesday Wednesday Thursday  Friday    Wednesday
-##  [8] Friday    Monday    Tuesday   Thursday  Saturday  Saturday  Monday   
-## [15] Tuesday   Wednesday Thursday  Friday    Friday    Thursday  Monday   
-## [22] Wednesday Tuesday   Wednesday Saturday  Sunday    Sunday    Monday   
-## [29] Wednesday Thursday  Tuesday   Tuesday   Friday    Monday    Saturday 
-## [36] Saturday  Saturday  Friday    Friday    Thursday 
+##  [1] Wednesday Wednesday Wednesday Wednesday Saturday  Friday    Wednesday
+##  [8] Monday    Saturday  Monday    Monday    Monday    Thursday  Sunday   
+## [15] Friday    Wednesday Monday    Thursday  Sunday    Tuesday   Saturday 
+## [22] Monday    Wednesday Saturday  Friday    Wednesday Monday    Monday   
+## [29] Thursday  Friday    Tuesday   Thursday  Friday    Monday    Monday   
+## [36] Wednesday Wednesday Friday    Thursday  Sunday   
 ## 7 Levels: Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; Friday &lt; ... &lt; Sunday
 ```
 
@@ -354,12 +354,12 @@ sort( data )
 ```
 
 ```
-##  [1] Monday    Monday    Monday    Monday    Monday    Monday    Tuesday  
-##  [8] Tuesday   Tuesday   Tuesday   Tuesday   Tuesday   Wednesday Wednesday
-## [15] Wednesday Wednesday Wednesday Wednesday Wednesday Thursday  Thursday 
-## [22] Thursday  Thursday  Thursday  Thursday  Friday    Friday    Friday   
-## [29] Friday    Friday    Friday    Friday    Saturday  Saturday  Saturday 
-## [36] Saturday  Saturday  Saturday  Sunday    Sunday   
+##  [1] Monday    Monday    Monday    Monday    Monday    Monday    Monday   
+##  [8] Monday    Monday    Monday    Tuesday   Tuesday   Wednesday Wednesday
+## [15] Wednesday Wednesday Wednesday Wednesday Wednesday Wednesday Wednesday
+## [22] Wednesday Thursday  Thursday  Thursday  Thursday  Thursday  Friday   
+## [29] Friday    Friday    Friday    Friday    Friday    Saturday  Saturday 
+## [36] Saturday  Saturday  Sunday    Sunday    Sunday   
 ## 7 Levels: Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; Friday &lt; ... &lt; Sunday
 ```
 
@@ -375,12 +375,12 @@ data
 ```
 
 ```
-##  [1] Tuesday   Monday    &lt;NA&gt;      Wednesday Thursday  Friday    Wednesday
-##  [8] Friday    Monday    Tuesday   Thursday  Saturday  Saturday  Monday   
-## [15] Tuesday   Wednesday Thursday  Friday    Friday    Thursday  Monday   
-## [22] Wednesday Tuesday   Wednesday Saturday  Sunday    Sunday    Monday   
-## [29] Wednesday Thursday  Tuesday   Tuesday   Friday    Monday    Saturday 
-## [36] Saturday  Saturday  Friday    Friday    Thursday 
+##  [1] Wednesday Wednesday &lt;NA&gt;      Wednesday Saturday  Friday    Wednesday
+##  [8] Monday    Saturday  Monday    Monday    Monday    Thursday  Sunday   
+## [15] Friday    Wednesday Monday    Thursday  Sunday    Tuesday   Saturday 
+## [22] Monday    Wednesday Saturday  Friday    Wednesday Monday    Monday   
+## [29] Thursday  Friday    Tuesday   Thursday  Friday    Monday    Monday   
+## [36] Wednesday Wednesday Friday    Thursday  Sunday   
 ## 7 Levels: Monday &lt; Tuesday &lt; Wednesday &lt; Thursday &lt; Friday &lt; ... &lt; Sunday
 ```
 
@@ -431,13 +431,13 @@ fct_count( data )
 ## # A tibble: 8 × 2
 ##   f             n
 ##   &lt;fct&gt;     &lt;int&gt;
-## 1 Monday        6
-## 2 Tuesday       6
-## 3 Wednesday     6
-## 4 Thursday      6
-## 5 Friday        7
-## 6 Saturday      6
-## 7 Sunday        2
+## 1 Monday       10
+## 2 Tuesday       2
+## 3 Wednesday     9
+## 4 Thursday      5
+## 5 Friday        6
+## 6 Saturday      4
+## 7 Sunday        3
 ## 8 &lt;NA&gt;          1
 ```
 
@@ -453,17 +453,15 @@ fct_count(  lumped )
 ```
 
 ```
-## # A tibble: 8 × 2
+## # A tibble: 6 × 2
 ##   f             n
 ##   &lt;fct&gt;     &lt;int&gt;
-## 1 Monday        6
-## 2 Tuesday       6
-## 3 Wednesday     6
-## 4 Thursday      6
-## 5 Friday        7
-## 6 Saturday      6
-## 7 Other         2
-## 8 &lt;NA&gt;          1
+## 1 Monday       10
+## 2 Wednesday     9
+## 3 Thursday      5
+## 4 Friday        6
+## 5 Other         9
+## 6 &lt;NA&gt;          1
 ```
 
 ---
@@ -481,8 +479,8 @@ levels( freq )
 ```
 
 ```
-## [1] "Friday"    "Monday"    "Tuesday"   "Wednesday" "Thursday"  "Saturday" 
-## [7] "Sunday"
+## [1] "Monday"    "Wednesday" "Friday"    "Thursday"  "Saturday"  "Sunday"   
+## [7] "Tuesday"
 ```
 
 
@@ -494,8 +492,8 @@ levels( ordered )
 ```
 
 ```
-## [1] "Tuesday"   "Monday"    "Wednesday" "Thursday"  "Friday"    "Saturday" 
-## [7] "Sunday"
+## [1] "Wednesday" "Saturday"  "Friday"    "Monday"    "Thursday"  "Sunday"   
+## [7] "Tuesday"
 ```
 
 
@@ -529,7 +527,7 @@ summary( data )
 
 ```
 ##    Monday   Tuesday Wednesday  Thursday    Friday  Saturday    Sunday 
-##         9         7         8         9         7         0         0
+##         9         8         9         7         7         0         0
 ```
 
 --
@@ -542,7 +540,7 @@ summary( dropped )
 
 ```
 ##    Monday   Tuesday Wednesday  Thursday    Friday 
-##         9         7         8         9         7
+##         9         8         9         7         7
 ```
 
 
@@ -698,6 +696,126 @@ varLength
 ## [1] 0.4043429
 ```
 
+
+---
+
+# Missing Data 
+
+.pull-left[
+Missing data is a .red[fact of life] and `R` is very opinionated about how it handles missing values.  In general, missing data is encoded as `NA` and is a valid entry for any data type (character, numeric, logical, factor, etc.).  Where this becomes tricky is when we are doing operations on data that has missing values.  `R` could take two routes:  
+
+1. It could ignore the data and give you the answer directly as if the data were not missing, or  
+2. It could let you know that there is missing data and make you do something about it.
+
+Fortunately, `R` took the second route.
+]
+
+--
+
+.pull-right[
+An example from the iris data, I'm going to add some missing data to it.
+
+
+```r
+df &lt;- iris[, 4:5]
+df$Petal.Width[ c(2,6,12) ] &lt;- NA
+summary( df)
+```
+
+```
+##   Petal.Width          Species  
+##  Min.   :0.100   setosa    :50  
+##  1st Qu.:0.300   versicolor:50  
+##  Median :1.300   virginica :50  
+##  Mean   :1.218                  
+##  3rd Qu.:1.800                  
+##  Max.   :2.500                  
+##  NA's   :3
+```
+
+Notice how the missing data is denoted in the summary.
+
+
+]
+
+
+---
+
+# Missing Data
+
+.pull-left[
+### Indications of Missing Data
+
+When we perform a mathematical or statistical operation on data that has missing elements `R` will **always** return NA as the result.
+
+
+```r
+mean( df$Petal.Width )
+```
+
+```
+## [1] NA
+```
+
+This warns you that .red[at least one] of the observations in the data is missing.
+
+Same output for using `by()`, it will put `NA` into each level that has at least one missing value.
+
+
+```r
+by( df$Petal.Width, df$Species, mean )
+```
+
+```
+## df$Species: setosa
+## [1] NA
+## ------------------------------------------------------------ 
+## df$Species: versicolor
+## [1] 1.326
+## ------------------------------------------------------------ 
+## df$Species: virginica
+## [1] 2.026
+```
+
+]
+
+--
+
+.pull-right[
+### Working with Missing Data
+
+To acknowledge that there are missing data and you still want the values, you need to tell the function you are using that data is missing and you are OK with that using the optional argument `na.rm=TRUE` (`na` = missing data &amp; `rm` is *remove*).
+
+
+```r
+mean( df$Petal.Width, na.rm=TRUE)
+```
+
+```
+## [1] 1.218367
+```
+
+To pass this to the `by()` function, we add the optional argument `na.rm=TRUE` and `by()` passes it along to the `mean` function as "..."
+
+
+```r
+by( df$Petal.Width, df$Species, mean, na.rm=TRUE )
+```
+
+```
+## df$Species: setosa
+## [1] 0.2446809
+## ------------------------------------------------------------ 
+## df$Species: versicolor
+## [1] 1.326
+## ------------------------------------------------------------ 
+## df$Species: virginica
+## [1] 2.026
+```
+
+
+
+]
 
 ---
 

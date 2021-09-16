@@ -463,6 +463,80 @@ varLength
 
 ---
 
+# Missing Data 
+
+.pull-left[
+Missing data is a .red[fact of life] and `R` is very opinionated about how it handles missing values.  In general, missing data is encoded as `NA` and is a valid entry for any data type (character, numeric, logical, factor, etc.).  Where this becomes tricky is when we are doing operations on data that has missing values.  `R` could take two routes:  
+
+1. It could ignore the data and give you the answer directly as if the data were not missing, or  
+2. It could let you know that there is missing data and make you do something about it.
+
+Fortunately, `R` took the second route.
+]
+
+--
+
+.pull-right[
+An example from the iris data, I'm going to add some missing data to it.
+
+```{r}
+df <- iris[, 4:5]
+df$Petal.Width[ c(2,6,12) ] <- NA
+summary( df)
+```
+
+Notice how the missing data is denoted in the summary.
+
+
+]
+
+
+---
+
+# Missing Data
+
+.pull-left[
+### Indications of Missing Data
+
+When we perform a mathematical or statistical operation on data that has missing elements `R` will **always** return NA as the result.
+
+```{r}
+mean( df$Petal.Width )
+```
+
+This warns you that .red[at least one] of the observations in the data is missing.
+
+Same output for using `by()`, it will put `NA` into each level that has at least one missing value.
+
+```{r}
+by( df$Petal.Width, df$Species, mean )
+```
+
+]
+
+--
+
+.pull-right[
+### Working with Missing Data
+
+To acknowledge that there are missing data and you still want the values, you need to tell the function you are using that data is missing and you are OK with that using the optional argument `na.rm=TRUE` (`na` = missing data & `rm` is *remove*).
+
+```{r}
+mean( df$Petal.Width, na.rm=TRUE)
+```
+
+To pass this to the `by()` function, we add the optional argument `na.rm=TRUE` and `by()` passes it along to the `mean` function as "..."
+
+```{r}
+by( df$Petal.Width, df$Species, mean, na.rm=TRUE )
+```
+
+
+
+]
+
+---
+
 # Creating a Data Frame
 
 ```{r}

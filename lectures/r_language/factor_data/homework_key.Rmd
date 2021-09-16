@@ -1,0 +1,48 @@
+---
+title: "Factor Data Key"
+output: html_notebook
+---
+
+![*Different categories of legumes at a market.*](https://live.staticflickr.com/65535/51484032460_2f917e1e56_z_d.jpg)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library( tidyverse )
+url <- "https://docs.google.com/spreadsheets/d/1Mk1YGH9LqjF7drJE-td1G_JkdADOU0eMlrP01WFBT8s/pub?gid=0&single=true&output=csv"
+rice <- read_csv( url )
+```
+
+We can group our data into nominal (e.g., simply different) and ordinal (e.g., different with a greater-than or less-than relationship) types.  This is often useful as we start doing quantitative analysis and we collect data from different locations, at different times, in different treatments, etc.
+
+
+## The Homework
+
+What I want you do to for this homework is to create an in-text table (in markdown using the `knitr` and perhaps the `kableExtras` packages) with the mean values for all water temperature, salinity, and pH measurements in the data set partitioned by sampling month. For this, you will have to load in the data, convert the dates into an object that you can pull out month as factor variables (see the function `lubridate::month` and use the longer month names).  Then estimate the average values for each month for the variables.  Your table should *must* have a caption and look professional enough to be inserted into a actual thesis manuscript. 
+
+```{r}
+library( lubridate )
+library( forcats )
+format <- "%m/%d/$Y %I:%M:%S %p"
+rice$Date <- parse_date_time( rice$DateTime, orders=format, tz="EST" )
+rice$Month <- month( rice$Date, label = TRUE, abbr = FALSE )
+rice$Month <- fct_drop( rice$Month )
+summary( rice$Month )
+```
+
+```{r}
+df <- tibble( `Sample Month` = levels( rice$Month ))
+df$`Water Temperature (°C)` <- by( rice$H2O_TempC, rice$Month, mean, na.rm=TRUE )
+df$`Salinity (ppt)` <- by( rice$Salinity_ppt, rice$Month, mean, na.rm=TRUE)
+df$pH <- by( rice$PH, rice$Month, mean, na.rm=TRUE )
+df
+```
+
+```{r warning=FALSE, message=FALSE}
+library( knitr )
+library( kableExtra )
+tbl <- kable( df, caption = "Mean values for water temperature, salinity, and pH taken in the first three months of 2014 at the Rice Rivers Center.")
+tbl <- kable_minimal(  tbl,  lightable_options = c("striped", "hover"))
+tbl <- add_header_above( tbl,  c(" " = 1, "Water Parameter" = 3))
+tbl
+```
+

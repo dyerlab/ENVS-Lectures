@@ -3,7 +3,15 @@ title: "Factor Data"
 output: html_notebook
 ---
 
+```{r startup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library( tidyverse )
+```
+
+
+
 Factors allow us to represent a type of data that exclusive and categorical.  These data may, or may not, be ordered and in most cases, we can think of these kinds of data to represent things like, treatment levels, sampling locations, etc.
+
 
 
 I'm going to start with some days of the week because they are *exclusive* (e.g., you cannot be in both Monday and Wednesday at the same time).  Factors are initially created from string objects, though you could use `numeric` data but that would be *stupid* because you should use things that are descriptive and strings are much better than that.
@@ -223,12 +231,69 @@ varSepalLength
 Using these kinds of functions we can create a summary data frame.
 
 ```{r}
+
 df <- tibble( Species = levels( iris$Species), 
               Average = meanSepalLength,
               Variance = varSepalLength
 )
 df
 ```
+
+
+## Missing Data 
+
+
+Missing data is a .red[fact of life] and `R` is very opinionated about how it handles missing values.  In general, missing data is encoded as `NA` and is a valid entry for any data type (character, numeric, logical, factor, etc.).  Where this becomes tricky is when we are doing operations on data that has missing values.  `R` could take two routes:  
+
+1. It could ignore the data and give you the answer directly as if the data were not missing, or  
+2. It could let you know that there is missing data and make you do something about it.
+
+Fortunately, `R` took the second route.
+
+An example from the iris data, I'm going to add some missing data to it.
+
+```{r}
+
+missingIris <- iris[, 4:5]
+missingIris$Petal.Width[ c(2,6,12) ] <- NA
+summary( missingIris )
+```
+
+Notice how the missing data is denoted in the summary.
+
+
+### Indications of Missing Data
+
+When we perform a mathematical or statistical operation on data that has missing elements `R` will **always** return NA as the result.
+
+```{r}
+mean( missingIris$Petal.Width )
+```
+
+This warns you that .red[at least one] of the observations in the data is missing.
+
+Same output for using `by()`, it will put `NA` into each level that has at least one missing value.
+
+```{r}
+by( missingIris$Petal.Width, missingIris$Species, mean )
+```
+
+
+### Working with Missing Data
+
+To acknowledge that there are missing data and you still want the values, you need to tell the function you are using that data is missing and you are OK with that using the optional argument `na.rm=TRUE` (`na` = missing data & `rm` is *remove*).
+
+```{r}
+mean( missingIris$Petal.Width, na.rm=TRUE)
+```
+
+To pass this to the `by()` function, we add the optional argument `na.rm=TRUE` and `by()` passes it along to the `mean` function as "..."
+
+```{r}
+by( missingIris$Petal.Width, missingIris$Species, mean, na.rm=TRUE )
+```
+
+
 
 
 ## Fancy Tables
@@ -257,7 +322,7 @@ In addition to this basic library, there is an `kableExtra` one that allows us t
 
 
 ```{r}
-library( kableExtra)
+library( kableExtra )
 ```
 
 

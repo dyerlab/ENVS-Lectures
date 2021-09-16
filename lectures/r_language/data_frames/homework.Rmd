@@ -108,4 +108,3 @@ OK, now we have some data to work with, use that data frame to extract the follo
 
 4. On what days was the solar radiation greater than 300 Langleys in Central Park?
 
-

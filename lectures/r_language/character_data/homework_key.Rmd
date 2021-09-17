@@ -129,9 +129,10 @@ The great lakes were intimately involved in the formulation of this Act.  What i
 ```{r}
 # find the index 
 idx <- str_detect( text, "Great Lakes") 
-
 ```
 
+The definition of "Great Lakes" is given as: 
 
+> `r text[idx][8]`
 
 

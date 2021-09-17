@@ -19,10 +19,14 @@ Before you turn it in, save it and hit the "Preview" button on the toolbar at th
 *1. Define Data: Insert a chunk and define two variables, $N_A$ and $N_B$, which define the number of samples taken from the field.*
 
 
+```{r}
+N_A <- 23
+N_B <- 42
+```
 
 *2. Inline R: Write a paragraph of text that mimics something like the methods section of a scientific paper where you indicate how many total samples were collected and how many were sampled from sites $A$ and $B$.  These should be 'in-line' R code, use the variables directly.*
 
-
+For this project, we collected a total of `r N_A + N_B` samples.  Of these, `r N_A` were collected from population *A* and `r N_B` were collected from the population *B*.
 
 *3. Some Math: Consider Dr. Dyer's need for fresh [charcuterie](https://en.wikipedia.org/wiki/Charcuterie) in his life.   Luckily, RVA has a spectacular butcher in Carytown, [Belmont Butchery](http://belmontbutchery.com).  Below are the coordinates for both Dyer's office and the purveyor of fine products.  Use your old friend, the pythagorean theorem to figure out the distance between these two points (n.b., I know degrees are not a good measure of distance but this is about you working on making equations).*
 
@@ -31,15 +35,35 @@ lat.office <- 37.5445796
 lon.office <- -77.454640
 lat.belmont <- 37.554462
 lon.belmont <- -77.479170
+
+meat_walking_distance <- sqrt( (lat.office - lat.belmont)^2 + (lon.office - lon.belmont)^2 )
 ```
 
-
+The distance Dyer has to go to get meat is `r meat_walking_distance` (measured in degrees which is a total bogus metric of distance but this is only for homework).
 
 
 *4. Coerce the character representation of this very large number `x <- "1.739275e+18"` into a numeric data type and take the natural logarithm.*
 
 
+```{r}
+x <- "1.739275e+18"
+y <- as.numeric( x )
+meaningOfLife <- log( y )
+meaningOfLife
+```
 
 
 *5. How does `R` represent the square root of -1?*
+
+It cannot do it directly.
+```{r}
+sqrt(-1)
+```
+
+But if you want it as a "complex" number (which is defined using sqrt(-1)), it can be represented as:
+
+```{r}
+myFavoriteNumber <- 1+1i
+myFavoriteNumber 
+```
 

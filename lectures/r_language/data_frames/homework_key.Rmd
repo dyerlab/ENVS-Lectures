@@ -1,0 +1,199 @@
+---
+title: "Vectors & Data Frames Homework"
+author: "Your Name Here"
+output: html_notebook
+---
+
+## Vectors & Data Frames
+
+Vectors and data frames are the foundation of data analysis in R.  Essentially, most everything we work with will be contained within one of these container types.  As such, it is important for us to get a good understanding and gain a high level of comfort and understanding of how to access and set data in these structures. 
+
+In this and most of the following homework and presentations, I will use the generic term "data frame"  to indicate a suite of data that has several records and individual measurements on each record.  These will typically be `tibble` objects rather than the older `data.frame` ones unless otherwise stated. As such, we shall need to import `tidyverse` at the beginning.
+
+
+```{r}
+library( tidyverse )
+```
+
+
+### Creating 
+
+In the chunk below, create three vectors of data.  one for for names, one for age, and another for grade.
+
+```{r}
+# vectors of different types
+names <- c("Bob","Alice","Ruth")
+age <- c(12, 24, 72)
+grade <- c("A","B","C")
+
+```
+
+Now, create a tibble from these vectors.
+
+```{r}
+# tibble
+data <- tibble( Names = names, 
+                Age = age,
+                Grade = grade)
+data
+```
+
+
+Add a new column of data to this data frame (you can make it up, which is what I did with the data above...). 
+
+```{r}
+## Add new column
+data$Retired <- c(FALSE, FALSE, TRUE)
+data
+```
+
+
+Add a new row of data to the `data.frame` then summarize it. 
+
+```{r}
+## Add new row
+df <- tibble( Names = "Clifford",
+              Age = 78,
+              Grade = "F",
+              Retired = FALSE )
+data <- rbind( data, df )
+data 
+```
+
+
+
+### Manipulating Data
+
+In reality, we spend very little time working with data as small as this, so let's jump into a slightly larger data set.  There is a built-in data set measuring air quality in New York entitled `airquality` (I know, tricky right?).  It is available on every stock installation and this is what it looks like.
+
+```{r}
+summary( airquality )
+```
+
+Let's make a copy of these built-in data and turn it into a tibble.  
+
+```{r}
+data <- as_tibble( airquality )
+summary( data  )
+```
+
+
+
+
+Manipulate the data frame in the following ways:  
+
+1. These data were collected in 1973.  Create a new column of data that represents a textual version of the date (month, day, and year) then drop (delete) the columns Month and Day.
+
+```{r}
+## New Column for compound dates
+
+data$Date <- str_c( data$Month, data$Day, 1973, sep="-")
+data$Month <- NULL
+data$Day <- NULL 
+head( data )
+```
+
+
+2. Conver the temperature from F to C.
+
+```{r}
+data$Temp <- (data$Temp - 32) * 5 / 9 
+```
+
+
+3. Change the name of the `Temp` column to `Temperature °C` and the `Solar.R` to `Solar Radiation` in an attempt to practice what is known as '[Literate Programming](http://www.literateprogramming.com)'.
+
+
+```{r}
+# set proper names for columns 
+data$`Temperature °C` <- data$Temp
+data$Temp <- NULL
+```
+
+
+Or you could have operated on the names of the data frame directly, either way works just fine.
+
+```{r eval=FALSE}
+names( data )[4] <- "Temperature °C"
+```
+
+
+
+
+And show your creation by using `head()` to reveal the first 6 rows.
+
+```{r}
+### Show the first few rows
+head( data )
+```
+
+
+## Extracting Data Questions
+
+OK, now we have some data to work with, use that data frame to extract the following information and answer the following questions.
+
+
+1.  What were the hottest and coldest dates recorded in this data set?   
+
+```{r}
+maxTemp <- max(data$`Temperature °C`)
+minTemp <- min( data$`Temperature °C` )
+hottestDate <- data$Date[ data$`Temperature °C` == maxTemp ]
+coldestDate <- data$Date[ data$`Temperature °C` == minTemp ]
+```
+
+The hottest date was `r hottestDate` when it was `r maxTemp` °C, whereas the coldest date in the data set had a temperature of `r minTemp` °C, which was recorded on `r coldestDate`.
+
+2.  How many of the days in the data recorded higher than the average wind speed? 
+
+```{r}
+meanTemp <- mean( data$`Temperature °C`)
+numGreater <- sum(   data$`Temperature °C` > meanTemp )
+```
+
+There were `r numGreater` days recorded that were greater than the average temperature of `r meanTemp` °C.
+
+3. How many rows of data are there with no missing values for any of recorded observations?
+
+You could answer this by finding how many missing data entries were in each column of data.  Here are the answers as a table (I know, we didn't do tables until a few lectures after this but it makes life nice to have pretty tables...)
+```{r}
+library( knitr )
+library( kableExtra )
+
+df <- tibble( Variable = names(data),
+              `Missing Entries` = c( sum( is.na(data$Ozone)),
+                                     sum( is.na(data$Solar.R)),
+                                     sum( is.na(data$Wind)),
+                                     sum( is.na(data$Date)),
+                                     sum( is.na(data$`Temperature °C`))
+              )
+)
+
+tbl <- kable( df, caption="The number of missing records in each of the variables measured in the airquality data.frame.")
+kable_paper(tbl, full_width=FALSE)
+```
+
+For individual records (e.g., rows), we do not know if the the `r sum(is.na(data$Solar.R))` missing entries in `Solar.R` are the same rows as those in `Ozone` so we have as few as `r sum(is.na(data$Ozone))` records with missing data and as many as `r sum(is.na(data$Ozone)) + sum(is.na(data$Solar.R))`.   I'm goint to look at the `Solar.R` ones ('cuz there are fewer of them) and see if they also occur when `Ozone` is also `NA`.
+
+```{r}
+data[ is.na(data$Solar.R), c("Ozone","Solar.R")]
+```
+
+So we can see that only 2 of the entries overlap with both columns having missing data.  That means that the remaining 5 `Solar.R` missing records are in addition to the 37 `Ozone` ones for `r 37+5` total records with at least one missing data element.
+
+
+4. On what days was the solar radiation greater than 300 Langleys in Central Park?
+
+```{r}
+days <- data$Date[ data$Solar.R > 300]
+days
+```
+
+Well it grabbed a lot of the `NA` entries so I'll drop those.
+
+```{r}
+days <- days[ !is.na(days)]
+days
+```
+
+Then I can even put them into a bit of text.  The dates where the solar radiation exceeded 300 Langley's were: `r str_c(days, collapse=", ")`.

@@ -19,7 +19,7 @@ $=$
 
 ## Impetus
 
-This homework focuses on how we can use <tt>tidyverse</tt> routines to become more effective in our pre-treatment of data.  As a removner, the operative *verbs* we use in data preparation include:
+This homework focuses on how we can use <tt>tidyverse</tt> routines to become more effective in our pre-treatment of data.  As a reminder, the operative *verbs* we use in data preparation include:
 
 - *Select*  
 - *Filter*  
@@ -51,6 +51,8 @@ summary( rice )
 ## The Questions
 
 Provide your answers as text (e.g., using complete sentences, etc.) and include visual output in tabular or graphical form to support your assertions.  The *key point here* is that **you** need to develop an *evidence-based* narrative to address these questions.
+
+In all of the following questions, use the operative verbs as well as the pipe operator `%>%` to extract from the data the required output.
 
 1. On average, is there more rain on Mondays, at daytime, or at night?
 

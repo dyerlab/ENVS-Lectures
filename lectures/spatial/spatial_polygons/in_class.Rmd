@@ -1,0 +1,91 @@
+---
+title: "Point, Line, & Polygon In-Class"
+output: html_notebook
+---
+
+This activity will focus on what we've learned thus far on how to work with `points`, `lines` and `ploygons` (and shapefiles) in `R`.
+
+```{r}
+library( sf )
+library( tidyverse )
+```
+
+## The Data
+
+The data for this consists of both zoning districts and road center lines for Richmond, Virginia.  These are available at:
+
+```{r}
+roads_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Centerlines-shp.zip"
+district_url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Zoning_Districts-shp.zip"
+```
+
+
+## The Big Picture
+
+The main question you are going to work on here is:
+
+> What roads intersect the zoning district that defines the heart of `The Fan` (hint, it is the one with OBJECTID=368)?  
+
+For this in-class activity, you will also need to get a copy of the [Spatial Cheatsheet](https://github.com/rstudio/cheatsheets/raw/main/sf.pdf) to consult.
+
+
+
+## The Process
+
+The following questions will lead you through the process.
+
+1. In list format, outline how you are going to answer the canonical question.  Be pedantic.
+
+- Load in zip files
+- ...
+
+2. Load and process the zip archives so you can read in the two underlying shapefiles.
+
+```{r}
+# load and process here
+```
+
+
+3. Show that they are both in the same projection.
+
+
+4. Identify and isolate the Zoning District of interest in `The Fan`.  
+
+```{r}
+
+```
+
+
+5. Make a plot of the target zone as well as some around it (I'd add a small buffer to the bounding box).
+
+```{r}
+
+```
+
+
+6. Looking at the [Spatial Cheatsheet](https://github.com/rstudio/cheatsheets/raw/main/sf.pdf), which function do you think would be most appropriate for finding the roads that cross OBJECTID=368?  Use `tidyverse` to identify the roads that cross this polygon and save it as a new `sf data.frame`
+
+```{r}
+
+```
+
+
+7. Make a table of the unique road names in alphabetical order.
+
+```{r}
+library( knitr )
+library( kableExtra )
+
+
+```
+
+
+8. Create a plot of the districts as the background, the target disctrict (OBJECTID=368) as highlighted in another color, and the roads that cross the it overlay on top.
+
+```{r}
+
+```
+
+
+
+

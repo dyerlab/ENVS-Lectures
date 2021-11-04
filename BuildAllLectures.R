@@ -20,11 +20,13 @@ firstRun <- FALSE
 if ( firstRun ) {
   
   libs <- c("library(tidyverse)",
-           "library(knitr)",
-           "library(stringr)",
-           "library(rmarkdown)",
-           "library(blogdown)",
-           "library(devtools)") 
+            "library(knitr)",
+            "library(stringr)",
+            "library(rmarkdown)",
+            "library(blogdown)",
+            "library(devtools)",
+            "library(Hmisc)",
+            "library(g") 
   
   allRmd <- list.files("lectures",pattern = ".Rmd",recursive = TRUE,full.names = TRUE)
 
@@ -49,6 +51,8 @@ if ( firstRun ) {
   needed <- setdiff( to_install, curr_packages)
   install.packages( needed, ask=FALSE)
   
+  devtools::install_github("hadley/emo")
+  devtools::install_github("clauswilke/ggisoband")
   devtools::install_github("dyerlab/popgraph")
   devtools::install_github("dyerlab/gstudio")
 }

@@ -1,0 +1,159 @@
+---
+title: "ENVS 543 Final - Diversity & Movement in the Sonoran Desert Bark Beetle (<i>Araptus attenuata</i>)."
+author: "Insert Your Name Here"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( echo=FALSE, 
+                       message=FALSE,
+                       warning=FALSE )
+library( tidyverse )
+library( leaflet )
+```
+
+This final is taking the form of a Methods & Results section for a reseach paper.  In the methods, I will define the data and analysis that will be used and give stubs for the output that you'll put in the results section.  To set the stage, I'm going to include some basic paragraphs as a general *Introduction* section on this paper that serves to set up the motivation and main questions for this research.  I will also outline the analyses to be done in the *Methods* section (these will both be brief so you can focus on doing the analyses and presenting the results in the *Results* section).  
+
+I
+
+
+# Introduction
+
+Plant-insect species pairs from the Baja California peninsula, together with an adjacent section of the Sonoran Desert on mainland Mexico (‘Baja peninsula’ and ‘continental Sonora’ herein), provide useful models for examining the degree to which constraints imposed by biotic interactions may influence a species’ capacity to track the changing distribution of habitats. This is because the dynamic geological and environmental history of this landscape seems to have impacted the genetic structure of plants and animals in different ways (e.g. Riddle et al. 2000; Garrick et al. 2009a), such that the influence of host plant phylogeographical history is may put constraints upon its obligate insect parasite or pollinator species.
+
+Given their life histories, plants may track changing local environmental conditions more closely than animals do because their phenologies and physiological tolerances can be strongly tied to precipitation or the frequency and severity of winter frosts (Van Devender 2002). Macrofossils preserved in packrat middens indicate early- to mid-Holocene northward range shifts of floristic communities in the region (Van Devender *et al.* 1994).  Overall, patterns of diversity in many cacti species in this region indicate that the southern Cape Region served as an important refuge for frost intolerant taxa during Pleistocene glacial cycles, perhaps owing to its low latitude and deeply dissected, heterogeneous topography (Wells & Hunziker 1976). Interestingly, this a priori expectation of northward range expansion contrasts sharply with observed patterns of genetic variation in a long-lived Sonoran Desert euphorb (*Euphorbia lomelii* V.W. Steinm., synon. *Pedilanthus macrocarpus*), for which there is strong evidence for southward range expansion (Garrick *et al.* 2009a; Dyer *et al.* 2010).
+
+In this manuscript, we examine the extent to which the distribution of the host plant, *Euphorbia lomelii* (Euphorbiaceae), influences the genetic structure of its obligate bark beetle, *Araptus attenuata* (Curculionidae).  Specifically, we address the following main questions.
+
+1. 
+
+
+# Methods 
+
+```{r}
+url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Araptus_Disperal_Bias.csv"
+
+
+# go back and add 101 & 102 to this data set
+suppressMessages( read_csv( url ) ) %>%
+  select( Stratum = Site, 
+          MFRatio, Suitability, Latitude, Longitude ) -> arapat
+```
+
+## Study Species
+
+![Figure 1: The sonoran desert bark beetle *Araptus attenuatus*.](https://live.staticflickr.com/65535/50441339417_74e04216fa_w_d.jpg)
+
+The bark beetle, *Araptus attenuatus* (Figure 1) is an endemic bark beetle found only within the Sonoran desert geo-region.  At present, there are three known cryptic species described for this taxa (Dyer unpub.).  One remnant population is found exclusively in populations on Mainland Mexico in the states of Sonora and Sinaloa.  The remaining two species are found in along the Baja Peninsula within the Mexican states of Baja California Norte and Baja California Sur.
+
+To date, all samples of this species group have been found with in association with the plant *Euphorbia lomelii* (Figure 2).  Young males  colonize recently senescent stems on the host plant and release mating pheromones.  Female individuals who establish form breeding colonies.  Along the Baja California Peninsula, when both species are found at the same sampling location, only one of the species is found in each plant consistent with the hypothesis of competitive exclusion of a limited ecological resources.
+
+![Figure 2: The host plant for *Araptus attenuatus*, the desert euphorb, *Euphorbia lomelii*.](https://live.staticflickr.com/65535/50441175211_ba3b9df2ea_w_d.jpg)
+
+
+## Spatial Sampling
+
+Sampling locations were selected haphazardly from throughout the species range (Figure 3).  At each Site the center coordinate was recorded and a minimum of 10 plants were surveyed. Each plant identified must be 100 m from the previous plant to prevent nearest neighbor interactions.
+
+```{r figure_3, fig.cap="Figure 3: Map of sampling locations from throughout the Baja Peninsula."}
+
+# Use the function map_data as shown in the spatial points lecture/narrative 
+#  Create a nice map of the locations with ggplot + geom_polygon + geom_text.
+#  Each location should be indicated by its Site Name.
+
+
+map_data("world") %>%
+  filter( region == "Mexico") -> map
+
+ggplot() + 
+  geom_polygon( aes( x=long, y=lat, group=group), data=map, fill="gray")  +
+  geom_text( aes(Longitude, Latitude, label=Stratum), data=arapat) +
+  xlab("Longitude") + 
+  ylab("Latitude") + 
+  theme_bw( base_size = 10 ) +
+  coord_sf( xlim = c(-115, -105),
+            ylim = c(20, 30) )
+
+```
+
+
+
+```{r}
+library( gstudio )
+data( arapat )
+
+
+df %>% filter( Species == "Cape") -> Cape 
+df %>% filter( Species == "Peninsula" ) -> Peninsula 
+df %>% filter( Species == "Mainland" ) -> Mainland
+
+
+
+
+Cape %>% 
+  genetic_diversity( stratum = "Population") %>%
+  mutate( Species = "Cape" ) -> df1
+Peninsula %>%
+  genetic_diversity( stratum = "Population") %>%
+  mutate( Species = "Peninsula") -> df2 
+Mainland %>%
+  genetic_diversity( stratum = "Population") %>%
+  mutate( Species = "Mainland") -> df3 
+
+rbind( rbind( df1, df2 ), df3)  %>%
+  select( Species, Population = Stratum, Locus, Ae ) %>%
+  filter( Population %in% arapat$Population ) %>% 
+  mutate( Species = factor( Species ), 
+          Population = factor( Population) ) %>% summary( )
+    
+summary( df.diversity)  
+
+```
+
+# Environmental Conditions
+
+Several bioclimactic variables were used to construct an ecological niche envelope for the host plant, *Euphorbia lomelii*.  From this reconstruction, we estimate the relative *suitability* of the location for as a surrogate for examining genetic diversity and sex ratio bias in the bark beetle.
+
+In addition to overall suitability, we also extracted minimum, mean, and maximum values for precipitation and temperature for each sampling locale.
+
+```{r}
+# precipitation raster urls
+url_min_precip <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Minimum_Precip_22.tif"
+url_mean_precip <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Annual_Precip_22.tif"
+url_max_precip <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Maximum_Precip.tif"
+
+# temperature raster urls
+url_min_temp <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Minimum_Temp_22.tif"
+url_mean_temp <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Mean_Temp_22.tif"
+url_max_temp <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Maximum_Temp_22.tif"
+
+# use the coordinates from the arapat to raster::extract() the values for min, mean, and max temp and precip and add those to the arapat data frame.
+
+```
+
+
+
+
+
+
+
+
+
+
+
+# Results
+
+## Spatial Structure
+
+
+A total of `r #insert number of individuals` individuals were collected from `r #inset number of sites` sampling locations.  Once back at Virginia Commonwealth University, each sampled individual was sexed yielding a range of males and females at each location as shown in Table 1.
+
+```{r}
+# Create a table here with sampling allocations.  It should be a table that has rows for minimum, mean, median, and max for (columns of) Male and for Females.  The table must have a caption and look nice.
+```
+
+
+
+
+
+## 

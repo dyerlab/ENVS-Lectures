@@ -221,192 +221,142 @@ pre code {
 <p>For this we will use some data on flights into and out of Newark (EWR), JFK, and La Guardia airports in NYC metropolitan area.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoic3VtbWFyeSggZmxpZ2h0cykgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeSggZmxpZ2h0cykgXG5gYGAifQ== -->
 <pre class="r"><code>summary( flights) </code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgeWVhciAgICAgICAgICBtb250aCAgICAgICAgICAgICBkYXkgICAgICAgICAgIGRlcF90aW1lICAgIHNjaGVkX2RlcF90aW1lXG4gTWluLiAgIDoyMDEzICAgTWluLiAgIDogMS4wMDAgICBNaW4uICAgOiAxLjAwICAgTWluLiAgIDogICAxICAgTWluLiAgIDogMTA2ICBcbiAxc3QgUXUuOjIwMTMgICAxc3QgUXUuOiA0LjAwMCAgIDFzdCBRdS46IDguMDAgICAxc3QgUXUuOiA5MDcgICAxc3QgUXUuOiA5MDYgIFxuIE1lZGlhbiA6MjAxMyAgIE1lZGlhbiA6IDcuMDAwICAgTWVkaWFuIDoxNi4wMCAgIE1lZGlhbiA6MTQwMSAgIE1lZGlhbiA6MTM1OSAgXG4gTWVhbiAgIDoyMDEzICAgTWVhbiAgIDogNi41NDkgICBNZWFuICAgOjE1LjcxICAgTWVhbiAgIDoxMzQ5ICAgTWVhbiAgIDoxMzQ0ICBcbiAzcmQgUXUuOjIwMTMgICAzcmQgUXUuOjEwLjAwMCAgIDNyZCBRdS46MjMuMDAgICAzcmQgUXUuOjE3NDQgICAzcmQgUXUuOjE3MjkgIFxuIE1heC4gICA6MjAxMyAgIE1heC4gICA6MTIuMDAwICAgTWF4LiAgIDozMS4wMCAgIE1heC4gICA6MjQwMCAgIE1heC4gICA6MjM1OSAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEncyAgIDo4MjU1ICAgICAgICAgICAgICAgICBcbiAgIGRlcF9kZWxheSAgICAgICAgICBhcnJfdGltZSAgICBzY2hlZF9hcnJfdGltZSAgIGFycl9kZWxheSAgICAgICBcbiBNaW4uICAgOiAtNDMuMDAgICBNaW4uICAgOiAgIDEgICBNaW4uICAgOiAgIDEgICBNaW4uICAgOiAtODYuMDAwICBcbiAxc3QgUXUuOiAgLTUuMDAgICAxc3QgUXUuOjExMDQgICAxc3QgUXUuOjExMjQgICAxc3QgUXUuOiAtMTcuMDAwICBcbiBNZWRpYW4gOiAgLTIuMDAgICBNZWRpYW4gOjE1MzUgICBNZWRpYW4gOjE1NTYgICBNZWRpYW4gOiAgLTUuMDAwICBcbiBNZWFuICAgOiAgMTIuNjQgICBNZWFuICAgOjE1MDIgICBNZWFuICAgOjE1MzYgICBNZWFuICAgOiAgIDYuODk1ICBcbiAzcmQgUXUuOiAgMTEuMDAgICAzcmQgUXUuOjE5NDAgICAzcmQgUXUuOjE5NDUgICAzcmQgUXUuOiAgMTQuMDAwICBcbiBNYXguICAgOjEzMDEuMDAgICBNYXguICAgOjI0MDAgICBNYXguICAgOjIzNTkgICBNYXguICAgOjEyNzIuMDAwICBcbiBOQSdzICAgOjgyNTUgICAgICBOQSdzICAgOjg3MTMgICAgICAgICAgICAgICAgICBOQSdzICAgOjk0MzAgICAgICBcbiAgIGNhcnJpZXIgICAgICAgICAgICAgIGZsaWdodCAgICAgICB0YWlsbnVtICAgICAgICAgICAgIG9yaWdpbiAgICAgICAgIFxuIExlbmd0aDozMzY3NzYgICAgICBNaW4uICAgOiAgIDEgICBMZW5ndGg6MzM2Nzc2ICAgICAgTGVuZ3RoOjMzNjc3NiAgICAgXG4gQ2xhc3MgOmNoYXJhY3RlciAgIDFzdCBRdS46IDU1MyAgIENsYXNzIDpjaGFyYWN0ZXIgICBDbGFzcyA6Y2hhcmFjdGVyICBcbiBNb2RlICA6Y2hhcmFjdGVyICAgTWVkaWFuIDoxNDk2ICAgTW9kZSAgOmNoYXJhY3RlciAgIE1vZGUgIDpjaGFyYWN0ZXIgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOjE5NzIgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICAgIDNyZCBRdS46MzQ2NSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgTWF4LiAgIDo4NTAwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgIGRlc3QgICAgICAgICAgICAgIGFpcl90aW1lICAgICAgICBkaXN0YW5jZSAgICAgICAgIGhvdXIgICAgICBcbiBMZW5ndGg6MzM2Nzc2ICAgICAgTWluLiAgIDogMjAuMCAgIE1pbi4gICA6ICAxNyAgIE1pbi4gICA6IDEuMDAgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOiA4Mi4wICAgMXN0IFF1LjogNTAyICAgMXN0IFF1LjogOS4wMCAgXG4gTW9kZSAgOmNoYXJhY3RlciAgIE1lZGlhbiA6MTI5LjAgICBNZWRpYW4gOiA4NzIgICBNZWRpYW4gOjEzLjAwICBcbiAgICAgICAgICAgICAgICAgICAgTWVhbiAgIDoxNTAuNyAgIE1lYW4gICA6MTA0MCAgIE1lYW4gICA6MTMuMTggIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOjE5Mi4wICAgM3JkIFF1LjoxMzg5ICAgM3JkIFF1LjoxNy4wMCAgXG4gICAgICAgICAgICAgICAgICAgIE1heC4gICA6Njk1LjAgICBNYXguICAgOjQ5ODMgICBNYXguICAgOjIzLjAwICBcbiAgICAgICAgICAgICAgICAgICAgTkEncyAgIDo5NDMwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgICBtaW51dGUgICAgICAgIHRpbWVfaG91ciAgICAgICAgICAgICAgICAgIFxuIE1pbi4gICA6IDAuMDAgICBNaW4uICAgOjIwMTMtMDEtMDEgMDU6MDA6MDAgIFxuIDFzdCBRdS46IDguMDAgICAxc3QgUXUuOjIwMTMtMDQtMDQgMTM6MDA6MDAgIFxuIE1lZGlhbiA6MjkuMDAgICBNZWRpYW4gOjIwMTMtMDctMDMgMTA6MDA6MDAgIFxuIE1lYW4gICA6MjYuMjMgICBNZWFuICAgOjIwMTMtMDctMDMgMDU6MjI6NTQgIFxuIDNyZCBRdS46NDQuMDAgICAzcmQgUXUuOjIwMTMtMTAtMDEgMDc6MDA6MDAgIFxuIE1heC4gICA6NTkuMDAgICBNYXguICAgOjIwMTMtMTItMzEgMjM6MDA6MDAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
-<pre><code>      year          month             day           dep_time    sched_dep_time
- Min.   :2013   Min.   : 1.000   Min.   : 1.00   Min.   :   1   Min.   : 106  
- 1st Qu.:2013   1st Qu.: 4.000   1st Qu.: 8.00   1st Qu.: 907   1st Qu.: 906  
- Median :2013   Median : 7.000   Median :16.00   Median :1401   Median :1359  
- Mean   :2013   Mean   : 6.549   Mean   :15.71   Mean   :1349   Mean   :1344  
- 3rd Qu.:2013   3rd Qu.:10.000   3rd Qu.:23.00   3rd Qu.:1744   3rd Qu.:1729  
- Max.   :2013   Max.   :12.000   Max.   :31.00   Max.   :2400   Max.   :2359  
-                                                 NA&#39;s   :8255                 
-   dep_delay          arr_time    sched_arr_time   arr_delay       
- Min.   : -43.00   Min.   :   1   Min.   :   1   Min.   : -86.000  
- 1st Qu.:  -5.00   1st Qu.:1104   1st Qu.:1124   1st Qu.: -17.000  
- Median :  -2.00   Median :1535   Median :1556   Median :  -5.000  
- Mean   :  12.64   Mean   :1502   Mean   :1536   Mean   :   6.895  
- 3rd Qu.:  11.00   3rd Qu.:1940   3rd Qu.:1945   3rd Qu.:  14.000  
- Max.   :1301.00   Max.   :2400   Max.   :2359   Max.   :1272.000  
- NA&#39;s   :8255      NA&#39;s   :8713                  NA&#39;s   :9430      
-   carrier              flight       tailnum             origin         
- Length:336776      Min.   :   1   Length:336776      Length:336776     
- Class :character   1st Qu.: 553   Class :character   Class :character  
- Mode  :character   Median :1496   Mode  :character   Mode  :character  
-                    Mean   :1972                                        
-                    3rd Qu.:3465                                        
-                    Max.   :8500                                        
-                                                                        
-     dest              air_time        distance         hour      
- Length:336776      Min.   : 20.0   Min.   :  17   Min.   : 1.00  
- Class :character   1st Qu.: 82.0   1st Qu.: 502   1st Qu.: 9.00  
- Mode  :character   Median :129.0   Median : 872   Median :13.00  
-                    Mean   :150.7   Mean   :1040   Mean   :13.18  
-                    3rd Qu.:192.0   3rd Qu.:1389   3rd Qu.:17.00  
-                    Max.   :695.0   Max.   :4983   Max.   :23.00  
-                    NA&#39;s   :9430                                  
-     minute        time_hour                  
- Min.   : 0.00   Min.   :2013-01-01 05:00:00  
- 1st Qu.: 8.00   1st Qu.:2013-04-04 13:00:00  
- Median :29.00   Median :2013-07-03 10:00:00  
- Mean   :26.23   Mean   :2013-07-03 05:22:54  
- 3rd Qu.:44.00   3rd Qu.:2013-10-01 07:00:00  
- Max.   :59.00   Max.   :2013-12-31 23:00:00  
-                                              </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgeWVhciAgICAgICAgICBtb250aCAgICAgICAgICAgICBkYXkgICAgICAgICAgIGRlcF90aW1lICAgIHNjaGVkX2RlcF90aW1lICAgZGVwX2RlbGF5ICAgICAgXG4gTWluLiAgIDoyMDEzICAgTWluLiAgIDogMS4wMDAgICBNaW4uICAgOiAxLjAwICAgTWluLiAgIDogICAxICAgTWluLiAgIDogMTA2ICAgTWluLiAgIDogLTQzLjAwICBcbiAxc3QgUXUuOjIwMTMgICAxc3QgUXUuOiA0LjAwMCAgIDFzdCBRdS46IDguMDAgICAxc3QgUXUuOiA5MDcgICAxc3QgUXUuOiA5MDYgICAxc3QgUXUuOiAgLTUuMDAgIFxuIE1lZGlhbiA6MjAxMyAgIE1lZGlhbiA6IDcuMDAwICAgTWVkaWFuIDoxNi4wMCAgIE1lZGlhbiA6MTQwMSAgIE1lZGlhbiA6MTM1OSAgIE1lZGlhbiA6ICAtMi4wMCAgXG4gTWVhbiAgIDoyMDEzICAgTWVhbiAgIDogNi41NDkgICBNZWFuICAgOjE1LjcxICAgTWVhbiAgIDoxMzQ5ICAgTWVhbiAgIDoxMzQ0ICAgTWVhbiAgIDogIDEyLjY0ICBcbiAzcmQgUXUuOjIwMTMgICAzcmQgUXUuOjEwLjAwMCAgIDNyZCBRdS46MjMuMDAgICAzcmQgUXUuOjE3NDQgICAzcmQgUXUuOjE3MjkgICAzcmQgUXUuOiAgMTEuMDAgIFxuIE1heC4gICA6MjAxMyAgIE1heC4gICA6MTIuMDAwICAgTWF4LiAgIDozMS4wMCAgIE1heC4gICA6MjQwMCAgIE1heC4gICA6MjM1OSAgIE1heC4gICA6MTMwMS4wMCAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEncyAgIDo4MjU1ICAgICAgICAgICAgICAgICAgTkEncyAgIDo4MjU1ICAgICBcbiAgICBhcnJfdGltZSAgICBzY2hlZF9hcnJfdGltZSAgIGFycl9kZWxheSAgICAgICAgICBjYXJyaWVyICAgICAgICAgICAgICBmbGlnaHQgICAgXG4gTWluLiAgIDogICAxICAgTWluLiAgIDogICAxICAgTWluLiAgIDogLTg2LjAwMCAgIExlbmd0aDozMzY3NzYgICAgICBNaW4uICAgOiAgIDEgIFxuIDFzdCBRdS46MTEwNCAgIDFzdCBRdS46MTEyNCAgIDFzdCBRdS46IC0xNy4wMDAgICBDbGFzcyA6Y2hhcmFjdGVyICAgMXN0IFF1LjogNTUzICBcbiBNZWRpYW4gOjE1MzUgICBNZWRpYW4gOjE1NTYgICBNZWRpYW4gOiAgLTUuMDAwICAgTW9kZSAgOmNoYXJhY3RlciAgIE1lZGlhbiA6MTQ5NiAgXG4gTWVhbiAgIDoxNTAyICAgTWVhbiAgIDoxNTM2ICAgTWVhbiAgIDogICA2Ljg5NSAgICAgICAgICAgICAgICAgICAgICBNZWFuICAgOjE5NzIgIFxuIDNyZCBRdS46MTk0MCAgIDNyZCBRdS46MTk0NSAgIDNyZCBRdS46ICAxNC4wMDAgICAgICAgICAgICAgICAgICAgICAgM3JkIFF1LjozNDY1ICBcbiBNYXguICAgOjI0MDAgICBNYXguICAgOjIzNTkgICBNYXguICAgOjEyNzIuMDAwICAgICAgICAgICAgICAgICAgICAgIE1heC4gICA6ODUwMCAgXG4gTkEncyAgIDo4NzEzICAgICAgICAgICAgICAgICAgTkEncyAgIDo5NDMwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgdGFpbG51bSAgICAgICAgICAgICBvcmlnaW4gICAgICAgICAgICAgIGRlc3QgICAgICAgICAgICAgIGFpcl90aW1lICAgICAgICBkaXN0YW5jZSAgIFxuIExlbmd0aDozMzY3NzYgICAgICBMZW5ndGg6MzM2Nzc2ICAgICAgTGVuZ3RoOjMzNjc3NiAgICAgIE1pbi4gICA6IDIwLjAgICBNaW4uICAgOiAgMTcgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICBDbGFzcyA6Y2hhcmFjdGVyICAgQ2xhc3MgOmNoYXJhY3RlciAgIDFzdCBRdS46IDgyLjAgICAxc3QgUXUuOiA1MDIgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNb2RlICA6Y2hhcmFjdGVyICAgTW9kZSAgOmNoYXJhY3RlciAgIE1lZGlhbiA6MTI5LjAgICBNZWRpYW4gOiA4NzIgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE1lYW4gICA6MTUwLjcgICBNZWFuICAgOjEwNDAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDNyZCBRdS46MTkyLjAgICAzcmQgUXUuOjEzODkgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE1heC4gICA6Njk1LjAgICBNYXguICAgOjQ5ODMgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5BJ3MgICA6OTQzMCAgICAgICAgICAgICAgICAgIFxuICAgICAgaG91ciAgICAgICAgICAgbWludXRlICAgICAgICB0aW1lX2hvdXIgICAgICAgICAgICAgICAgICBcbiBNaW4uICAgOiAxLjAwICAgTWluLiAgIDogMC4wMCAgIE1pbi4gICA6MjAxMy0wMS0wMSAwNTowMDowMCAgXG4gMXN0IFF1LjogOS4wMCAgIDFzdCBRdS46IDguMDAgICAxc3QgUXUuOjIwMTMtMDQtMDQgMTM6MDA6MDAgIFxuIE1lZGlhbiA6MTMuMDAgICBNZWRpYW4gOjI5LjAwICAgTWVkaWFuIDoyMDEzLTA3LTAzIDEwOjAwOjAwICBcbiBNZWFuICAgOjEzLjE4ICAgTWVhbiAgIDoyNi4yMyAgIE1lYW4gICA6MjAxMy0wNy0wMyAwNToyMjo1NCAgXG4gM3JkIFF1LjoxNy4wMCAgIDNyZCBRdS46NDQuMDAgICAzcmQgUXUuOjIwMTMtMTAtMDEgMDc6MDA6MDAgIFxuIE1heC4gICA6MjMuMDAgICBNYXguICAgOjU5LjAwICAgTWF4LiAgIDoyMDEzLTEyLTMxIDIzOjAwOjAwICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4ifQ== -->
+<pre><code>      year          month             day           dep_time    sched_dep_time   dep_delay      
+ Min.   :2013   Min.   : 1.000   Min.   : 1.00   Min.   :   1   Min.   : 106   Min.   : -43.00  
+ 1st Qu.:2013   1st Qu.: 4.000   1st Qu.: 8.00   1st Qu.: 907   1st Qu.: 906   1st Qu.:  -5.00  
+ Median :2013   Median : 7.000   Median :16.00   Median :1401   Median :1359   Median :  -2.00  
+ Mean   :2013   Mean   : 6.549   Mean   :15.71   Mean   :1349   Mean   :1344   Mean   :  12.64  
+ 3rd Qu.:2013   3rd Qu.:10.000   3rd Qu.:23.00   3rd Qu.:1744   3rd Qu.:1729   3rd Qu.:  11.00  
+ Max.   :2013   Max.   :12.000   Max.   :31.00   Max.   :2400   Max.   :2359   Max.   :1301.00  
+                                                 NA&#39;s   :8255                  NA&#39;s   :8255     
+    arr_time    sched_arr_time   arr_delay          carrier              flight    
+ Min.   :   1   Min.   :   1   Min.   : -86.000   Length:336776      Min.   :   1  
+ 1st Qu.:1104   1st Qu.:1124   1st Qu.: -17.000   Class :character   1st Qu.: 553  
+ Median :1535   Median :1556   Median :  -5.000   Mode  :character   Median :1496  
+ Mean   :1502   Mean   :1536   Mean   :   6.895                      Mean   :1972  
+ 3rd Qu.:1940   3rd Qu.:1945   3rd Qu.:  14.000                      3rd Qu.:3465  
+ Max.   :2400   Max.   :2359   Max.   :1272.000                      Max.   :8500  
+ NA&#39;s   :8713                  NA&#39;s   :9430                                        
+   tailnum             origin              dest              air_time        distance   
+ Length:336776      Length:336776      Length:336776      Min.   : 20.0   Min.   :  17  
+ Class :character   Class :character   Class :character   1st Qu.: 82.0   1st Qu.: 502  
+ Mode  :character   Mode  :character   Mode  :character   Median :129.0   Median : 872  
+                                                          Mean   :150.7   Mean   :1040  
+                                                          3rd Qu.:192.0   3rd Qu.:1389  
+                                                          Max.   :695.0   Max.   :4983  
+                                                          NA&#39;s   :9430                  
+      hour           minute        time_hour                  
+ Min.   : 1.00   Min.   : 0.00   Min.   :2013-01-01 05:00:00  
+ 1st Qu.: 9.00   1st Qu.: 8.00   1st Qu.:2013-04-04 13:00:00  
+ Median :13.00   Median :29.00   Median :2013-07-03 10:00:00  
+ Mean   :13.18   Mean   :26.23   Mean   :2013-07-03 05:22:54  
+ 3rd Qu.:17.00   3rd Qu.:44.00   3rd Qu.:2013-10-01 07:00:00  
+ Max.   :23.00   Max.   :59.00   Max.   :2013-12-31 23:00:00  
+                                                              </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>We also have some data related to local weather conditions.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoic3VtbWFyeSggd2VhdGhlciApIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeSggd2VhdGhlciApXG5gYGAifQ== -->
 <pre class="r"><code>summary( weather )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgIG9yaWdpbiAgICAgICAgICAgICAgIHllYXIgICAgICAgICAgbW9udGggICAgICAgICAgICAgZGF5ICAgICAgIFxuIExlbmd0aDoyNjExNSAgICAgICBNaW4uICAgOjIwMTMgICBNaW4uICAgOiAxLjAwMCAgIE1pbi4gICA6IDEuMDAgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOjIwMTMgICAxc3QgUXUuOiA0LjAwMCAgIDFzdCBRdS46IDguMDAgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOjIwMTMgICBNZWRpYW4gOiA3LjAwMCAgIE1lZGlhbiA6MTYuMDAgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOjIwMTMgICBNZWFuICAgOiA2LjUwNCAgIE1lYW4gICA6MTUuNjggIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOjIwMTMgICAzcmQgUXUuOiA5LjAwMCAgIDNyZCBRdS46MjMuMDAgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOjIwMTMgICBNYXguICAgOjEyLjAwMCAgIE1heC4gICA6MzEuMDAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgICAgaG91ciAgICAgICAgICAgIHRlbXAgICAgICAgICAgICAgZGV3cCAgICAgICAgICAgaHVtaWQgICAgICAgXG4gTWluLiAgIDogMC4wMCAgIE1pbi4gICA6IDEwLjk0ICAgTWluLiAgIDotOS45NCAgIE1pbi4gICA6IDEyLjc0ICBcbiAxc3QgUXUuOiA2LjAwICAgMXN0IFF1LjogMzkuOTIgICAxc3QgUXUuOjI2LjA2ICAgMXN0IFF1LjogNDcuMDUgIFxuIE1lZGlhbiA6MTEuMDAgICBNZWRpYW4gOiA1NS40MCAgIE1lZGlhbiA6NDIuMDggICBNZWRpYW4gOiA2MS43OSAgXG4gTWVhbiAgIDoxMS40OSAgIE1lYW4gICA6IDU1LjI2ICAgTWVhbiAgIDo0MS40NCAgIE1lYW4gICA6IDYyLjUzICBcbiAzcmQgUXUuOjE3LjAwICAgM3JkIFF1LjogNjkuOTggICAzcmQgUXUuOjU3LjkyICAgM3JkIFF1LjogNzguNzkgIFxuIE1heC4gICA6MjMuMDAgICBNYXguICAgOjEwMC4wNCAgIE1heC4gICA6NzguMDggICBNYXguICAgOjEwMC4wMCAgXG4gICAgICAgICAgICAgICAgIE5BJ3MgICA6MSAgICAgICAgTkEncyAgIDoxICAgICAgIE5BJ3MgICA6MSAgICAgICBcbiAgICB3aW5kX2RpciAgICAgICB3aW5kX3NwZWVkICAgICAgICAgd2luZF9ndXN0ICAgICAgICAgcHJlY2lwICAgICAgICBcbiBNaW4uICAgOiAgMC4wICAgTWluLiAgIDogICAwLjAwMCAgIE1pbi4gICA6MTYuMTEgICBNaW4uICAgOjAuMDAwMDAwICBcbiAxc3QgUXUuOjEyMC4wICAgMXN0IFF1LjogICA2LjkwNSAgIDFzdCBRdS46MjAuNzEgICAxc3QgUXUuOjAuMDAwMDAwICBcbiBNZWRpYW4gOjIyMC4wICAgTWVkaWFuIDogIDEwLjM1NyAgIE1lZGlhbiA6MjQuMTcgICBNZWRpYW4gOjAuMDAwMDAwICBcbiBNZWFuICAgOjE5OS44ICAgTWVhbiAgIDogIDEwLjUxOCAgIE1lYW4gICA6MjUuNDkgICBNZWFuICAgOjAuMDA0NDY5ICBcbiAzcmQgUXUuOjI5MC4wICAgM3JkIFF1LjogIDEzLjgwOSAgIDNyZCBRdS46MjguNzcgICAzcmQgUXUuOjAuMDAwMDAwICBcbiBNYXguICAgOjM2MC4wICAgTWF4LiAgIDoxMDQ4LjM2MSAgIE1heC4gICA6NjYuNzUgICBNYXguICAgOjEuMjEwMDAwICBcbiBOQSdzICAgOjQ2MCAgICAgTkEncyAgIDo0ICAgICAgICAgIE5BJ3MgICA6MjA3NzggICAgICAgICAgICAgICAgICAgICBcbiAgICBwcmVzc3VyZSAgICAgICAgICB2aXNpYiAgICAgICAgICB0aW1lX2hvdXIgICAgICAgICAgICAgICAgICBcbiBNaW4uICAgOiA5ODMuOCAgIE1pbi4gICA6IDAuMDAwICAgTWluLiAgIDoyMDEzLTAxLTAxIDAxOjAwOjAwICBcbiAxc3QgUXUuOjEwMTIuOSAgIDFzdCBRdS46MTAuMDAwICAgMXN0IFF1LjoyMDEzLTA0LTAxIDIxOjMwOjAwICBcbiBNZWRpYW4gOjEwMTcuNiAgIE1lZGlhbiA6MTAuMDAwICAgTWVkaWFuIDoyMDEzLTA3LTAxIDE0OjAwOjAwICBcbiBNZWFuICAgOjEwMTcuOSAgIE1lYW4gICA6IDkuMjU1ICAgTWVhbiAgIDoyMDEzLTA3LTAxIDE4OjI2OjM3ICBcbiAzcmQgUXUuOjEwMjMuMCAgIDNyZCBRdS46MTAuMDAwICAgM3JkIFF1LjoyMDEzLTA5LTMwIDEzOjAwOjAwICBcbiBNYXguICAgOjEwNDIuMSAgIE1heC4gICA6MTAuMDAwICAgTWF4LiAgIDoyMDEzLTEyLTMwIDE4OjAwOjAwICBcbiBOQSdzICAgOjI3MjkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiJ9 -->
-<pre><code>    origin               year          month             day       
- Length:26115       Min.   :2013   Min.   : 1.000   Min.   : 1.00  
- Class :character   1st Qu.:2013   1st Qu.: 4.000   1st Qu.: 8.00  
- Mode  :character   Median :2013   Median : 7.000   Median :16.00  
-                    Mean   :2013   Mean   : 6.504   Mean   :15.68  
-                    3rd Qu.:2013   3rd Qu.: 9.000   3rd Qu.:23.00  
-                    Max.   :2013   Max.   :12.000   Max.   :31.00  
-                                                                   
-      hour            temp             dewp           humid       
- Min.   : 0.00   Min.   : 10.94   Min.   :-9.94   Min.   : 12.74  
- 1st Qu.: 6.00   1st Qu.: 39.92   1st Qu.:26.06   1st Qu.: 47.05  
- Median :11.00   Median : 55.40   Median :42.08   Median : 61.79  
- Mean   :11.49   Mean   : 55.26   Mean   :41.44   Mean   : 62.53  
- 3rd Qu.:17.00   3rd Qu.: 69.98   3rd Qu.:57.92   3rd Qu.: 78.79  
- Max.   :23.00   Max.   :100.04   Max.   :78.08   Max.   :100.00  
-                 NA&#39;s   :1        NA&#39;s   :1       NA&#39;s   :1       
-    wind_dir       wind_speed         wind_gust         precip        
- Min.   :  0.0   Min.   :   0.000   Min.   :16.11   Min.   :0.000000  
- 1st Qu.:120.0   1st Qu.:   6.905   1st Qu.:20.71   1st Qu.:0.000000  
- Median :220.0   Median :  10.357   Median :24.17   Median :0.000000  
- Mean   :199.8   Mean   :  10.518   Mean   :25.49   Mean   :0.004469  
- 3rd Qu.:290.0   3rd Qu.:  13.809   3rd Qu.:28.77   3rd Qu.:0.000000  
- Max.   :360.0   Max.   :1048.361   Max.   :66.75   Max.   :1.210000  
- NA&#39;s   :460     NA&#39;s   :4          NA&#39;s   :20778                     
-    pressure          visib          time_hour                  
- Min.   : 983.8   Min.   : 0.000   Min.   :2013-01-01 01:00:00  
- 1st Qu.:1012.9   1st Qu.:10.000   1st Qu.:2013-04-01 21:30:00  
- Median :1017.6   Median :10.000   Median :2013-07-01 14:00:00  
- Mean   :1017.9   Mean   : 9.255   Mean   :2013-07-01 18:26:37  
- 3rd Qu.:1023.0   3rd Qu.:10.000   3rd Qu.:2013-09-30 13:00:00  
- Max.   :1042.1   Max.   :10.000   Max.   :2013-12-30 18:00:00  
- NA&#39;s   :2729                                                   </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiICAgIG9yaWdpbiAgICAgICAgICAgICAgIHllYXIgICAgICAgICAgbW9udGggICAgICAgICAgICAgZGF5ICAgICAgICAgICAgIGhvdXIgICAgICAgICAgICB0ZW1wICAgICAgIFxuIExlbmd0aDoyNjExNSAgICAgICBNaW4uICAgOjIwMTMgICBNaW4uICAgOiAxLjAwMCAgIE1pbi4gICA6IDEuMDAgICBNaW4uICAgOiAwLjAwICAgTWluLiAgIDogMTAuOTQgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOjIwMTMgICAxc3QgUXUuOiA0LjAwMCAgIDFzdCBRdS46IDguMDAgICAxc3QgUXUuOiA2LjAwICAgMXN0IFF1LjogMzkuOTIgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOjIwMTMgICBNZWRpYW4gOiA3LjAwMCAgIE1lZGlhbiA6MTYuMDAgICBNZWRpYW4gOjExLjAwICAgTWVkaWFuIDogNTUuNDAgIFxuICAgICAgICAgICAgICAgICAgICBNZWFuICAgOjIwMTMgICBNZWFuICAgOiA2LjUwNCAgIE1lYW4gICA6MTUuNjggICBNZWFuICAgOjExLjQ5ICAgTWVhbiAgIDogNTUuMjYgIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOjIwMTMgICAzcmQgUXUuOiA5LjAwMCAgIDNyZCBRdS46MjMuMDAgICAzcmQgUXUuOjE3LjAwICAgM3JkIFF1LjogNjkuOTggIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOjIwMTMgICBNYXguICAgOjEyLjAwMCAgIE1heC4gICA6MzEuMDAgICBNYXguICAgOjIzLjAwICAgTWF4LiAgIDoxMDAuMDQgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEncyAgIDoxICAgICAgIFxuICAgICAgZGV3cCAgICAgICAgICAgaHVtaWQgICAgICAgICAgIHdpbmRfZGlyICAgICAgIHdpbmRfc3BlZWQgICAgICAgICB3aW5kX2d1c3QgICAgXG4gTWluLiAgIDotOS45NCAgIE1pbi4gICA6IDEyLjc0ICAgTWluLiAgIDogIDAuMCAgIE1pbi4gICA6ICAgMC4wMDAgICBNaW4uICAgOjE2LjExICBcbiAxc3QgUXUuOjI2LjA2ICAgMXN0IFF1LjogNDcuMDUgICAxc3QgUXUuOjEyMC4wICAgMXN0IFF1LjogICA2LjkwNSAgIDFzdCBRdS46MjAuNzEgIFxuIE1lZGlhbiA6NDIuMDggICBNZWRpYW4gOiA2MS43OSAgIE1lZGlhbiA6MjIwLjAgICBNZWRpYW4gOiAgMTAuMzU3ICAgTWVkaWFuIDoyNC4xNyAgXG4gTWVhbiAgIDo0MS40NCAgIE1lYW4gICA6IDYyLjUzICAgTWVhbiAgIDoxOTkuOCAgIE1lYW4gICA6ICAxMC41MTggICBNZWFuICAgOjI1LjQ5ICBcbiAzcmQgUXUuOjU3LjkyICAgM3JkIFF1LjogNzguNzkgICAzcmQgUXUuOjI5MC4wICAgM3JkIFF1LjogIDEzLjgwOSAgIDNyZCBRdS46MjguNzcgIFxuIE1heC4gICA6NzguMDggICBNYXguICAgOjEwMC4wMCAgIE1heC4gICA6MzYwLjAgICBNYXguICAgOjEwNDguMzYxICAgTWF4LiAgIDo2Ni43NSAgXG4gTkEncyAgIDoxICAgICAgIE5BJ3MgICA6MSAgICAgICAgTkEncyAgIDo0NjAgICAgIE5BJ3MgICA6NCAgICAgICAgICBOQSdzICAgOjIwNzc4ICBcbiAgICAgcHJlY2lwICAgICAgICAgICAgcHJlc3N1cmUgICAgICAgICAgdmlzaWIgICAgICAgICAgdGltZV9ob3VyICAgICAgICAgICAgICAgICAgXG4gTWluLiAgIDowLjAwMDAwMCAgIE1pbi4gICA6IDk4My44ICAgTWluLiAgIDogMC4wMDAgICBNaW4uICAgOjIwMTMtMDEtMDEgMDE6MDA6MDAgIFxuIDFzdCBRdS46MC4wMDAwMDAgICAxc3QgUXUuOjEwMTIuOSAgIDFzdCBRdS46MTAuMDAwICAgMXN0IFF1LjoyMDEzLTA0LTAxIDIxOjMwOjAwICBcbiBNZWRpYW4gOjAuMDAwMDAwICAgTWVkaWFuIDoxMDE3LjYgICBNZWRpYW4gOjEwLjAwMCAgIE1lZGlhbiA6MjAxMy0wNy0wMSAxNDowMDowMCAgXG4gTWVhbiAgIDowLjAwNDQ2OSAgIE1lYW4gICA6MTAxNy45ICAgTWVhbiAgIDogOS4yNTUgICBNZWFuICAgOjIwMTMtMDctMDEgMTg6MjY6MzcgIFxuIDNyZCBRdS46MC4wMDAwMDAgICAzcmQgUXUuOjEwMjMuMCAgIDNyZCBRdS46MTAuMDAwICAgM3JkIFF1LjoyMDEzLTA5LTMwIDEzOjAwOjAwICBcbiBNYXguICAgOjEuMjEwMDAwICAgTWF4LiAgIDoxMDQyLjEgICBNYXguICAgOjEwLjAwMCAgIE1heC4gICA6MjAxMy0xMi0zMCAxODowMDowMCAgXG4gICAgICAgICAgICAgICAgICAgIE5BJ3MgICA6MjcyOSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
+<pre><code>    origin               year          month             day             hour            temp       
+ Length:26115       Min.   :2013   Min.   : 1.000   Min.   : 1.00   Min.   : 0.00   Min.   : 10.94  
+ Class :character   1st Qu.:2013   1st Qu.: 4.000   1st Qu.: 8.00   1st Qu.: 6.00   1st Qu.: 39.92  
+ Mode  :character   Median :2013   Median : 7.000   Median :16.00   Median :11.00   Median : 55.40  
+                    Mean   :2013   Mean   : 6.504   Mean   :15.68   Mean   :11.49   Mean   : 55.26  
+                    3rd Qu.:2013   3rd Qu.: 9.000   3rd Qu.:23.00   3rd Qu.:17.00   3rd Qu.: 69.98  
+                    Max.   :2013   Max.   :12.000   Max.   :31.00   Max.   :23.00   Max.   :100.04  
+                                                                                    NA&#39;s   :1       
+      dewp           humid           wind_dir       wind_speed         wind_gust    
+ Min.   :-9.94   Min.   : 12.74   Min.   :  0.0   Min.   :   0.000   Min.   :16.11  
+ 1st Qu.:26.06   1st Qu.: 47.05   1st Qu.:120.0   1st Qu.:   6.905   1st Qu.:20.71  
+ Median :42.08   Median : 61.79   Median :220.0   Median :  10.357   Median :24.17  
+ Mean   :41.44   Mean   : 62.53   Mean   :199.8   Mean   :  10.518   Mean   :25.49  
+ 3rd Qu.:57.92   3rd Qu.: 78.79   3rd Qu.:290.0   3rd Qu.:  13.809   3rd Qu.:28.77  
+ Max.   :78.08   Max.   :100.00   Max.   :360.0   Max.   :1048.361   Max.   :66.75  
+ NA&#39;s   :1       NA&#39;s   :1        NA&#39;s   :460     NA&#39;s   :4          NA&#39;s   :20778  
+     precip            pressure          visib          time_hour                  
+ Min.   :0.000000   Min.   : 983.8   Min.   : 0.000   Min.   :2013-01-01 01:00:00  
+ 1st Qu.:0.000000   1st Qu.:1012.9   1st Qu.:10.000   1st Qu.:2013-04-01 21:30:00  
+ Median :0.000000   Median :1017.6   Median :10.000   Median :2013-07-01 14:00:00  
+ Mean   :0.004469   Mean   :1017.9   Mean   : 9.255   Mean   :2013-07-01 18:26:37  
+ 3rd Qu.:0.000000   3rd Qu.:1023.0   3rd Qu.:10.000   3rd Qu.:2013-09-30 13:00:00  
+ Max.   :1.210000   Max.   :1042.1   Max.   :10.000   Max.   :2013-12-30 18:00:00  
+                    NA&#39;s   :2729                                                   </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>I’m going to make a synthetic data set consisting of flights out of JFK for the <em>ExpressJet</em> airlines. Since the weather data is on the hour, I also make a synthetic varible <code>Month.Day.Hour</code> so that I can join the weather data to this one.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbImZsaWdodHMgJT4lXG4gIGZpbHRlciggb3JpZ2luID09IFwiSkZLXCIsIGNhcnJpZXIgPT0gXCJFVlwiKSAlPiVcbiAgbXV0YXRlKCBEYXRlVGltZSA9IHBhc3RlKG1vbnRoLGRheSxob3VyLCBzZXA9XCIuXCIpKSAlPiVcbiAgc2VsZWN0KCBEYXRlVGltZSwgXG4gICAgICAgICAgYERlcGFydHVyZSBEZWxheWAgPSBkZXBfZGVsYXksXG4gICAgICAgICAgYERlcGFydHVyZSBUaW1lYCA9IHNjaGVkX2RlcF90aW1lKSAlPiVcbiAgZHJvcGxldmVscygpIC0+IGRmLmpmayAiLCJzdW1tYXJ5KCBkZi5qZmsgKSJdfQ== -->
-<pre class="r"><code>flights %&gt;%
-  filter( origin == &quot;JFK&quot;, carrier == &quot;EV&quot;) %&gt;%
-  mutate( DateTime = paste(month,day,hour, sep=&quot;.&quot;)) %&gt;%
-  select( DateTime, 
-          `Departure Delay` = dep_delay,
-          `Departure Time` = sched_dep_time) %&gt;%
-  droplevels() -&gt; df.jfk 
-summary( df.jfk )</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgRGF0ZVRpbWUgICAgICAgICBEZXBhcnR1cmUgRGVsYXkgIERlcGFydHVyZSBUaW1lXG4gTGVuZ3RoOjE0MDggICAgICAgIE1pbi4gICA6LTE5LjAwICAgTWluLiAgIDogNTU5ICBcbiBDbGFzcyA6Y2hhcmFjdGVyICAgMXN0IFF1LjogLTYuMDAgICAxc3QgUXUuOiA5NTkgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOiAtMi4wMCAgIE1lZGlhbiA6MTM1NSAgXG4gICAgICAgICAgICAgICAgICAgIE1lYW4gICA6IDE4LjUyICAgTWVhbiAgIDoxMjM3ICBcbiAgICAgICAgICAgICAgICAgICAgM3JkIFF1LjogMTYuMDAgICAzcmQgUXUuOjE5MDAgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOjUzNi4wMCAgIE1heC4gICA6MTk0NSAgXG4gICAgICAgICAgICAgICAgICAgIE5BJ3MgICA6ODIgICAgICAgICAgICAgICAgICAgICBcbiJ9 -->
-<pre><code>   DateTime         Departure Delay  Departure Time
- Length:1408        Min.   :-19.00   Min.   : 559  
- Class :character   1st Qu.: -6.00   1st Qu.: 959  
- Mode  :character   Median : -2.00   Median :1355  
-                    Mean   : 18.52   Mean   :1237  
-                    3rd Qu.: 16.00   3rd Qu.:1900  
-                    Max.   :536.00   Max.   :1945  
-                    NA&#39;s   :82                     </code></pre>
-<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6Mywic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI2IMOXIDMiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMTFSUzArRU1CQWVIdDBIaWJzbVhqeDQ4R0M4MFdRaE1lN05BL0ZxWXRhRWk0ZktWaVYyQzRFUzllWS9jMytYaDhXMnRDSkFZR2ErZWZUN3B2ZEpHZ2RwQUFBZStJNERIcEl1b0lmTmJYZ040THN5Y01DSHViSWZzdWhFVndJY3kyOWlFcE1WbG04OGlOWjlGQTF5VVo5REt4empxLy9CV2pvTFZYZnp1RmM4WUg4Qm5aMFplMnJzbWJHWFlKOGp6UWpRSGNDVTlkWk5KZUh2a1JURXlZN1dSb1pud0ZsQ0JOM2tPMnJpWlVKTFVvbW1vdWNKWmVUVHdJc2Uxc1hEeWZPcWVNZDJ1cUxrZnNsZjI3WS9Zd29aSTdXbFlNRmdTd1RCenhWUmMrRXdhcGtXcGNnTExwdGNkUTFvMU94VUkyRFpjTVZrRzJhdkRYOExJM1dBVHZjTGM3cWwvZmxlZDZUYm1sSElYaHpsTHptM20wR01QRkZtOXlFVmE4RzRySEl1ckJLSjFsZ1VndGk2SUN1WVJiUTJPUHdDV2VyRlduMENBQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["DateTime"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Departure Delay"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Departure Time"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"1.1.13","2":"119","3":"1359"},{"1":"1.1.19","2":"-10","3":"1900"},{"1":"1.2.13","2":"-3","3":"1359"},{"1":"1.2.19","2":"-6","3":"1900"},{"1":"1.3.6","2":"-7","3":"600"},{"1":"1.3.9","2":"-11","3":"959"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Now I’ll do the same with the weather data.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIndlYXRoZXIgJT4lXG4gIGZpbHRlciggb3JpZ2luID09IFwiSkZLXCIpICU+JSBcbiAgbXV0YXRlKCBEYXRlVGltZSA9IHBhc3RlKG1vbnRoLGRheSxob3VyLCBzZXA9XCIuXCIpKSAlPiVcbiAgc2VsZWN0KCAtb3JpZ2luLCAteWVhciwgLW1vbnRoLCAtZGF5LCAtaG91ciwgLXRpbWVfaG91ciApIC0+IGRmLndlYXRoZXIgIiwic3VtbWFyeSggZGYud2VhdGhlciApIl19 -->
-<pre class="r"><code>weather %&gt;%
-  filter( origin == &quot;JFK&quot;) %&gt;% 
-  mutate( DateTime = paste(month,day,hour, sep=&quot;.&quot;)) %&gt;%
-  select( -origin, -year, -month, -day, -hour, -time_hour ) -&gt; df.weather 
-summary( df.weather )</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeSggZGYud2VhdGhlciApXG5cbmBgYCJ9 -->
+<pre class="r"><code>summary( df.weather )
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgdGVtcCAgICAgICAgICAgIGRld3AgICAgICAgICAgIGh1bWlkICAgICAgICAgICB3aW5kX2RpciAgICBcbiBNaW4uICAgOjEyLjAyICAgTWluLiAgIDotOS45NCAgIE1pbi4gICA6IDE1LjIxICAgTWluLiAgIDogIDAuMCAgXG4gMXN0IFF1LjozOS45MiAgIDFzdCBRdS46MjYuOTYgICAxc3QgUXUuOiA0OS4xOSAgIDFzdCBRdS46MTQwLjAgIFxuIE1lZGlhbiA6NTMuOTYgICBNZWRpYW4gOjQyLjk4ICAgTWVkaWFuIDogNjUuODAgICBNZWRpYW4gOjIyMC4wICBcbiBNZWFuICAgOjU0LjQ3ICAgTWVhbiAgIDo0MS44NiAgIE1lYW4gICA6IDY1LjIxICAgTWVhbiAgIDoyMDQuMiAgXG4gM3JkIFF1Ljo2OS4wOCAgIDNyZCBRdS46NTcuOTIgICAzcmQgUXUuOiA4Mi43MyAgIDNyZCBRdS46MjkwLjAgIFxuIE1heC4gICA6OTguMDYgICBNYXguICAgOjc4LjA4ICAgTWF4LiAgIDoxMDAuMDAgICBNYXguICAgOjM2MC4wICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEncyAgIDo1MSAgICAgXG4gICB3aW5kX3NwZWVkICAgICAgIHdpbmRfZ3VzdCAgICAgICAgIHByZWNpcCAgICAgICAgICAgIHByZXNzdXJlICAgICBcbiBNaW4uICAgOiAwLjAwMCAgIE1pbi4gICA6MTYuMTEgICBNaW4uICAgOjAuMDAwMDAwICAgTWluLiAgIDogOTg1LjcgIFxuIDFzdCBRdS46IDYuOTA1ICAgMXN0IFF1LjoyMy4wMiAgIDFzdCBRdS46MC4wMDAwMDAgICAxc3QgUXUuOjEwMTMuMSAgXG4gTWVkaWFuIDoxMC4zNTcgICBNZWRpYW4gOjI2LjQ3ICAgTWVkaWFuIDowLjAwMDAwMCAgIE1lZGlhbiA6MTAxNy45ICBcbiBNZWFuICAgOjExLjQ2OCAgIE1lYW4gICA6MjcuNTYgICBNZWFuICAgOjAuMDAzOTg1ICAgTWVhbiAgIDoxMDE4LjIgIFxuIDNyZCBRdS46MTQuOTYwICAgM3JkIFF1LjozMS4wNyAgIDNyZCBRdS46MC4wMDAwMDAgICAzcmQgUXUuOjEwMjMuMyAgXG4gTWF4LiAgIDo0Mi41NzkgICBNYXguICAgOjY2Ljc1ICAgTWF4LiAgIDowLjY2MDAwMCAgIE1heC4gICA6MTA0Mi4xICBcbiBOQSdzICAgOjMgICAgICAgIE5BJ3MgICA6NzE5OSAgICAgICAgICAgICAgICAgICAgICAgTkEncyAgIDo4MzEgICAgIFxuICAgICB2aXNpYiAgICAgICAgICBEYXRlVGltZSAgICAgICAgXG4gTWluLiAgIDogMC4wMDAgICBMZW5ndGg6ODcwNiAgICAgICBcbiAxc3QgUXUuOjEwLjAwMCAgIENsYXNzIDpjaGFyYWN0ZXIgIFxuIE1lZGlhbiA6MTAuMDAwICAgTW9kZSAgOmNoYXJhY3RlciAgXG4gTWVhbiAgIDogOS4xNzggICAgICAgICAgICAgICAgICAgICBcbiAzcmQgUXUuOjEwLjAwMCAgICAgICAgICAgICAgICAgICAgIFxuIE1heC4gICA6MTAuMDAwICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiJ9 -->
-<pre><code>      temp            dewp           humid           wind_dir    
- Min.   :12.02   Min.   :-9.94   Min.   : 15.21   Min.   :  0.0  
- 1st Qu.:39.92   1st Qu.:26.96   1st Qu.: 49.19   1st Qu.:140.0  
- Median :53.96   Median :42.98   Median : 65.80   Median :220.0  
- Mean   :54.47   Mean   :41.86   Mean   : 65.21   Mean   :204.2  
- 3rd Qu.:69.08   3rd Qu.:57.92   3rd Qu.: 82.73   3rd Qu.:290.0  
- Max.   :98.06   Max.   :78.08   Max.   :100.00   Max.   :360.0  
-                                                  NA&#39;s   :51     
-   wind_speed       wind_gust         precip            pressure     
- Min.   : 0.000   Min.   :16.11   Min.   :0.000000   Min.   : 985.7  
- 1st Qu.: 6.905   1st Qu.:23.02   1st Qu.:0.000000   1st Qu.:1013.1  
- Median :10.357   Median :26.47   Median :0.000000   Median :1017.9  
- Mean   :11.468   Mean   :27.56   Mean   :0.003985   Mean   :1018.2  
- 3rd Qu.:14.960   3rd Qu.:31.07   3rd Qu.:0.000000   3rd Qu.:1023.3  
- Max.   :42.579   Max.   :66.75   Max.   :0.660000   Max.   :1042.1  
- NA&#39;s   :3        NA&#39;s   :7199                       NA&#39;s   :831     
-     visib          DateTime        
- Min.   : 0.000   Length:8706       
- 1st Qu.:10.000   Class :character  
- Median :10.000   Mode  :character  
- Mean   : 9.178                     
- 3rd Qu.:10.000                     
- Max.   :10.000                     
-                                    </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgdGVtcCAgICAgICAgICAgIGRld3AgICAgICAgICAgIGh1bWlkICAgICAgICAgICB3aW5kX2RpciAgICAgICB3aW5kX3NwZWVkICAgICAgIHdpbmRfZ3VzdCAgICBcbiBNaW4uICAgOjEyLjAyICAgTWluLiAgIDotOS45NCAgIE1pbi4gICA6IDE1LjIxICAgTWluLiAgIDogIDAuMCAgIE1pbi4gICA6IDAuMDAwICAgTWluLiAgIDoxNi4xMSAgXG4gMXN0IFF1LjozOS45MiAgIDFzdCBRdS46MjYuOTYgICAxc3QgUXUuOiA0OS4xOSAgIDFzdCBRdS46MTQwLjAgICAxc3QgUXUuOiA2LjkwNSAgIDFzdCBRdS46MjMuMDIgIFxuIE1lZGlhbiA6NTMuOTYgICBNZWRpYW4gOjQyLjk4ICAgTWVkaWFuIDogNjUuODAgICBNZWRpYW4gOjIyMC4wICAgTWVkaWFuIDoxMC4zNTcgICBNZWRpYW4gOjI2LjQ3ICBcbiBNZWFuICAgOjU0LjQ3ICAgTWVhbiAgIDo0MS44NiAgIE1lYW4gICA6IDY1LjIxICAgTWVhbiAgIDoyMDQuMiAgIE1lYW4gICA6MTEuNDY4ICAgTWVhbiAgIDoyNy41NiAgXG4gM3JkIFF1Ljo2OS4wOCAgIDNyZCBRdS46NTcuOTIgICAzcmQgUXUuOiA4Mi43MyAgIDNyZCBRdS46MjkwLjAgICAzcmQgUXUuOjE0Ljk2MCAgIDNyZCBRdS46MzEuMDcgIFxuIE1heC4gICA6OTguMDYgICBNYXguICAgOjc4LjA4ICAgTWF4LiAgIDoxMDAuMDAgICBNYXguICAgOjM2MC4wICAgTWF4LiAgIDo0Mi41NzkgICBNYXguICAgOjY2Ljc1ICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEncyAgIDo1MSAgICAgIE5BJ3MgICA6MyAgICAgICAgTkEncyAgIDo3MTk5ICAgXG4gICAgIHByZWNpcCAgICAgICAgICAgIHByZXNzdXJlICAgICAgICAgIHZpc2liICAgICAgICAgIERhdGVUaW1lICAgICAgICBcbiBNaW4uICAgOjAuMDAwMDAwICAgTWluLiAgIDogOTg1LjcgICBNaW4uICAgOiAwLjAwMCAgIExlbmd0aDo4NzA2ICAgICAgIFxuIDFzdCBRdS46MC4wMDAwMDAgICAxc3QgUXUuOjEwMTMuMSAgIDFzdCBRdS46MTAuMDAwICAgQ2xhc3MgOmNoYXJhY3RlciAgXG4gTWVkaWFuIDowLjAwMDAwMCAgIE1lZGlhbiA6MTAxNy45ICAgTWVkaWFuIDoxMC4wMDAgICBNb2RlICA6Y2hhcmFjdGVyICBcbiBNZWFuICAgOjAuMDAzOTg1ICAgTWVhbiAgIDoxMDE4LjIgICBNZWFuICAgOiA5LjE3OCAgICAgICAgICAgICAgICAgICAgIFxuIDNyZCBRdS46MC4wMDAwMDAgICAzcmQgUXUuOjEwMjMuMyAgIDNyZCBRdS46MTAuMDAwICAgICAgICAgICAgICAgICAgICAgXG4gTWF4LiAgIDowLjY2MDAwMCAgIE1heC4gICA6MTA0Mi4xICAgTWF4LiAgIDoxMC4wMDAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgTkEncyAgIDo4MzEgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
+<pre><code>      temp            dewp           humid           wind_dir       wind_speed       wind_gust    
+ Min.   :12.02   Min.   :-9.94   Min.   : 15.21   Min.   :  0.0   Min.   : 0.000   Min.   :16.11  
+ 1st Qu.:39.92   1st Qu.:26.96   1st Qu.: 49.19   1st Qu.:140.0   1st Qu.: 6.905   1st Qu.:23.02  
+ Median :53.96   Median :42.98   Median : 65.80   Median :220.0   Median :10.357   Median :26.47  
+ Mean   :54.47   Mean   :41.86   Mean   : 65.21   Mean   :204.2   Mean   :11.468   Mean   :27.56  
+ 3rd Qu.:69.08   3rd Qu.:57.92   3rd Qu.: 82.73   3rd Qu.:290.0   3rd Qu.:14.960   3rd Qu.:31.07  
+ Max.   :98.06   Max.   :78.08   Max.   :100.00   Max.   :360.0   Max.   :42.579   Max.   :66.75  
+                                                  NA&#39;s   :51      NA&#39;s   :3        NA&#39;s   :7199   
+     precip            pressure          visib          DateTime        
+ Min.   :0.000000   Min.   : 985.7   Min.   : 0.000   Length:8706       
+ 1st Qu.:0.000000   1st Qu.:1013.1   1st Qu.:10.000   Class :character  
+ Median :0.000000   Median :1017.9   Median :10.000   Mode  :character  
+ Mean   :0.003985   Mean   :1018.2   Mean   : 9.178                     
+ 3rd Qu.:0.000000   3rd Qu.:1023.3   3rd Qu.:10.000                     
+ Max.   :0.660000   Max.   :1042.1   Max.   :10.000                     
+                    NA&#39;s   :831                                         </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Now, I’m going to <code>merge</code> these two <code>data.frame</code> objects using the common <code>key</code> I made <code>DateTime</code>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIm1lcmdlKCBkZi5qZmssIGRmLndlYXRoZXIsIGJ5PVwiRGF0ZVRpbWVcIiApICU+JVxuICBzZWxlY3QoIC1EYXRlVGltZSApIC0+IGRmICIsIiIsInN1bW1hcnkoIGRmICkiXX0= -->
-<pre class="r"><code>merge( df.jfk, df.weather, by=&quot;DateTime&quot; ) %&gt;%
-  select( -DateTime ) -&gt; df 
-
-summary( df )</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeSggZGYgKVxuXG5gYGAifQ== -->
+<pre class="r"><code>summary( df )
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIERlcGFydHVyZSBEZWxheSAgRGVwYXJ0dXJlIFRpbWUgICAgICB0ZW1wICAgICAgICAgICAgZGV3cCAgICAgIFxuIE1pbi4gICA6LTE5LjAwICAgTWluLiAgIDogNTU5ICAgTWluLiAgIDoxMi4wMiAgIE1pbi4gICA6LTcuOTYgIFxuIDFzdCBRdS46IC02LjAwICAgMXN0IFF1LjogOTU5ICAgMXN0IFF1Ljo0Mi4wOCAgIDFzdCBRdS46MjYuOTYgIFxuIE1lZGlhbiA6IC0yLjAwICAgTWVkaWFuIDoxMzU1ICAgTWVkaWFuIDo1NS45NCAgIE1lZGlhbiA6NDQuMDYgIFxuIE1lYW4gICA6IDE4LjUzICAgTWVhbiAgIDoxMjM2ICAgTWVhbiAgIDo1NS45MiAgIE1lYW4gICA6NDIuNDQgIFxuIDNyZCBRdS46IDE2LjAwICAgM3JkIFF1LjoxOTAwICAgM3JkIFF1Ljo2OS45OCAgIDNyZCBRdS46NTkuMDAgIFxuIE1heC4gICA6NTM2LjAwICAgTWF4LiAgIDoxOTQ1ICAgTWF4LiAgIDo5Ni45OCAgIE1heC4gICA6NzguMDggIFxuIE5BJ3MgICA6ODEgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgICBodW1pZCAgICAgICAgICAgd2luZF9kaXIgICAgICAgd2luZF9zcGVlZCAgICAgICB3aW5kX2d1c3QgICAgXG4gTWluLiAgIDogMTguMTkgICBNaW4uICAgOiAgMC4wICAgTWluLiAgIDogMC4wMDAgICBNaW4uICAgOjE2LjExICBcbiAxc3QgUXUuOiA0Ni4xMyAgIDFzdCBRdS46MTMwLjAgICAxc3QgUXUuOiA4LjA1NSAgIDFzdCBRdS46MjMuMDIgIFxuIE1lZGlhbiA6IDY0LjI5ICAgTWVkaWFuIDoyMTAuMCAgIE1lZGlhbiA6MTEuNTA4ICAgTWVkaWFuIDoyNi40NyAgXG4gTWVhbiAgIDogNjMuNDkgICBNZWFuICAgOjIwMy41ICAgTWVhbiAgIDoxMS44NjUgICBNZWFuICAgOjI3LjU3ICBcbiAzcmQgUXUuOiA4MC43NSAgIDNyZCBRdS46MjkwLjAgICAzcmQgUXUuOjE0Ljk2MCAgIDNyZCBRdS46MzEuMDcgIFxuIE1heC4gICA6MTAwLjAwICAgTWF4LiAgIDozNjAuMCAgIE1heC4gICA6MzMuMzczICAgTWF4LiAgIDo0Ni4wMyAgXG4gICAgICAgICAgICAgICAgICBOQSdzICAgOjEyICAgICAgTkEncyAgIDoyICAgICAgICBOQSdzICAgOjExNDggICBcbiAgICAgcHJlY2lwICAgICAgICAgICAgcHJlc3N1cmUgICAgICAgICAgdmlzaWIgICAgICBcbiBNaW4uICAgOjAuMDAwMDAwICAgTWluLiAgIDogOTg1LjcgICBNaW4uICAgOiAwLjAwICBcbiAxc3QgUXUuOjAuMDAwMDAwICAgMXN0IFF1LjoxMDEzLjAgICAxc3QgUXUuOjEwLjAwICBcbiBNZWRpYW4gOjAuMDAwMDAwICAgTWVkaWFuIDoxMDE3LjggICBNZWRpYW4gOjEwLjAwICBcbiBNZWFuICAgOjAuMDAzNDA3ICAgTWVhbiAgIDoxMDE4LjEgICBNZWFuICAgOiA5LjE3ICBcbiAzcmQgUXUuOjAuMDAwMDAwICAgM3JkIFF1LjoxMDIzLjIgICAzcmQgUXUuOjEwLjAwICBcbiBNYXguICAgOjAuNDgwMDAwICAgTWF4LiAgIDoxMDQxLjkgICBNYXguICAgOjEwLjAwICBcbiAgICAgICAgICAgICAgICAgICAgTkEncyAgIDoxMzUgICAgICAgICAgICAgICAgICAgICBcbiJ9 -->
-<pre><code> Departure Delay  Departure Time      temp            dewp      
- Min.   :-19.00   Min.   : 559   Min.   :12.02   Min.   :-7.96  
- 1st Qu.: -6.00   1st Qu.: 959   1st Qu.:42.08   1st Qu.:26.96  
- Median : -2.00   Median :1355   Median :55.94   Median :44.06  
- Mean   : 18.53   Mean   :1236   Mean   :55.92   Mean   :42.44  
- 3rd Qu.: 16.00   3rd Qu.:1900   3rd Qu.:69.98   3rd Qu.:59.00  
- Max.   :536.00   Max.   :1945   Max.   :96.98   Max.   :78.08  
- NA&#39;s   :81                                                     
-     humid           wind_dir       wind_speed       wind_gust    
- Min.   : 18.19   Min.   :  0.0   Min.   : 0.000   Min.   :16.11  
- 1st Qu.: 46.13   1st Qu.:130.0   1st Qu.: 8.055   1st Qu.:23.02  
- Median : 64.29   Median :210.0   Median :11.508   Median :26.47  
- Mean   : 63.49   Mean   :203.5   Mean   :11.865   Mean   :27.57  
- 3rd Qu.: 80.75   3rd Qu.:290.0   3rd Qu.:14.960   3rd Qu.:31.07  
- Max.   :100.00   Max.   :360.0   Max.   :33.373   Max.   :46.03  
-                  NA&#39;s   :12      NA&#39;s   :2        NA&#39;s   :1148   
-     precip            pressure          visib      
- Min.   :0.000000   Min.   : 985.7   Min.   : 0.00  
- 1st Qu.:0.000000   1st Qu.:1013.0   1st Qu.:10.00  
- Median :0.000000   Median :1017.8   Median :10.00  
- Mean   :0.003407   Mean   :1018.1   Mean   : 9.17  
- 3rd Qu.:0.000000   3rd Qu.:1023.2   3rd Qu.:10.00  
- Max.   :0.480000   Max.   :1041.9   Max.   :10.00  
-                    NA&#39;s   :135                     </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiIERlcGFydHVyZSBEZWxheSAgRGVwYXJ0dXJlIFRpbWUgICAgICB0ZW1wICAgICAgICAgICAgZGV3cCAgICAgICAgICAgaHVtaWQgICAgICAgICAgIHdpbmRfZGlyICAgIFxuIE1pbi4gICA6LTE5LjAwICAgTWluLiAgIDogNTU5ICAgTWluLiAgIDoxMi4wMiAgIE1pbi4gICA6LTcuOTYgICBNaW4uICAgOiAxOC4xOSAgIE1pbi4gICA6ICAwLjAgIFxuIDFzdCBRdS46IC02LjAwICAgMXN0IFF1LjogOTU5ICAgMXN0IFF1Ljo0Mi4wOCAgIDFzdCBRdS46MjYuOTYgICAxc3QgUXUuOiA0Ni4xMyAgIDFzdCBRdS46MTMwLjAgIFxuIE1lZGlhbiA6IC0yLjAwICAgTWVkaWFuIDoxMzU1ICAgTWVkaWFuIDo1NS45NCAgIE1lZGlhbiA6NDQuMDYgICBNZWRpYW4gOiA2NC4yOSAgIE1lZGlhbiA6MjEwLjAgIFxuIE1lYW4gICA6IDE4LjUzICAgTWVhbiAgIDoxMjM2ICAgTWVhbiAgIDo1NS45MiAgIE1lYW4gICA6NDIuNDQgICBNZWFuICAgOiA2My40OSAgIE1lYW4gICA6MjAzLjUgIFxuIDNyZCBRdS46IDE2LjAwICAgM3JkIFF1LjoxOTAwICAgM3JkIFF1Ljo2OS45OCAgIDNyZCBRdS46NTkuMDAgICAzcmQgUXUuOiA4MC43NSAgIDNyZCBRdS46MjkwLjAgIFxuIE1heC4gICA6NTM2LjAwICAgTWF4LiAgIDoxOTQ1ICAgTWF4LiAgIDo5Ni45OCAgIE1heC4gICA6NzguMDggICBNYXguICAgOjEwMC4wMCAgIE1heC4gICA6MzYwLjAgIFxuIE5BJ3MgICA6ODEgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5BJ3MgICA6MTIgICAgIFxuICAgd2luZF9zcGVlZCAgICAgICB3aW5kX2d1c3QgICAgICAgICBwcmVjaXAgICAgICAgICAgICBwcmVzc3VyZSAgICAgICAgICB2aXNpYiAgICAgIFxuIE1pbi4gICA6IDAuMDAwICAgTWluLiAgIDoxNi4xMSAgIE1pbi4gICA6MC4wMDAwMDAgICBNaW4uICAgOiA5ODUuNyAgIE1pbi4gICA6IDAuMDAgIFxuIDFzdCBRdS46IDguMDU1ICAgMXN0IFF1LjoyMy4wMiAgIDFzdCBRdS46MC4wMDAwMDAgICAxc3QgUXUuOjEwMTMuMCAgIDFzdCBRdS46MTAuMDAgIFxuIE1lZGlhbiA6MTEuNTA4ICAgTWVkaWFuIDoyNi40NyAgIE1lZGlhbiA6MC4wMDAwMDAgICBNZWRpYW4gOjEwMTcuOCAgIE1lZGlhbiA6MTAuMDAgIFxuIE1lYW4gICA6MTEuODY1ICAgTWVhbiAgIDoyNy41NyAgIE1lYW4gICA6MC4wMDM0MDcgICBNZWFuICAgOjEwMTguMSAgIE1lYW4gICA6IDkuMTcgIFxuIDNyZCBRdS46MTQuOTYwICAgM3JkIFF1LjozMS4wNyAgIDNyZCBRdS46MC4wMDAwMDAgICAzcmQgUXUuOjEwMjMuMiAgIDNyZCBRdS46MTAuMDAgIFxuIE1heC4gICA6MzMuMzczICAgTWF4LiAgIDo0Ni4wMyAgIE1heC4gICA6MC40ODAwMDAgICBNYXguICAgOjEwNDEuOSAgIE1heC4gICA6MTAuMDAgIFxuIE5BJ3MgICA6MiAgICAgICAgTkEncyAgIDoxMTQ4ICAgICAgICAgICAgICAgICAgICAgICBOQSdzICAgOjEzNSAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
+<pre><code> Departure Delay  Departure Time      temp            dewp           humid           wind_dir    
+ Min.   :-19.00   Min.   : 559   Min.   :12.02   Min.   :-7.96   Min.   : 18.19   Min.   :  0.0  
+ 1st Qu.: -6.00   1st Qu.: 959   1st Qu.:42.08   1st Qu.:26.96   1st Qu.: 46.13   1st Qu.:130.0  
+ Median : -2.00   Median :1355   Median :55.94   Median :44.06   Median : 64.29   Median :210.0  
+ Mean   : 18.53   Mean   :1236   Mean   :55.92   Mean   :42.44   Mean   : 63.49   Mean   :203.5  
+ 3rd Qu.: 16.00   3rd Qu.:1900   3rd Qu.:69.98   3rd Qu.:59.00   3rd Qu.: 80.75   3rd Qu.:290.0  
+ Max.   :536.00   Max.   :1945   Max.   :96.98   Max.   :78.08   Max.   :100.00   Max.   :360.0  
+ NA&#39;s   :81                                                                       NA&#39;s   :12     
+   wind_speed       wind_gust         precip            pressure          visib      
+ Min.   : 0.000   Min.   :16.11   Min.   :0.000000   Min.   : 985.7   Min.   : 0.00  
+ 1st Qu.: 8.055   1st Qu.:23.02   1st Qu.:0.000000   1st Qu.:1013.0   1st Qu.:10.00  
+ Median :11.508   Median :26.47   Median :0.000000   Median :1017.8   Median :10.00  
+ Mean   :11.865   Mean   :27.57   Mean   :0.003407   Mean   :1018.1   Mean   : 9.17  
+ 3rd Qu.:14.960   3rd Qu.:31.07   3rd Qu.:0.000000   3rd Qu.:1023.2   3rd Qu.:10.00  
+ Max.   :33.373   Max.   :46.03   Max.   :0.480000   Max.   :1041.9   Max.   :10.00  
+ NA&#39;s   :2        NA&#39;s   :1148                       NA&#39;s   :135                     </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->

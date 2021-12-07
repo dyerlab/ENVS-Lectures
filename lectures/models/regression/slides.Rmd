@@ -805,6 +805,32 @@ df.random %>%
 
 
 
+---
+class: inverse, sectionTitle
+
+# .yellow[Stepwise Regression]
+
+
+---
+# Fitting Several Features
+
+What if we have 10 predictor variables and are interested in fitting the `best` model des
+
+
+.pull-left[
+### Ap
+]
+
+.pull-right[
+
+]
+
+
+
+
+
+
+
 
 ---
 

@@ -8,7 +8,7 @@ Here is some new data to play with a bit to explore one-way and two-way analysis
 - Gender (0/1)
 - Age (earth years. 🤓)
 - Height (cm)
-- Pre.weigth & weight6weeks (kg)
+- Pre.weight & weight6weeks (kg)
 - Diet (1,2,3)
 
 The data are located at the following URL.  Load the data in and format things so they look correctly to you.
@@ -20,22 +20,48 @@ library( kableExtra )
 
 url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/DietData.csv"
 
+read_csv( url ) %>%
+  select( -Person ) %>%
+  mutate( gender = factor( gender ),
+          Diet = factor( Diet )) %>%
+  arrange( gender, pre.weight ) -> df
+  
+summary( df )
+  
 ```
 ## Exploratory Data Anlsysis
 
 One of the first things to do is to look at the data and see if there are any obvious things.  Go ahead and explore these data visually.  What do you see?
 
 ```{r}
+ggplot( df ) + 
+  geom_density( aes( weight6weeks, fill=Diet), alpha=0.75) + 
+  theme_bw() + 
+  facet_grid( gender ~. )
 ```
 
+Magnitude of loss?
+
+```{r}
+df %>%
+  mutate( `Weight Loss` = (pre.weight - weight6weeks ) / pre.weight ) %>%
+  ggplot() + 
+  geom_density( aes( `Weight Loss`, fill=Diet), alpha=0.75) + 
+  theme_bw() + 
+  facet_grid( gender ~. )
+```
 
 
 ## Estimating Mean Values
 
-Make a table of Weigth Loss by gender and diet.
+Make a table of Weight Loss by gender and diet.
 
 ```{r}
-
+df %>% 
+  group_by( gender, Diet ) %>%
+  summarize( `Weight Loss` = mean( (pre.weight - weight6weeks ) ) ) %>%
+  kable( caption="Percent weight loss for gender and diet types from 76 test subjects.") %>%
+  kable_paper( full_width=FALSE )
 ```
 
 
@@ -55,12 +81,18 @@ $$
 Test the null hypothesis, $H_O:$ *There is no effect of diet on weight loss* (e.g., $\tau_{Diet-1} = \tau_{Diet-1} = \tau_{Diet-1} = 0.0$).  Is there evidence for one diet producing more weight loss than the others?  Create an `aov` analysis and assign it to the variable `fit.diet` and examine its contents.
 
 ```{r}
+df %>% 
+  mutate( `Weight Loss` = (pre.weight - weight6weeks )  ) -> df 
+
+fit.diet <- aov( `Weight Loss` ~ Diet, data=df  )
+anova( fit.diet )
 ```
 
 Are they all significantly different?  Try the `TukeyHSD()` Interpret the results.
 
 ```{r}
-
+tukey <- TukeyHSD( fit.diet )
+plot( tukey )
 ```
  How much of the variation is explained?  If you notice when you do a summary from a `lm()` (regression) model, it gives you the $R^2$ values directly (remember $RT^2 = \frac{SS_{model}}{SS_{Error}}$).  Does `summary()` of your `aov` model give you that?
  
@@ -97,7 +129,15 @@ $$
 Independent of the diet, test the null hypothesis $H_O:$ *There is no difference in weight loss between genders* (e.g., $\tau_{gender-0} = \tau_{gender-2} = 0.0 $).  Is there evidence for one gender being significantly different than another?  How much of the variation is explained (another $R^2$ by gender?
 
 ```{r}
-
+fit.gender <- aov( `Weight Loss` ~ gender, data =df )
+fit.gender
+anova( fit.gender )
+summary( fit.gender) 
+tidy_gender <- tidy( fit.gender )
+R2_gender <- tidy_gender$sumsq[1] / ( sum( tidy_gender$sumsq) )
+R2_gender 
+tukey_gender <- TukeyHSD(fit.gender )
+plot( tukey_gender )
 ```
 
 How do you interpret these results thus far?
@@ -119,20 +159,26 @@ So here we do something a bit different.  We want to simultaneously ask the foll
 In $R$, this is done as:
 
 ```{r}
-
+fit.both <- aov( `Weight Loss` ~ Diet*gender, data=df )
+fit.both
+anova(fit.both)
 ```
 
 ```{r}
-
+tukey.both <- TukeyHSD( fit.both )
+tukey.both 
 ```
 
 ```{r}
-
+plot( tukey.both)
 ```
 
 What is the $R^2$ for this model?
 
 ```{r}
+tidy_both <- tidy( fit.both )
+tidy_both$sumsq[1] / sum( tidy_both$sumsq )
+
 ```
 
 

@@ -3,6 +3,7 @@
   <head>
     <title>Regression</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <script src="libs/kePrint-0.0.1/kePrint.js"></script>
     <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
@@ -20,7 +21,7 @@ background-size: cover
 
 
 
-# .black[Regression Models &lt;svg style="height:0.8em;top:.04em;position:relative;fill:#FDD545;" viewBox="0 0 512 512"&gt;&lt;path d="M496 384H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM464 96H345.94c-21.38 0-32.09 25.85-16.97 40.97l32.4 32.4L288 242.75l-73.37-73.37c-12.5-12.5-32.76-12.5-45.25 0l-68.69 68.69c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L192 237.25l73.37 73.37c12.5 12.5 32.76 12.5 45.25 0l96-96 32.4 32.4c15.12 15.12 40.97 4.41 40.97-16.97V112c.01-8.84-7.15-16-15.99-16z"/&gt;&lt;/svg&gt; ]
+# .black[Regression Models <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#FDD545;overflow:visible;position:relative;"><path d="M496 384H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM464 96H345.94c-21.38 0-32.09 25.85-16.97 40.97l32.4 32.4L288 242.75l-73.37-73.37c-12.5-12.5-32.76-12.5-45.25 0l-68.69 68.69c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L192 237.25l73.37 73.37c12.5 12.5 32.76 12.5 45.25 0l96-96 32.4 32.4c15.12 15.12 40.97 4.41 40.97-16.97V112c.01-8.84-7.15-16-15.99-16z"/></svg> ]
 
 &amp;nbsp;
 
@@ -71,13 +72,13 @@ summary( models )
 ```
 
 ```
-##      beta0             beta1        
-##  Min.   :-19.830   Min.   :-4.9899  
-##  1st Qu.: -2.717   1st Qu.:-2.6477  
-##  Median : 11.520   Median :-0.1729  
-##  Mean   : 12.010   Mean   :-0.1429  
-##  3rd Qu.: 27.296   3rd Qu.: 2.3404  
-##  Max.   : 39.369   Max.   : 4.9963
+##      beta0            beta1          
+##  Min.   :-19.82   Min.   :-4.976810  
+##  1st Qu.: -4.43   1st Qu.:-2.285192  
+##  Median : 11.89   Median :-0.056677  
+##  Mean   : 11.01   Mean   :-0.006256  
+##  3rd Qu.: 27.11   3rd Qu.: 2.302625  
+##  Max.   : 39.99   Max.   : 4.985199
 ```
 ]
 
@@ -129,13 +130,13 @@ head( models )
 ```
 
 ```
-##        beta0      beta1     dist
-## 1  36.630721 -3.2071557 21.68262
-## 2  26.783967  4.4629647 20.97324
-## 3  38.044890  0.8286895 13.13488
-## 4 -16.278410 -2.4602783 63.45688
-## 5   3.128362 -4.5674299 57.78690
-## 6 -19.829708  1.4220019 44.17698
+##        beta0       beta1      dist
+## 1 -18.480921  2.80875740 35.149530
+## 2  16.388071  1.57250077  9.014985
+## 3  16.232729 -1.26404763 25.608568
+## 4  39.976181 -4.28794646 25.626177
+## 5   9.086183 -0.09742767 25.009159
+## 6   7.899000 -4.22103090 51.250562
 ```
 
 
@@ -859,35 +860,35 @@ Example:
 &lt;tbody&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 1 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6105 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6109 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 2 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6106 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6165 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 3 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6167 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6206 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 4 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6232 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6237 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 5 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6284 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6238 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 6 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6413 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6279 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 7 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6433 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6318 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 8 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6456 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6334 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -1019,48 +1020,74 @@ To compare, we evaluate the differences in AIC for alternative models.
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 1 Random Variables &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.611 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 999.398 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.681 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 999.300 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.583 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 2 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.611 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1001.392 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2.675 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.617 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 999.684 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.967 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 3 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.617 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1001.636 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2.919 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.621 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1000.486 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.769 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 4 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.623 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1001.743 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.026 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.624 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1001.590 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.873 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 5 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.628 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1002.182 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.465 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.624 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1003.565 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.848 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 6 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.641 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1000.261 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.544 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.628 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1004.335 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.618 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 7 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.643 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1001.636 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2.919 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.632 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1005.166 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.448 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 ]
+
+
+
+---
+class: inverse, sectionTitle
+
+# .yellow[Stepwise Regression]
+
+
+---
+# Fitting Several Features
+
+What if we have 10 predictor variables and are interested in fitting the `best` model des
+
+
+.pull-left[
+### Ap
+]
+
+.pull-right[
+
+]
+
+
+
+
 
 
 
@@ -1082,6 +1109,8 @@ background-size: auto
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
 .bottom[ If you have any questions for about the content presented herein, please feel free to [submit them to me](mailto://rjdyer@vcu.edu) and I'll get back to you as soon as possible.]
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -529,10 +529,91 @@ plot( tuk, xlim=c(-1,2) )
 
 
 
+---
+class: inverse, sectionTitle
+
+# .yellow[Two-Factor Models]
 
 
+---
 
+# Analysis of Response with 2 Predicrors.
 
+There are times when we have more than on treatment category for a response.  For example, a growth experiment may have a treatment that is high light and low light as well as one that has fewer than normal, normal, and more than normal nutrients.  These are called *2-factor Analysis of Variance*.
+
+- Each factor can be considered independently.
+- The interaction between factors can be exmained as well.
+
+---
+# Specifying A Two Factor Model
+
+Here i'm going to use a new data set because there is only one categorical variable in the *iris* data used above.  Here is the old *Motor Trend Cars* dataset
+
+```{r}
+df <- mtcars
+summary( df )
+```
+
+---
+
+# Quarter Mile Speed ~ Engine Type & Transmission
+
+```{r}
+df %>% 
+  mutate( Engine = factor( ifelse( vs == 0, "V-Shaped", "Straight") ),
+          Transmission = factor( ifelse( am == 0, "Automatic","Manual")) ) %>%
+  select( Time = qsec, Engine, Transmission) -> df 
+summary( df )
+```
+
+---
+
+# One Factor Analyses
+
+.pull-left[
+```{r}
+fit.engine <- aov( Time ~ Engine, data=df )
+anova(fit.engine)
+```
+
+]
+
+--
+
+.pull-right[
+```{r}
+fit.transmission <- aov( Time ~ Transmission, data=df )
+anova( fit.transmission )
+```
+
+]
+
+---
+
+# Interaction Terms
+
+```{r}
+fit.both <- aov( Time ~ Engine*Transmission, data=df )
+anova( fit.both )
+```
+
+---
+
+```{r}
+plot( TukeyHSD( fit.both, "Engine"))
+```
+
+---
+
+```{r}
+plot( TukeyHSD( fit.both, "Transmission"))
+```
+
+---
+
+```{r}
+plot( TukeyHSD( fit.both, "Engine:Transmission"))
+```
 
 ---
 

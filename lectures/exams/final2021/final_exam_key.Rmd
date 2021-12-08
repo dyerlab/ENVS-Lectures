@@ -67,7 +67,7 @@ map_data("world") %>%
 
 ggplot() + 
   geom_polygon( aes( x=long, y=lat, group=group), data=map, fill="gray")  +
-  geom_text( aes(Longitude, Latitude, label=Stratum), data=arapat) +
+  geom_text( aes(Longitude, Latitude, label=Stratum), data=araptus) +
   xlab("Longitude") + 
   ylab("Latitude") + 
   theme_bw( base_size = 10 ) +
@@ -81,10 +81,10 @@ ggplot() +
 ```{r}
 library( gstudio )
 data( arapat )
-
-df %>% filter( Species == "Cape") -> Cape 
-df %>% filter( Species == "Peninsula" ) -> Peninsula 
-df %>% filter( Species == "Mainland" ) -> Mainland
+df <- arapat 
+df %>% dplyr::filter( Species == "Cape") -> Cape 
+df %>% dplyr::filter( Species == "Peninsula" ) -> Peninsula 
+df %>% dplyr::filter( Species == "Mainland" ) -> Mainland
 
 
 
@@ -103,9 +103,12 @@ rbind( rbind( df1, df2 ), df3)  %>%
   select( Species, Population = Stratum, Locus, Ae ) %>%
   filter( Population %in% arapat$Population ) %>% 
   mutate( Species = factor( Species ), 
-          Population = factor( Population) ) %>% summary( )
-    
-summary( df.diversity)  
+          Population = factor( Population) ) %>% 
+  filter( !is.infinite(Ae)  ) %>%
+  group_by( Species, Population) %>%
+  summarize( `Diversity` = sum(Ae) ) -> diversity
+  
+
 
 ```
 

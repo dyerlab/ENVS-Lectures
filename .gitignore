@@ -12,3 +12,5 @@ lectures/index.html
 lectures/*/lecture.Rmd
 lectures/*/lecture.nb.html
 temp/
+
+final_*

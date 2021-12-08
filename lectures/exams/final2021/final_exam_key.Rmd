@@ -10,11 +10,16 @@ knitr::opts_chunk$set( echo=FALSE,
                        warning=FALSE )
 library( tidyverse )
 library( leaflet )
+
+# here are some data sets for this work
+url
+
+
 ```
 
-This final is taking the form of a Methods & Results section for a reseach paper.  In the methods, I will define the data and analysis that will be used and give stubs for the output that you'll put in the results section.  To set the stage, I'm going to include some basic paragraphs as a general *Introduction* section on this paper that serves to set up the motivation and main questions for this research.  I will also outline the analyses to be done in the *Methods* section (these will both be brief so you can focus on doing the analyses and presenting the results in the *Results* section).  
+This final is taking the form of short research paper with a basic configuration of Introduction and Methods.  I will define the data and analysis that will be used and give stubs for the output that you'll put in the content related to the data set and analyses in each appropriate section.  
 
-
+To set the stage, I'm going to include some basic paragraphs as a general *Introduction* section on this paper that serves to set up the motivation and main questions for this research.  I will also outline the analyses to be done in the *Methods* section (these will both be brief so you can focus on doing the analyses and presenting the results in the *Results* section). The majority of your work will be making sure that all the analyses I propose in the Methods section (and any in-text components) will be written in a *Results* section that you will write.  I have structured the *Methods* in subsections with specific statements on what will be done in each section.  You will mimic this layout and in R, do the analyses and write out the results so it looks like a coherient manuscript.  For the purpose of this work, you *do not need* to worry about citations, etc.  Just analyses, in-text content (summaries and analysis results), figures, and table as necessary.  
 
 
 # Introduction
@@ -31,11 +36,11 @@ In this manuscript, we examine the extent to which the distribution of the host 
 # Methods 
 
 ```{r}
-url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/lectures/exams/final2021/Final_Data.csv"
+url1 <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/lectures/exams/final2021/Final_Data.csv"
 
 
 # go back and add 101 & 102 to this data set
-suppressMessages( read_csv( url ) ) %>%
+suppressMessages( read_csv( url1 ) ) %>%
   select( Stratum = Site, 
           MFRatio, Suitability, Latitude, Longitude ) -> araptus
 ```
@@ -53,7 +58,7 @@ To date, all samples of this species group have been found with in association w
 
 ## Spatial Sampling
 
-Sampling locations were selected haphazardly from throughout the species range (Figure 3).  At each Site the center coordinate was recorded and a minimum of 10 plants were surveyed. Each plant identified must be 100 m from the previous plant to prevent nearest neighbor interactions.
+Sampling locations were selected haphazardly from throughout the species range (Figure 3).  At each Site the center coordinate was recorded and a minimum of 10 plants were surveyed. Each plant identified was at least 100 m from the previous plant to prevent nearest neighbor interactions.  Each animal was stored in ethanol until returned to Virginia Commonwealth University (hereafter VCU) for sex determination and subsequent genetic analysis.  Host plant tissue was also collected, frozen, and returned to VCU.
 
 ```{r figure_3, fig.cap="Figure 3: Map of sampling locations from throughout the Baja Peninsula."}
 
@@ -78,7 +83,7 @@ ggplot() +
 
 
 
-```{r}
+```{r, eval=FALSE}
 library( gstudio )
 data( arapat )
 df <- arapat 
@@ -107,10 +112,9 @@ rbind( rbind( df1, df2 ), df3)  %>%
   filter( !is.infinite(Ae)  ) %>%
   group_by( Species, Population) %>%
   summarize( `Diversity` = sum(Ae) ) -> diversity
-  
-
-
 ```
+
+The sex of each animal was determined via visual inspection under discecting microscope.  Total genomic DNA was extracted from each individual as well as their host plant.  Both plant and animal were genotyped and estimates of Allelic Diversity and Genetic Variance were estimated for the bark beetle.  Samples of host plants were also genotyped and estimated for Genetic Variation.
 
 # Environmental Conditions
 
@@ -130,6 +134,7 @@ url_mean_temp <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Mean_
 url_max_temp <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Maximum_Temp_22.tif"
 
 # use the coordinates from the arapat to raster::extract() the values for min, mean, and max temp and precip and add those to the arapat data frame.
+
 
 ```
 

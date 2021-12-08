@@ -14,7 +14,7 @@ library( leaflet )
 
 This final is taking the form of a Methods & Results section for a reseach paper.  In the methods, I will define the data and analysis that will be used and give stubs for the output that you'll put in the results section.  To set the stage, I'm going to include some basic paragraphs as a general *Introduction* section on this paper that serves to set up the motivation and main questions for this research.  I will also outline the analyses to be done in the *Methods* section (these will both be brief so you can focus on doing the analyses and presenting the results in the *Results* section).  
 
-I
+
 
 
 # Introduction
@@ -31,13 +31,13 @@ In this manuscript, we examine the extent to which the distribution of the host 
 # Methods 
 
 ```{r}
-url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/Araptus_Disperal_Bias.csv"
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/lectures/exams/final2021/Final_Data.csv"
 
 
 # go back and add 101 & 102 to this data set
 suppressMessages( read_csv( url ) ) %>%
   select( Stratum = Site, 
-          MFRatio, Suitability, Latitude, Longitude ) -> arapat
+          MFRatio, Suitability, Latitude, Longitude ) -> araptus
 ```
 
 ## Study Species
@@ -81,7 +81,6 @@ ggplot() +
 ```{r}
 library( gstudio )
 data( arapat )
-
 
 df %>% filter( Species == "Cape") -> Cape 
 df %>% filter( Species == "Peninsula" ) -> Peninsula 

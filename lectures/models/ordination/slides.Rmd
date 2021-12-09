@@ -48,7 +48,8 @@ background-image: url("background.png")
 background-position: right
 background-size: auto
 
-# .blue[Spatial <br> Autocorrelation]
+
+# .orange[Spatial <br> Autocorrelation]
 
 ## .fancy[Self-similarity in space.]
 
@@ -196,7 +197,6 @@ G <- genetic_distance(cornus, mode="AMOVA")
 ```{r}
 df <- data.frame( Physical=P[lower.tri(P)], Genetic=G[lower.tri(G)])
 ggplot( df, aes(Physical,Genetic)) + geom_point() + stat_smooth(method="gam")
-
 ```
 
 ---
@@ -282,7 +282,7 @@ background-image: url("background.png")
 background-position: right
 background-size: auto
 
-# .red[Eigen Structure]
+# .orange[Eigen Structure]
 
 ## .fancy[Please define an eigenvalue... I dare you.]
 
@@ -356,10 +356,32 @@ names( fit.pca )
 
 ---
 
-```{r}
+```{r eval=FALSE}
 summary( fit.pca )
 ```
 
+```{r echo=FALSE}
+pcaPrint <- function (x, digits = 3, loadings = x$print.loadings, cutoff = x$cutoff,n, ...) 
+{
+    #Check for sensible value of n; default to full output
+    if (missing(n) || n > length(x$sdev) || n < 1){n <- length(x$sdev)}
+    vars <- x$sdev^2
+    vars <- vars/sum(vars)
+    cat("Importance of components:\n")
+    print(rbind(`Standard deviation` = x$sdev[1:n], `Proportion of Variance` = vars[1:n], 
+        `Cumulative Proportion` = cumsum(vars)[1:n]))
+    if (loadings) {
+        cat("\nLoadings:\n")
+        cx <- format(round(x$loadings, digits = digits))
+        cx[abs(x$loadings) < cutoff] <- paste(rep(" ", nchar(cx[1, 
+            1], type = "w")), collapse = "")
+        print(cx[,1:n], quote = FALSE, ...)
+    }
+    invisible(x)
+}
+
+pcaPrint(summary(fit.pca, loadings = FALSE, cutoff = 0.2), digits = 2,n = 30)
+```
 
 ---
 
@@ -368,11 +390,12 @@ plot( fit.pca )
 ```
 
 ---
+.pull-left[
 
 # Visualization
 
-.pull-left[
 ```{r eval=FALSE}
+
 predict( fit.pca ) %>%
   data.frame() %>%
   mutate( Species = arapat$Species) -> pred.pca 
@@ -384,6 +407,9 @@ ggplot( pred.pca, aes(Comp.1,Comp.2,color=Species) ) +
 ]
 
 .pull-right[
+
+<p>&nbsp;</p>
+
 ```{r echo=FALSE}
 predict( fit.pca ) %>%
   data.frame() %>%
@@ -406,7 +432,7 @@ Just like working on raw data, but coalescing all the individuals into single po
 
 ```{r}
 freqs <- frequency_matrix(arapat)
-head( freqs )
+head( freqs[,1:19] )
 ```
 
 
@@ -433,9 +459,10 @@ summary( fit.pca_freq )
 
 ---
 
-# Principal Components Analysis on Frequencies
-
 .pull-left[
+# PCA on Frequencies
+
+
 Just like working on raw data, but coalescing all the individuals into single populations defined by allele frquency matrices.
 
 ```{r eval=FALSE}
@@ -448,6 +475,9 @@ predict( fit.pca_freq ) %>%
 ]
 
 .pull-right[
+
+<p>&nbsp;</p>
+
 ```{r echo=FALSE}
 predict( fit.pca_freq ) %>%
   data.frame() %>%
@@ -462,9 +492,12 @@ predict( fit.pca_freq ) %>%
 
 ---
 
-# More Detailed Visulizations
+
 
 .pull-left[
+
+# Detailed Visulizations
+
 ```{r eval=FALSE}
 library( factoextra )
 fviz_pca_biplot( fit.pca_freq )
@@ -472,6 +505,7 @@ fviz_pca_biplot( fit.pca_freq )
 ]
 
 .pull-right[
+<p>&nbsp;</p>
 ```{r echo=FALSE}
 library( factoextra )
 fviz_pca_biplot( fit.pca_freq )
@@ -487,7 +521,7 @@ fviz_pca_biplot( fit.pca_freq )
 
 # Principal Coordinate Analysis
 
-Like PCA but using genetic distance measures instead of raw data.
+Like PCA but using distance matrices instead of raw data.
 
 ```{r}
 D.Euc <- genetic_distance(arapat, mode="Euclidean")
@@ -513,16 +547,88 @@ fviz_pca_biplot( fit.gendist )
 
 
 
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+# .orange[Hierarchical Clustering]
+
+### .fancy[Stand next to your buddy.]
+
+
+
+---
+# Clustering
+
+
+.pull-left[
+A technique to build a representation of similarity between objects.
+
+- Supervised  
+
+- Unsupervised
+
+- Individual or Group Based
+]
+
+
+.pull-right[
+![From www.nature.com/articles/s41467-020-20507-3](https://live.staticflickr.com/65535/51734955871_9c76562bd3_w_d.jpg)
+]
+
+
+
+---
+
+![Help File for hclust](https://live.staticflickr.com/65535/51735192018_1444d8d533_o_d.png) 
+
+
+---
+
+# Visualizing From Distance Views
+
+Requires that the `matrix` objects actually be turned into `dist` objects (which are `matrix` objects with constraints).
+
+```{r}
+dist( D.Euc[1:7,1:7] )
+```
+
+
+---
+
+# Visualizing From Distance Views
+
+
+.pull-left[
+```{r}
+d <- dist( D.Euc )
+h <- hclust( d )
+h
+```
+]
+
+--
+
+.pull-right[
+```{r}
+plot(h)
+```
+]
 
 
 
 
+---
 
+# Interactive Plots
 
-
-
-
-
+```{r}
+library( networkD3 )
+dendroNetwork( h, height=400, zoom=TRUE,textColour = c("red","green","orange","blue")[cutree(h,4)])
+```
 
 
 

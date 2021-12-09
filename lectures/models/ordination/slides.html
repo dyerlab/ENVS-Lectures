@@ -5,6 +5,9 @@
     <meta charset="utf-8" />
     <script src="libs/header-attrs-2.11/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+    <script src="libs/d3-4.5.0/d3.min.js"></script>
+    <script src="libs/dendroNetwork-binding-0.4/dendroNetwork.js"></script>
     <link rel="stylesheet" href="../../css/slide_model_styles.css" type="text/css" />
     <link rel="stylesheet" href="../../css/slide_fonts.css" type="text/css" />
   </head>
@@ -35,7 +38,8 @@ background-image: url("background.png")
 background-position: right
 background-size: auto
 
-# .blue[Spatial &lt;br&gt; Autocorrelation]
+
+# .orange[Spatial &lt;br&gt; Autocorrelation]
 
 ## .fancy[Self-similarity in space.]
 
@@ -312,7 +316,7 @@ background-image: url("background.png")
 background-position: right
 background-size: auto
 
-# .red[Eigen Structure]
+# .orange[Eigen Structure]
 
 ## .fancy[Please define an eigenvalue... I dare you.]
 
@@ -396,6 +400,7 @@ names( fit.pca )
 summary( fit.pca )
 ```
 
+
 ```
 ## Importance of components:
 ##                           Comp.1     Comp.2     Comp.3     Comp.4     Comp.5
@@ -422,36 +427,7 @@ summary( fit.pca )
 ## Standard deviation     0.94329924 0.93880305 0.91823416 0.89529206 0.87049453
 ## Proportion of Variance 0.01534161 0.01519571 0.01453714 0.01381979 0.01306484
 ## Cumulative Proportion  0.80316108 0.81835679 0.83289393 0.84671372 0.85977856
-##                           Comp.31    Comp.32    Comp.33    Comp.34    Comp.35
-## Standard deviation     0.86688903 0.82678815 0.81041743 0.79600231 0.76921802
-## Proportion of Variance 0.01295684 0.01178584 0.01132373 0.01092448 0.01020166
-## Cumulative Proportion  0.87273539 0.88452123 0.89584496 0.90676944 0.91697110
-##                            Comp.36     Comp.37     Comp.38     Comp.39
-## Standard deviation     0.754445291 0.734096098 0.714354902 0.684415157
-## Proportion of Variance 0.009813581 0.009291329 0.008798326 0.008076278
-## Cumulative Proportion  0.926784684 0.936076013 0.944874340 0.952950617
-##                            Comp.40     Comp.41     Comp.42     Comp.43
-## Standard deviation     0.672830896 0.648816807 0.630068757 0.552207764
-## Proportion of Variance 0.007805197 0.007257987 0.006844597 0.005257473
-## Cumulative Proportion  0.960755814 0.968013801 0.974858398 0.980115871
-##                            Comp.44     Comp.45     Comp.46     Comp.47
-## Standard deviation     0.524838797 0.468169464 0.425473390 0.381044367
-## Proportion of Variance 0.004749237 0.003779011 0.003121166 0.002503359
-## Cumulative Proportion  0.984865108 0.988644119 0.991765285 0.994268644
-##                            Comp.48    Comp.49      Comp.50      Comp.51
-## Standard deviation     0.335281962 0.27425346 0.2233870727 0.1905055409
-## Proportion of Variance 0.001938172 0.00129681 0.0008603756 0.0006257304
-## Cumulative Proportion  0.996206816 0.99750363 0.9983640014 0.9989897318
-##                             Comp.52      Comp.53      Comp.54      Comp.55
-## Standard deviation     0.1489769289 0.1321112825 0.1058457221 7.033909e-02
-## Proportion of Variance 0.0003826573 0.0003009205 0.0001931606 8.530323e-05
-## Cumulative Proportion  0.9993723891 0.9996733097 0.9998664703 9.999518e-01
-##                             Comp.56      Comp.57      Comp.58
-## Standard deviation     5.288794e-02 6.748606e-08 5.000842e-08
-## Proportion of Variance 4.822645e-05 7.852359e-17 4.311796e-17
-## Cumulative Proportion  1.000000e+00 1.000000e+00 1.000000e+00
 ```
-
 
 ---
 
@@ -460,13 +436,13 @@ summary( fit.pca )
 plot( fit.pca )
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-11-1.png" width="504" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-12-1.png" width="504" style="display: block; margin: auto;" /&gt;
 
 ---
+.pull-left[
 
 # Visualization
 
-.pull-left[
 
 ```r
 predict( fit.pca ) %&gt;%
@@ -480,7 +456,10 @@ ggplot( pred.pca, aes(Comp.1,Comp.2,color=Species) ) +
 ]
 
 .pull-right[
-&lt;img src="slides_files/figure-html/unnamed-chunk-13-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -495,7 +474,7 @@ Just like working on raw data, but coalescing all the individuals into single po
 
 ```r
 freqs &lt;- frequency_matrix(arapat)
-head( freqs )
+head( freqs[,1:19] )
 ```
 
 ```
@@ -513,41 +492,6 @@ head( freqs )
 ## 4   0.00    0.0      0      0       0 0.0000000 0.0000000 0.0000000    1.00
 ## 5   0.00    0.0      0      0       0 0.0000000 0.9166667 0.0000000    0.00
 ## 6   0.00    0.0      0      0       0 0.0000000 0.7000000 0.0000000    0.15
-##      ATPS-06 ATPS-07 ATPS-08   ATPS-09 ATPS-10     EF-01     EF-02     EN-01
-## 1 0.00000000    0.00       0 0.2222222       0 0.7142857 0.2857143 0.6111111
-## 2 0.00000000    0.00       0 0.0625000       0 0.6250000 0.3750000 0.2142857
-## 3 0.00000000    0.00       0 0.0000000       0 0.4500000 0.5500000 1.0000000
-## 4 0.00000000    0.00       0 0.0000000       0 0.0000000 1.0000000 1.0000000
-## 5 0.08333333    0.00       0 0.0000000       0 1.0000000 0.0000000 0.1666667
-## 6 0.10000000    0.05       0 0.0000000       0 1.0000000 0.0000000 0.4500000
-##       EN-02     EN-03 EN-04 EN-05   LTRS-01   LTRS-02 MP20-01    MP20-02
-## 1 0.0000000 0.3888889     0     0 0.2777778 0.7222222       0 0.08333333
-## 2 0.0000000 0.7857143     0     0 0.3125000 0.6875000       0 0.06250000
-## 3 0.0000000 0.0000000     0     0 0.8000000 0.2000000       0 0.00000000
-## 4 0.0000000 0.0000000     0     0 0.1500000 0.8500000       0 0.00000000
-## 5 0.8333333 0.0000000     0     0 0.0000000 1.0000000       0 0.00000000
-## 6 0.5500000 0.0000000     0     0 0.0000000 1.0000000       0 0.00000000
-##   MP20-03 MP20-04 MP20-05 MP20-06 MP20-07 MP20-08 MP20-09 MP20-10    MP20-11
-## 1   0.000    0.00  0.0000    0.00    0.00    0.00   0.000       0 0.08333333
-## 2   0.125    0.00  0.0625    0.00    0.00    0.00   0.125       0 0.12500000
-## 3   0.000    0.05  0.5000    0.10    0.25    0.10   0.000       0 0.00000000
-## 4   0.000    0.00  0.7500    0.05    0.15    0.05   0.000       0 0.00000000
-## 5   0.000    0.00  0.0000    0.00    0.00    0.00   0.000       0 0.00000000
-## 6   0.000    0.00  0.0000    0.00    0.00    0.00   0.000       0 0.20000000
-##   MP20-12 MP20-13    MP20-14 MP20-15    MP20-16   MP20-17   MP20-18 MP20-19
-## 1   0.500   0.250 0.08333333       0 0.00000000 0.0000000 0.0000000       0
-## 2   0.375   0.125 0.00000000       0 0.00000000 0.0000000 0.0000000       0
-## 3   0.000   0.000 0.00000000       0 0.00000000 0.0000000 0.0000000       0
-## 4   0.000   0.000 0.00000000       0 0.00000000 0.0000000 0.0000000       0
-## 5   0.000   0.000 0.00000000       0 0.08333333 0.3333333 0.5833333       0
-## 6   0.000   0.000 0.00000000       0 0.00000000 0.3500000 0.4500000       0
-##      WNT-01    WNT-02 WNT-03 WNT-04 WNT-05 ZMP-01 ZMP-02
-## 1 1.0000000 0.0000000   0.00      0      0    1.0    0.0
-## 2 1.0000000 0.0000000   0.00      0      0    0.0    0.0
-## 3 0.3000000 0.0000000   0.70      0      0    0.2    0.8
-## 4 0.4000000 0.0000000   0.60      0      0    0.1    0.9
-## 5 0.1666667 0.8333333   0.00      0      0    0.0    1.0
-## 6 0.0500000 0.8000000   0.15      0      0    0.0    1.0
 ```
 
 
@@ -604,9 +548,10 @@ summary( fit.pca_freq )
 
 ---
 
-# Principal Components Analysis on Frequencies
-
 .pull-left[
+# PCA on Frequencies
+
+
 Just like working on raw data, but coalescing all the individuals into single populations defined by allele frquency matrices.
 
 
@@ -620,7 +565,10 @@ predict( fit.pca_freq ) %&gt;%
 ]
 
 .pull-right[
-&lt;img src="slides_files/figure-html/unnamed-chunk-18-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-19-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -628,9 +576,12 @@ predict( fit.pca_freq ) %&gt;%
 
 ---
 
-# More Detailed Visulizations
+
 
 .pull-left[
+
+# Detailed Visulizations
+
 
 ```r
 library( factoextra )
@@ -639,7 +590,8 @@ fviz_pca_biplot( fit.pca_freq )
 ]
 
 .pull-right[
-&lt;img src="slides_files/figure-html/unnamed-chunk-20-1.png" width="504" style="display: block; margin: auto;" /&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-21-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -651,7 +603,7 @@ fviz_pca_biplot( fit.pca_freq )
 
 # Principal Coordinate Analysis
 
-Like PCA but using genetic distance measures instead of raw data.
+Like PCA but using distance matrices instead of raw data.
 
 
 ```r
@@ -706,22 +658,123 @@ summary( fit.gendist )
 
 ---
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-23-1.png" width="504" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-24-1.png" width="504" style="display: block; margin: auto;" /&gt;
 
 
 
 
 
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+# .orange[Hierarchical Clustering]
+
+### .fancy[Stand next to your buddy.]
+
+
+
+---
+# Clustering
+
+
+.pull-left[
+A technique to build a representation of similarity between objects.
+
+- Supervised  
+
+- Unsupervised
+
+- Individual or Group Based
+]
+
+
+.pull-right[
+![From www.nature.com/articles/s41467-020-20507-3](https://live.staticflickr.com/65535/51734955871_9c76562bd3_w_d.jpg)
+]
+
+
+
+---
+
+![Help File for hclust](https://live.staticflickr.com/65535/51735192018_1444d8d533_o_d.png) 
+
+
+---
+
+# Visualizing From Distance Views
+
+Requires that the `matrix` objects actually be turned into `dist` objects (which are `matrix` objects with constraints).
+
+
+```r
+dist( D.Euc[1:7,1:7] )
+```
+
+```
+##          101      102       12      153      156      157
+## 102 2.048994                                             
+## 12  3.972442 4.342952                                    
+## 153 4.099369 4.364062 1.860651                           
+## 156 4.727214 4.754565 4.901142 4.871141                  
+## 157 4.541334 4.629884 4.510097 4.532973 1.073274         
+## 159 3.733735 4.047019 2.537027 3.302282 4.434527 4.121070
+```
+
+
+---
+
+# Visualizing From Distance Views
+
+
+.pull-left[
+
+```r
+d &lt;- dist( D.Euc )
+h &lt;- hclust( d )
+h
+```
+
+```
+## 
+## Call:
+## hclust(d = d)
+## 
+## Cluster method   : complete 
+## Distance         : euclidean 
+## Number of objects: 39
+```
+]
+
+--
+
+.pull-right[
+
+```r
+plot(h)
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-27-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
 
 
 
 
+---
+
+# Interactive Plots
 
 
+```r
+library( networkD3 )
+dendroNetwork( h, height=400, zoom=TRUE,textColour = c("red","green","orange","blue")[cutree(h,4)])
+```
 
-
-
-
+<div id="htmlwidget-4fbf5fdc072f561934a7" style="width:800px;height:400px;" class="dendroNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4fbf5fdc072f561934a7">{"x":{"root":{"name":"","y":11.2245564179276,"children":[{"name":"","y":5.31948636271368,"children":[{"name":"","y":3.60140162531741,"children":[{"name":"163","y":0,"textColour":"orange","textOpacity":0.9},{"name":"","y":2.80098869835492,"children":[{"name":"","y":1.35509057674219,"children":[{"name":"","y":0.750815553285021,"children":[{"name":"157","y":0,"textColour":"orange","textOpacity":0.9},{"name":"ESan","y":0,"textColour":"orange","textOpacity":0.9}]},{"name":"","y":0.798278047200668,"children":[{"name":"73","y":0,"textColour":"orange","textOpacity":0.9},{"name":"75","y":0,"textColour":"orange","textOpacity":0.9}]}]},{"name":"","y":1.62638630411257,"children":[{"name":"Aqu","y":0,"textColour":"orange","textOpacity":0.9},{"name":"Const","y":0,"textColour":"orange","textOpacity":0.9}]}]}]},{"name":"","y":3.87414471203457,"children":[{"name":"","y":1.62519932916514,"children":[{"name":"98","y":0,"textColour":"orange","textOpacity":0.9},{"name":"Mat","y":0,"textColour":"orange","textOpacity":0.9}]},{"name":"","y":1.63780727727491,"children":[{"name":"156","y":0,"textColour":"orange","textOpacity":0.9},{"name":"48","y":0,"textColour":"orange","textOpacity":0.9}]}]}]},{"name":"","y":8.83604944481593,"children":[{"name":"","y":4.50389561169895,"children":[{"name":"","y":1.91074685376755,"children":[{"name":"168","y":0,"textColour":"green","textOpacity":0.9},{"name":"64","y":0,"textColour":"green","textOpacity":0.9}]},{"name":"","y":4.03922803116455,"children":[{"name":"","y":2.89840043407191,"children":[{"name":"77","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":2.07724648191139,"children":[{"name":"","y":1.57299589478965,"children":[{"name":"SFr","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":0.869646255992409,"children":[{"name":"161","y":0,"textColour":"green","textOpacity":0.9},{"name":"162","y":0,"textColour":"green","textOpacity":0.9}]}]},{"name":"","y":1.73275556832034,"children":[{"name":"166","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":1.31949587652614,"children":[{"name":"","y":0.850105961595064,"children":[{"name":"160","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":0.574752790128408,"children":[{"name":"12","y":0,"textColour":"green","textOpacity":0.9},{"name":"93","y":0,"textColour":"green","textOpacity":0.9}]}]},{"name":"","y":0.941390780810189,"children":[{"name":"165","y":0,"textColour":"green","textOpacity":0.9},{"name":"169","y":0,"textColour":"green","textOpacity":0.9}]}]}]}]}]},{"name":"","y":3.36331959907528,"children":[{"name":"164","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":1.3730290532026,"children":[{"name":"51","y":0,"textColour":"green","textOpacity":0.9},{"name":"","y":0.829903599446056,"children":[{"name":"153","y":0,"textColour":"green","textOpacity":0.9},{"name":"58","y":0,"textColour":"green","textOpacity":0.9}]}]}]}]}]},{"name":"","y":7.07533421909806,"children":[{"name":"","y":3.21171982606614,"children":[{"name":"101","y":0,"textColour":"red","textOpacity":0.9},{"name":"","y":2.34218415676847,"children":[{"name":"102","y":0,"textColour":"red","textOpacity":0.9},{"name":"32","y":0,"textColour":"red","textOpacity":0.9}]}]},{"name":"","y":5.20752231504641,"children":[{"name":"","y":1.83597735009188,"children":[{"name":"","y":0.975503383113044,"children":[{"name":"159","y":0,"textColour":"blue","textOpacity":0.9},{"name":"171","y":0,"textColour":"blue","textOpacity":0.9}]},{"name":"","y":1.23376188379381,"children":[{"name":"173","y":0,"textColour":"blue","textOpacity":0.9},{"name":"89","y":0,"textColour":"blue","textOpacity":0.9}]}]},{"name":"","y":3.24620209585736,"children":[{"name":"","y":0.979201709342212,"children":[{"name":"175","y":0,"textColour":"blue","textOpacity":0.9},{"name":"177","y":0,"textColour":"blue","textOpacity":0.9}]},{"name":"","y":1.28860947805485,"children":[{"name":"9","y":0,"textColour":"blue","textOpacity":0.9},{"name":"","y":0.746572378044839,"children":[{"name":"84","y":0,"textColour":"blue","textOpacity":0.9},{"name":"88","y":0,"textColour":"blue","textOpacity":0.9}]}]}]}]}]}]}]},"options":{"height":400,"width":800,"fontSize":10,"linkColour":"#ccc","nodeColour":"#fff","nodeStroke":"steelblue","textRotate":0,"margins":{"top":40,"right":150,"bottom":40,"left":40},"opacity":0.9,"linkType":"elbow","treeOrientation":"horizontal","zoom":true}},"evals":[],"jsHooks":[]}</script>
 
 
 

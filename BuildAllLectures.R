@@ -25,8 +25,7 @@ if ( firstRun ) {
             "library(rmarkdown)",
             "library(blogdown)",
             "library(devtools)",
-            "library(Hmisc)",
-            "library(g") 
+            "library(Hmisc)" ) 
   
   allRmd <- list.files("lectures",pattern = ".Rmd",recursive = TRUE,full.names = TRUE)
 

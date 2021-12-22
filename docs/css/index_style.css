@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap')
+
+
 body {
-  background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png");
+  background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: right center;
 }
+
 
 h1 {
   color: rgb(251,116,28);
@@ -34,3 +38,61 @@ caption {
     background-color: rgb(251,116,28);
     border-color: rgb(251,116,28);
 }
+
+
+
+
+.nav-left { 
+  display: block;
+  position: absolute;
+  z-index: 3; /* background-color: #003566; */
+  width: 100vw;
+  top: -60px;
+  left: -25vw;
+}
+
+.nav-left a { 
+  padding-left: 10px;
+  padding-top: 5px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #003566;
+  font-family: 'Source Sans Pro', sans-serif;
+  text-decoration: none;
+  padding-top: 12px;
+}
+
+
+
+
+
+.nav-right { 
+  z-index:4;
+  display: block;
+  position: absolute;
+  right:0px;
+  top: -60px;
+  padding-top: 12px;
+  padding-right: 20px;
+}
+
+.nav-right a { 
+  font-size: 18px;
+  font-weight: bold;
+  color: #003566;
+  font-family: 'Source Sans Pro', sans-serif;
+  text-decoration: none;
+}
+
+.nav-left a:hover { 
+  color: rgb(251,116,28);
+}
+
+.nav-right a:hover { 
+  color: rgb(251,116,28);
+}
+
+.main-container { 
+  margin-top: 60px;
+}
+

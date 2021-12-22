@@ -2,10 +2,10 @@
 
 
 body {
-  background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png"), url("https://live.staticflickr.com/65535/51764646996_6c67831f5a_o_d.png")
-  background-repeat: no-repeat, no-repeat;
-  background-attachment: fixed, fixed;
-  background-position: right center, left top;
+  background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: right center;
 }
 
 
@@ -48,7 +48,7 @@ caption {
   z-index: 3; /* background-color: #003566; */
   width: 100vw;
   top: -60px;
-  left: -30vw;
+  left: -25vw;
 }
 
 .nav-left a { 
@@ -56,7 +56,7 @@ caption {
   padding-top: 5px;
   font-size: 28px;
   font-weight: bold;
-  color: white;
+  color: #003566;
   font-family: 'Source Sans Pro', sans-serif;
   text-decoration: none;
   padding-top: 12px;
@@ -79,9 +79,17 @@ caption {
 .nav-right a { 
   font-size: 18px;
   font-weight: bold;
-  color: white;
+  color: #003566;
   font-family: 'Source Sans Pro', sans-serif;
   text-decoration: none;
+}
+
+.nav-left a:hover { 
+  color: rgb(251,116,28);
+}
+
+.nav-right a:hover { 
+  color: rgb(251,116,28);
 }
 
 .main-container { 

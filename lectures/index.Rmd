@@ -1,7 +1,5 @@
 ---
 title: "**Lecture Content**"
-author: "RJ Dyer"
-date: "Center for Environmental Studies"
 output:
   html_document:
     css: ["https://www.w3schools.com/w3css/4/w3.css", "./css/index_style.css" ]
@@ -10,9 +8,20 @@ output:
     toc_float: true
 ---
 
+<div class="nav">
 <div class="nav-left">
 <a href="https://dyerlab.github.io/DLabWebsite/">The Dyer Laboratory</a>
 </div>
+<div class="nav-right">
+<a href="https://dyerlab.github.io/DLabWebsite/people.html">People</a> &nbsp; 
+<a href="https://dyerlab.github.io/DLabWebsite/manuscripts.html">Papers</a> &nbsp; 
+<a href="https://dyerlab.github.io/DLabWebsite/software.html">Software</a> &nbsp; 
+<a href="https://dyerlab.github.io/ENVS-Lectures/">Teaching</a> &nbsp; 
+</div>
+</div>
+
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)

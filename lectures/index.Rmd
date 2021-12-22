@@ -1,15 +1,18 @@
 ---
-title: "**Quantiative Lecture Content**"
+title: "**Lecture Content**"
 author: "RJ Dyer"
 date: "Center for Environmental Studies"
 output:
   html_document:
-    css: ["https://www.w3schools.com/w3css/4/w3.css", "./css/index_style.css"]
+    css: ["https://www.w3schools.com/w3css/4/w3.css", "./css/index_style.css" ]
     toc: true
     theme: flatly
     toc_float: true
 ---
 
+<div class="nav-left">
+<a href="https://dyerlab.github.io/DLabWebsite/">The Dyer Laboratory</a>
+</div>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)

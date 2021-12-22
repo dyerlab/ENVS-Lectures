@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap')
+
 body {
   background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png");
   background-repeat: no-repeat;
@@ -34,3 +36,33 @@ caption {
     background-color: rgb(251,116,28);
     border-color: rgb(251,116,28);
 }
+
+
+.nav-left { 
+  display: block;
+  position: absolute;
+  z-index: 3;
+  background-color: #0F2E3D;
+  color: white;
+  width: 100vw;
+  top: -60px;
+  left: -320px;
+}
+
+.nav-left a { 
+  padding: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  font-family: 'Source Sans Pro', sans-serif;
+  text-decoration: none;
+}
+
+.nav-left a:hover { 
+  color:  rgb(251,116,28);;
+}
+
+.main-container { 
+  margin-top: 60px;
+}
+

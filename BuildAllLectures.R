@@ -75,3 +75,4 @@ system("find docs -iname '*.zip' -delete" )
 system( "find lectures -iname '.DS_Store' -delete")
 system( "find docs -iname '.DS_Store' -delete")
 
+

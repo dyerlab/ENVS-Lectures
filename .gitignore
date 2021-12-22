@@ -15,3 +15,12 @@ temp/
 
 lectures/exams/final2021/*
 *.icloud
+
+__MACOSX/
+*.zip
+
+*.nb 2.html
+*.nb 3.html
+*.nb 4.html
+*.nb 5.html
+*.nb 6.html

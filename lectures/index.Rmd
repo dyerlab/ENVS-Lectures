@@ -183,16 +183,6 @@ makeTable( files, caption="A series of lectures and activities focused on the sp
 ```
 
 
-## Emergency AWS Canvas Down I CANNOT FIND MY CONTENT FOR FINALS!!!!
-
-Because of the ongoing AWS problems, there are intermitent errors using Amazon Web Services that are preventing edits and uploads to content.
-
-- [Instructions for the final as a Google Document](https://docs.google.com/document/d/1g4bwCsMksMIW69p831vBHpsDGTC2oZ1cVUI12OO_xsE/edit?usp=sharing)  
-
-- [Zip File With Final and data sets.](https://drive.google.com/file/d/1qKR1l0JkLITOeN14BGe9okYzec0psBIa/view?usp=sharing)
-
-
-
 
 <hr>
 

@@ -3,6 +3,11 @@ title: "Resistance Activity"
 output: html_notebook
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( eval=FALSE)
+```
+
+
 ![](https://live.staticflickr.com/65535/51022164298_1aa9b8df76_c_d.jpg)
 
 

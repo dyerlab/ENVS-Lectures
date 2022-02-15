@@ -26,9 +26,16 @@ knitr::opts_chunk$set(echo = FALSE)
 
 
 ---
-class: inverse, center, middle
+class: center, middle, reduced_opacity
+background-image: url(https://live.staticflickr.com/65535/51278950913_17e0f63c25_b_d.jpg)
+background-size: cover
 
-# Dyer
+```{css, echo = FALSE}
+.reduced_opacity {
+  opacity: 0.5;
+}
+```
+
 
 ---
 class: center, middle

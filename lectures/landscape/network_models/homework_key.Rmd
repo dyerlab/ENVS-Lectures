@@ -68,7 +68,7 @@ leaflet() %>%
 # load in the dispersal bias stuff
 url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
 read_csv(url) %>%
-  rename( Population = Site ) -> df.ratio
+  dplyr::rename( Population = Site ) -> df.ratio
 
 
 # pull in the node based stuff

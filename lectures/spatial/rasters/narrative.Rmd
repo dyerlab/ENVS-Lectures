@@ -1,5 +1,5 @@
 ---
-title: "Rasters"
+title: "Raster Data"
 output: 
   html_notebook:
       css: "envs543-styles.css"
@@ -58,7 +58,7 @@ We can also grab a raster object from the filesystem or from some online reposit
 
 ```{r}
 url <- "https://github.com/dyerlab/ENVS-Lectures/raw/master/data/alt_22.tif"
-r <- raster( url )
+r <- raster::raster( url )
 r
 ```
 

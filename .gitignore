@@ -24,3 +24,9 @@ __MACOSX/
 *.nb 4.html
 *.nb 5.html
 *.nb 6.html
+*.nb 7.html
+
+*.nb [0-9].html
+*.nb [0-9][0-9].html
+
+

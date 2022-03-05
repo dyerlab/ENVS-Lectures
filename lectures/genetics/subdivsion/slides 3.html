@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Genetic Subdivision</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="slide_styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+
+
+
+
+# .orange[Population Sudivision]
+
+### .fancy[Not everything is mixed <svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M296 464h-56V338.78l168.74-168.73c15.52-15.52 4.53-42.05-17.42-42.05H24.68c-21.95 0-32.94 26.53-17.42 42.05L176 338.78V464h-56c-22.09 0-40 17.91-40 40 0 4.42 3.58 8 8 8h240c4.42 0 8-3.58 8-8 0-22.09-17.91-40-40-40zM432 0c-62.61 0-115.35 40.2-135.18 96h52.54c16.65-28.55 47.27-48 82.64-48 52.93 0 96 43.06 96 96s-43.07 96-96 96c-14.04 0-27.29-3.2-39.32-8.64l-35.26 35.26C379.23 279.92 404.59 288 432 288c79.53 0 144-64.47 144-144S511.53 0 432 0z"/></svg>]
+
+
+
+
+---
+class: center, middle
+background-image: url("https://live.staticflickr.com/65535/51198451479_5ce952b659_c_d.jpg")
+background-position: center
+
+
+
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .blue[Connectivity &amp; Expectations]
+
+## .fancy[Models of Population Subdivision]
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51198451189_1c19fd70d7_c_d.jpg)
+
+
+---
+
+# An Island-Mainland Model
+
+
+.pull-left[
+
+- Single locus with 2-alleles, `\(p\)` and `\(1-p\)`.  
+
+- Unidirectional migration at **rate** of `\(m\)` individuals per generation.
+
+![](https://live.staticflickr.com/65535/51191397426_b5117a0de0_d.jpg)
+
+With expectations given by:
+
+`$$p_{y, t+1} = (1-m)p_{y,t} + mp_x$$`
+
+]
+
+--
+
+.pull-right[
+#### Example Function Creation
+
+
+```r
+px &lt;- 0.75
+py &lt;- 0.25
+m &lt;- 0.1
+ret &lt;- rep(NA,100)
+ret[1] &lt;- py
+
+for( i in 2:100) {
+  ret[i] &lt;- (1-m)*ret[(i-1)] + px * m   
+}
+```
+
+]
+
+
+---
+
+# An Island-Mainland Model
+
+
+.pull-left[
+
+
+```r
+px &lt;- 0.75
+py &lt;- 0.25
+m &lt;- 0.0
+ret &lt;- rep(NA,100)
+ret[1] &lt;- py
+
+for( i in 2:100) {
+  ret[i] &lt;- (1-m)*ret[(i-1)] + px * m   
+}
+```
+
+
+]
+
+--
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-3-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+
+
+---
+
+# An Island-Mainland Model
+
+
+.pull-left[
+
+
+```r
+px &lt;- 0.75
+py &lt;- 0.25
+m &lt;- 0.01
+ret &lt;- rep(NA,100)
+ret[1] &lt;- py
+
+for( i in 2:100) {
+  ret[i] &lt;- (1-m)*ret[(i-1)] + px * m   
+}
+```
+
+
+]
+
+--
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-5-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+# An Island-Mainland Model
+
+
+.pull-left[
+
+
+```r
+px &lt;- 0.75
+py &lt;- 0.25
+m &lt;- 0.1
+ret &lt;- rep(NA,100)
+ret[1] &lt;- py
+
+for( i in 2:100) {
+  ret[i] &lt;- (1-m)*ret[(i-1)] + px * m   
+}
+```
+
+
+]
+
+--
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-7-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+---
+
+# Make it into a function
+
+Creating a `function` is pretty easy.  We just need to know the taxonomy of how to do it.
+
+
+```r
+functionName &lt;- function( parameters ) { 
+  operation1
+  operation2
+  ...
+  return( values )
+}
+```
+
+
+---
+
+# Allele Frequencies Island Model
+
+The constant values I used in the last examples I put as *parameters* to the function itself.  Then basically put the same code into the *body* of the function, and had it return the result.
+
+
+```r
+island_frequencies &lt;- function(px, py, m) {
+  ret &lt;- rep( NA, 100)
+  ret[1] &lt;- py
+  for( i in 2:100) {
+    ret[i] &lt;- (1-m)*ret[(i-1)] + px * m   
+  }
+  return( ret )
+}
+```
+
+
+---
+# Example Island Model
+
+.pull-left[
+
+```r
+m &lt;- factor( rep( c(0.0, 0.01, 0.1), each=100),
+             ordered=TRUE )
+Py &lt;- c(  island_frequencies(0.75, 0.25, 0.00),
+          island_frequencies(0.75, 0.25, 0.01),
+          island_frequencies(0.75, 0.25, 0.10) ) 
+Generation &lt;- c( rep(1:100, times=3) )
+data.frame( m, Py, Generation ) -&gt; df 
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-11-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+# Underlying Assumptions
+
+For these simple models, the following general assumptions are invoked:
+
+- Generations do not overlap such that a difference equation approach can be used.  If they do overlap, then we'd be using differential equations.
+
+- Populations are discrete in that there are firm breaks between then.  
+
+- Migration rates are constant through both space and time. 
+
+
+
+---
+class: center
+
+# N-Island Model
+
+
+![](https://live.staticflickr.com/65535/51191641063_0cfa939af3_z_d.jpg)
+
+
+`$$p_{x,t+1} = (1-m)p_{x,t} + m\bar{p}$$`
+
+--
+
+`$$p_t = \bar{p} + (p_0 - p_t)(1-m)^t$$`
+
+.footnote[Wright (1931)]
+
+
+---
+class: center
+
+# 1-Dimensional Stepping Stone Model
+
+![](https://live.staticflickr.com/65535/51192201869_c196a79201_c_d.jpg)
+
+`$$p_{i,t+1} = (1-m_1 - m_\infty)p_i + \frac{m}{2}(p_{i-1,t} + p_{i+1,t}) + m_\infty\bar{p} + \eta_i$$`
+.footnote[Kimura &amp; Weiss (1964)]
+
+---
+class: middle, center
+
+# 2-Dimensional Stepping Stone Model
+
+![](https://live.staticflickr.com/65535/51191438721_a0d7ea2fa2_z_d.jpg)
+
+
+---
+class: middle, center
+
+![](https://live.staticflickr.com/65535/51191657303_059e579f30_c_d.jpg)
+
+---
+
+# Demographic Models `\(\to\)` Genetic Changes
+
+Some thoughts:
+
+- There is an .redinline[unknown] (and perhaps unknowable) underlying demographic model in the populations we work with.  Our **goal** is to try to figure out, **by looking at only the alleles and genotypes** what that underlying demographic model is (or at least rule out the majority of scenarios that they are not).
+
+--
+
+- Gene flow, *m*, is a .redinline[rate] but it is rarely estimated **directly**, rather we gain inferences from surrogates.  
+
+--
+
+- We do this by looking at how different subdivided populations are using either continuous or discrete measures (similar to the way we can analyze regular statistical models using regression or anova).
+
+
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[Measures of Distance]
+
+## .fancy[Near...  Far... ]
+
+
+---
+
+# Genetic Distance
+
+Genetic distance is measure of differences between individuals or sampling locales based upon and underlying *continuous* separation metric.  These metrics must have the following properties.
+
+- Are continuously increasing in anti-similarity.
+
+--
+
+- Have a property of self-identity where `\(\delta_{ii} = 0\)`.  
+
+--
+
+- Are symmetric in reflection `\(\delta_{ij} = \delta_{ji}\)`.  
+
+--
+
+- To be .redinline[metric], it must also satisfy the triangle inequality such that `\(\delta_{ij} \le \delta_{ik} + \delta_{kj}\)`.  
+
+
+---
+class: center, middle
+
+
+# .red[Individual Distances]
+
+
+---
+
+# Euclidean Distances
+
+
+![](https://live.staticflickr.com/65535/51192237419_3e800128ea_c_d.jpg)
+
+
+---
+
+# AMOVA Distance
+
+.left-column[
+
+#### 
+
+- Squared Distances  
+
+- Additive 
+
+- Vector Distance
+
+- What is `\(\delta_{AA,BC}\)`?
+
+
+]
+
+.right-column[
+![](https://live.staticflickr.com/65535/51192237449_465843878c_z_d.jpg)
+]
+
+???
+
+Do it on iPAD
+
+
+---
+
+
+# Estimating Distance
+
+![](https://live.staticflickr.com/65535/51192551680_c2c5568573_c_d.jpg)
+
+
+
+---
+
+# AMOVA Distance
+
+
+```r
+library( gstudio )
+loci &lt;- c( locus("A:A"), locus("B:B"), locus("C:C"), locus("D:D"),
+           locus("A:B"), locus("A:C"), locus("A:D"), 
+           locus("B:C"), locus("B:D"),
+           locus("C:D"))
+D &lt;- genetic_distance( loci, mode="AMOVA")
+rownames(D) &lt;- colnames(D) &lt;- as.character( loci )
+D
+```
+
+```
+##     A:A B:B C:C D:D A:B A:C A:D B:C B:D C:D
+## A:A   0   4   4   4   1   1   1   3   3   3
+## B:B   4   0   4   4   1   3   3   1   1   3
+## C:C   4   4   0   4   3   1   3   1   3   1
+## D:D   4   4   4   0   3   3   1   3   1   1
+## A:B   1   1   3   3   0   1   1   1   1   2
+## A:C   1   3   1   3   1   0   1   1   2   1
+## A:D   1   3   3   1   1   1   0   2   1   1
+## B:C   3   1   1   3   1   1   2   0   1   1
+## B:D   3   1   3   1   1   2   1   1   0   1
+## C:D   3   3   1   1   2   1   1   1   1   0
+```
+
+
+
+
+
+---
+
+# Bray-Curtis Distance
+
+A measure of proportional equality.  However, .redinline[there are at least 3 different ways] I've found in the literature to estimate this parameter and at least two of them give different answers depending upon the frequencies being used. 
+
+&amp;nbsp;
+
+`$$D_C = 1-2\frac{\sum_{i=1}^{\ell}min(p_{X,i}, p_{Y,i})}{\sum_{i=1}^{\ell}p_{X,i} + p_{Y,i}}$$`
+
+
+
+
+
+---
+
+# Ladder Distance `\(R_{ST}\)`
+
+Suggested to be important for structure based upon loci with differences in repeat motifs...
+
+
+![](https://live.staticflickr.com/65535/51190757742_03a2a8a61f_c_d.jpg)
+
+---
+
+# How to Choose?
+
+Different underlying metrics can be used:
+
+- As response in the `\(G \approx f(E)\)` framework. 
+
+--
+
+- Foundations for structure statistics.  
+
+    - Differences by underlying model reveal the relative importance of underlying assumptions.
+
+
+
+
+
+
+
+
+
+---
+class: center, middle
+
+# .red[Strata Distances]
+
+
+
+---
+
+# Czekanowski (Manhattan) Distance
+
+![](https://live.staticflickr.com/65535/51190770222_16b6b42617_c_d.jpg)
+
+---
+
+# Roger's Distance
+
+
+![](https://live.staticflickr.com/65535/51191480751_fba973eb4d_c_d.jpg)
+
+---
+
+# Nei's Genetic Distance
+
+![](https://live.staticflickr.com/65535/51192249694_5dc5447d27_c_d.jpg)
+
+
+
+
+---
+
+# Differing Distances
+
+.pull-left[
+
+```r
+data(arapat)
+nei &lt;- genetic_distance( arapat, 
+                           stratum="Population", 
+                           mode="Nei")
+euc &lt;- genetic_distance( arapat, 
+                         stratum="Population", 
+                         mode="Euclidean")
+data.frame( Nei = nei[ lower.tri(nei)],
+            Euclidean = euc[ lower.tri(euc)]) %&gt;%
+  ggplot( aes( Nei, 
+               Euclidean ) ) + 
+  geom_point() +
+  stat_smooth( se=FALSE, 
+               col="red")
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+class: inverse, middle
+background-image: url("background.png")
+background-position: right
+background-size: auto
+
+# .red[Measures of Structure]
+
+## .fancy[Categorically How Different Are They?]
+
+---
+
+# Wrights Fixation Index
+
+Sewel Wright derived the `\(F\)`-statistics, of which we've already seen the inbreeding statistic `\(F\)`.  This parameter is one of a larger family of statistics on inbreeding (or more appropiratly .redinline[**fixation**])
+
+### `\(F_{IS} = 1 - H_O / H_E\)`
+
+The average fixation probability at the locus of the *Individual* relative to the *Subpopulation* it resides in.
+
+--
+
+### `\(F_{ST} = 1 - H_S / H_T\)`
+
+The average fixation probability of the locus of the *Subpopulation* relative to the *Total* set of data set where `\(H_S = 2pq\)` and `\(H_T = 2\bar{p}\bar{q}\)`.
+
+
+---
+
+# In Class Exercise
+
+Estimate `\(F_{ST} = 1 - H_S / H_T\)` for one of the following situations.
+
+1. Two populations both fixed for different alleles (e.g., **A** has `\(p=1.0\)` and **B** has `\(q=1.0\)`).
+
+2. Two populations, each with 2 alleles but not in common (e.g., **A**has `\(p=q=0.5\)` and `\(r=s=0\)` whereas **B** has `\(p=q=0\)` and `\(r=s=0.5\)`).
+
+3. Four populations, three of which are fixed for one allele (e.g., `\(p=1\)`), and the fourth is fixed for a different allele (e.g., `\(q=1\)`).
+
+
+
+
+---
+
+
+
+.pull-left[
+# The Misusue of `\(F_{ST}\)`
+
+The fixation index is thus not a measure of degree of differentiation in the sense implied by the extreme case by absence of any common allele.  It measures differentiation within the total array in the sense of the .redinline[**extent to which the process of fixation has gone towards completion**].
+
+![](https://live.staticflickr.com/65535/51192298279_a0caccaed7_w_d.jpg)
+]
+
+
+
+.pull-right[
+![](https://live.staticflickr.com/65535/51192292699_c261e72b49_o_d.png)
+]
+
+.footnote[Yes, it does look like he is about to erase the blackboard with a guinea pig...]
+
+
+
+
+---
+
+# Sampling Considerations
+
+The parameter `\(F_{ST}\)` is a *population-level* parameter:  
+
+
+- Stucture parameters are influences by sampling scale, breadth, and intensity.
+
+- All parametrers are subject to bias.   
+
+- There is a "cottage industry" based upon corrections to these parameters.
+
+
+---
+
+# Some `\(F_{ST}\)`-lke Parameters.
+
+Here are some of the proposed alterantives to this estimate.
+
+- `\(G_{ST}\)` - First approximation.
+
+- `\(N_{ST}\)` - Sequence based data.  
+
+- `\(G_{ST}^{\prime}\)` and `\(D_{est}\)` - For loci with several alleles 
+
+- `\(\theta\)` - An analog based upon the Analysis of Variance.
+
+- `\(\Phi_{ST}\)` - The multilocus extension of `\(\theta\)` used in AMVOA.
+
+
+
+
+
+
+
+
+
+---
+class: middle, center 
+
+# .red[Statistical Structure]
+
+
+
+---
+class: center, middle
+
+![](https://live.staticflickr.com/65535/51190828107_1e42ff5367_o_d.png)
+---
+class: middle, center 
+
+![](https://live.staticflickr.com/65535/51190829697_5c9fe98345_c_d.jpg)
+
+---
+class: middle, center 
+
+![](https://live.staticflickr.com/65535/51192309359_909e085a6c_c_d.jpg)
+
+
+---
+
+# Variance Decomposition in AMVOA
+
+The SSD values are then used to estimate an Analysis of Variance model using population as a **random effect**.  The variance components representing the variation among populations `\(\sigma_A^2\)` and the variance within populations `\(\sigma_W^2\)` are then used to estimate the .redinline[fraction of the to total genetic variation due to being in different populations].
+
+
+`$$\Phi_{ST} = \frac{\sigma_A^2}{\sigma_A^2 + \sigma_W^2}$$`
+
+--
+
+Significance is tested via permuting individuals across sampling locales and then comparing the original observed `\(\sigma_A^2\)` to the null distribution of values gained by permutation (similar to that done for rarefaction).
+
+
+
+---
+
+
+.pull-left[
+
+# Example 
+
+How much statistical differences are there among the identified *Species* in the beetle data set?
+
+
+
+```r
+library( pegas )
+D &lt;- genetic_distance( arapat, 
+                       stratum="Species", 
+                       mode = "AMOVA")
+D &lt;- as.dist( D )
+Species &lt;-  arapat$Population  
+
+model &lt;- amova( D ~ Species )
+phi &lt;- getPhi( setNames( model$varcomp$sigma2, rownames(model$varcomp))   )
+```
+]
+
+
+
+.pull-right[
+
+```
+## $tab
+##              SSD       MSD  df
+## Species 2304.694 60.649831  38
+## Error    771.721  2.381855 324
+## Total   3076.415  8.498383 362
+## 
+## $varcoef
+##        a 
+## 9.293026 
+## 
+## $varcomp
+##           sigma2 P.value
+## Species 6.270076       0
+## Error   2.381855      NA
+## 
+## $call
+## amova(formula = D ~ Species)
+## 
+## attr(,"class")
+## [1] "amova"
+```
+
+```
+##           Species
+## GLOBAL  0.7247025
+## Species        NA
+```
+
+]
+
+
+
+
+
+
+
+---
+
+# Final Thoughts
+
+- Magnitude  
+
+
+- Non-reversibility   
+
+
+- Surrogate Measures   
+
+
+
+
+---
+
+# Landscape Genetic Issues
+
+
+Many of the Landscape Genetic analytical approaches we use rely upon estimation of pair-wise distances or structure statistics.
+
+- Sampling should be designed to minimize variance in parameters.  
+
+- Corrections (such as `\(F_{ST}/(1-F_{ST})\)` for structure) are helpful for creating more appropriate models.  
+
+- All measures of structure respond slowly to perturbations. 
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("https://live.staticflickr.com/65535/50367566131_85c1285e2f_o_d.png")
+background-position: right
+background-size: auto
+
+
+.pull-left[ ![Moira](https://media.giphy.com/media/ghToz6eRdaNba3aPhS/giphy.gif) ]
+.pull-right[ # 🙋🏻  Questions?
+
+If you have any questions for about&lt;br/&gt; the content presented herein&lt;br/&gt; now is your time.  
+
+If you think of something later though, &lt;br/&gt;feel free to [ask me via email](mailto://rjdyer@vcu.edu) and I'll&lt;br/&gt; get back to you as soon as possible.
+]
+
+
+
+
+
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "default",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -12,7 +12,7 @@ library( knitr )
 library( kableExtra )
 library( tidyverse )
 library( raster )
-
+knitr::opts_chunk$set( eval=FALSE )
 theme_set( theme_minimal( base_size = 16 ))
 ```
 
@@ -254,11 +254,12 @@ df.summary %>%
 ```
 
 
-```{r echo=FALSE}
+```{r eval=FALSE}
 fit.suitability <- cor.test( df$MFRatio, df$Suitability )
 ```
 
 
-*I would interpret this that of all these variables, the largest correlation, and only variable with significant correlation was provided by `Suitability` (Pearson Correlation, r = `r format( fit.suitability$estimate, digits=3)`, t = `r format(fit.suitability$statistic, digits=3)`, df = `r fit.suitability$parameter`, P = `r format( fit.suitability$p.value, digits=3)`). None of the other varibles were statistically larger than zero.*
+
+*I would interpret this that of all these variables, the largest correlation, and only variable with significant correlation was provided by `Suitability` (Pearson Correlation, r = `format( fit.suitability$estimate, digits=3)`, t = ` format(fit.suitability$statistic, digits=3)`, df = ` fit.suitability$parameter`, P = ` format( fit.suitability$p.value, digits=3)`). None of the other variables were statistically larger than zero.*
 
 

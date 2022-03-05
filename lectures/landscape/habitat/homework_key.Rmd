@@ -3,6 +3,12 @@ title: "Habitat Activity"
 output: html_notebook
 ---
 
+```{r startup, include=FALSE}
+knitr::opts_chunk$set( eval=FALSE )
+
+```
+
+
 <center>
 [![Dayne Tompkin](https://unsplash.com/photos/Sk-C-om9Jz8/download?force=true&w=640)](https://unsplash.com/photos/Sk-C-om9Jz8?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink)
 </center>

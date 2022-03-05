@@ -1,0 +1,913 @@
+---
+title: "The Title"
+subtitle: "The Subtitle"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [deq-styles.css, middlebury, middlebury-fonts]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: github
+      highlightLines: true
+      ratio: '16:9'
+      countIncrementalSlides: false
+---
+
+class: left, bottom
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+
+# Numerical Data<br/> & Data Frames
+
+
+
+### This is where we leave ![Excel](images/excel.png) behind
+
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<img src="images/logo1.svg" width="400px">
+
+
+
+
+---
+
+class: sectionTitle, inverse
+
+# Numerical Data
+
+
+---
+
+# Numerical Data  
+
+In `R`, numerical data is largely represented by a data type called `numeric`.   
+
+--
+- For most purposes, this is the only data type we will need (though `integer` types and specialized libraries exist).  
+
+
+
+--
+- Magnitude determined by your computer (my MacBook can handle `r format(.Machine$double.xmin)` - `r format(.Machine$double.xmax)`).  
+
+
+---
+
+# Operators
+
+In many ways, `R` can act just like an interactive calculator.  *Arithmetic operators* are just like normal.
+
+```{r eval=FALSE}
+x <- 10
+y <- 23
+x + y
+x - y
+x * y
+x / y
+```
+
+
+---
+
+# Exponential Operators
+
+*Exponents* use the carat on the keyboard (on us-english keyboards it is above the #6 key). So the value of $2^16$ is 
+
+```{r}
+2^16
+```
+
+--
+
+Roots are found by inverting the exponent.  For example, the $\;^3\sqrt{27}$ (cube-root of 27) is
+
+```{r}
+27^(1/3)
+```
+
+---
+
+# Logrithms
+
+The logrithms are provided as the function `log()` which defaults to the natural log
+
+```{r}
+log( 10 )
+```
+
+--
+
+You can change the base by passing the function the optional argument (make sure you separate the value from the optional argument with a comma).
+
+```{r}
+log( 10, base=10 )
+```
+
+
+
+---
+# Additional Operators
+
+.center[ *Potential Operations >>> Symbols on Keyboard* ]
+
+*Modulus Operator*
+
+```{r}
+23 %% 10 
+```
+
+
+---
+
+# Order of Operations
+
+The order of precedence for operations are just like you learned in math class. 
+
+```{r}
+x1 <- 23
+y1 <- 55
+x2 <- 56
+y2 <- 63
+distance <- sqrt(  (x1-x2)^2 + (y1-y2)^2 )
+distance
+```
+
+---
+
+# `?Syntax`
+
+Operator        |    Description
+----------------|-------------------------------------------
+:: :::	        | access variables in a namespace
+$ @	            | component / slot extraction
+[ [[	          | indexing
+^	              | exponentiation (right to left)
+- +	            |  unary minus and plus
+:	              |   sequence operator
+%any%	          | special operators (including %% and %/%)
+* /	            | multiply, divide
++ -	            | (binary) add, subtract
+< > <= >= == !=	| ordering and comparison
+!	              | negation
+& &&	          | and
+&vert; &vert;&vert;	      | or
+~	              | as in formulae
+-> ->>	        | rightwards assignment
+<- <<-	        | assignment (right to left)
+=	              | assignment (right to left)
+?	              | help (unary and binary)
+
+
+
+---
+class: sectionTitle
+
+# Introspection & Coercion
+
+
+---
+
+# Introspection
+
+In `R`, each variable can be queried about it's `class` (what kind of data that particular variable holds).  
+
+```{r}
+x <- 42
+class( x )
+```
+
+--
+
+You can also ask if it is a particular type using the `is.numeric()` function.
+
+```{r}
+is.numeric( x )
+```
+
+
+---
+
+# Coercion 
+
+We can also turn *one representation* of our data into a different different type, though there are limitations.  For example, if we just read in a text file and it has a represented as text (a [Character Data Type](../character_data/slides.html) in `R`) but we need to have it function as a `numeric` type, we can use the following approach
+
+```{r}
+x <- "42"
+class( x )
+```
+
+--
+
+The create a new variable who (if possible) contains the numeric representation of the character string `"42"`.
+```{r}
+y <- as.numeric( x )
+class(y)
+```
+
+---
+
+# Coercion Fail
+
+When it fails, it returns a warning and a missing data value.
+
+```{r}
+as.numeric( "Bob" )
+```
+
+--
+
+&nbsp;
+
+<div class="box-red">It is acknowledged that many error messages in R may not be "comprehensible" to the user and it is not clear if this is a *feature* or a *bug*.</div>
+
+
+---
+class: sectionTitle
+
+# Caveats
+
+---
+
+
+# Order of Operations
+
+There are times that the order of operations will really come back to .red[bite you].  Consider this example where I create a sequence of numbers using the sequence operator (`:`)
+
+```{r}
+n <- 4
+1:n
+```
+
+--
+
+So if we wanted to make a sequence from 1 to $n-1$, we *could* type this:
+
+```{r eval=FALSE}
+1:n-1
+```
+
+--
+
+```{r echo=FALSE}
+1:n-1
+```
+
+---
+
+To *fix* this, feel free to be *verbose* in your use of parentheses.  If you are intending to get $10^2$, $10^3$ $\ldots$ $10^6$ and type it as:
+
+```{r}
+10^2:6
+```
+
+--
+
+What you want is:
+
+```{r}
+10^(2:6)
+```
+
+
+<div class="box-yellow">Notice how the second (and intended) code is actually easier to read than the first.</div>
+---
+
+# Numerical Approximations
+
+Computers use binary switches to represent numbers.  For integers, it is great, but for floating point numbers it .red[sucks], big time.  
+
+Consider the following:
+
+```{r}
+x <- .1
+y <- .3 / 3 
+```
+
+
+But if we ask if they are equal, what do you expect?
+
+--
+
+```{r}
+x == y
+```
+
+--
+
+```{r}
+print(x, digits=20)
+print(y, digits=20)
+```
+
+
+
+---
+
+## 15 Minute Activity - Numerical Operations
+
+Create an R script named `numerical_operators.R` in the project folder and answer the following questions.  Copy each of these questions as commented text into your script.  
+
+1. Define a variable named `temp` and set it to the temperature of this room.  Did you use degrees Fahrenheit?  Write the code to convert this to Celcius.  (or the other way around if you used the SI).
+
+2. The function `rnorm(500)` will give you 500 random number from the normal probability distribution.   Use it to assign these values to a variable named `theData`.  Find them mean, variance, and standard deviation of these data (hint: `mean()`, `var()`, and `sd()` are what you are looking for—use the help function for these to learn more about them).  Also try `summary()`.
+
+3. Consider Dr. Dyer’s need for fresh [charcuterie](https://en.wikipedia.org/wiki/Charcuterie) in his life. Luckily, Richmond has a spectacular butcher in Carytown, [Belmont Butchery](http://belmontbutchery.com/). Below are the coordinates for both Dyer’s office and the purveyor of fine meat products denoted as Meters in Virginia State Plane (4502). Use your old friend, the Pythagorean theorem (shown a few slides ago) to figure out the distance between these two points.  Present your results in miles.
+
+```{r}
+office <- c(3592374.948, 1134930.213)
+belmont <- c(3590195.540, 1136003.201)
+```
+
+---
+class: sectionTitle, inverse
+
+# Data Frames!
+
+![Yes](https://media.giphy.com/media/f6VfCFyOL5KmiICskp/giphy.gif)
+
+---
+
+# Data Frames & Related Materials
+
+
+> Data frames are a structure that can hold many different data types in one simple structure.
+
+Data frames are the *lingua franca* for `R`, especially once we start getting into more complicated analysis and manipulation.  For simplicity, one can consider a `data.frame` object much like a spreadsheet.  Each row represents a record on some object and each column—consisting of different kinds of data—are measurements on that object.  
+
+
+
+---
+
+```{r echo=FALSE}
+DT::datatable(iris)
+```
+
+---
+
+# Introspection
+
+```{r}
+class( iris )
+dim( iris )
+summary( iris )
+```
+
+
+
+---
+
+# Properties of Data Frame Objects
+
+```{r}
+nrow(iris)
+ncol(iris)
+names(iris)
+```
+
+---
+
+# Accessing Internal Elements
+
+Accessing elements within a `data.frame` can be done by grid position (row,col) or by column entry.  Here is an example showing the third entry in the `Petal.Width` column using numerical coordinates:
+
+```{r}
+iris[3,4]
+```
+
+--
+
+And column entries.  
+
+```{r}
+iris$Petal.Width[3]
+```
+
+### `r emo::ji("index pointing up")` column notation much more readable
+
+
+---
+
+# Creating Raw Data Frames
+
+Data frames can hold different kinds data types in a grid-like format.  *Rows* are records for observations and *Columns* represent individual measurements on each object.  
+
+```{r}
+site <- c( "Const","ESan", "Aqu")
+longitude <- c( -111.675, -110.3686, -110.1043)
+latitude <- c(25.0247, 24.45879, 23.2855)
+```
+
+--
+
+```{r}
+sites <- data.frame( Site = site,
+                     Longitude = longitude,
+                     Latitude = latitude )
+class( sites )
+dim( sites ) 
+names( sites ) # shorthand for colnames
+```
+
+
+---
+
+# Viewing Data Frame Objects.
+
+If the data are small enough, we can visualize it all by printing out the elements.  It is also possible have each column of data to summarize itself.
+
+
+
+.pull-left[
+```{r}
+sites
+```
+
+`RStudio` has a built-in spreadsheet if you need to make quick observations or edits
+
+```{r eval=FALSE}
+View(sites)
+```
+
+]
+
+
+--
+
+.pull-right[
+
+```{r}
+summary( sites )
+```
+
+]
+
+---
+
+# Tibbles
+
+The `tidyverse` extends a `data.frame` by giving it more functionality.  This is *largely opaque* to us, because any time we use functions from `tidy`, they do the conversions automatically.
+
+```{r}
+library( tidyverse )
+```
+
+
+
+
+---
+
+# Loading Data 
+
+We can load data from local files (on your computer), from databases (local or external), or from any location we can access a fully qualitified domain name (e.g., a URL).
+
+```{r}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/arapat.csv"
+```
+
+--
+
+```{r}
+samples <- read_csv( url )
+```
+
+
+
+---
+
+# Showing the Data
+
+```{r}
+summary( samples )
+```
+
+--
+
+Since `read_csv()` produces a tibble itself as output (as do *all functions in tidyverse*), there is no need to convert it from being a vanilla `data.frame`.
+
+```{r}
+class( samples )
+```
+
+
+
+---
+
+# Sizes of Data Objects
+
+Both `data.frame` and `tibble` objects have a number of rows and columns that make up their dimensions.
+
+```{r}
+nrow( samples )
+ncol( samples )
+dim( samples )
+names( samples )
+```
+
+
+
+
+---
+
+.pull-left[
+# Visualizing Data 
+
+One of the first things I like to do is to look at the data that is being imported and see if there are any obvious problems.  These data have spatial coordinates for sites, so here I'll map it interactively (we'll get to this tomorrow.
+]
+
+.pull-right[
+
+&nbsp;
+
+&nbsp;
+
+```{r echo=FALSE}
+library( leaflet )
+samples %>% 
+  leaflet() %>%
+  addProviderTiles("OpenTopoMap") %>%
+  addMarkers(~Longitude, ~Latitude, popup = ~Stratum) 
+```
+]
+
+
+
+---
+
+# Small Items - Skipping Metadata
+
+Sometimes there are meta-data rows at the top that must be skipped.  Imagine a data file that has the following contents (not too uncommon among people who harbor a mild grudge against most data analysts...)
+
+```
+Collected on 7 September 2021
+By RJ Dyer
+Site, Longitude , Latitude
+Const, -111.6750,  25.02470
+ESan,  -110.3686,  24.45879
+Aqu,   -110.1043,  23.28550
+```
+
+---
+
+```{r}
+read_csv( "Collected on 7 September 2021
+By RJ Dyer
+Site, Longitude , Latitude
+Const, -111.6750,  25.02470
+ESan,  -110.3686,  24.45879
+Aqu,   -110.1043,  23.28550" , skip=2)
+```
+(Note: I'm just passing a multiline string to the `read_csv` function.)
+
+
+---
+
+# No Column Names `r emo::ji("stop_sign")`
+
+```{r}
+read_csv( "Const, -111.6750,  25.02470
+ ESan,  -110.3686,  24.45879
+ Aqu,   -110.1043,  23.28550")
+```
+
+
+---
+
+# No Column Names `r emo::ji("thumbs_up_medium_dark_skin_tone")`
+
+```{r}
+read_csv( "Const, -111.6750,  25.02470
+ ESan,  -110.3686,  24.45879
+ Aqu,   -110.1043,  23.28550" , col_names = FALSE)
+```
+
+---
+
+# Adding or Override Names
+
+```{r}
+read_csv( "Const, -111.6750,  25.02470
+ ESan,  -110.3686,  24.45879
+ Aqu,   -110.1043,  23.28550", col_names = c("Site","Longitude","Latitude") )
+```
+
+
+
+---
+
+# Missing Data
+
+```{r}
+read_csv( "Site, Longitude , Latitude
+ Const, ,  25.02470
+ ESan,  -110.3686,  
+ Aqu,   -110.1043,  23.28550") -> df
+df
+```
+
+`NA` is a valid data type!  
+
+---
+
+# Dealing with `NA` values
+
+The absence of data, `NA`, is important and `R` makes a big deal about warning you when you have missing data so you do not make improper inferences.
+
+```{r}
+df$Longitude 
+mean( df$Longitude )
+```
+
+--
+
+**By Default**, `R` does not *assume* that you want to ignore the missing data, you **must** tell it to do so each time.
+
+```{r}
+mean( df$Longitude, na.rm=TRUE )
+```
+
+
+---
+
+# Missing Data Non-Traditional
+
+```{r}
+read_csv( "Site, Longitude , Latitude
+ Const, -9 ,  25.02470
+ ESan,  -110.3686,  -9 
+ Aqu,   -110.1043,  23.28550", na="-9")
+```
+
+---
+
+# Slicing and Dicing
+
+When we take a slice of data from a `tibble` (or `data.frame`), how we ask for it may determine the nature of what is returned to us. 
+
+```{r}
+summary( samples )
+```
+
+
+```{r}
+class( samples$Stratum )
+class( samples[,1])
+```
+
+
+
+---
+
+# Subsets by Position
+
+```{r}
+samples[1:10, ]
+```
+
+
+
+
+---
+
+# Filtering By Logic
+
+So far, we've used the actual row numbers to grab data from the tibble.  We can also use logic based upon data within the table itself.
+
+Remember, that a relational operator will return `TRUE` or `FALSE` and we can use that to filter the whole thing.  Here is how we'd find all data where the latitude was greater than -110.
+
+```{r}
+samples[ samples$Longitude > -110,]
+```
+
+Notice the columns designation is left blank (so we are getting all of them.)
+
+
+---
+
+# Filtering Individual Data
+
+We can use some of the fancy string stuff we learned previously to pull out only the names of the sites that match a certain regular expression (here they must start with either `C`, `E`, or `S`).  Using the `$` notation returns the results as a vector.
+
+```{r}
+samples$Stratum[ str_detect( samples$Stratum, "^[CES]") ]
+```
+
+--
+
+But using the square bracket notation (rows and indicating numerically which column), returns the result as a tibble.
+
+```{r}
+samples[str_detect( samples$Stratum, "^[CES]"),1]
+```
+
+
+
+
+
+---
+
+# Adding New Data Columns
+
+Adding new columns always post-pends them onto the right side of the tibble.
+
+```{r}
+samples$ID <- 1:39
+samples
+```
+
+
+---
+
+# Changing Individual Values
+
+.pull-left[
+By column variable name 
+
+```{r}
+samples$ID[2] <- 42
+samples
+```
+
+]
+
+--
+
+.pull-right[
+By index coordinate.
+
+```{r}
+samples[2,4] <- 24
+samples
+```
+
+]
+
+
+
+---
+
+# Forced Coercion
+
+```{r}
+samples$ID[2] <- "Bob"
+samples
+```
+
+
+
+
+---
+
+# Deleting Content
+
+.pull-left[
+Individual values in a column can be deleted by assigning it `NA`, a missing value.  The *Recycle Rule* we saw above, will repeat the `NA` throughout the whole column.
+
+```{r}
+samples$ID <- NA 
+samples 
+```
+]
+
+
+.pull-right[
+
+To entirely delete the column, instead of just assigning all the elemnets to be missing, can be accomplished by setting the whole column equal to `NULL`
+
+```{r}
+samples$ID <- NULL 
+samples 
+```
+]
+
+
+
+
+---
+
+# Adding Rows of Content
+
+To add additional Rows of content, we need to put the new data into their own `data.frame` or `tibble` 
+
+```{r}
+tibble( 
+  Stratum = c("Los Barriles","Comondu"),
+  Longitude = c(-109.7026, -111.8442),
+  Latitude = c(23.6811, 26.0708) 
+) -> newSites
+newSites
+```
+
+
+---
+
+# Adding Rows of Content
+
+And then `bind` it onto the existing sample.
+
+```{r}
+samples <- rbind( samples, newSites)
+
+tail( samples )
+```
+
+
+---
+
+# Deleting Rows
+
+To delete rows, you use negative row indices.
+
+```{r}
+dim(samples)
+samples <- samples[-41:-39,]
+dim(samples)
+```
+
+Notice: For all of this "add on" and "delete" stuff, if we want it to **persist** we .red[must] reassign the values back onto the original variable.
+
+
+---
+
+# Real Names
+
+While not quite critical here, we often have the need to use more descriptive names for our data columns, some of which need to have spaces to be fully descriptive.  One of the last benefits of a `tibble` I'll discuss here, is that it allows for spaces in the names of data columns.
+
+```{r}
+names(samples)
+names( samples )[1] <- "Population Name"
+samples 
+```
+
+
+
+---
+
+# Accessing Spaced Out Columns
+
+`RStudio` will properly autoinsert all valid column names if you hit the tab button for you.  However, if you are doing it manually, surround the name of the data column in a backtick (that is the character on the upper left corner of your keyboard).
+
+```{r}
+samples$`Population Name`
+```
+
+
+---
+
+## BIG ACTIVITY - Your DATA!
+
+Create a new R script called `data_frames.R` in the project folder.  
+
+1. At the top of the file, insert the line `library(tidyverse)` so that the script will load in the proper libraries.  
+
+2. Use the function `read_data()` to load in the file as a variable named something that is meaningful for you.  The file *should be* in the same folder as the script (if you followed the instructions from the very first lecture), so you only have to give the name of the file (in quotes-it is a character variable) of the csv file.
+
+3. What are the names of the columns of data in this object? What do they actually measure? 
+
+4. How many measurements are taken at each record and how many records are present?
+
+5. How deep was the deepest measurement? What was the coldest temperature?
+
+6. Assign the depth measurement to a variable named `depth` and do the same for the `Do_Optical` data (but of course name it something else appropriate).  What are the mean values for each of variables?
+
+7. **BONUS** The function `plot(x,y)` will make a quick scatter plot of two variables with the variables in `x` on the (wait for it) x-axis and those in the variable `y` on the y-axis.  Use the data from the last question to make the magnificent display of Do as a function of depth.
+
+```{r eval=FALSE, echo=FALSE}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/deq_data/Field_Data.csv"
+field <- read_csv( url )
+summary( field )
+head( field )
+plot( field$Fdt_Depth, field$Fdt_Do_Optical)
+```
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+
+![## Any Questions](https://media.giphy.com/media/G0vYU697uKl0IiIJO2/giphy.gif)
+
+&nbsp;
+
+## Ask away!
+]
+
+
+
+

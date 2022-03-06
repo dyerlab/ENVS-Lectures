@@ -17,7 +17,7 @@ lectures/exams/final2021/*
 *.icloud
 
 __MACOSX/
-*.zip
+lectures/*.zip
 
 *.nb 2.html
 *.nb 3.html

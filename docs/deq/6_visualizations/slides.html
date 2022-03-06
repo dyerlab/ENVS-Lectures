@@ -38,7 +38,1311 @@ background-size: auto
 
 
 
+---
+class: sectionTitle
 
+# .green[Quick Sidetrack&lt;br/&gt;Into Functions]
+
+## Alright Already, I'm tired of repeating myself.
+
+
+---
+
+# Tired of Repeating Yourself?  
+
+The number of errors in code is directly proportional to the amount of code you write.  If you find yourself doing the same thing over and over again (like loading the .red[Field_Data.csv] data set), wrap it into a function and each time you need to it, call the function instead of copy-paste or rewriting the same thing over and over again.
+
+&amp;nbsp;
+
+### .center[DRY]
+
+
+---
+
+# ⚙️ Making Functions
+
+A function is just a *chunk* of code, wrapped within curly brackets, and given a name.
+
+
+
+```r
+foo &lt;- function() {
+  
+  # R CODE GOES HERE
+  
+}
+```
+
+
+--
+
+The contents of a function may be:  
+
+- A few lines of code or hundreds,  
+
+- Calls to other functions,  
+
+- Accepting variables as argument *input* (or not), and 
+
+- Returning some object (or not).
+
+
+---
+
+# Variable Scope
+
+Variables within a function are 'localized' to within that variable *alone*.  This allows us to:
+
+1. Not run out of variable names (`df` and `x` are common ones we've used thus far).  
+
+2. Not have the variables we are working with being clobbered every time we call another function.
+
+
+---
+
+Define a function with a variable `x` inside the function.
+
+
+```r
+foo &lt;- function() {
+  x &lt;- 42
+  cat("x = ", x, "within function.\n")
+}
+```
+
+
+--
+
+Then examine a similarly named variable with a different assigned value before and after calling that function.
+
+
+```r
+x &lt;- 23
+cat("x = ", x, "before function call.")
+```
+
+```
+## x =  23 before function call.
+```
+
+--
+
+Within the function, the variable represents the value inside the function.
+
+
+```r
+foo()
+```
+
+```
+## x =  42 within function.
+```
+
+--
+
+And after the function is called, examine the value of the variable.
+
+
+```r
+cat("x = ", x, "after function call")
+```
+
+```
+## x =  23 after function call
+```
+
+
+
+.blueinline[NOTICE: before and after function are in "global variable scope, whereas inside the function, the variable is .red[localized] within the boundaries of the function itself."]
+
+
+---
+
+# Variable Scope
+
+The global scope is shown in RStudio on the *Environment* tab.
+
+.center[![](https://live.staticflickr.com/65535/50398760012_a53e2ea83d_c_d.jpg)]
+
+--
+
+You can also see what is in the environment by asking to list all variables and functions using the `ls()` function.
+
+
+```r
+ls()
+```
+
+```
+## [1] "data" "foo"  "x"
+```
+
+
+
+---
+
+# Passing Varibles to A Function
+
+While some functions do not take input variables, many require it.  To pass variables into the function scope, we identify them in the 
+
+
+
+```r
+foo &lt;- function( x ) {
+  cat("x =", x, "in the function.")
+}
+foo( 23 )
+```
+
+```
+## x = 23 in the function.
+```
+
+--
+
+If you do not provide a value for a required variable, it will give you an error.
+
+
+```r
+foo()
+```
+
+```
+## Error in cat("x =", x, "in the function."): argument "x" is missing, with no default
+```
+
+
+---
+
+# Default Function Variables
+
+We can put in *default* values for arguments by assigning values in the function parentheses.
+
+
+```r
+favorite &lt;- function( name = "Garey" ) {
+  cat("My favorite DEQ employee is:", name, "\n")
+}
+
+favorite()
+```
+
+```
+## My favorite DEQ employee is: Garey
+```
+
+--
+
+But can be overridden when necessary (either named or not)
+
+
+```r
+favorite( name = "Jones")
+```
+
+```
+## My favorite DEQ employee is: Jones
+```
+
+
+---
+
+# Getting Results from Functions
+
+In addition to sending data *to* a function, we often want to get something *back from* a function.  We **must** be explicit about wanting to send something back to the caller using the `return()` function.
+
+
+```r
+foo &lt;- function( name = "Alice") {
+  response &lt;- paste( name, "is in the house.")
+  return( response )
+}
+```
+
+---
+
+## 15 Minute Activity - Make Your First Function
+
+For this, make a new R script named `getStationData.R` and save it in the same folder as the project.  Do the following.
+
+1. Copy the contents of the previous exercise where you loaded the data in, formatted dates and factors into this function.
+
+2. Take a look at the help file for the function `str_sub()` to see if you can also extract the values from the station Id representing the river distance as a new column of data and use `as.numeric()` to turn it into a number from the string.  You'll want to put his `mutate()` *before* you turn the Station Id from a character into a factor.
+
+3. After you have the code working **exactly** like you want, wrap it into a function.  You will want to:
+
+  a. Give it the same name as the file (one function in each file with the same name keeps things sane).  
+  b. Provide a default file name for this case, but if you have other data files of the same format, this function will work just fine.
+  
+  c. Load the libraries you need to run this function.  Never assume that they are already loaded into memory.
+  
+  d. At the end of all the piping, assign the data to a variable inside the function.
+  
+  e. Use the `return()` function to return this value from the function to whomever called it.
+
+
+---
+
+# General Schematic
+
+The file should look something like this.  Save the file and close the editor.
+
+
+```r
+# this function loads in the default station configuration and formats it
+#  for subsequent analyses.
+
+getStationData &lt;- function(filename = "Field_Data.csv") { 
+  library( tidyverse )
+  library( lubridate )
+  read_csv( filename ) %&gt;%
+    ...
+    mutate( Distance = as.numeric( str_sub( Fdt_Sta_Id, 6, 11) ) ) %&gt;%
+    ...
+    select( ... ) -&gt; data  
+  
+  return( data )
+}
+```
+
+
+
+---
+
+# Using Your Function
+
+To use the file, you do the same thing that `RStudio` does when you hit the `source` button.  Let's verify.
+
+1. Select `Session -&gt; Restart R &amp; Clear Output`  
+
+2. In the console, type `source("getStationData.R")`.   Since this is a user defined function, it must be sourced each time you start a session or after you clear all the variables from memory.  You can set these to be loaded by default if you like.
+
+3. Take a look at your `Environment` tab and you should see your function named there.
+
+4. Call the function now like any other function.
+
+
+```r
+data &lt;- getStationData.R()
+```
+
+and you should have your data! .green[Congratulations!]
+
+
+---
+class: sectionTitle
+
+# .red[Basic Graphics]
+
+---
+
+# R has Built-In Graphics
+
+That are really good for quick visualizations.  However, they are limited and we will not spend much time on them.
+
+&amp;nbsp;
+
+.center[ ![Plot Help File](images/plot_help.png) ]
+
+
+
+
+---
+
+# Some Examples - Univariate Data
+
+For the classic graphics, we do not pipe data in but instead use the older `$` notation.  Here is a histogram function for the Depth (n.b., in my function it renamed `Fdt_Depth` to `Depth`)
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="504" /&gt;
+
+---
+
+# Some Examples - Univariate Data
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-15-1.png" width="504" /&gt;
+
+---
+
+# Density Plots
+
+
+```r
+d &lt;- density( data$Depth )
+plot( d )
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-16-1.png" width="504" /&gt;
+
+
+
+---
+
+# Scatter Plots
+
+
+.pull-left[
+Here the plot takes data as (x,y) for the respective axes.  By default, it will use the column names as the axis labels and the range of data for the size limits.  They can individually be customized by passing additional arguments to the `plot()` function.
+
+&amp;nbsp;
+
+
+```r
+plot( data$Depth, data$Salinity,
+      xlab="Depth", ylab="Salinity" )
+```
+]
+
+.pull-right[ 
+&lt;img src="slides_files/figure-html/unnamed-chunk-18-1.png" width="504" /&gt;
+]
+
+
+
+
+---
+
+# `plot()` Options
+
+Parameter | Description
+----------|-----------------------------------------------------------------------------------------------------------
+`type`    | The kind of plot to show ('p'oint, 'l'ine, 'b'oth, or 'o'ver).  A point plot is the default.
+`pch`     | The character (or symbol) being used to plot.  There 26 recognized general characters to use for plotting.  The default is `pch=1`. 
+`col`     | The color of the symbols/lines that are plot.
+`cex`     | The magnification size of the character being plot.  The default is `cex=1` and deviation from that will increase (cex &gt; 1) or decrease (0 &lt; cex &lt; 1) the scaling of the symbols.  Also works for `cex.lab` and `cex.axis`.
+`lwd`     | The width of any lines in the plot.
+`lty`     | The type of line to be plot (solid, dashed, etc.)
+`bty`     | The 'Box' type around the plot ("o", "1", "7","c","u", "]", and my favorite "n")
+
+
+---
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-19-1.png" width="504" /&gt;
+
+
+---
+
+# Boxplots
+
+.pull-left[
+For bi-variate data, we can use either the (x,y) coordinate notation **or** a *functional* notation where it is denoted as y ~ x (like a regression model).  Here is that example using `boxplot()` for depths by staion (and I factored out the data as well into a `data=` argument for increased clarity).
+
+&amp;nbsp;
+
+
+```r
+boxplot( Depth ~ Station, data= data,
+         notch=TRUE, xlab="Station")
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-21-1.png" width="504" /&gt;
+]
+
+
+---
+
+# Line Plots
+
+
+.pull-left[
+Line plots are the same as scatter ones, we just need to tell it to use `type='l'` and make sure that we have the .red[data ordered by station] for grouping so it makes lines from one point to the next in the right order or groups.  If not, it looks a bit *scattered*
+
+&amp;nbsp;
+
+
+```r
+plot( data$Depth, data$Salinity, 
+      type="l", 
+      xlab="Depth", ylab="Salinity")
+```
+]
+
+.pull-right[ 
+&lt;img src="slides_files/figure-html/unnamed-chunk-23-1.png" width="504" /&gt;
+]
+
+
+---
+
+## 15 Minute Activity - Some Scatter Plots
+
+Create a new R file named `basic_visualization.R` in the same directory as the Project.  In this file, `source("getSationData.R")` and make an example plot using the data of your choice for the following graphic output types.  Feel free to snazz it up with color (col="red" or col=3), plot character (pch=#), size (cex=#), etc.
+
+1. A histogram 
+
+2. A scatter plot 
+
+3. A boxplot
+
+
+
+
+---
+class: sectionTitle
+
+# .orange[GGPlot]
+
+
+### The Grammar of Graphics
+
+
+
+---
+
+# The Grammar of Graphics
+
+
+.pull-left[ Components of graphics:
+
+- Data  
+
+- Aesthetics  
+
+- Transformations  
+
+- Partitions  
+
+- Auxillary Text 
+
+- Overlays
+]
+
+.pull-right[ 
+![asdf](https://live.staticflickr.com/65535/50295255672_46390d9ee5_w_d.jpg)
+]
+
+
+
+---
+
+# The `ggplot2` Library
+
+.pull-left[
+![Tidyverse](https://live.staticflickr.com/65535/50295284047_ebb5dec2e8_w_d.jpg)
+]
+
+
+.pull-right[
+  ### R Packages for Data Science
+  
+  - RStudio + Hadley Wickham
+  
+  - Collection of Packages
+  
+  - Makes you .red[AWESOME]
+  
+
+```r
+library( ggplot2 )
+```
+
+  - Included by default with `tidyverse`
+]
+
+
+---
+
+.pull-left[
+# GGPlot function
+
+Calling the `ggplot()` function creats the base of the graph.  After that, you literally add (using the + operator) the other components to it.
+
+
+```r
+data %&gt;%
+  ggplot() 
+```
+]
+
+.pull-left[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-26-1.png" width="504" /&gt;
+]
+
+---
+
+# Inserting Data
+
+Data can be inserted into different places in plots **and** multiple data frames may be used to make the graphic.
+
+Both of these are equally valid.
+
+
+```r
+data %&gt;% ggplot() 
+```
+
+or 
+
+
+```r
+ggplot( data ) 
+```
+
+as well as some other configurations we will touch on later.
+
+---
+
+# Aesthetics
+
+The aesthetics provide information on data representation.  If an entity of the graphic is taken from a value within a `data.frame`, then it needs to be specified in the aesthetics.  It is accomplished by passing variable names to the function `aes()`
+
+--
+
+- `aes()` as argument to `ggplot()`: Data mapping is inherited downstream
+
+
+```r
+data %&gt;%
+  ggplot( aes(x=Depth, y=Salinity) )
+```
+
+
+- `aes()` as argument to subsequent layers: Mapping only for that layer.
+
+
+
+---
+
+.pull-left[
+# Geometric Layers
+
+Everything .red[after] `ggpot()` is added (.red[+]) to the plot.  Here is a geometric layer that estimates the density of the data.
+
+```r
+data %&gt;%
+  ggplot( aes(x=Depth) ) + 
+  geom_density() 
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-31-1.png" width="504" /&gt;
+]
+
+
+---
+
+.pull-left[
+# Point Data
+
+Notice how we can omit the x=, y= if we 
+
+
+```r
+data %&gt;%
+  ggplot( aes(Depth, Salinity) ) + 
+  geom_point() 
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-33-1.png" width="504" /&gt;
+]
+
+
+---
+
+.pull-left[
+# Grouping
+
+Grouping of points by station is denoted by adding that to the `aes()` (since it pulls the values from the data itself rather than being set for all the data)
+
+
+```r
+data %&gt;%
+  ggplot( aes(Depth, Salinity, color=Station) ) + 
+  geom_point() 
+```
+
+
+
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-35-1.png" width="504" /&gt;
+]
+
+
+---
+
+.pull-left[
+# Grouping
+
+Grouping of points by station is denoted by adding that to the `aes()` (since it pulls the values from the data itself rather than being set for all the data)
+
+
+```r
+data %&gt;%
+  ggplot( aes(Depth, Salinity, color=Station) ) + 
+  geom_point() 
+```
+
+or 
+
+
+```r
+data %&gt;%
+  ggplot( aes(Depth, Salinity) ) + 
+  geom_point( aes(color=Station) ) 
+```
+
+or 
+
+
+```r
+ggplot() + 
+  geom_point( aes(Depth, 
+                  Salinity, 
+                  color=Station), 
+              data = data ) 
+```
+
+
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-39-1.png" width="504" /&gt;
+]
+
+---
+
+.pull-left[
+# Iterative Creation
+
+Since a graphic is just a collection of function calls, we can create them iterative.
+
+
+```r
+p &lt;- ggplot( data, aes(Depth,Salinity) ) + geom_point()
+```
+
+Then when we want to plot it we can call
+
+
+```r
+p
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-42-1.png" width="504" /&gt;
+
+]
+
+---
+
+# Theme Layers
+
+The theme layers control the appearance of components of the graph such as colors, fonts, etc.
+
+- Themes are customization, 
+
+- Can set a default theme for a document,
+
+- Come with built-in varieties.
+
+&amp;nbsp;
+
+&amp;nbsp;
+
+Here are some examples.
+
+---
+
+
+```r
+p + theme_bw()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-43-1.png" width="504" /&gt;
+
+
+---
+
+
+```r
+p + theme_gray()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-44-1.png" width="504" /&gt;
+
+---
+
+
+```r
+p + theme_dark()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-45-1.png" width="504" /&gt;
+
+---
+
+
+```r
+p + theme_linedraw()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-46-1.png" width="504" /&gt;
+
+---
+
+
+```r
+p + theme_classic()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-47-1.png" width="504" /&gt;
+
+---
+
+
+```r
+p + theme_void()
+```
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-48-1.png" width="504" /&gt;
+
+
+
+---
+
+# Graph Overlays
+
+I'm going to switch to a built-in data set that has more samples per factor level to show a few more features.
+
+
+```r
+summary( iris )
+```
+
+```
+##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## 
+```
+
+
+---
+
+.pull-left[ 
+# Histograms
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length) ) + 
+  geom_histogram()
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-51-1.png" width="504" /&gt;
+]
+
+
+---
+
+.pull-left[ 
+# Boxplots
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length) ) + 
+  geom_boxplot( notch=TRUE )
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-53-1.png" width="504" /&gt;
+]
+
+
+
+---
+
+.pull-left[ 
+# Distributions
+
+
+```r
+ggplot( iris, aes(x=Species, y=Sepal.Length) )  + 
+  geom_boxplot( notch=TRUE )
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-55-1.png" width="504" /&gt;
+]
+
+
+
+
+---
+
+.pull-left[ 
+# Fixed Colors
+
+
+```r
+ggplot( iris, aes(x=Species, y=Sepal.Length) )  + 
+  geom_boxplot( notch=TRUE, fill=c("blue") ) +
+  ylab("Sepal Length")
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-57-1.png" width="504" /&gt;
+]
+
+
+
+
+
+---
+
+.pull-left[ 
+# Data Colors
+
+
+```r
+ggplot( iris, aes( x=Species, 
+                   y=Sepal.Length,
+                   fill=Species) )  + 
+  geom_boxplot( notch=TRUE )  +
+  ylab("Sepal Length")
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-59-1.png" width="504" /&gt;
+]
+
+
+
+---
+
+.pull-left[ 
+# Fixed Colors
+
+
+```r
+ggplot( iris, aes( x=Species, 
+                   y=Sepal.Length) )  + 
+  geom_boxplot( notch=TRUE, 
+                fill=c("#002145", 
+                       "#a5acaf",
+                       "#66c010") ) +
+  ylab("Sepal Length")
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-61-1.png" width="504" /&gt;
+]
+
+
+
+
+---
+
+class: sectionTitle
+
+# GGPLot Overlays
+
+
+
+
+
+---
+
+.pull-left[
+# Trendlines
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  geom_point()  + 
+  stat_smooth()
+```
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-63-1.png" width="504" /&gt;
+]
+
+---
+
+.pull-left[
+
+# Trendline
+
+You can specify the equation and the model that make the overlay of the statistic as arguments to that layer.
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  geom_point()  + 
+  stat_smooth( method="lm", formula = "y ~ x")
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+&lt;img src="slides_files/figure-html/unnamed-chunk-65-1.png" width="504" /&gt;
+
+]
+
+
+
+
+
+---
+.pull-left[
+# Stacking Order 
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  geom_point( color="red")  + 
+  stat_smooth( fill="black", alpha=1)
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+&lt;img src="slides_files/figure-html/unnamed-chunk-67-1.png" width="504" /&gt;
+
+]
+
+
+
+
+---
+.pull-left[
+# Stacking Order 
+
+
+```r
+ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) + 
+  stat_smooth( fill="black", alpha=1) + 
+  geom_point( color="red")  
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+&lt;img src="slides_files/figure-html/unnamed-chunk-69-1.png" width="504" /&gt;
+
+]
+
+
+
+
+
+---
+
+.pull-left[
+# On-The-Fly Transformations
+
+Customizing the y-axis data format...
+
+
+
+```r
+ggplot( iris, aes(x = Sepal.Length) ) + 
+  geom_histogram( aes( y = ..density.. ), 
+                  color="green", 
+                  fill="orange", bins = 15 ) + 
+  geom_density( color = "magenta", lwd=1.5 )  
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+&lt;img src="slides_files/figure-html/unnamed-chunk-71-1.png" width="504" /&gt;
+
+]
+
+---
+
+# Textual Overlays
+
+
+```r
+cor_model &lt;- cor.test( iris$Sepal.Length, iris$Sepal.Width)
+cor_model
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  iris$Sepal.Length and iris$Sepal.Width
+## t = -1.4403, df = 148, p-value = 0.1519
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.27269325  0.04351158
+## sample estimates:
+##        cor 
+## -0.1175698
+```
+
+--
+
+
+```r
+names( cor_model ) 
+```
+
+```
+## [1] "statistic"   "parameter"   "p.value"     "estimate"    "null.value" 
+## [6] "alternative" "method"      "data.name"   "conf.int"
+```
+
+
+
+---
+
+# Formatting as Text
+
+Lets use paste to grab some of that information from the corrleation analysis and make it into a text object we can add as a layer over the plots.
+
+
+```r
+cor.text &lt;- paste( "r = ", 
+                   format( cor_model$estimate, digits=4), 
+                   ";\n P = ", 
+                   format( cor_model$p.value, digits=4 ), 
+                   sep="" ) 
+cor.text
+```
+
+```
+## [1] "r = -0.1176;\n P = 0.1519"
+```
+
+
+
+
+
+---
+.pull-left[
+
+I'm going to manually locate the x and y location for the text overlay within the `aes()` call nested within `geom_text()` so that it overrides the default x- and y- values passed through the `aes()` upstream.
+
+
+```r
+p + geom_text( aes(x=7.25, y=4.25, 
+                   label=cor.text) )
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-76-1.png" width="504" /&gt;
+
+]
+
+
+
+
+---
+
+# Labels
+
+So let's make another source of data that has the mean width and length of sepals for each species.
+
+
+```r
+iris %&gt;%
+  group_by( Species ) %&gt;%
+  summarize( Sepal.Length = mean(Sepal.Length),
+             Sepal.Width = mean( Sepal.Width ) ) -&gt; df
+
+df
+```
+
+```
+## # A tibble: 3 × 3
+##   Species    Sepal.Length Sepal.Width
+##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;
+## 1 setosa             5.01        3.43
+## 2 versicolor         5.94        2.77
+## 3 virginica          6.59        2.97
+```
+
+
+
+---
+.pull-left[
+# Labels
+
+
+```r
+ggplot( iris, aes(Sepal.Length, Sepal.Width) ) + 
+  geom_point( aes(color=Species) ) + 
+  geom_text( aes(label=Species), data=df) + 
+  xlab("Sepal Length (mm)") + 
+  ylab("Sepal Width (mm)")
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+&lt;img src="slides_files/figure-html/unnamed-chunk-79-1.png" width="504" /&gt;
+
+]
+
+
+
+
+
+
+---
+
+# Smart Labels
+
+
+```r
+library( ggrepel )
+```
+
+![ggrepel Help](https://live.staticflickr.com/65535/50305860422_f3cf5f5545_c_d.jpg)
+
+
+---
+.pull-left[
+
+# Adding Labels
+
+```r
+ggplot( iris, aes(Sepal.Length, Sepal.Width) ) + 
+  geom_point( aes(color=Species) ) + 
+  geom_label_repel( aes(label=Species), data=df ) + 
+  xlab("Sepal Length (mm)") + 
+  ylab("Sepal Width (mm)")
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+&lt;img src="slides_files/figure-html/unnamed-chunk-82-1.png" width="504" /&gt;
+
+]
+
+
+
+
+
+
+
+---
+.pull-left[
+# Remove Legend 
+
+
+```r
+ggplot( iris, aes(Sepal.Length, Sepal.Width) ) + 
+  geom_point( aes(color=Species) ) + 
+  geom_label_repel( aes(label=Species), data=df ) + 
+  guides( color = FALSE ) + 
+  xlab("Sepal Length (mm)") + 
+  ylab("Sepal Width (mm)")
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+&lt;img src="slides_files/figure-html/unnamed-chunk-84-1.png" width="504" /&gt;
+
+]
+
+
+
+
+---
+
+# 15 Minute Activity - GGPlot Station Data
+
+Make a new R script file in the same folder as the Project and name it `ggplot_practice.R`  In it, do the following.
+
+1. Use `source("getStationData.R")` to load in the data an call the function.  
+
+2. Create a histogram of depths.
+
+3. Look at the help file for `facet_grid()` to see what it does.  Now, take the data and group it by weekday (in the mutate, name the new column `Weekday`) and make a histogram of the Depths.  But this time add `+ facet_grid( .~Weekday)`.
+
+4. Use the same data as the previous question but this time use use `geom_histogram( aes(fill=Weekday), alpha=0.75)` instead of the previous empty `geom_histogram()`.  Which do you think is more interpretative?
+
+5. Make a scatterplot (`geom_point()`) using Date as the independent variable and Salinity as the dependent one.  
+
+6. Allow ggplot to overlay a trend line of dissolved oxygen as a function of depth.  The default model for this overlay trend line is a loess regression.  If you are knowledgeable about regression models, what may be a more appropriate model to use?
 
 
 ---

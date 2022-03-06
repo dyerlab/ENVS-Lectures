@@ -27,7 +27,6 @@ library( knitr )
 options(knitr.table.format = "html")
 library( tidyverse )
 library( fontawesome )
-library(DiagrammeR)
 library( emo )
 ```
 
@@ -49,13 +48,496 @@ library( emo )
 <img src="images/logo1.svg" width="400px">
 
 
+---
+
+# The Enigmatic Field Data CSV
+
+For this, let's load in the data from the file in the project folder.
+
+```{r eval=FALSE}
+library(tidyverse)
+field_data <- read_csv("Field_Data.csv")
+```
+
+```{r echo=FALSE}
+field_data <- read_csv("https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/deq_data/Field_Data.csv")
+```
+ 
+and take a quick look at it.
+
+```{r}
+head( field_data )
+```
+
+
+
+
+
 
 ---
 class: sectionTitle
 
 # .green[Factors]
 
-## Groups of Samples
+## .orange[7ACHE040.39] is not just a random string
+
+
+---
+
+# Factor Data Types
+
+A `factor` is a kind of **categorical** data that is typically depicted as a sequence of `character` values. Consider the station column in the `Field Data` csv file.
+
+```{r}
+c( Records = length( field_data$Fdt_Sta_Id),
+   Stations = length( unique( field_data$Fdt_Sta_Id ) ) )
+```
+
+--
+
+
+```{r}
+unique( field_data$Fdt_Sta_Id )
+```
+
+
+---
+
+# Specifying Factors
+
+We are going to use `mutate()` to make changes to the data as we pipe it through our workflow.
+
+```{r}
+field_data %>% mutate( Station = factor( Fdt_Sta_Id) ) 
+```
+
+
+
+---
+
+# Factors are Fixed
+
+Once we've specified the factors for data, we cannot *insert* new levels.
+
+```{r}
+field_data %>% mutate( Station = factor( Fdt_Sta_Id) )  -> df 
+summary( df$Station )
+```
+
+If we try to use a non-recognized level, it will not 'automagically' add a new level and instead give you missing data.
+
+```{r}
+df$Station[1] <- "Rodney's Station ID"
+summary( df$Station )
+```
+
+
+---
+
+# `Selecting` to Reorder & Rename
+
+In the previous example we used `mutate()` to add a column of derived data, which was appended to the right side of the data.frame.
+
+```{r}
+field_data %>% mutate( Station = factor( Fdt_Sta_Id) )  %>% names()
+```
+
+--
+
+If we'd like, we can use the `select()` function to reorder the columns (previously we used this to identify which columns to keep) as well as to rename them in transit.
+
+```{r}
+field_data %>% 
+  mutate( Station = factor( Fdt_Sta_Id) )  %>% 
+  select( ID = Fdt_Id, Station, Depth = Fdt_Depth ) %>%
+  names()
+```
+
+
+---
+
+# Anti Selecting
+
+We can .red[invert] the selection to drop columns from the data frame.  
+
+```{r}
+field_data %>%
+  select( -Fdt_Id, -Fdt_Salinity, -Fdt_Do_Optical) %>%
+  head()
+```
+
+---
+
+# `everything` Else
+
+When we have a lot of columns and want to select them without needing to type them, we can use `everything()`.  By default, the remaining columns are kept in the same order as before.
+
+```{r}
+field_data %>%
+  select( Station = Fdt_Sta_Id, 
+          Depth = Fdt_Depth, 
+          everything() ) %>%
+  head()
+```
+
+
+
+---
+
+# Ordered Factors
+
+Some factors have an intrinsic *ordinality* to them. Let's consider the days of the week.  Here is a random sample of 50 weekdays.
+
+```{r}
+weekdays <- c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+raw_days <- sample( weekdays, size=50, replace=TRUE )
+data <- factor( raw_days )
+summary(data)
+```
+
+--
+
+Because `weekdays` is just a `character` vector, they are tabulated in alphabetic order—which is rather unfortunate because I like .green[a little more space] between Friday & Monday!
+
+---
+
+# Creating Ordered Factors
+
+If there is an intrinsic order we need to tell `factor()` that these data are ordinal and if the arrangment is not alphanumeric we **must** specify the arrangement of the levels.
+
+```{r}
+data <- factor( raw_days, 
+                ordered = TRUE,
+                levels = weekdays )
+summary( data )
+```
+
+
+
+
+---
+
+# Station Ordinality
+
+```{r}
+sort(unique( field_data$Fdt_Sta_Id ))
+```
+
+As I understand it, the .red[7ACHE] means Chesapeake Bay (of course) and the remaining values in the station name (e.g., .red[004.29]) represent the distance in miles along the main channel from the mouth.  In this case, the foresight of the data providers allow you to order the stations by river location as they sort alphanumerially.
+
+---
+
+# `arrange` works on ordered factors too
+
+```{r}
+field_data %>%
+  mutate( Station = factor( Fdt_Sta_Id, ordered=TRUE) ) %>% 
+  select( Station , Depth = Fdt_Depth ) %>%
+  arrange( Station ) 
+
+```
+
+
+---
+
+# Missing Factor Levels
+
+There are times when we have a subset of potential levels for a factor (here `sample_n()` randomly selects as many rows as you indicate in `size=`).  
+
+```{r}
+field_data %>% 
+  mutate( Station = factor( Fdt_Sta_Id, ordered=TRUE) ) %>% 
+  sample_n(size = 8) %>%
+  select( Station ) %>%
+  table()
+```
+
+--
+
+But there are times when having those missing values in the data is not desirable (e.g., plotting values or making tables).  
+
+---
+
+# Dropping levels
+
+We can disregard the missing `levels` for a factor by passing it through 
+
+```{r}
+field_data %>% 
+  mutate( Station = factor( Fdt_Sta_Id, ordered=TRUE) ) %>% 
+  sample_n(size = 8) %>%
+  select( Station ) %>%
+  droplevels() %>%
+  table()
+```
+
+
+
+---
+
+# More Information
+
+There is a much deeper body of factor manipulation you can do using the `forcats` library, which is included as part of `tidyverse` and is loaded in already. Take a look at this cheatsheet to see some of the included functions.
+
+&nbsp;
+
+## .center[ [ Forcats Cheatsheet](http://www.flutterbys.com.au/stats/downloads/slides/figure/factors.pdf)]
+
+
+
+
+
+
+
+---
+class: sectionTitle
+
+# .blue[Dates 📅]
+
+## When "2021-03-08" != 3/8/21
+
+---
+# Date Objects
+
+When we read a date and/or time object, it is typically given in a textual form:
+
+- February 14, 2021
+- Tomorrow @ noon.
+- Next Wednesday morning.
+
+But in `R` we need to be able to specify these these textual representations (which mean a lot to us when we read them) into objects that we can perform actual operations on.
+
+
+---
+
+# Date & Time Challenges
+
+We must consider the following when attempting to conduct *operations* on date and time units.
+
+1. Many different calendars.  
+
+2. Leap days, years, seconds.
+
+3. Time Zones (looking at you Arizona).
+
+4. Non-consistent base units (60 seconds, 60 minutes, 24 hours, 7 days, 28/29/30/31 days, 12 months, 100 years, 10 centuries)
+
+
+
+---
+
+# Date from Field Data
+
+Our favorite data set has a column of date/time information.
+
+```{r}
+head( field_data$Fdt_Date_Time )
+```
+
+that is actually treated just as a `character` column of data.
+
+```{r}
+class( field_data$Fdt_Date_Time )
+```
+
+---
+
+# Date Data Types
+
+A character data type representing dates and times is ok for us to look at but it is not helpful for doing any kind of operations on.  
+
+`R` defines a specific data type that represents dates and time.
+
+```{r}
+today <- as.Date( "2022-03-07")
+today
+class(today)
+```
+
+
+---
+
+# Date Operations
+
+Now, this is extremely powerful because we can now do operations on date objects such as:
+
+```{r}
+dyer_birth <- as.Date("1969-10-14")
+today - dyer_birth
+```
+
+```{r}
+weekdays( today )
+weekdays( dyer_birth  )
+```
+
+```{r}
+julian(today)
+```
+
+
+
+---
+
+# The Unix Epoch - Time Zero!
+
+.red[.center[.large[00:00:00 January 1, 1970]]]
+
+
+Time on computers is kept as the number of seconds since the *epoch*.  It is only .blueinline[displayed] in the Gregorian, Julian, Chinese, Jewish, and other calendars.
+
+
+
+```{r}
+Sys.time()
+```
+
+--
+
+```{r}
+unclass( Sys.time() )
+```
+
+
+---
+
+# Making Time `r emo::ji("clock")`
+
+To convert something like `r field_data$Fdt_Date_Time[1]` from `character` to a `time` object, we need to *specify* the layout of the elements within the string so the functions know what to operate on.
+
+
+.pull-left[
+
+- Month as 1 or 2 digits  
+- Day as 1 or 2 digits  
+- Year as 4 digits
+- / separating date objects  
+- a space to separate date from time  
+- hour (not 24-hour though)  
+- minutes in 2 digits
+- : separating time objects  
+
+
+.gray[
+Other Common Features:
+- seconds in 2 digits  
+- timezone  
+]
+
+]
+
+--
+
+.pull-right[
+The `lubridate` library
+
+```{r}
+library( lubridate )
+x <- field_data$Fdt_Date_Time[1]
+format <- ""
+```
+
+
+]
+
+
+---
+
+# Custom Configurations
+
+```{r}
+field_data$Fdt_Date_Time[1]
+```
+
+So this format is 
+```{r}
+format <- "%m/%d/%Y %H:%M"
+```
+
+--
+
+Which we pass to the function to parse it from `character` to `date` object:
+
+```{r}
+parse_date_time( field_data$Fdt_Date_Time[1], orders=format )
+parse_date_time( field_data$Fdt_Date_Time[1], orders=format, tz="EST" )
+```
+
+---
+
+# Applying to Data Frame
+
+Let's take the current `Fdt_Date_Time` column and turn it into a real `Date` object.
+
+```{r}
+field_data %>%
+  mutate( Date = parse_date_time( Fdt_Date_Time, 
+                                  orders=format, 
+                                  tz="EST") ) -> field_data
+  
+summary( field_data$Date )
+
+
+```
+
+
+---
+
+# Derivatives of Date Objects
+
+Date objects have access to a wide array of derivative type including: `day()`, `month()`, `year()`, `weekday()`, `julian()`, etc.  Here we can quickly find the mean temperature by day and weekday of the month.
+
+```{r}
+field_data %>%
+  mutate( Day = day(Date),
+          Weekday = weekdays(Date)) %>%
+  mutate( Weekday = factor(Weekday) ) %>%
+  group_by( Day, Weekday ) %>%
+  summarize( Temperature = mean( Fdt_Temp_Celcius))
+```
+
+
+---
+
+# Tabulating Categorical Data
+
+```{r}
+field_data %>%
+  mutate( Weekday = weekdays(Date) ) %>%
+  select( Weekday ) %>%
+  table()
+```
+
+
+
+
+---
+
+# 15 Minute Activity - Format the Field Data
+
+Open a new `R` file and save as `dates_factors.R` and save it in the Project folder.  In that file do the following steps to load in and format the data set so that at the end of it your data are ready for analyses.
+
+1. Load in the libraries you need (e.g., `tidyverse` and `lubridate`).  
+
+2. Load in the `Field_Data.csv` file.
+
+3. Format the `Fdt_Sta_Id` as a `factor`.
+
+4. Format the `Fdt_Date_Time` as a `date` object.
+
+5. Rename the variables to sane values...
+
+6. **BONUS**: Tabulate the number of samples for each station by weekday.  Why are the results like this?
+
+```{r eval=FALSE, echo=FALSE}
+field_data %>%
+  mutate( Weekday = weekdays(Date) ) %>%
+  select( Station = Fdt_Sta_Id, Weekday ) %>%
+  table()
+```
+
+
+
 
 
 

@@ -78,6 +78,9 @@ h1 {
   color: #2E8B57;
 }
 
+.gray { 
+  color: #666666;
+}
 
 .remark-slide-number {
   font-size: 10pt;

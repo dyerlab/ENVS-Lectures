@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>The Title</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/middlebury.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/middlebury-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+    <script src="libs/viz-1.8.2/viz.js"></script>
+    <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+    <script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
+    <link rel="stylesheet" href="deq-styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: left, bottom
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+
+
+
+
+
+
+# The Workflow of &lt;br&gt;Data Analysis
+
+
+
+### The mechanics of data wizardry 🧙
+
+
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;img src="images/logo1.svg" width="400px"&gt;
+
+
+
+---
+class: sectionTitle
+
+# .green[Actions]
+
+## The *verbs* of data analysis
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362129663_0d640ad239_k_d.jpg")
+background-size: cover
+
+# Data Operators
+
+.pull-left[
+There are a finite number of actions (verbs) that we can use on the raw data we work with.  
+
+They can be combined to yield meaninful (or quimsical) inferences from our data:
+
+&amp;nbsp; 
+
+.red[ &amp;nbsp; Is there more sun on Fridays than on the weekend?]
+
+&amp;nbsp; 
+
+.orange[ &amp;nbsp; What is the distribution of high-tide depths for each &lt;br&gt;&amp;nbsp; day in January?]
+
+&amp;nbsp; 
+
+.blue[ &amp;nbsp; Is there a visible relationship between water salinity &amp;&lt;br&gt;&amp;nbsp;  measured pH?]
+
+
+]
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362827791_a32934b310_k_d.jpg")
+background-size: cover
+
+# Select
+
+.pull-left[
+Identify only subset of data columns that you are interested in using.]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362989322_6aa00c8398_k_d.jpg")
+background-size: cover
+
+# Filter
+
+.pull-left[
+Use only some subset of rows in the data based upon qualities wihtin the columns themselves.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362827946_d8d5508dfd_k_d.jpg")
+background-size: cover
+
+# Mutate
+
+.pull-left[
+Convert one data type to another, scaling, combining, or making any other derivative component.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362129893_61851436c8_k_d.jpg")
+background-size: cover
+
+# Arrange
+
+
+.pull-left[
+Reorder the data using values in one or more collumns to sort.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362869456_c869b2a0a9_k_d.jpg")
+background-size: cover
+
+# Group
+
+
+.pull-left[
+Partition the data set into groups based upon some taxonomy of categorization.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362989492_d4e281b741_k_d.jpg")
+background-size: cover
+
+# Summarize
+
+.pull-left[
+
+Perform operations on the data to characterize trends in the raw data as summary statistics.
+
+]
+
+
+
+
+
+
+---
+
+# Combinations Yield Inference
+
+Combining these actions together is how we perform the analyses.
+
+
+
+<div id="htmlwidget-69dd085e64bf7a0e00e4" style="width:75%;height:30%;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-69dd085e64bf7a0e00e4">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\",\n       rankdir = \"LR\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Load\\nData\", shape = \"square\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#61acf0\"] \n  \"2\" [label = \"Select\\nColumns\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"3\" [label = \"Overlay\\nPoints\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"4\" [label = \"Overlay\\nTrend\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"5\" [label = \"Show Plot\", shape = \"rectangle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#cbd20a\"] \n\"1\"->\"2\" [color = \"#3C3C3C\"] \n\"2\"->\"3\" [color = \"#3C3C3C\"] \n\"3\"->\"4\" [color = \"#3C3C3C\"] \n\"4\"->\"5\" [color = \"#3C3C3C\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+--
+
+<div id="htmlwidget-d84e282609f972d07209" style="width:100%;height:20%;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d84e282609f972d07209">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\",\n       rankdir = \"LR\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Load\\nData\", shape = \"square\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#61acf0\"] \n  \"2\" [label = \"Group\\nStations\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"3\" [label = \"Select\\nColumn\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"4\" [label = \"Estimate\\nMean\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"5\" [label = \"Estimate\\nVariance\", shape = \"circle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"0.75\", fillcolor = \"#f0a561\"] \n  \"6\" [label = \"Make Table\", shape = \"rectangle\", color = \"#3C3C3C\", fontname = \"Lato\", fontcolor = \"black\", width = \"1\", fillcolor = \"#cbd20a\"] \n\"1\"->\"2\" [color = \"#3C3C3C\"] \n\"2\"->\"3\" [color = \"#3C3C3C\"] \n\"3\"->\"4\" [color = \"#3C3C3C\"] \n\"4\"->\"5\" [color = \"#3C3C3C\"] \n\"5\"->\"6\" [color = \"#3C3C3C\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+---
+class: sectionTitle
+
+# Data Judo 🥋
+
+### Do your thing *well* then pass it along
+
+
+---
+
+# Piping 
+
+We can encapsulates the flow diagram in actual code by connecting individual *verbs* (functions) in a work flow with an operator that
+
+&gt; passes the output of this function to the input of that of that function
+
+.center[
+![](https://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
+]
+
+
+---
+
+# Let's Load the Data
+
+
+```r
+field_data &lt;- read_csv("Field_Data.csv")
+```
+
+
+```r
+url &lt;- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/deq_data/Field_Data.csv"
+field_data &lt;- read_csv(url)
+```
+
+
+```r
+summary( field_data )
+```
+
+```
+##      Fdt_Id         Fdt_Sta_Id        Fdt_Date_Time        Fdt_Depth     
+##  Min.   :2964715   Length:116         Length:116         Min.   : 0.100  
+##  1st Qu.:2965259   Class :character   Class :character   1st Qu.: 1.000  
+##  Median :2965716   Mode  :character   Mode  :character   Median : 4.000  
+##  Mean   :2965970                                         Mean   : 5.103  
+##  3rd Qu.:2966263                                         3rd Qu.: 7.000  
+##  Max.   :2967321                                         Max.   :27.000  
+##   Fdt_Salinity   Fdt_Temp_Celcius Fdt_Do_Optical  
+##  Min.   :16.48   Min.   :22.97    Min.   : 0.630  
+##  1st Qu.:17.45   1st Qu.:27.20    1st Qu.: 4.970  
+##  Median :18.58   Median :28.55    Median : 6.845  
+##  Mean   :19.38   Mean   :28.12    Mean   : 6.101  
+##  3rd Qu.:20.84   3rd Qu.:28.95    3rd Qu.: 7.532  
+##  Max.   :26.27   Max.   :29.94    Max.   :10.000
+```
+
+
+
+---
+
+# Example Problem
+
+Let's load in the Field Data again and produce a table that measure the average temperature for all stations that have more 10 or more measurements and arranges the output from hot to cold in degrees Fahrenheit (sorry just had to make up a reason to *mutate* a column of data).
+
+
+```r
+library( tidyverse )
+```
+
+For this, we'll have to *select* columns, *group*, *summarize*, *filter*, *mutate*, and *arrange*.
+
+Let's take these one at a time to see how it all works.
+
+
+---
+
+# Field Data
+
+Let's use the `Field_Data.csv` file again.
+
+
+```r
+field_data &lt;- read_csv("Field_Data.csv")
+```
+
+
+
+
+
+```r
+summary( field_data )
+```
+
+```
+##      Fdt_Id         Fdt_Sta_Id        Fdt_Date_Time        Fdt_Depth     
+##  Min.   :2964715   Length:116         Length:116         Min.   : 0.100  
+##  1st Qu.:2965259   Class :character   Class :character   1st Qu.: 1.000  
+##  Median :2965716   Mode  :character   Mode  :character   Median : 4.000  
+##  Mean   :2965970                                         Mean   : 5.103  
+##  3rd Qu.:2966263                                         3rd Qu.: 7.000  
+##  Max.   :2967321                                         Max.   :27.000  
+##   Fdt_Salinity   Fdt_Temp_Celcius Fdt_Do_Optical  
+##  Min.   :16.48   Min.   :22.97    Min.   : 0.630  
+##  1st Qu.:17.45   1st Qu.:27.20    1st Qu.: 4.970  
+##  Median :18.58   Median :28.55    Median : 6.845  
+##  Mean   :19.38   Mean   :28.12    Mean   : 6.101  
+##  3rd Qu.:20.84   3rd Qu.:28.95    3rd Qu.: 7.532  
+##  Max.   :26.27   Max.   :29.94    Max.   :10.000
+```
+
+
+---
+
+# The Pipe Operator 
+
+Let's look at `select()` as a function.
+
+
+```r
+?select
+```
+
+In the next set of examples, I'm just going to dump the output to show you but in reality we'd probably either plot it, make a table, or assign it to a new variable for subsequent analysis.
+
+
+```r
+select( field_data, Fdt_Sta_Id, Fdt_Temp_Celcius)
+```
+
+```
+## # A tibble: 116 × 2
+##    Fdt_Sta_Id  Fdt_Temp_Celcius
+##    &lt;chr&gt;                  &lt;dbl&gt;
+##  1 7ACHE055.97             28.9
+##  2 7ACHE040.39             29.4
+##  3 7ACHE040.39             29.3
+##  4 7ACHE040.39             29.3
+##  5 7ACHE040.39             29.3
+##  6 7ACHE040.39             29.2
+##  7 7ACHE040.39             29.2
+##  8 7ACHE040.39             28.8
+##  9 7ACHE040.39             28.4
+## 10 7ACHE040.39             28.4
+## # … with 106 more rows
+```
+
+
+---
+
+# Piping to Select
+
+The `%&gt;%` (yes that is percent-greater than-percent) is the pipe operator that can chain together many operations.
+
+
+```r
+field_data %&gt;% select( Fdt_Sta_Id, Fdt_Temp_Celcius )
+```
+
+```
+## # A tibble: 116 × 2
+##    Fdt_Sta_Id  Fdt_Temp_Celcius
+##    &lt;chr&gt;                  &lt;dbl&gt;
+##  1 7ACHE055.97             28.9
+##  2 7ACHE040.39             29.4
+##  3 7ACHE040.39             29.3
+##  4 7ACHE040.39             29.3
+##  5 7ACHE040.39             29.3
+##  6 7ACHE040.39             29.2
+##  7 7ACHE040.39             29.2
+##  8 7ACHE040.39             28.8
+##  9 7ACHE040.39             28.4
+## 10 7ACHE040.39             28.4
+## # … with 106 more rows
+```
+
+
+Notice the following:
+- Just putting `field_data` on a line prints it out,   
+- The `%&gt;%` takes that as input and passes it as the first argument to the next function,    
+- We *did not* have to quote the names (as long as there is no spaces in them),  
+
+---
+
+# Example - Arrange Temperature Descenting 
+
+RStudio will automatically indent subsequent lines for you as a visual reminder that you are continuing on the same analysis pipeline.
+
+
+```r
+field_data %&gt;%
+  arrange( -Fdt_Temp_Celcius) 
+```
+
+```
+## # A tibble: 116 × 7
+##     Fdt_Id Fdt_Sta_Id  Fdt_Date_Time   Fdt_Depth Fdt_Salinity Fdt_Temp_Celcius
+##      &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;               &lt;dbl&gt;        &lt;dbl&gt;            &lt;dbl&gt;
+##  1 2966258 7ACHE055.97 8/12/2020 13:00       5           17.8             29.9
+##  2 2966242 7ACHE055.97 8/12/2020 13:00       0.1         17.6             29.9
+##  3 2966245 7ACHE055.97 8/12/2020 13:00       0.5         17.6             29.8
+##  4 2965635 7ACHE044.14 8/11/2020 15:30       0.1         16.6             29.6
+##  5 2965643 7ACHE044.14 8/11/2020 15:30       2           16.6             29.6
+##  6 2966246 7ACHE055.97 8/12/2020 13:00       1           17.7             29.6
+##  7 2965646 7ACHE044.14 8/11/2020 15:30       3           16.6             29.6
+##  8 2965704 7ACHE047.42 8/11/2020 14:45       0.1         16.9             29.4
+##  9 2965707 7ACHE047.42 8/11/2020 14:45       0.5         16.9             29.4
+## 10 2965699 7ACHE040.39 8/11/2020 13:30       9.5         18.8             29.4
+## # … with 106 more rows, and 1 more variable: Fdt_Do_Optical &lt;dbl&gt;
+```
+
+---
+
+# Filtering Data - choosing rows to use
+
+
+```r
+field_data %&gt;%
+  filter( Fdt_Depth &gt; 8)
+```
+
+```
+## # A tibble: 19 × 7
+##     Fdt_Id Fdt_Sta_Id  Fdt_Date_Time   Fdt_Depth Fdt_Salinity Fdt_Temp_Celcius
+##      &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;               &lt;dbl&gt;        &lt;dbl&gt;            &lt;dbl&gt;
+##  1 2966267 7ACHE055.97 8/12/2020 13:00      15           18.4             28.9
+##  2 2965698 7ACHE040.39 8/11/2020 13:30       9           18.8             28.4
+##  3 2965699 7ACHE040.39 8/11/2020 13:30       9.5         18.8             29.4
+##  4 2966239 7ACHE055.60 8/12/2020 10:45      27           20.4             28.3
+##  5 2967318 7ACHE040.04 8/18/2020 12:00       9           25.2             25.6
+##  6 2967319 7ACHE040.04 8/18/2020 12:00      10           25.2             25.6
+##  7 2967321 7ACHE040.04 8/18/2020 12:00      11.5         25.3             25.6
+##  8 2966236 7ACHE055.60 8/12/2020 10:45      15           19.3             28.4
+##  9 2966238 7ACHE055.60 8/12/2020 10:45      25           20.3             28.3
+## 10 2966265 7ACHE055.97 8/12/2020 13:00       9           17.8             28.9
+## 11 2966266 7ACHE055.97 8/12/2020 13:00      10           17.9             28.9
+## 12 2966269 7ACHE055.97 8/12/2020 13:00      20           18.6             29.0
+## 13 2965273 7ACHE023.47 8/11/2020 8:30       11           22.0             28.3
+## 14 2967320 7ACHE040.04 8/18/2020 12:00      11           25.3             25.6
+## 15 2966237 7ACHE055.60 8/12/2020 10:45      20           19.7             28.3
+## 16 2965258 7ACHE023.47 8/11/2020 8:30        9           21.6             28.5
+## 17 2965259 7ACHE023.47 8/11/2020 8:30       10           21.8             28.4
+## 18 2966234 7ACHE055.60 8/12/2020 10:45       9           18.7             28.5
+## 19 2966235 7ACHE055.60 8/12/2020 10:45      10           19.0             28.4
+## # … with 1 more variable: Fdt_Do_Optical &lt;dbl&gt;
+```
+
+---
+
+# Group &amp; Summarize
+
+These two **always** come as a pair.  We use a column of data to group records and then perform some operation on those records *independently* for each level of that grouping variable.
+
+--
+
+.green[Example: Average temperature for each station]
+
+--
+
+
+```r
+field_data %&gt;%
+  group_by( Fdt_Sta_Id ) %&gt;%
+  summarize( `Temperature (°C)` = mean( Fdt_Temp_Celcius))
+```
+
+```
+## # A tibble: 10 × 2
+##    Fdt_Sta_Id  `Temperature (°C)`
+##    &lt;chr&gt;                    &lt;dbl&gt;
+##  1 7ACHE004.29               26.6
+##  2 7ACHE013.48               28.0
+##  3 7ACHE023.47               28.7
+##  4 7ACHE026.06               26.8
+##  5 7ACHE040.04               26.5
+##  6 7ACHE040.39               29.0
+##  7 7ACHE044.14               28.6
+##  8 7ACHE047.42               28.5
+##  9 7ACHE055.60               28.7
+## 10 7ACHE055.97               29.2
+```
+
+---
+
+# Summarize Changes DataFrame
+
+The results of a `summarize()` function **only** has columns designated by `group_by` or made *de novo* in `summarize()`
+
+
+```r
+field_data %&gt;%
+  group_by( Fdt_Sta_Id ) %&gt;%
+  summarize( N = n(),
+             Minimum = min( Fdt_Temp_Celcius),
+             Mean = mean( Fdt_Temp_Celcius),
+             Max = mean( Fdt_Temp_Celcius ) ) 
+```
+
+```
+## # A tibble: 10 × 5
+##    Fdt_Sta_Id      N Minimum  Mean   Max
+##    &lt;chr&gt;       &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 7ACHE004.29     9    23.0  26.6  26.6
+##  2 7ACHE013.48     9    26.5  28.0  28.0
+##  3 7ACHE023.47    13    28.3  28.7  28.7
+##  4 7ACHE026.06    10    25.7  26.8  26.8
+##  5 7ACHE040.04    14    25.6  26.5  26.5
+##  6 7ACHE040.39    12    28.4  29.0  29.0
+##  7 7ACHE044.14    10    25.7  28.6  28.6
+##  8 7ACHE047.42     9    23.4  28.5  28.5
+##  9 7ACHE055.60    16    28.3  28.7  28.7
+## 10 7ACHE055.97    14    28.9  29.2  29.2
+```
+
+
+
+---
+
+# A Realistic Problem
+
+What is the average temperature for stations whose range of depths is greater than 10 (units anyone?) arranged in decreasing temperature.
+
+
+```r
+# load the data
+# select stations, temperature, and depth
+# group by station
+# summarize # samples, range of depth, and mean of temperature.
+# filter on sample size
+# arrange by temperature
+# select out # samples and range of depths
+```
+
+
+---
+
+# 15 Minute Activity - Your Turn
+
+Create an R script in the project folder named `tidyverse_examples.R` and answer the following questions using the Field_Data.csv as a data source.
+
+1. Load in `library(tidyverse)` at the top of the file.
+
+2. Load the field data in and assign it to a variable of suitable nomenclature.
+
+3. Which station has the largest variation in DO?
+
+4. Make a new `data.frame` that has min, mean, and max temperature and salinity by `Fdt_Sta_Id`.
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+
+![## Any Questions](https://media.giphy.com/media/3o6MbhEsVnMOkWul44/giphy.gif)
+
+]
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

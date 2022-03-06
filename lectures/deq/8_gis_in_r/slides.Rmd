@@ -1,0 +1,70 @@
+---
+title: "The Title"
+subtitle: "The Subtitle"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [deq-styles.css, middlebury, middlebury-fonts]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: github
+      highlightLines: true
+      ratio: '16:9'
+      countIncrementalSlides: false
+---
+class: left, bottom
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE)
+library( knitr )
+options(knitr.table.format = "html")
+library( tidyverse )
+library( fontawesome )
+library(DiagrammeR)
+library( emo )
+```
+
+
+
+
+# Geospatial Data Analysis in R
+
+
+
+### Data to Maps
+
+
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<img src="images/logo1.svg" width="400px">
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+
+![## Any Questions](https://media.giphy.com/media/ZISv54yFzTUhusVmvz/giphy.gif)
+
+]
+
+
+
+

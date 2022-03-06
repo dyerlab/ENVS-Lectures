@@ -1,0 +1,635 @@
+---
+title: "The Title"
+subtitle: "The Subtitle"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [deq-styles.css, middlebury, middlebury-fonts]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: github
+      highlightLines: true
+      ratio: '16:9'
+      countIncrementalSlides: false
+---
+class: left, bottom
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(kableExtra)
+```
+
+
+
+
+
+# Markdown & Notebooks
+
+### Merging Data, Verbiage, Analyses, & Results
+
+
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<img src="images/logo1.svg" width="400px">
+
+---
+
+class: sectionTitle
+
+# But WHY?
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50880814503_4efb8e1b8e_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881637532_84832f6ab5_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881533096_6773eb1ffc_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881532926_6a4b11ef29_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881637242_2679ab5371_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881674822_fa6bcb2acd_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881658837_8729965515_o_d.png")
+background-position: left
+background-size: auto
+
+# How do we communicate about our data?
+
+
+
+---
+
+# Reproducible Research
+
+One of the prime goals for us as scientists is to produce quality, *reproducible* research.  One of the easiest ways to do this is to put the data, analyses, and interpretation as close to each other as possible.
+
+
+--
+
+![](https://live.staticflickr.com/65535/50881988332_683e0f3313_o_d.png)
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881870486_ce99a1f7b2_o_d.png)
+background-position: right
+background-size: auto
+
+# One Document to Rule them All
+
+
+.pull-left[
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+Easily move from R Markdown to a wide range of output styles, both static and dynamic.
+
+
+&nbsp;
+
+&nbsp;
+
+
+![golem](https://live.staticflickr.com/65535/51403874726_e05d443b51_m_d.jpg)
+]
+
+---
+background-image: url("https://live.staticflickr.com/65535/50881919942_aa77880202_w_d.jpg")
+background-position: right
+background-size: contain
+
+# Markdown & Ohter Formats
+
+Pandoc
+
+- Universal "Rosetta Stone"
+
+- Converts Between Types
+
+- Built into RStudio
+
+
+
+
+
+---
+
+# Creating A Markdown Document
+
+
+.pull-left[
+File $\to$ New File $\to$ R Markdown (.red[OR] R Notebook)
+
+
+- Built-in Templates
+
+- Documents, applications, and presentations
+
+]
+
+.pull-right[
+![](https://live.staticflickr.com/65535/50882088207_6fe14769f0_o_d.png)
+]
+
+
+
+
+
+---
+# Notebooks vs Markdown
+
+Two different types of markdown documents.  
+
+
+*Markdown Document* - A Document that can be turned into HTML, Word, PDF, Powerpoint, etc.
+
+*Markdown Notebook* - A markdown document that contains the underlying RMD file itself.
+
+
+
+&nbsp;
+
+&nbsp;
+
+
+## Demo Time!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+class: sectionTitle
+
+# Markdown
+
+
+---
+# Textual Representations
+
+> Text is text, nothing more, nothing less.
+--
+
+.pull-left[ 
+### Markdown 
+`This is text`
+]
+.pull-right[
+### Shows As
+This is text
+]
+
+
+--
+
+.pull-left[ 
+`*Homo sapien*`
+]
+.pull-right[
+*Homo sapien*
+]
+
+--
+
+.pull-left[ 
+`**Stuff**`
+]
+.pull-right[
+**Stuff**
+]
+
+
+--
+
+.pull-left[ 
+`> To be, or not to be...`
+]
+.pull-right[
+> To be, or not to be...
+]
+
+
+
+
+---
+# Textual Representations - Headers
+
+
+
+.pull-left[ 
+### Markdown 
+`# Primary Heading`
+]
+.pull-right[
+### Shows As
+# Primary Heading
+]
+
+
+--
+.pull-left[ 
+`## Secondary Heading`
+]
+.pull-right[
+## Secondary Heading
+]
+
+
+--
+.pull-left[ 
+`### Tertiary Heading`
+]
+.pull-right[
+### Tertiary Heading
+]
+
+
+
+
+
+
+
+
+
+
+---
+# Lists Representations
+
+> Just type them out
+--
+
+.pull-left[ 
+### Markdown 
+<pre>
+- Thing
+- Other Thing
+</pre>
+]
+.pull-right[
+### Shows As
+- Thing  
+- Other Thing
+]
+
+
+.pull-left[ 
+<pre>
+1. First thing in ordered list
+2. Next thing
+</pre>
+]
+.pull-right[
+1. First thing in ordered list  
+2. Next thing  
+]
+
+
+
+---
+# Links & URL's
+
+RMarkdown is smart enough to make a raw link into a clickable link.  See https://rmarkdown.rstudio.com for more information on how markdown is implemented in RStudio.
+
+
+--
+
+.pull-left[ 
+### Markdown 
+`This is [my website](https://dyerlab.org)` 
+]
+.pull-right[
+### Shows As
+This is [my website](https://dyerlab.org)
+]
+
+--
+
+.pull-left[ 
+`![Mr. Snuggles](https://bit.ly/3colMKu)` 
+]
+.pull-right[
+![Mr. Snuggles](https://live.staticflickr.com/65535/50881616521_464293dcb8_w_d.jpg)
+]
+
+
+
+---
+# Tables
+
+Tables can be statically written in markdown by defining the columns using the pipe character and the header by dashes.
+
+
+.pull-left[
+
+### Raw Text 
+```
+Source | df | SS
+-------|----|-----  
+Model  | 1  | 23.23  
+Error  | 41 | 232.32
+Total  | 42 | 255.55
+```
+]
+
+--
+
+
+.pull-right[
+### Becomes
+
+Source | df | SS
+-------|----|-----  
+Model  | 1  | 23.23  
+Error  | 41 | 232.32
+Total  | 42 | 255.55
+]
+
+--
+
+&nbsp;
+
+.red[Important:] The end of each row in a table needs 2 spaces.
+
+
+---
+# HTML Encodings ([characters](https://www.w3schools.com/html/html_charset.asp) & [emoji](https://www.w3schools.com/charsets/ref_emoji.asp))
+
+
+You can embed content as raw HTML into R Markdown and it will convert it.
+
+### `&copy;` $\to$ &copy;  
+### `&beta;` $\to$ &beta;
+### `&#128169;` $\to$  &#128169; 
+### `&#x1F37A;` $\to$ &#x1F37A;
+
+
+
+---
+# Embedding Videos
+
+You can use iframes to embed videos
+
+
+.pull-left[
+`<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+]
+.pull-right[
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+]
+
+
+
+---
+# Embedding Live Pages
+
+You can use iframes to embed other web pages (like this presentation with an embed of itself).
+
+
+.pull-left[
+`<iframe width="560" height="315" src="https://dyerlab.github.io/ENVS-Lectures/markdown/r_markdown/slides.html"></iframe>`
+]
+.pull-right[
+<iframe width="560" height="315" src="https://dyerlab.github.io/ENVS-Lectures/markdown/r_markdown/slides.html"></iframe>
+]
+
+
+
+
+---
+class: sectionTitle
+
+# Code & Markdown
+
+
+
+
+
+
+
+
+---
+# Code Chunks
+
+A set of code can be inserted as a single chunk.  (Keyboard Shortcut: CMD+OPT+i)
+
+![chunk](https://live.staticflickr.com/65535/50881114688_c1c25b06c5_o_d.png)
+
+
+becomes 
+
+
+```{r}
+library( sf )
+nc <- st_read(system.file("shape/nc.shp", package="sf"))
+```
+
+
+
+
+
+
+---
+# Code Chunks
+
+Several options exist to modify the characteristics of a chunk.
+
+- Visibility/Invisibility  
+
+- Code is executed or not
+
+- Output options (figure size, DPI, etc.)
+
+- Warning & Error message suppression
+
+- Global or Local options.
+
+
+
+
+---
+
+# Inline Code
+
+You can insert code into text and have it evaluated by surrounding it with single backticks, the first of which is postpended by the letter `r`.
+
+<pre>The *nc* data set has a longitudinal boundary of &#96;r st_bbox(nc)[1]&#96;. </pre> 
+
+--
+
+Is rendered as:
+
+The *nc* data set has a longitudinal boundary of `r format(st_bbox(nc)[1], digits=5)`. 
+
+&nbsp;
+
+
+Which is .red[very] helpful when writing manuscripts and integrating components of your analyses into the text.
+
+
+
+---
+# Figures 
+
+.pull-left[
+<pre>
+&#96;&#96;&#96;{r echo=FALSE}
+plot( nc["SID79"], axes=TRUE )
+&#96;&#96;&#96;
+</pre>
+]
+
+.pull-right[
+```{r echo=FALSE}
+plot( nc["SID79"], axes=TRUE )
+```
+]
+
+
+
+---
+# Table
+
+
+.pull-left[
+
+The `knitr` library has built-in formatting for making tables that can be inserted into the document.
+
+The following code produces table on the right.
+
+<font size="-1">
+<pre>
+&#96;&#96;&#96;{r echo=FALSE}
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+link <- "https://haozhu233.github.io/kableExtra/"
+caption <- "Table X: Data from the first eight cars in
+the `mtcars` data set that is included in the base `R` install."
+
+mtcars[1:8, 1:8] %>%
+  kable( caption = caption ) %>%
+  kable_paper(full_width = F) %>%
+  column_spec(2, 
+    color = spec_color(mtcars$mpg[1:8]),
+    link = link) %>%
+  column_spec(6, 
+    color = "white",
+    background = spec_color( mtcars$drat[1:8], end = 0.7),
+    popover = paste("am:", mtcars$am[1:8]))
+&#96;&#96;&#96;
+</pre>
+</font>
+]
+
+
+.pull-right[
+```{r echo=FALSE}
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+mtcars[1:8, 1:8] %>%
+  kable(caption = "Table X: Data from the first eight cars in the `mtcars` data set that is included in the base `R` install.") %>%
+  kable_paper(full_width = F) %>%
+  column_spec(2, color = spec_color(mtcars$mpg[1:8]),
+              link = "https://haozhu233.github.io/kableExtra/") %>%
+  column_spec(6, color = "white",
+              background = spec_color(mtcars$drat[1:8], end = 0.7),
+              popover = paste("am:", mtcars$am[1:8]))
+```
+
+]
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+
+![## Any Questions](https://media.giphy.com/media/xUOwFSvvXbyYKzb9Ac/giphy.gif)
+
+]
+
+
+
+

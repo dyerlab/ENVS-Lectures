@@ -72,13 +72,13 @@ summary( models )
 ```
 
 ```
-##      beta0            beta1          
-##  Min.   :-19.82   Min.   :-4.976810  
-##  1st Qu.: -4.43   1st Qu.:-2.285192  
-##  Median : 11.89   Median :-0.056677  
-##  Mean   : 11.01   Mean   :-0.006256  
-##  3rd Qu.: 27.11   3rd Qu.: 2.302625  
-##  Max.   : 39.99   Max.   : 4.985199
+##      beta0             beta1         
+##  Min.   :-19.840   Min.   :-4.97599  
+##  1st Qu.: -4.481   1st Qu.:-2.60468  
+##  Median : 12.735   Median :-0.01890  
+##  Mean   : 10.938   Mean   :-0.03569  
+##  3rd Qu.: 26.349   3rd Qu.: 2.28999  
+##  Max.   : 39.846   Max.   : 4.97482
 ```
 ]
 
@@ -130,13 +130,13 @@ head( models )
 ```
 
 ```
-##        beta0       beta1      dist
-## 1 -18.480921  2.80875740 35.149530
-## 2  16.388071  1.57250077  9.014985
-## 3  16.232729 -1.26404763 25.608568
-## 4  39.976181 -4.28794646 25.626177
-## 5   9.086183 -0.09742767 25.009159
-## 6   7.899000 -4.22103090 51.250562
+##       beta0     beta1      dist
+## 1 23.557176  4.315708 17.133718
+## 2 25.605363 -3.244048 29.759245
+## 3 11.118244 -4.251429 48.500099
+## 4  4.939457  1.705851 18.361322
+## 5  9.418283  3.570657  6.474642
+## 6 36.613684 -2.834294 19.691697
 ```
 
 
@@ -860,35 +860,35 @@ Example:
 &lt;tbody&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 1 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6109 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6060 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 2 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6165 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6176 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 3 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6206 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6184 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 4 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6237 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6203 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 5 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6238 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6240 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 6 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6279 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6277 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 7 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6318 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6330 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 8 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.6334 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6330 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -1019,45 +1019,45 @@ To compare, we evaluate the differences in AIC for alternative models.
 &lt;tbody&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 1 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.611 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 999.300 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.583 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.606 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1000.701 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.983 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 2 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.617 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 999.684 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.967 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.618 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 999.382 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.665 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 3 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.621 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1000.486 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.769 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.618 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1001.151 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.434 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 4 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.624 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1001.590 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2.873 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.620 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1002.593 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.876 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 5 Random Variables &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.624 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1003.565 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4.848 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1003.503 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.785 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 6 Random Variables &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.628 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1004.335 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5.618 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1004.413 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.696 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Ozone ~ Temp + Wind + Solar + 7 Random Variables &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.632 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1005.166 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6.448 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.633 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1004.822 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.105 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;

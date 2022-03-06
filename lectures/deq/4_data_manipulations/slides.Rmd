@@ -1,0 +1,458 @@
+---
+title: "The Title"
+subtitle: "The Subtitle"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [deq-styles.css, middlebury, middlebury-fonts]
+    seal: false
+    nature:
+      titleSlideClass: ["center","middle"]
+      highlightStyle: github
+      highlightLines: true
+      ratio: '16:9'
+      countIncrementalSlides: false
+---
+class: left, bottom
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( fig.retina = 3, 
+                       warning = FALSE, 
+                       message = FALSE)
+library( knitr )
+options(knitr.table.format = "html")
+library( tidyverse )
+library( fontawesome )
+library(DiagrammeR)
+library( emo )
+```
+
+
+
+
+# The Workflow of <br>Data Analysis
+
+
+
+### The mechanics of data wizardry `r emo::ji("mage")`
+
+
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<img src="images/logo1.svg" width="400px">
+
+
+
+---
+class: sectionTitle
+
+# .green[Actions]
+
+## The *verbs* of data analysis
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362129663_0d640ad239_k_d.jpg")
+background-size: cover
+
+# Data Operators
+
+.pull-left[
+There are a finite number of actions (verbs) that we can use on the raw data we work with.  
+
+They can be combined to yield meaninful (or quimsical) inferences from our data:
+
+&nbsp; 
+
+.red[ &nbsp; Is there more sun on Fridays than on the weekend?]
+
+&nbsp; 
+
+.orange[ &nbsp; What is the distribution of high-tide depths for each <br>&nbsp; day in January?]
+
+&nbsp; 
+
+.blue[ &nbsp; Is there a visible relationship between water salinity &<br>&nbsp;  measured pH?]
+
+
+]
+
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362827791_a32934b310_k_d.jpg")
+background-size: cover
+
+# Select
+
+.pull-left[
+Identify only subset of data columns that you are interested in using.]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362989322_6aa00c8398_k_d.jpg")
+background-size: cover
+
+# Filter
+
+.pull-left[
+Use only some subset of rows in the data based upon qualities wihtin the columns themselves.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362827946_d8d5508dfd_k_d.jpg")
+background-size: cover
+
+# Mutate
+
+.pull-left[
+Convert one data type to another, scaling, combining, or making any other derivative component.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362129893_61851436c8_k_d.jpg")
+background-size: cover
+
+# Arrange
+
+
+.pull-left[
+Reorder the data using values in one or more collumns to sort.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362869456_c869b2a0a9_k_d.jpg")
+background-size: cover
+
+# Group
+
+
+.pull-left[
+Partition the data set into groups based upon some taxonomy of categorization.
+]
+
+
+---
+background-image: url("https://live.staticflickr.com/65535/50362989492_d4e281b741_k_d.jpg")
+background-size: cover
+
+# Summarize
+
+.pull-left[
+
+Perform operations on the data to characterize trends in the raw data as summary statistics.
+
+]
+
+
+
+
+
+
+---
+
+# Combinations Yield Inference
+
+Combining these actions together is how we perform the analyses.
+
+
+
+```{r echo=FALSE, out.width='75%', out.height='30%', fig.align='center'}
+graph <-
+  create_graph() %>%
+  add_path(
+    n = 5,
+    type = "step",
+    label = c(
+      "Load\\nData",
+      "Select\\nColumns",
+      "Overlay\\nPoints",
+      "Overlay\\nTrend",
+      "Show Plot"
+    ),
+    node_aes = node_aes(
+      shape = c("square", "circle", "circle", "circle", "rectangle"),
+      width = c(0.75, 0.75, 0.75, 0.75, 0.75),
+      color = "#3C3C3C",
+      fontcolor = "black",
+      fillcolor = c("#61acf0", "#f0a561", "#f0a561", "#f0a561", "#cbd20a"),
+      fontname = "Lato"
+    ),
+    edge_aes = edge_aes(# set edge aesthetics
+      color = "#3C3C3C")
+  ) %>%
+  add_global_graph_attrs(attr = "layout",
+                         value = "dot",
+                         attr_type = "graph") %>%
+  add_global_graph_attrs(attr = "rankdir",
+                         value = "LR",
+                         attr_type = "graph")
+
+# View the graph in the Viewer
+graph %>% render_graph()
+```
+
+--
+
+```{r echo=FALSE, out.width='100%', out.height='20%', fig.align='center'}
+summary <- create_graph() %>%
+  add_path(
+    n = 6,
+    type = "step",
+    label = c(
+      "Load\\nData",
+      "Group\\nStations",
+      "Select\\nColumn",
+      "Estimate\\nMean",
+      "Estimate\\nVariance",
+      "Make Table"
+    ),
+    node_aes = node_aes(
+      shape = c("square", "circle", "circle", "circle", "circle", "rectangle"),
+      width = c(0.75, 0.75, 0.75, 0.75, 0.75, 1.0),
+      color = "#3C3C3C",
+      fontcolor = "black",
+      fillcolor = c("#61acf0", "#f0a561", "#f0a561", "#f0a561", "#f0a561", "#cbd20a"),
+      fontname = "Lato"
+    ),
+    edge_aes = edge_aes(# set edge aesthetics
+      color = "#3C3C3C")
+  ) %>%
+  add_global_graph_attrs(attr = "layout",
+                         value = "dot",
+                         attr_type = "graph") %>%
+  add_global_graph_attrs(attr = "rankdir",
+                         value = "LR",
+                         attr_type = "graph")
+
+# View the graph in the Viewer
+summary %>% render_graph()
+```
+
+
+
+
+---
+class: sectionTitle
+
+# Data Judo 🥋
+
+### Do your thing *well* then pass it along
+
+
+---
+
+# Piping 
+
+We can encapsulates the flow diagram in actual code by connecting individual *verbs* (functions) in a work flow with an operator that
+
+> passes the output of this function to the input of that of that function
+
+.center[
+![](https://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
+]
+
+
+---
+
+# Let's Load the Data
+
+```{r eval=FALSE}
+field_data <- read_csv("Field_Data.csv")
+```
+
+```{r}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/deq_data/Field_Data.csv"
+field_data <- read_csv(url)
+```
+
+```{r}
+summary( field_data )
+```
+
+
+
+---
+
+# Example Problem
+
+Let's load in the Field Data again and produce a table that measure the average temperature for all stations that have more 10 or more measurements and arranges the output from hot to cold in degrees Fahrenheit (sorry just had to make up a reason to *mutate* a column of data).
+
+```{r}
+library( tidyverse )
+```
+
+For this, we'll have to *select* columns, *group*, *summarize*, *filter*, *mutate*, and *arrange*.
+
+Let's take these one at a time to see how it all works.
+
+
+---
+
+# Field Data
+
+Let's use the `Field_Data.csv` file again.
+
+```{r eval=FALSE}
+field_data <- read_csv("Field_Data.csv")
+```
+
+
+```{r echo=FALSE}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/deq_data/Field_Data.csv"
+field_data <- read_csv(url)
+```
+
+```{r}
+summary( field_data )
+```
+
+
+---
+
+# The Pipe Operator 
+
+Let's look at `select()` as a function.
+
+```{r eval=FALSE}
+?select
+```
+
+In the next set of examples, I'm just going to dump the output to show you but in reality we'd probably either plot it, make a table, or assign it to a new variable for subsequent analysis.
+
+```{r}
+select( field_data, Fdt_Sta_Id, Fdt_Temp_Celcius)
+```
+
+
+---
+
+# Piping to Select
+
+The `%>%` (yes that is percent-greater than-percent) is the pipe operator that can chain together many operations.
+
+```{r}
+field_data %>% select( Fdt_Sta_Id, Fdt_Temp_Celcius )
+```
+
+
+Notice the following:
+- Just putting `field_data` on a line prints it out,   
+- The `%>%` takes that as input and passes it as the first argument to the next function,    
+- We *did not* have to quote the names (as long as there is no spaces in them),  
+
+---
+
+# Example - Arrange Temperature Descenting 
+
+RStudio will automatically indent subsequent lines for you as a visual reminder that you are continuing on the same analysis pipeline.
+
+```{r}
+field_data %>%
+  arrange( -Fdt_Temp_Celcius) 
+```
+
+---
+
+# Filtering Data - choosing rows to use
+
+```{r}
+field_data %>%
+  filter( Fdt_Depth > 8)
+```
+
+---
+
+# Group & Summarize
+
+These two **always** come as a pair.  We use a column of data to group records and then perform some operation on those records *independently* for each level of that grouping variable.
+
+--
+
+.green[Example: Average temperature for each station]
+
+--
+
+```{r}
+field_data %>%
+  group_by( Fdt_Sta_Id ) %>%
+  summarize( `Temperature (°C)` = mean( Fdt_Temp_Celcius))
+```
+
+---
+
+# Summarize Changes DataFrame
+
+The results of a `summarize()` function **only** has columns designated by `group_by` or made *de novo* in `summarize()`
+
+```{r}
+field_data %>%
+  group_by( Fdt_Sta_Id ) %>%
+  summarize( N = n(),
+             Minimum = min( Fdt_Temp_Celcius),
+             Mean = mean( Fdt_Temp_Celcius),
+             Max = mean( Fdt_Temp_Celcius ) ) 
+```
+
+
+
+---
+
+# A Realistic Problem
+
+What is the average temperature for stations whose range of depths is greater than 10 (units anyone?) arranged in decreasing temperature.
+
+```{r}
+# load the data
+# select stations, temperature, and depth
+# group by station
+# summarize # samples, range of depth, and mean of temperature.
+# filter on sample size
+# arrange by temperature
+# select out # samples and range of depths
+```
+
+
+---
+
+# 15 Minute Activity - Your Turn
+
+Create an R script in the project folder named `tidyverse_examples.R` and answer the following questions using the Field_Data.csv as a data source.
+
+1. Load in `library(tidyverse)` at the top of the file.
+
+2. Load the field data in and assign it to a variable of suitable nomenclature.
+
+3. Which station has the largest variation in DO?
+
+4. Make a new `data.frame` that has min, mean, and max temperature and salinity by `Fdt_Sta_Id`.
+
+
+---
+
+class: middle
+background-image: url("images/contour.png")
+background-position: right
+background-size: auto
+
+.center[
+
+
+![## Any Questions](https://media.giphy.com/media/3o6MbhEsVnMOkWul44/giphy.gif)
+
+]
+
+
+
+

@@ -606,6 +606,8 @@ or
 help.search("stringr")
 ```
 
+There is also a great [CHEATSHEET](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf) for this library, go take a look!  And then bookmark the site.
+
 
 ---
 
@@ -764,7 +766,7 @@ str_split(bearded_dude_in_front, " James ")
 str_split(bearded_dude_in_front, " James ")[[1]]
 ```
 
---- 
+---
 
 # Case Manipulation
 
@@ -781,9 +783,9 @@ toupper( bearded_dude_in_front )
 
 The last example I'll provide an example using several steps operations on a more complicated string.  Here is some example text from the DEQ webpage (the first paragraph on the "About" page).
 
-Goal: Take the string below and find most common word.
+Goal: Take the string below and find most common word (note: this runs off the side because there is not wrapped)
 
-```{r}
+```{r tidy=TRUE}
 aboutDEQ <- "Responsible for administering laws and regulations related to air quality, water quality, water supply, renewable energy and land protection, DEQ is the environmental agency in the Commonwealth of Virginia. Through the work of nearly 800 employees at six regional offices across the state and the Central Office in Richmond, DEQ issues permits, conducts monitoring and inspections, and enforces the law."
 ```
 
@@ -795,7 +797,7 @@ By far, the most time consuming component of any data analysis is taking the raw
 Our workflow.
 
 1. Get data
-2. Remove punctuation.
+2. Remove punctuation using (`gsub("[[:punct:]]","",aboutDEQ))`; more in the regex slides).
 3. Make it lowercase
 4. Split on the spaces to get all words.
 5. Find counts

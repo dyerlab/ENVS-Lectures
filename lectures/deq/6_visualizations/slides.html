@@ -351,19 +351,48 @@ That are really good for quick visualizations.  However, they are limited and we
 
 # Some Examples - Univariate Data
 
+.pull-left[
 For the classic graphics, we do not pipe data in but instead use the older `$` notation.  Here is a histogram function for the Depth (n.b., in my function it renamed `Fdt_Depth` to `Depth`)
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-14-1.png" width="504" /&gt;
 
+```r
+hist( data$Depth )
+```
+
+]
+
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-15-1.png" width="504" /&gt;
+]
 ---
 
 # Some Examples - Univariate Data
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-15-1.png" width="504" /&gt;
+.pull-left[
 
+We can customize the labels (they just us the name of the data column)
+
+
+```r
+hist( data$Depth, 
+      xlab="Water Depth (m)", 
+      ylab="Frequency", main="" )
+```
+]
+
+.pull-right[
+
+&amp;nbsp;
+
+&lt;img src="slides_files/figure-html/unnamed-chunk-17-1.png" width="504" /&gt;
+]
 ---
 
 # Density Plots
+
+.pull-left[
+
+You can derive the probability density of some observed data using the `density()` function, which knows how to plot itself.
 
 
 ```r
@@ -371,9 +400,12 @@ d &lt;- density( data$Depth )
 plot( d )
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-16-1.png" width="504" /&gt;
+]
 
+.pull-right[
+&lt;img src="slides_files/figure-html/unnamed-chunk-19-1.png" width="504" /&gt;
 
+]
 
 ---
 
@@ -393,7 +425,7 @@ plot( data$Depth, data$Salinity,
 ]
 
 .pull-right[ 
-&lt;img src="slides_files/figure-html/unnamed-chunk-18-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-21-1.png" width="504" /&gt;
 ]
 
 
@@ -416,7 +448,7 @@ Parameter | Description
 
 ---
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-19-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-22-1.png" width="504" /&gt;
 
 
 ---
@@ -436,7 +468,7 @@ boxplot( Depth ~ Station, data= data,
 ]
 
 .pull-right[
-&lt;img src="slides_files/figure-html/unnamed-chunk-21-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-24-1.png" width="504" /&gt;
 ]
 
 
@@ -459,7 +491,7 @@ plot( data$Depth, data$Salinity,
 ]
 
 .pull-right[ 
-&lt;img src="slides_files/figure-html/unnamed-chunk-23-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-26-1.png" width="504" /&gt;
 ]
 
 
@@ -561,7 +593,7 @@ data %&gt;%
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-26-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-29-1.png" width="504" /&gt;
 ]
 
 ---
@@ -627,7 +659,7 @@ data %&gt;%
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-31-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-34-1.png" width="504" /&gt;
 ]
 
 
@@ -652,7 +684,7 @@ data %&gt;%
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-33-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-36-1.png" width="504" /&gt;
 ]
 
 
@@ -680,7 +712,7 @@ data %&gt;%
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-35-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-38-1.png" width="504" /&gt;
 ]
 
 
@@ -727,7 +759,7 @@ ggplot() +
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-39-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-42-1.png" width="504" /&gt;
 ]
 
 ---
@@ -754,7 +786,7 @@ p
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-42-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-45-1.png" width="504" /&gt;
 
 ]
 
@@ -783,7 +815,7 @@ Here are some examples.
 p + theme_bw()
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-43-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-46-1.png" width="504" /&gt;
 
 
 ---
@@ -793,7 +825,7 @@ p + theme_bw()
 p + theme_gray()
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-44-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-47-1.png" width="504" /&gt;
 
 ---
 
@@ -802,7 +834,7 @@ p + theme_gray()
 p + theme_dark()
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-45-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-48-1.png" width="504" /&gt;
 
 ---
 
@@ -811,7 +843,7 @@ p + theme_dark()
 p + theme_linedraw()
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-46-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-49-1.png" width="504" /&gt;
 
 ---
 
@@ -820,7 +852,7 @@ p + theme_linedraw()
 p + theme_classic()
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-47-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-50-1.png" width="504" /&gt;
 
 ---
 
@@ -829,16 +861,21 @@ p + theme_classic()
 p + theme_void()
 ```
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-48-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-51-1.png" width="504" /&gt;
 
 
 
 ---
 
-# Graph Overlays
+# A Slightly Different Dataset
 
 I'm going to switch to a built-in data set that has more samples per factor level to show a few more features.
 
+.pull-left[
+![](images/iris_baby_blue.jpg)
+]
+
+.pull-right[
 
 ```r
 summary( iris )
@@ -860,6 +897,8 @@ summary( iris )
 ##                 
 ## 
 ```
+]
+
 
 
 ---
@@ -878,7 +917,7 @@ ggplot( iris, aes( x = Sepal.Length) ) +
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-51-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-54-1.png" width="504" /&gt;
 ]
 
 
@@ -898,7 +937,7 @@ ggplot( iris, aes( x = Sepal.Length) ) +
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-53-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-56-1.png" width="504" /&gt;
 ]
 
 
@@ -919,7 +958,7 @@ ggplot( iris, aes(x=Species, y=Sepal.Length) )  +
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-55-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-58-1.png" width="504" /&gt;
 ]
 
 
@@ -942,7 +981,7 @@ ggplot( iris, aes(x=Species, y=Sepal.Length) )  +
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-57-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-60-1.png" width="504" /&gt;
 ]
 
 
@@ -968,7 +1007,7 @@ ggplot( iris, aes( x=Species,
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-59-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-62-1.png" width="504" /&gt;
 ]
 
 
@@ -994,7 +1033,7 @@ ggplot( iris, aes( x=Species,
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-61-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-64-1.png" width="504" /&gt;
 ]
 
 
@@ -1024,7 +1063,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) +
 ]
 
 .pull-right[
-&lt;img src="slides_files/figure-html/unnamed-chunk-63-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-66-1.png" width="504" /&gt;
 ]
 
 ---
@@ -1046,7 +1085,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) +
 .pull-right[
 
 &amp;nbsp;
-&lt;img src="slides_files/figure-html/unnamed-chunk-65-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-68-1.png" width="504" /&gt;
 
 ]
 
@@ -1069,7 +1108,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) +
 .pull-right[
 
 &amp;nbsp;
-&lt;img src="slides_files/figure-html/unnamed-chunk-67-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-70-1.png" width="504" /&gt;
 
 ]
 
@@ -1091,7 +1130,7 @@ ggplot( iris, aes( x = Sepal.Length, y = Sepal.Width) ) +
 .pull-right[
 
 &amp;nbsp;
-&lt;img src="slides_files/figure-html/unnamed-chunk-69-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-72-1.png" width="504" /&gt;
 
 ]
 
@@ -1120,7 +1159,7 @@ ggplot( iris, aes(x = Sepal.Length) ) +
 .pull-right[
 
 &amp;nbsp;
-&lt;img src="slides_files/figure-html/unnamed-chunk-71-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-74-1.png" width="504" /&gt;
 
 ]
 
@@ -1202,7 +1241,7 @@ p + geom_text( aes(x=7.25, y=4.25,
 
 &amp;nbsp;
 
-&lt;img src="slides_files/figure-html/unnamed-chunk-76-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-79-1.png" width="504" /&gt;
 
 ]
 
@@ -1253,7 +1292,7 @@ ggplot( iris, aes(Sepal.Length, Sepal.Width) ) +
 .pull-right[
 
 &amp;nbsp;
-&lt;img src="slides_files/figure-html/unnamed-chunk-79-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-82-1.png" width="504" /&gt;
 
 ]
 
@@ -1291,7 +1330,7 @@ ggplot( iris, aes(Sepal.Length, Sepal.Width) ) +
 .pull-right[
 
 &amp;nbsp;
-&lt;img src="slides_files/figure-html/unnamed-chunk-82-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-85-1.png" width="504" /&gt;
 
 ]
 
@@ -1319,7 +1358,7 @@ ggplot( iris, aes(Sepal.Length, Sepal.Width) ) +
 .pull-right[
 
 &amp;nbsp;
-&lt;img src="slides_files/figure-html/unnamed-chunk-84-1.png" width="504" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-87-1.png" width="504" /&gt;
 
 ]
 
@@ -1351,6 +1390,8 @@ class: middle
 background-image: url("images/contour.png")
 background-position: right
 background-size: auto
+
+# Questions?
 
 .center[
 

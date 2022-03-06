@@ -253,19 +253,6 @@ class: sectionTitle
 
 ---
 
-# Piping 
-
-We can encapsulates the flow diagram in actual code by connecting individual *verbs* (functions) in a work flow with an operator that
-
-> passes the output of this function to the input of that of that function
-
-.center[
-![](https://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
-]
-
-
----
-
 # Let's Load the Data
 
 ```{r eval=FALSE}
@@ -298,30 +285,10 @@ For this, we'll have to *select* columns, *group*, *summarize*, *filter*, *mutat
 Let's take these one at a time to see how it all works.
 
 
----
-
-# Field Data
-
-Let's use the `Field_Data.csv` file again.
-
-```{r eval=FALSE}
-field_data <- read_csv("Field_Data.csv")
-```
-
-
-```{r echo=FALSE}
-url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/deq_data/Field_Data.csv"
-field_data <- read_csv(url)
-```
-
-```{r}
-summary( field_data )
-```
-
 
 ---
 
-# The Pipe Operator 
+# `dplyr::select` First Look
 
 Let's look at `select()` as a function.
 
@@ -334,6 +301,19 @@ In the next set of examples, I'm just going to dump the output to show you but i
 ```{r}
 select( field_data, Fdt_Sta_Id, Fdt_Temp_Celcius)
 ```
+
+
+---
+
+# Piping 
+
+We can encapsulates the flow diagram in actual code by connecting individual *verbs* (functions) in a work flow with an operator that
+
+> passes the output of this function to the input of that of that function
+
+.center[
+![](https://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
+]
 
 
 ---

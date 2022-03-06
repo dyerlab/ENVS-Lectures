@@ -866,7 +866,7 @@ Create a new R script called `data_frames.R` in the project folder.
 
 1. At the top of the file, insert the line `library(tidyverse)` so that the script will load in the proper libraries.  
 
-2. Use the function `read_data()` to load in the file as a variable named something that is meaningful for you.  The file *should be* in the same folder as the script (if you followed the instructions from the very first lecture), so you only have to give the name of the file (in quotes-it is a character variable) of the csv file.
+2. Use the function `read_csv()` to load in the file as a variable named something that is meaningful for you.  The file *should be* in the same folder as the script (if you followed the instructions from the very first lecture), so you only have to give the name of the file (in quotes-it is a character variable) of the csv file.
 
 3. What are the names of the columns of data in this object? What do they actually measure? 
 

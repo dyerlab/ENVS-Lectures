@@ -669,16 +669,19 @@ leaflet(beetles) %>%
 
 ---
 
-# 15 Minute Activity - Make an Interactive Map
+# 15 Minute Activity - Interactive Map
 
 Make a new R file in the same folder as the project named `leaflet_examples.R`.  In this file, 
 
-1. Load in the contents of the `GIS_Data.csv` using `read_csv()` from `tidyverse`.  By now, you should be getting the handle of this, make sure to import the proper libraries, including `library(leaflet)`.  Name the varialbe you assign these data `Stations`.
-
+1. Load in the contentsof the `GIS_Data.csv` using `read_csv()` from `tidyverse`.  By now, you should be getting the handle of this, make sure to import the proper libraries, including `library(leaflet)`.  Name the variable you assign these data `Stations`.
 
 2. Create a basic map with from these data with each station shown as a plain marker.
 
-```{r eval=FALSE}
+3. Add labels defined by `Sta_Desc` to that map as a popup.
+
+4. Load in the `Field_Data.csv` using the awesome function you made and find the variance in depth for each station (`var()` is variance).  Assign this data.frame to a variable named `Depths` and make surethe name for the Station in this one is `Sta_Id` so that it matches that for the same variable in the `GIS_Data`. We are going to merge these data with the the `GIS_Data.csv` and we must have the common name of the station as a key (or I have to explain more about shared keys). Now, we need to join these two data.frames by mapping the variance in depth (in `Depths`)  into the `Stations` data.frame using `Sta_Id` as the common key.  Do this and you should now have a new column for the depths.  Use this to make a map where the size of the icon is depicted by the variation in depth for each location.
+
+```{r eval=FALSE, echo=FALSE}
 url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/deq_data/GIS_Data.csv"
 Stations <- read_csv(url)
 leaflet( Stations ) %>%
@@ -686,11 +689,7 @@ leaflet( Stations ) %>%
   addMarkers()
 ```
 
-3. Add labels defined by `Sta_Desc` to that map as a popup.
-
-4. Load in the `Field_Data.csv` using the awesome function you made and find the variance in depth for each station (`var()` is variance).  Assign this data.frame to a variable named `Depths` and make surethe name for the Station in this one is `Sta_Id` so that it matches that for the same variable in the `GIS_Data`. We are going to merge these data with the the `GIS_Data.csv` and we must have the common name of the station as a key (or I have to explain more about shared keys).
-
-```{r}
+```{r echo=FALSE, eval=FALSE}
 read_csv("https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/deq_data/Field_Data.csv") %>% 
   mutate( Depth = Fdt_Depth, 
           Date = parse_date_time( Fdt_Date_Time, orders="%m/%d/%Y %H:%M", tz="EST"),
@@ -703,9 +702,9 @@ read_csv("https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/de
   select( Sta_Id = Station, Depth) -> Depths
 ```
 
-Now, we need to join these two data.frames by mapping the variance in depth (in `Depths`)  into the `Stations` data.frame using `Sta_Id` as the common key.  Do this and you should now have a new column for the depths.  Use this to make a map where the size of the icon is depicted by the variation in depth for each location.
 
-```{r eval=FALSE}
+
+```{r eval=FALSE, echo=FALSE}
 data <- left_join( Stations, Depths )
 ```
 
@@ -719,6 +718,8 @@ class: middle
 background-image: url("images/contour.png")
 background-position: right
 background-size: auto
+
+# Any Further Questions?
 
 .center[
 

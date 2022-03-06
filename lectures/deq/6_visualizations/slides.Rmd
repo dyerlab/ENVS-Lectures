@@ -330,30 +330,65 @@ That are really good for quick visualizations.  However, they are limited and we
 
 # Some Examples - Univariate Data
 
+.pull-left[
 For the classic graphics, we do not pipe data in but instead use the older `$` notation.  Here is a histogram function for the Depth (n.b., in my function it renamed `Fdt_Depth` to `Depth`)
 
-```{r echo=FALSE}
+```{r eval=FALSE}
 hist( data$Depth )
 ```
 
+]
+
+.pull-right[
+```{r echo=FALSE}
+hist( data$Depth )
+```
+]
 ---
 
 # Some Examples - Univariate Data
 
+.pull-left[
+
+We can customize the labels (they just us the name of the data column)
+
+```{r eval=FALSE}
+hist( data$Depth, 
+      xlab="Water Depth (m)", 
+      ylab="Frequency", main="" )
+```
+]
+
+.pull-right[
+
+&nbsp;
+
 ```{r echo=FALSE}
 hist( data$Depth, xlab="Water Depth (m)", ylab="Frequency", main="" )
 ```
-
+]
 ---
 
 # Density Plots
 
-```{r}
+.pull-left[
+
+You can derive the probability density of some observed data using the `density()` function, which knows how to plot itself.
+
+```{r eval=FALSE}
 d <- density( data$Depth )
 plot( d )
 ```
 
+]
 
+.pull-right[
+```{r echo=FALSE}
+d <- density( data$Depth )
+plot( d )
+```
+
+]
 
 ---
 
@@ -843,13 +878,20 @@ p + theme_void()
 
 ---
 
-# Graph Overlays
+# A Slightly Different Dataset
 
 I'm going to switch to a built-in data set that has more samples per factor level to show a few more features.
 
+.pull-left[
+![](images/iris_baby_blue.jpg)
+]
+
+.pull-right[
 ```{r}
 summary( iris )
 ```
+]
+
 
 
 ---
@@ -1352,6 +1394,8 @@ class: middle
 background-image: url("images/contour.png")
 background-position: right
 background-size: auto
+
+# Questions?
 
 .center[
 

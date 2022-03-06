@@ -117,31 +117,18 @@ unique( field_data$Fdt_Sta_Id )
 
 ---
 
-# Specifying Factors
+# Specifying Factors - Mutation!!!!!
 
 We are going to use `mutate()` to make changes to the data as we pipe it through our workflow.
 
 
 ```r
-field_data %&gt;% mutate( Station = factor( Fdt_Sta_Id) ) 
+field_data %&gt;% mutate( Station = factor( Fdt_Sta_Id) ) %&gt;% names()
 ```
 
 ```
-## # A tibble: 116 × 8
-##     Fdt_Id Fdt_Sta_Id  Fdt_Date_Time   Fdt_Depth Fdt_Salinity Fdt_Temp_Celcius
-##      &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;               &lt;dbl&gt;        &lt;dbl&gt;            &lt;dbl&gt;
-##  1 2966267 7ACHE055.97 8/12/2020 13:00      15           18.4             28.9
-##  2 2965675 7ACHE040.39 8/11/2020 13:30       0.1         16.7             29.4
-##  3 2965678 7ACHE040.39 8/11/2020 13:30       0.5         16.6             29.3
-##  4 2965679 7ACHE040.39 8/11/2020 13:30       1           16.7             29.3
-##  5 2965683 7ACHE040.39 8/11/2020 13:30       2           16.7             29.3
-##  6 2965686 7ACHE040.39 8/11/2020 13:30       3           16.7             29.2
-##  7 2965689 7ACHE040.39 8/11/2020 13:30       4           16.6             29.2
-##  8 2965691 7ACHE040.39 8/11/2020 13:30       5           16.7             28.8
-##  9 2965693 7ACHE040.39 8/11/2020 13:30       6           18.6             28.4
-## 10 2965696 7ACHE040.39 8/11/2020 13:30       7           18.7             28.4
-## # … with 106 more rows, and 2 more variables: Fdt_Do_Optical &lt;dbl&gt;,
-## #   Station &lt;fct&gt;
+## [1] "Fdt_Id"           "Fdt_Sta_Id"       "Fdt_Date_Time"    "Fdt_Depth"       
+## [5] "Fdt_Salinity"     "Fdt_Temp_Celcius" "Fdt_Do_Optical"   "Station"
 ```
 
 
@@ -164,6 +151,8 @@ summary( df$Station )
 ## 7ACHE044.14 7ACHE047.42 7ACHE055.60 7ACHE055.97 
 ##          10           9          16          14
 ```
+
+--
 
 If we try to use a non-recognized level, it will not 'automagically' add a new level and instead give you missing data.
 
@@ -285,7 +274,7 @@ summary(data)
 
 ```
 ##    Friday    Monday  Saturday    Sunday  Thursday   Tuesday Wednesday 
-##         8         9         8         9         6         7         3
+##        10         8         9         4         6         7         6
 ```
 
 --
@@ -308,7 +297,7 @@ summary( data )
 
 ```
 ##    Monday   Tuesday Wednesday  Thursday    Friday  Saturday    Sunday 
-##         9         7         3         6         8         8         9
+##         8         7         6         6        10         9         4
 ```
 
 
@@ -378,9 +367,9 @@ field_data %&gt;%
 ```
 ## .
 ## 7ACHE004.29 7ACHE013.48 7ACHE023.47 7ACHE026.06 7ACHE040.04 7ACHE040.39 
-##           1           0           1           0           1           1 
+##           1           0           2           1           0           0 
 ## 7ACHE044.14 7ACHE047.42 7ACHE055.60 7ACHE055.97 
-##           1           0           0           3
+##           0           1           1           2
 ```
 
 --
@@ -405,10 +394,10 @@ field_data %&gt;%
 
 ```
 ## .
-## 7ACHE004.29 7ACHE023.47 7ACHE026.06 7ACHE040.39 7ACHE044.14 7ACHE055.60 
-##           1           1           1           2           1           1 
-## 7ACHE055.97 
-##           1
+## 7ACHE004.29 7ACHE023.47 7ACHE026.06 7ACHE040.04 7ACHE040.39 7ACHE047.42 
+##           1           1           1           1           1           1 
+## 7ACHE055.60 
+##           2
 ```
 
 
@@ -434,7 +423,7 @@ class: sectionTitle
 
 # .blue[Dates 📅]
 
-## When "2021-03-08" != 3/8/21
+## When "8/18/2020" != August 18, 2020 
 
 ---
 # Date Objects
@@ -533,7 +522,7 @@ today - dyer_birth
 ```
 ## Time difference of 19137 days
 ```
-
+--
 
 ```r
 weekdays( today )
@@ -550,7 +539,7 @@ weekdays( dyer_birth  )
 ```
 ## [1] "Tuesday"
 ```
-
+--
 
 ```r
 julian(today)
@@ -581,7 +570,7 @@ Sys.time()
 ```
 
 ```
-## [1] "2022-03-06 14:43:52 EST"
+## [1] "2022-03-06 16:52:13 EST"
 ```
 
 --
@@ -592,7 +581,7 @@ unclass( Sys.time() )
 ```
 
 ```
-## [1] 1646595832
+## [1] 1646603533
 ```
 
 
@@ -670,6 +659,7 @@ parse_date_time( field_data$Fdt_Date_Time[1], orders=format )
 ```
 ## [1] "2020-08-12 13:00:00 UTC"
 ```
+--
 
 ```r
 parse_date_time( field_data$Fdt_Date_Time[1], orders=format, tz="EST" )

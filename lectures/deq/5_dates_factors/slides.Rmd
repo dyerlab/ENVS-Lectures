@@ -103,12 +103,12 @@ unique( field_data$Fdt_Sta_Id )
 
 ---
 
-# Specifying Factors
+# Specifying Factors - Mutation!!!!!
 
 We are going to use `mutate()` to make changes to the data as we pipe it through our workflow.
 
 ```{r}
-field_data %>% mutate( Station = factor( Fdt_Sta_Id) ) 
+field_data %>% mutate( Station = factor( Fdt_Sta_Id) ) %>% names()
 ```
 
 
@@ -123,6 +123,8 @@ Once we've specified the factors for data, we cannot *insert* new levels.
 field_data %>% mutate( Station = factor( Fdt_Sta_Id) )  -> df 
 summary( df$Station )
 ```
+
+--
 
 If we try to use a non-recognized level, it will not 'automagically' add a new level and instead give you missing data.
 
@@ -294,7 +296,7 @@ class: sectionTitle
 
 # .blue[Dates 📅]
 
-## When "2021-03-08" != 3/8/21
+## When "8/18/2020" != August 18, 2020 
 
 ---
 # Date Objects
@@ -365,12 +367,12 @@ Now, this is extremely powerful because we can now do operations on date objects
 dyer_birth <- as.Date("1969-10-14")
 today - dyer_birth
 ```
-
+--
 ```{r}
 weekdays( today )
 weekdays( dyer_birth  )
 ```
-
+--
 ```{r}
 julian(today)
 ```
@@ -460,6 +462,9 @@ Which we pass to the function to parse it from `character` to `date` object:
 
 ```{r}
 parse_date_time( field_data$Fdt_Date_Time[1], orders=format )
+```
+--
+```{r}
 parse_date_time( field_data$Fdt_Date_Time[1], orders=format, tz="EST" )
 ```
 

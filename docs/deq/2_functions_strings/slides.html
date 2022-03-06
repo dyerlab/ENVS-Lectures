@@ -511,7 +511,7 @@ x
 
 ---
 
-# Lengths of Things 📐
+# Lengths of Things 📏
 
 We've already seen the `nchar()` function that gives the number of characters is a variable.
 
@@ -639,7 +639,7 @@ remotes::install_github("hadley/emo")
 
 # Loading Packages
 
-Now that they are installed on your computer, you need to tell `R` when you want to use them.  By default, they are not loaded into memory because there can literally be too many packages on your machine for the limited amount of RAM you have.  I currently have 456 different packages installed onto my laptop as I'm typing this.
+Now that they are installed on your computer, you need to tell `R` when you want to use them.  By default, they are not loaded into memory because there can literally be too many packages on your machine for the limited amount of RAM you have.  I currently have 457 different packages installed onto my laptop as I'm typing this.
 
 To load them in, we use `library()`
 
@@ -745,6 +745,8 @@ or
 ```r
 help.search("stringr")
 ```
+
+There is also a great [CHEATSHEET](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf) for this library, go take a look!  And then bookmark the site.
 
 
 ---
@@ -980,7 +982,7 @@ str_split(bearded_dude_in_front, " James ")[[1]]
 ## [1] "Rodney" "Dyer"
 ```
 
---- 
+---
 
 # Case Manipulation
 
@@ -1009,7 +1011,7 @@ toupper( bearded_dude_in_front )
 
 The last example I'll provide an example using several steps operations on a more complicated string.  Here is some example text from the DEQ webpage (the first paragraph on the "About" page).
 
-Goal: Take the string below and find most common word.
+Goal: Take the string below and find most common word (note: this runs off the side because there is not wrapped)
 
 
 ```r
@@ -1024,7 +1026,7 @@ By far, the most time consuming component of any data analysis is taking the raw
 Our workflow.
 
 1. Get data
-2. Remove punctuation.
+2. Remove punctuation using (`gsub("[[:punct:]]","",aboutDEQ))`; more in the regex slides).
 3. Make it lowercase
 4. Split on the spaces to get all words.
 5. Find counts

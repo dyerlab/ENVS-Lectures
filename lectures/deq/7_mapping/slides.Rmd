@@ -27,18 +27,19 @@ library( knitr )
 options(knitr.table.format = "html")
 library( tidyverse )
 library( fontawesome )
-library(DiagrammeR)
+library( leaflet )
+library(lubridate)
 library( emo )
 ```
 
 
 
 
-# Quick Interactive Maps in R
+# Interactive Maps in R
 
 
 
-### Leaflet 
+### Feel the need to zoom and pan. 
 
 
 
@@ -47,6 +48,666 @@ library( emo )
 <p>&nbsp;</p>
 
 <img src="images/logo1.svg" width="400px">
+
+
+
+---
+
+# Leaflet Library
+
+The Leaflet library is based upon javascript and is implemented in R for use in HTML output.  It is essentially a Google Maps/Apple Maps interface that can be used to pipe data from R into with all the expected interactions.
+
+For this example, I'm going to use some data from my own research and let you use the `GIS_Data.csv` in the activity.
+
+
+
+
+
+
+
+---
+
+.center[ ![](https://live.staticflickr.com/65535/51043197628_2d1f0578db_o_d.png)]
+
+
+
+.pull-left[ 
+
+### Provides:
+
+- Uniform interface 
+
+- Many entry points (R, JavaScript, Python, HTML, etc.)
+
+- Variety of Map Types
+
+- Completely User Interactive
+]
+
+.pull-right[
+
+&nbsp;
+
+![](https://live.staticflickr.com/65535/51044028622_5fa998274c_z_d.jpg)
+
+]
+
+
+---
+
+# Map Making Workflow
+
+I'd make flow diagram here to go through basic steps. Define what each does in the background.
+
+1. Get data - 
+2. Make base map  -  `leaflet()` function creates widget for map and all javascript
+3. Define Region -   `setVeiw()` can be used to define the `bbox()`
+4. Add Tiles  -      `addTiles()` or `addProviderTiles()` downloads map tiles
+5. Overlay Markers -   `addMarkers()` make your points
+6. Overlay Rasters - 
+7. Set Fancy Stuff - 
+--
+8. There is no step 8 🎉 !!!!!
+
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Basic Map Parts]
+
+### .fancy[The foundation parts `r fa("level-down-alt", fill='limegreen')`]
+
+
+
+
+
+---
+
+# The Base Map
+
+.pull-left[
+
+Just like `ggplot()`, calling `leaflet()` just creates a viewport into which we need to add information.
+
+```{r eval=FALSE}
+leaflet() 
+```
+
+]
+.pull-right[
+```{r echo=FALSE}
+leaflet() 
+```
+]
+
+
+---
+
+
+# Adding Default Tiles
+
+
+
+.pull-left[
+
+Tiles are essentially static images of a specified geographic size.  As you "zoom" in (+ & - buttons) a new set of images are fetched from a tile provider for that scale.  Here we can add default tiles (these come from OpenStreetMap).
+
+```{r eval=FALSE}
+leaflet() %>%
+  addTiles() 
+```
+
+
+]
+.pull-right[
+```{r echo=FALSE}
+leaflet() %>%
+  addTiles()
+```
+]
+
+---
+
+# Setting a Boundary ViewPort
+
+.pull-left[
+
+We can specify a particular bounding box for our viewport to focus on. This is based upon a point to be taken as a centroid as well as a pre-defined zoom level.
+
+```{r eval=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -77.5, lat = 37.5, zoom = 10) 
+```
+
+]
+.pull-right[
+```{r echo=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -77.5, lat = 37.5, zoom = 10) 
+```
+]
+
+
+---
+
+# Tile Providers
+
+There are some really interesting Tile Providers that we can use by replacing 
+
+```{r eval=FALSE}
+addTiles()
+```
+
+with 
+
+```{r eval=FALSE}
+addProviderTiles( providers$Name )
+```
+
+where `Name` can be any of the items found [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html)  .red[<-- click on this]
+
+
+
+---
+
+# Example Provider Tiles - OpenTopoMap
+
+```{r echo=FALSE, fig.align='center'}
+provider <- providers$OpenTopoMap
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+ 
+
+---
+
+# Example Provider Tiles - ESRI World Topo
+
+```{r echo=FALSE}
+provider <- providers$Esri.WorldTopoMap
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+
+
+
+
+---
+
+# Example Provider Tiles - Watercolor
+
+```{r echo=FALSE}
+provider <- providers$Stamen.Watercolor
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+
+
+
+---
+
+# Example Provider Tiles - ESRI Satelite
+
+```{r echo=FALSE}
+provider <- providers$Esri.WorldImagery
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+
+---
+
+# Example Provider Tiles - ESRI World Shaded Relief
+
+```{r echo=FALSE}
+provider <- providers$Esri.WorldShadedRelief
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+
+
+---
+
+# Example Provider Tiles - Earth At Night
+
+```{r echo=FALSE}
+provider <- providers$NASAGIBS.ViirsEarthAtNight2012
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+
+
+
+---
+
+# Example Provider Tiles - NASA Daily Composite Imagry
+
+```{r echo=FALSE}
+provider <- providers$NASAGIBS.ModisTerraTrueColorCR
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles( provider)
+```
+
+---
+
+.pull-left[ 
+# Combining Tiles
+
+Tile providers also make available various labels to put on the map.  You can get access to these as another provider layer and overlay them ontop of the map.
+
+```{r, eval=FALSE}
+provider <- providers$Stamen.Watercolor
+
+labels <- providers$CartoDB.VoyagerOnlyLabels
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles(provider) %>%
+  addProviderTiles(labels)
+```
+]
+
+.pull-right[
+
+&nbsp;
+
+```{r, echo = FALSE}
+provider <- providers$Stamen.Watercolor
+
+labels <- providers$CartoDB.VoyagerOnlyLabels
+
+leaflet() %>% 
+  setView(lng = -77.5, 
+          lat = 37.5, 
+          zoom = 6) %>% 
+  addProviderTiles(provider) %>%
+  addProviderTiles(labels)
+```
+
+]
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Adding Data]
+
+### .fancy[Increasing Information Content]
+
+
+
+---
+
+# The Data
+
+To add components to the leaflet map, you need to get the data up and ready. For this, we'll go back to the enigmatic Bark Beetle data set.
+
+```{r}
+library( sf )
+library( tidyverse ) 
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Araptus_Disperal_Bias.csv"
+read.csv(url) %>%
+   st_as_sf( coords=c("Longitude","Latitude"), crs=4326 ) -> beetles
+head( beetles, n=3 )
+```
+
+
+---
+# Data for `leaflet`
+
+
+Both `leaflet()` and each map layer have a data = parameter. Spatial data can be in the form of:
+
+- `dataframe` with lat/lng columns
+- `sp` objects
+- `sf` objects
+- `maps` package `map()` objects
+
+
+Data can be passed through the `leaflet()` function or through the map layers.
+
+
+
+---
+
+.pull-left[
+# Shapes (Circles, Lines & Polygons)
+
+Leaflet will take the extent of the points and try to find a proper zoom and extent so that each point is shown.
+
+```{r eval=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  addCircles( data=beetles )
+```
+
+Note: Circles scale with the map
+
+]
+.pull-right[
+
+&nbsp;
+
+&nbsp;
+
+
+```{r echo=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  addCircles( data=beetles )
+```
+]
+
+
+
+---
+
+.pull-left[
+# Map Circles - size
+
+We can easily associate features on the map based upon data being passed in.  Here I take the count of male beetles from each site (and scale it for visual appeal) to show spatail variation in demograhic parameters.
+
+&nbsp;
+
+
+```{r eval=FALSE}
+leaflet(beetles) %>%
+  addTiles() %>%
+  addCircles( radius = ~Males *500, 
+              stroke = FALSE, 
+              fillOpacity = .5)
+```
+
+
+]
+.pull-right[
+
+&nbsp;
+
+&nbsp;
+
+
+```{r echo=FALSE}
+leaflet(beetles) %>%
+  addTiles() %>%
+  addCircles( radius = ~Males *500, 
+              stroke = FALSE, 
+              fillOpacity = .5)
+```
+]
+
+
+---
+
+.pull-left[
+# Map Color
+
+You can specify the color palette for the plots. Here we use one going from Red to Blu along a numeric gradient and use the Male:Female sex ratio of the site interpret the fill color.
+
+```{r eval=FALSE}
+pal <- colorNumeric( palette = "RdBu",
+                     domain = beetles$MFRatio,
+                     reverse = TRUE )
+
+leaflet(beetles) %>%
+  addTiles() %>%
+  addCircles(color = ~pal(MFRatio), 
+             fillOpacity = .7, 
+             radius = 15000, 
+             stroke = FALSE)
+```
+
+]
+.pull-right[
+
+&nbsp;
+
+&nbsp;
+
+
+```{r echo=FALSE}
+pal <- colorNumeric( palette = "RdBu",
+                     domain = beetles$MFRatio,
+                     reverse = TRUE )
+leaflet(beetles) %>%
+  addTiles() %>%
+  addCircles(color = ~pal(MFRatio), 
+             fillOpacity = .7, 
+             radius = 15000, 
+             stroke = FALSE)
+```
+]
+
+---
+
+
+.pull-left[
+# Legends 
+
+All graphics are better if there is a legend to help guide the viewer in interpreting what they are looking at.
+
+
+```{r eval=FALSE}
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = beetles$MFRatio,
+  reverse = TRUE)
+
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles( fillColor = ~pal(MFRatio), 
+              fillOpacity = .7, 
+              radius = 15000, 
+              weight = 1, 
+              color = "grey") %>%
+  addLegend(pal = pal, 
+            values = ~MFRatio,
+            title = "Male to Female Ratio")
+
+```
+
+]
+
+.pull-right[
+
+&nbsp;
+
+```{r echo=FALSE}
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = beetles$MFRatio,
+  reverse = TRUE)
+
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles( fillColor = ~pal(MFRatio), 
+              fillOpacity = .7, 
+              radius = 15000, 
+              weight = 1, 
+              color = "grey") %>%
+  addLegend(pal = pal, 
+            values = ~MFRatio,
+            title = "Male to Female Ratio")
+```
+]
+
+
+---
+
+.pull-left[
+# Map Markers
+
+Instead of shapes, we can use the enigmatic map marker to denote location.  These are invariant of zoom level.
+
+```{r eval=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  addMarkers( data=beetles )
+```
+
+
+]
+.pull-right[
+
+&nbsp;
+
+&nbsp;
+
+
+```{r echo=FALSE}
+leaflet() %>%
+  addTiles() %>%
+  addMarkers( data=beetles )
+```
+]
+
+
+---
+
+.pull-left[
+# Annotations
+
+In addition to the symbology, we can define a wide range of content to be associated with each marker.  Here is an example of a static annotation.
+
+```{r eval=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -111, lat = 25, zoom = 7) %>%
+  addPopups(lng = -111, lat = 25, paste0("beetles live here"))
+```
+]
+
+.pull-right[
+```{r echo=FALSE}
+leaflet(beetles) %>%
+  addProviderTiles( providers$CartoDB.Positron ) %>%
+  setView( lng = -111, 
+           lat = 25, 
+           zoom = 7) %>%
+  addPopups( lng = -111, 
+             lat = 25, 
+             paste0("beetles live here") )
+```
+
+]
+
+---
+
+.pull-left[
+
+# Pop-ups
+
+We can also designate a message to be shown when the user clicks on the site.  Here I also add a custom icon to the marker from fontawesome.
+
+```{r eval=FALSE}
+makeAwesomeIcon(icon = "bug", 
+                library = "fa",
+                markerColor = "lightgreen",
+                iconColor = "blue") -> bug
+
+leaflet(beetle) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers( icon = bug, 
+                     popup = paste0( "Site:", 
+                                     beetles$Site))
+```
+]
+.pull-right[
+
+&nbsp;
+
+```{r echo=FALSE}
+makeAwesomeIcon(icon = "bug", 
+                library = "fa",
+                markerColor = "lightgreen",
+                iconColor = "blue") -> bug
+leaflet(beetles) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers( icon = bug, 
+                     popup = paste0( "Site:", 
+                                     beetles$Site))
+```
+]
+
+
+---
+
+# 15 Minute Activity - Make an Interactive Map
+
+Make a new R file in the same folder as the project named `leaflet_examples.R`.  In this file, 
+
+1. Load in the contents of the `GIS_Data.csv` using `read_csv()` from `tidyverse`.  By now, you should be getting the handle of this, make sure to import the proper libraries, including `library(leaflet)`.  Name the varialbe you assign these data `Stations`.
+
+
+2. Create a basic map with from these data with each station shown as a plain marker.
+
+```{r eval=FALSE}
+url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/deq_data/GIS_Data.csv"
+Stations <- read_csv(url)
+leaflet( Stations ) %>%
+  addTiles() %>%
+  addMarkers()
+```
+
+3. Add labels defined by `Sta_Desc` to that map as a popup.
+
+4. Load in the `Field_Data.csv` using the awesome function you made and find the variance in depth for each station (`var()` is variance).  Assign this data.frame to a variable named `Depths` and make surethe name for the Station in this one is `Sta_Id` so that it matches that for the same variable in the `GIS_Data`. We are going to merge these data with the the `GIS_Data.csv` and we must have the common name of the station as a key (or I have to explain more about shared keys).
+
+```{r}
+read_csv("https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/deq_data/Field_Data.csv") %>% 
+  mutate( Depth = Fdt_Depth, 
+          Date = parse_date_time( Fdt_Date_Time, orders="%m/%d/%Y %H:%M", tz="EST"),
+          Station = factor(Fdt_Sta_Id, ordered=TRUE),
+          Salinity = Fdt_Salinity,
+          DO = Fdt_Do_Optical) %>%
+  select( Station, Date, Depth, Salinity, DO) %>%
+  group_by( Station ) %>%
+  summarize( Depth = var( Depth )) %>%
+  select( Sta_Id = Station, Depth) -> Depths
+```
+
+Now, we need to join these two data.frames by mapping the variance in depth (in `Depths`)  into the `Stations` data.frame using `Sta_Id` as the common key.  Do this and you should now have a new column for the depths.  Use this to make a map where the size of the icon is depicted by the variation in depth for each location.
+
+```{r eval=FALSE}
+data <- left_join( Stations, Depths )
+```
 
 
 

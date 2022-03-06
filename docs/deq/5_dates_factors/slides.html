@@ -285,7 +285,7 @@ summary(data)
 
 ```
 ##    Friday    Monday  Saturday    Sunday  Thursday   Tuesday Wednesday 
-##         5         3        10         8         6         8        10
+##         8         9         8         9         6         7         3
 ```
 
 --
@@ -308,7 +308,7 @@ summary( data )
 
 ```
 ##    Monday   Tuesday Wednesday  Thursday    Friday  Saturday    Sunday 
-##         3         8        10         6         5        10         8
+##         9         7         3         6         8         8         9
 ```
 
 
@@ -378,9 +378,9 @@ field_data %&gt;%
 ```
 ## .
 ## 7ACHE004.29 7ACHE013.48 7ACHE023.47 7ACHE026.06 7ACHE040.04 7ACHE040.39 
-##           0           1           1           1           2           0 
+##           1           0           1           0           1           1 
 ## 7ACHE044.14 7ACHE047.42 7ACHE055.60 7ACHE055.97 
-##           0           1           1           1
+##           1           0           0           3
 ```
 
 --
@@ -405,8 +405,10 @@ field_data %&gt;%
 
 ```
 ## .
-## 7ACHE004.29 7ACHE023.47 7ACHE026.06 7ACHE044.14 7ACHE055.60 
-##           1           2           1           2           2
+## 7ACHE004.29 7ACHE023.47 7ACHE026.06 7ACHE040.39 7ACHE044.14 7ACHE055.60 
+##           1           1           1           2           1           1 
+## 7ACHE055.97 
+##           1
 ```
 
 
@@ -579,7 +581,7 @@ Sys.time()
 ```
 
 ```
-## [1] "2022-03-06 11:50:06 EST"
+## [1] "2022-03-06 14:43:52 EST"
 ```
 
 --
@@ -590,13 +592,13 @@ unclass( Sys.time() )
 ```
 
 ```
-## [1] 1646585406
+## [1] 1646595832
 ```
 
 
 ---
 
-# Making Time 🕒
+# Making Time 🕤
 
 To convert something like 8/12/2020 13:00 from `character` to a `time` object, we need to *specify* the layout of the elements within the string so the functions know what to operate on.
 

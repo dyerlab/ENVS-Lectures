@@ -486,7 +486,7 @@ library( sf )
 ```
 
 ```
-## Linking to GEOS 3.8.1, GDAL 3.2.1, PROJ 7.2.1
+## Linking to GEOS 3.9.1, GDAL 3.4.0, PROJ 8.1.1; sf_use_s2() is TRUE
 ```
 
 ```r
@@ -495,7 +495,7 @@ nc &lt;- st_read(system.file("shape/nc.shp", package="sf"))
 
 ```
 ## Reading layer `nc' from data source 
-##   `/Library/Frameworks/R.framework/Versions/4.0/Resources/library/sf/shape/nc.shp' 
+##   `/Library/Frameworks/R.framework/Versions/4.1/Resources/library/sf/shape/nc.shp' 
 ##   using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## Geometry type: MULTIPOLYGON
@@ -732,15 +732,18 @@ mtcars[1:8, 1:8] %&gt;%
 
 ---
 
-## 15 Minute Activity - Make a Quick Report
+## Final Activity - Make a Quick Report
 
-Let's create a **different** kind of document this time.  Create a new RMarkdown document (use the HTML template for simplicity) and save it as `markdown_test.Rmd` in the same directory as the project.  In this document craft a quick narrative about the data from `Field_Data.csv` and `GIS_Data.csv`.  Make sure to provide an example of at least one each of the following items:
+Let's create a **different** kind of document this time.  Create a new RMarkdown document (use the HTML template for simplicity) and save it as `field_data_report.Rmd` in the same directory as the project.  In this document craft a quick narrative about the data from `Field_Data.csv` and `GIS_Data.csv`.  Use this document as if you were creating a report based uopn the data you have here.
 
-1. Graphical Output
+
+Make sure to provide an example of at least one each of the following items:
+
+1. Some Graphical Output
 
 2. A Table of results.
 
-3. In-text interpretaion of R output.
+3. In-text interpretation of R output (e.g., inline R code)
 
 4. A variety of appropriate typesetting elements (Headings, bold, italic, etc.).
 

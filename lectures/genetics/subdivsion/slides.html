@@ -3,7 +3,7 @@
   <head>
     <title>Genetic Subdivision</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.9.1/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="slide_styles.css" type="text/css" />
   </head>
@@ -711,28 +711,26 @@ phi &lt;- getPhi( setNames( model$varcomp$sigma2, rownames(model$varcomp))   )
 .pull-right[
 
 ```
-## 
-## 	Analysis of Molecular Variance
-## 
-## Call: amova(formula = D ~ Species)
-## 
+## $tab
 ##              SSD       MSD  df
 ## Species 2304.694 60.649831  38
 ## Error    771.721  2.381855 324
 ## Total   3076.415  8.498383 362
 ## 
-## Variance components:
-##         sigma2 P.value
-## Species 6.2701       0
-## Error   2.3819        
-## 
-## Phi-statistics:
-## Species.in.GLOBAL 
-##         0.7247025 
-## 
-## Variance coefficients:
+## $varcoef
 ##        a 
-## 9.293026
+## 9.293026 
+## 
+## $varcomp
+##           sigma2 P.value
+## Species 6.270076       0
+## Error   2.381855      NA
+## 
+## $call
+## amova(formula = D ~ Species)
+## 
+## attr(,"class")
+## [1] "amova"
 ```
 
 ```

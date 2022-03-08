@@ -50,6 +50,231 @@ library( emo )
 <img src="images/logo1.svg" width="400px">
 
 
+---
+class: sectionTitle
+
+# A Brief `join` interlude.
+
+
+
+---
+
+# Multi-Table Data
+
+Rarely do we keep our data within a single data table.  
+
+.pull-left[ #### Table Structure
+
+Consider the two tables to the right.
+
+- Common column labeled *Key*  
+
+- Other data columns (only 1 in each for brevity)
+
+]
+
+.pull-right[![Example data table structure](https://live.staticflickr.com/65535/50427672632_24e45139a8_c_d.jpg)]
+
+
+
+---
+
+# Varieties of Keys 🗝
+
+.pull-left[### Primary Key
+
+A *primary key* is a column in a table that uniquely identifies a single row.  There MUST be a unique identifier to be a *Primary Key*.
+
+```{r}
+Key = c("A","B","C")
+Name = c("Bob","Alice","Mary")
+Major = c("ENVS", "ENVS", "BIOL")
+people <- data.frame( Key, Name, Major )
+people %>%
+  count( Key ) 
+```
+
+]
+
+--
+
+.pull-right[ ### Foreign Key
+
+A foreign key is one that references a primary key in *another* table.
+
+```{r}
+Key = c("A","B","A","D","B")
+Grade = rpois(5,lambda = 100)
+homework <- data.frame( Key, Grade )
+homework
+```
+
+Here the `Key` column is referencing a unique row of data in the `people` data table.
+
+
+
+]
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Joins]
+
+### .fancy[Merging data tables]
+
+
+
+---
+
+# Taxonomy of Joins
+
+We can combine the data in these tables in several different ways based upon what we are looking for.  When thinking of joins, we must think about the how we want to select the overlapping sets of keys in both data.frames.
+
+- *Full Join* (aka *outer join*)
+
+- *Left Join*  
+
+- *Right Join*  
+
+- *Inner Join*
+
+&nbsp;
+
+The .redinline[*position*] adjective relates to which of the rows are selected for the join and end up in the resutling data table.
+
+
+---
+
+# 'Left' & 'Right' Tables
+
+.center[
+![Example data table structure](https://live.staticflickr.com/65535/50427672632_24e45139a8_c_d.jpg)
+]
+
+
+---
+
+# Full/Outer Join
+
+The outer join has .redinline[all the data from both left & right tables].  All keys are present in the result.
+
+![Outer Join](https://live.staticflickr.com/65535/50427993992_4ccede1574_c_d.jpg)
+
+
+
+
+---
+
+# Outer Join
+
+All homework and people data.
+
+```{r}
+people %>%
+  full_join( homework, by="Key" )
+```
+
+
+
+---
+
+# Left Join
+
+The left join is one where the result has all the keys from the left but only those in the right one that are in the left.  
+
+![left join](https://live.staticflickr.com/65535/50427817371_678f0f64c7_c_d.jpg)
+--
+
+```{r}
+people %>% left_join( homework, by="Key")
+```
+
+
+
+---
+
+# Right Join
+
+The Right join results in all the keys from the right data table and the matching ones from the left.
+
+.center[
+![Right Join](https://live.staticflickr.com/65535/50427125528_0de6281475_c_d.jpg)
+]
+
+--
+
+```{r}
+people %>% right_join( homework, by="Key")
+```
+
+
+---
+
+# Inner Joins
+
+Inner joins result in the intersection of keys.
+
+![Inner Join](https://live.staticflickr.com/65535/50427125683_ac44eb1500_c_d.jpg)
+
+--
+
+```{r}
+people %>% inner_join( homework, by="Key")
+```
+
+
+
+---
+class: sectionTitle, inverse
+
+# .blue[Filtering Joins]
+
+## .fancy[Not combining but refining...]
+
+
+
+---
+
+# The Semi Join
+
+We can also use joins to filter values within one `data.frame`.  Here the `semi_join()` keeps everything in the left data that has a key in the right one, but **importantly** it does not import the right data columns into the result.
+
+--
+
+```{r}
+people %>% 
+  semi_join( homework, by="Key")
+```
+
+---
+
+# The Anti Join
+
+The opposite of the `seim_join()` is the `anti_join()` which drops everything in the left table that has a key in the right one, leaving only the ones that are unique.
+
+--
+
+```{r}
+people %>%
+  anti_join( homework, by = "Key")
+```
+
+
+---
+
+# Activity - Joining Field & GIS Data
+
+Create a new script file named `joins.R` and join average station measurements onto the `GIS_Data.csv` data set.
+
+
+---
+
+class: sectionTitle
+
+# Leaflet
+
+![](https://media.giphy.com/media/xznyPebL28X5u/giphy.gif)
 
 ---
 
@@ -669,17 +894,17 @@ leaflet(beetles) %>%
 
 ---
 
-# 15 Minute Activity - Interactive Map
+# Large-ish Activity - Interactive Map
 
 Make a new R file in the same folder as the project named `leaflet_examples.R`.  In this file, 
 
-1. Load in the contentsof the `GIS_Data.csv` using `read_csv()` from `tidyverse`.  By now, you should be getting the handle of this, make sure to import the proper libraries, including `library(leaflet)`.  Name the variable you assign these data `Stations`.
+1. Load in the contents of the `GIS_Data.csv` using `read_csv()` from `tidyverse`.  By now, you should be getting the handle of this, make sure to import the proper libraries, including `library(leaflet)`.  Name the variable you assign these data `Stations`.
 
 2. Create a basic map with from these data with each station shown as a plain marker.
 
 3. Add labels defined by `Sta_Desc` to that map as a popup.
 
-4. Load in the `Field_Data.csv` using the awesome function you made and find the variance in depth for each station (`var()` is variance).  Assign this data.frame to a variable named `Depths` and make surethe name for the Station in this one is `Sta_Id` so that it matches that for the same variable in the `GIS_Data`. We are going to merge these data with the the `GIS_Data.csv` and we must have the common name of the station as a key (or I have to explain more about shared keys). Now, we need to join these two data.frames by mapping the variance in depth (in `Depths`)  into the `Stations` data.frame using `Sta_Id` as the common key.  Do this and you should now have a new column for the depths.  Use this to make a map where the size of the icon is depicted by the variation in depth for each location.
+4. Left join the `GIS_Data.csv` and the `Field_Data.csv` to make a single data.frame that also includes the variance in depths for each station.  Use this to make a map where the size of the icon is depicted by the variation in depth for each location.
 
 ```{r eval=FALSE, echo=FALSE}
 url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/deq_data/GIS_Data.csv"

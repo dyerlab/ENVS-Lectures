@@ -14,9 +14,9 @@
     <script src="libs/proj4-2.6.2/proj4.min.js"></script>
     <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
     <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-    <script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+    <script src="libs/leaflet-binding-2.1.0/leaflet.js"></script>
     <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-    <script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+    <script src="libs/leaflet-providers-plugin-2.1.0/leaflet-providers-plugin.js"></script>
     <link href="libs/leaflet-awesomemarkers-2.0.3/leaflet.awesome-markers.css" rel="stylesheet" />
     <script src="libs/leaflet-awesomemarkers-2.0.3/leaflet.awesome-markers.min.js"></script>
     <link href="libs/fontawesome-4.7.0/font-awesome.min.css" rel="stylesheet" />
@@ -51,6 +51,302 @@ background-size: auto
 &lt;img src="images/logo1.svg" width="400px"&gt;
 
 
+---
+class: sectionTitle
+
+# A Brief `join` interlude.
+
+
+
+---
+
+# Multi-Table Data
+
+Rarely do we keep our data within a single data table.  
+
+.pull-left[ #### Table Structure
+
+Consider the two tables to the right.
+
+- Common column labeled *Key*  
+
+- Other data columns (only 1 in each for brevity)
+
+]
+
+.pull-right[![Example data table structure](https://live.staticflickr.com/65535/50427672632_24e45139a8_c_d.jpg)]
+
+
+
+---
+
+# Varieties of Keys 🗝
+
+.pull-left[### Primary Key
+
+A *primary key* is a column in a table that uniquely identifies a single row.  There MUST be a unique identifier to be a *Primary Key*.
+
+
+```r
+Key = c("A","B","C")
+Name = c("Bob","Alice","Mary")
+Major = c("ENVS", "ENVS", "BIOL")
+people &lt;- data.frame( Key, Name, Major )
+people %&gt;%
+  count( Key ) 
+```
+
+```
+##   Key n
+## 1   A 1
+## 2   B 1
+## 3   C 1
+```
+
+]
+
+--
+
+.pull-right[ ### Foreign Key
+
+A foreign key is one that references a primary key in *another* table.
+
+
+```r
+Key = c("A","B","A","D","B")
+Grade = rpois(5,lambda = 100)
+homework &lt;- data.frame( Key, Grade )
+homework
+```
+
+```
+##   Key Grade
+## 1   A   112
+## 2   B   104
+## 3   A   104
+## 4   D   113
+## 5   B   105
+```
+
+Here the `Key` column is referencing a unique row of data in the `people` data table.
+
+
+
+]
+
+
+---
+class: sectionTitle, inverse
+
+# .green[Joins]
+
+### .fancy[Merging data tables]
+
+
+
+---
+
+# Taxonomy of Joins
+
+We can combine the data in these tables in several different ways based upon what we are looking for.  When thinking of joins, we must think about the how we want to select the overlapping sets of keys in both data.frames.
+
+- *Full Join* (aka *outer join*)
+
+- *Left Join*  
+
+- *Right Join*  
+
+- *Inner Join*
+
+&amp;nbsp;
+
+The .redinline[*position*] adjective relates to which of the rows are selected for the join and end up in the resutling data table.
+
+
+---
+
+# 'Left' &amp; 'Right' Tables
+
+.center[
+![Example data table structure](https://live.staticflickr.com/65535/50427672632_24e45139a8_c_d.jpg)
+]
+
+
+---
+
+# Full/Outer Join
+
+The outer join has .redinline[all the data from both left &amp; right tables].  All keys are present in the result.
+
+![Outer Join](https://live.staticflickr.com/65535/50427993992_4ccede1574_c_d.jpg)
+
+
+
+
+---
+
+# Outer Join
+
+All homework and people data.
+
+
+```r
+people %&gt;%
+  full_join( homework, by="Key" )
+```
+
+```
+##   Key  Name Major Grade
+## 1   A   Bob  ENVS   112
+## 2   A   Bob  ENVS   104
+## 3   B Alice  ENVS   104
+## 4   B Alice  ENVS   105
+## 5   C  Mary  BIOL    NA
+## 6   D  &lt;NA&gt;  &lt;NA&gt;   113
+```
+
+
+
+---
+
+# Left Join
+
+The left join is one where the result has all the keys from the left but only those in the right one that are in the left.  
+
+![left join](https://live.staticflickr.com/65535/50427817371_678f0f64c7_c_d.jpg)
+--
+
+
+```r
+people %&gt;% left_join( homework, by="Key")
+```
+
+```
+##   Key  Name Major Grade
+## 1   A   Bob  ENVS   112
+## 2   A   Bob  ENVS   104
+## 3   B Alice  ENVS   104
+## 4   B Alice  ENVS   105
+## 5   C  Mary  BIOL    NA
+```
+
+
+
+---
+
+# Right Join
+
+The Right join results in all the keys from the right data table and the matching ones from the left.
+
+.center[
+![Right Join](https://live.staticflickr.com/65535/50427125528_0de6281475_c_d.jpg)
+]
+
+--
+
+
+```r
+people %&gt;% right_join( homework, by="Key")
+```
+
+```
+##   Key  Name Major Grade
+## 1   A   Bob  ENVS   112
+## 2   A   Bob  ENVS   104
+## 3   B Alice  ENVS   104
+## 4   B Alice  ENVS   105
+## 5   D  &lt;NA&gt;  &lt;NA&gt;   113
+```
+
+
+---
+
+# Inner Joins
+
+Inner joins result in the intersection of keys.
+
+![Inner Join](https://live.staticflickr.com/65535/50427125683_ac44eb1500_c_d.jpg)
+
+--
+
+
+```r
+people %&gt;% inner_join( homework, by="Key")
+```
+
+```
+##   Key  Name Major Grade
+## 1   A   Bob  ENVS   112
+## 2   A   Bob  ENVS   104
+## 3   B Alice  ENVS   104
+## 4   B Alice  ENVS   105
+```
+
+
+
+---
+class: sectionTitle, inverse
+
+# .blue[Filtering Joins]
+
+## .fancy[Not combining but refining...]
+
+
+
+---
+
+# The Semi Join
+
+We can also use joins to filter values within one `data.frame`.  Here the `semi_join()` keeps everything in the left data that has a key in the right one, but **importantly** it does not import the right data columns into the result.
+
+--
+
+
+```r
+people %&gt;% 
+  semi_join( homework, by="Key")
+```
+
+```
+##   Key  Name Major
+## 1   A   Bob  ENVS
+## 2   B Alice  ENVS
+```
+
+---
+
+# The Anti Join
+
+The opposite of the `seim_join()` is the `anti_join()` which drops everything in the left table that has a key in the right one, leaving only the ones that are unique.
+
+--
+
+
+```r
+people %&gt;%
+  anti_join( homework, by = "Key")
+```
+
+```
+##   Key Name Major
+## 1   C Mary  BIOL
+```
+
+
+---
+
+# Activity - Joining Field &amp; GIS Data
+
+Create a new script file named `joins.R` and join average station measurements onto the `GIS_Data.csv` data set.
+
+
+---
+
+class: sectionTitle
+
+# Leaflet
+
+![](https://media.giphy.com/media/xznyPebL28X5u/giphy.gif)
 
 ---
 
@@ -138,8 +434,8 @@ leaflet()
 
 ]
 .pull-right[
-<div id="htmlwidget-2fd7b5ddc86db4f5a330" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2fd7b5ddc86db4f5a330">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-7c7900f5e35760d19252" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7c7900f5e35760d19252">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}}},"evals":[],"jsHooks":[]}</script>
 ]
 
 
@@ -163,8 +459,8 @@ leaflet() %&gt;%
 
 ]
 .pull-right[
-<div id="htmlwidget-40fab14e8a9c365fa898" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-40fab14e8a9c365fa898">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4202eb33c1cedbecd20a" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4202eb33c1cedbecd20a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}]},"evals":[],"jsHooks":[]}</script>
 ]
 
 ---
@@ -184,8 +480,8 @@ leaflet() %&gt;%
 
 ]
 .pull-right[
-<div id="htmlwidget-0c291855d1f420998342" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0c291855d1f420998342">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[37.5,-77.5],10,[]]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1b316aec39746606155f" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1b316aec39746606155f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[37.5,-77.5],10,[]]},"evals":[],"jsHooks":[]}</script>
 ]
 
 
@@ -215,16 +511,16 @@ where `Name` can be any of the items found [here](http://leaflet-extras.github.i
 
 # Example Provider Tiles - OpenTopoMap
 
-<div id="htmlwidget-67b20412db866b3cfe30" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-67b20412db866b3cfe30">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["OpenTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-fa5735b95d673abfdcc1" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fa5735b95d673abfdcc1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["OpenTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
  
 
 ---
 
 # Example Provider Tiles - ESRI World Topo
 
-<div id="htmlwidget-d4afe96a6244b033334e" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d4afe96a6244b033334e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-85a42f1427c5f652fc7e" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-85a42f1427c5f652fc7e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
 
 
 
@@ -234,8 +530,8 @@ where `Name` can be any of the items found [here](http://leaflet-extras.github.i
 
 # Example Provider Tiles - Watercolor
 
-<div id="htmlwidget-0a26d358334248dda378" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0a26d358334248dda378">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Stamen.Watercolor",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6f2c2eb2db033b2e734f" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6f2c2eb2db033b2e734f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Stamen.Watercolor",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
 
 
 
@@ -244,16 +540,16 @@ where `Name` can be any of the items found [here](http://leaflet-extras.github.i
 
 # Example Provider Tiles - ESRI Satelite
 
-<div id="htmlwidget-5261633c82d741f37911" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5261633c82d741f37911">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Esri.WorldImagery",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-a3c44c5d4fdf9ed3a67f" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a3c44c5d4fdf9ed3a67f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Esri.WorldImagery",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
 
 
 ---
 
 # Example Provider Tiles - ESRI World Shaded Relief
 
-<div id="htmlwidget-5da83d73e870ea5c5086" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5da83d73e870ea5c5086">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Esri.WorldShadedRelief",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b858b908ae558e5171fb" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b858b908ae558e5171fb">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Esri.WorldShadedRelief",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
 
 
 
@@ -261,8 +557,8 @@ where `Name` can be any of the items found [here](http://leaflet-extras.github.i
 
 # Example Provider Tiles - Earth At Night
 
-<div id="htmlwidget-2ebacec2ff38da82688b" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2ebacec2ff38da82688b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["NASAGIBS.ViirsEarthAtNight2012",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5ac1ee9c55a2de1c812b" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5ac1ee9c55a2de1c812b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["NASAGIBS.ViirsEarthAtNight2012",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
 
 
 
@@ -271,8 +567,8 @@ where `Name` can be any of the items found [here](http://leaflet-extras.github.i
 
 # Example Provider Tiles - NASA Daily Composite Imagry
 
-<div id="htmlwidget-8baed5d948ca19c63fda" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8baed5d948ca19c63fda">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["NASAGIBS.ModisTerraTrueColorCR",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-62f81ef531f44959ba0d" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-62f81ef531f44959ba0d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["NASAGIBS.ModisTerraTrueColorCR",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -300,8 +596,8 @@ leaflet() %&gt;%
 
 &amp;nbsp;
 
-<div id="htmlwidget-e0231dd015f3e8d4e34a" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e0231dd015f3e8d4e34a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Stamen.Watercolor",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["CartoDB.VoyagerOnlyLabels",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-361166d56007a988d56b" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-361166d56007a988d56b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.5,-77.5],6,[]],"calls":[{"method":"addProviderTiles","args":["Stamen.Watercolor",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["CartoDB.VoyagerOnlyLabels",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
 
 ]
 
@@ -388,8 +684,8 @@ Note: Circles scale with the map
 &amp;nbsp;
 
 
-<div id="htmlwidget-3c841ef0d6398e38e745" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3c841ef0d6398e38e745">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-7e9c3a2b3f0e1d904155" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7e9c3a2b3f0e1d904155">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
 ]
 
 
@@ -422,8 +718,8 @@ leaflet(beetles) %&gt;%
 &amp;nbsp;
 
 
-<div id="htmlwidget-dd3aaff31f73f5070d0a" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-dd3aaff31f73f5070d0a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],[20000,5500,12500,9000,11000,11500,24500,9500,32000,8000,23500,13000,12000,24000,6500,9000,4500,6500,9500,10500,19000,14000,9500,5500,28500,9000,6000,17500,8000,13000,5500],null,null,{"interactive":true,"className":"","stroke":false,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.5},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-a4dfb4ebac4cbbf732e6" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a4dfb4ebac4cbbf732e6">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],[20000,5500,12500,9000,11000,11500,24500,9500,32000,8000,23500,13000,12000,24000,6500,9000,4500,6500,9500,10500,19000,14000,9500,5500,28500,9000,6000,17500,8000,13000,5500],null,null,{"interactive":true,"className":"","stroke":false,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.5},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
 ]
 
 
@@ -456,8 +752,8 @@ leaflet(beetles) %&gt;%
 &amp;nbsp;
 
 
-<div id="htmlwidget-6c137227f3908caaa7bc" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6c137227f3908caaa7bc">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],15000,null,null,{"interactive":true,"className":"","stroke":false,"color":["#FBE8DE","#67001F","#C0DCEB","#FAC0A5","#FAEBE2","#DBEAF2","#66A7CE","#1D5EA1","#77B2D4","#367EB9","#F7B293","#FAC4AA","#ADD2E6","#E8F0F4","#2469AD","#569DC8","#3178B5","#FAC4AA","#BEDBEB","#70ADD1","#64A5CD","#A4CEE3","#053061","#9CCAE1","#F5F6F7","#124882","#E8F0F4","#3881BA","#3E8BBF","#3A85BC","#CCE2EE"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#FBE8DE","#67001F","#C0DCEB","#FAC0A5","#FAEBE2","#DBEAF2","#66A7CE","#1D5EA1","#77B2D4","#367EB9","#F7B293","#FAC4AA","#ADD2E6","#E8F0F4","#2469AD","#569DC8","#3178B5","#FAC4AA","#BEDBEB","#70ADD1","#64A5CD","#A4CEE3","#053061","#9CCAE1","#F5F6F7","#124882","#E8F0F4","#3881BA","#3E8BBF","#3A85BC","#CCE2EE"],"fillOpacity":0.7},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5155ec7dfdfbd4b82f05" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5155ec7dfdfbd4b82f05">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],15000,null,null,{"interactive":true,"className":"","stroke":false,"color":["#FBE8DE","#67001F","#C0DCEB","#FAC0A5","#FAEBE2","#DBEAF2","#66A7CE","#1D5EA1","#77B2D4","#367EB9","#F7B293","#FAC4AA","#ADD2E6","#E8F0F4","#2469AD","#569DC8","#3178B5","#FAC4AA","#BEDBEB","#70ADD1","#64A5CD","#A4CEE3","#053061","#9CCAE1","#F5F6F7","#124882","#E8F0F4","#3881BA","#3E8BBF","#3A85BC","#CCE2EE"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#FBE8DE","#67001F","#C0DCEB","#FAC0A5","#FAEBE2","#DBEAF2","#66A7CE","#1D5EA1","#77B2D4","#367EB9","#F7B293","#FAC4AA","#ADD2E6","#E8F0F4","#2469AD","#569DC8","#3178B5","#FAC4AA","#BEDBEB","#70ADD1","#64A5CD","#A4CEE3","#053061","#9CCAE1","#F5F6F7","#124882","#E8F0F4","#3881BA","#3E8BBF","#3A85BC","#CCE2EE"],"fillOpacity":0.7},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
 ]
 
 ---
@@ -494,8 +790,8 @@ leaflet(beetles) %&gt;%
 
 &amp;nbsp;
 
-<div id="htmlwidget-5438e77cd83072bbb309" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5438e77cd83072bbb309">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],15000,null,null,{"interactive":true,"className":"","stroke":true,"color":"grey","weight":1,"opacity":0.5,"fill":true,"fillColor":["#FBE8DE","#67001F","#C0DCEB","#FAC0A5","#FAEBE2","#DBEAF2","#66A7CE","#1D5EA1","#77B2D4","#367EB9","#F7B293","#FAC4AA","#ADD2E6","#E8F0F4","#2469AD","#569DC8","#3178B5","#FAC4AA","#BEDBEB","#70ADD1","#64A5CD","#A4CEE3","#053061","#9CCAE1","#F5F6F7","#124882","#E8F0F4","#3881BA","#3E8BBF","#3A85BC","#CCE2EE"],"fillOpacity":0.7},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addLegend","args":[{"colors":["#053061 , #063264 0.386004233594826%, #2D72B3 12.8377537043955%, #70ADD1 25.2895031751961%, #C3DEEC 37.7412526459968%, #F7F6F6 50.1930021167974%, #FCCDB4 62.6447515875981%, #E58266 75.0965010583987%, #BB2F33 87.5482505291994%, #67001F 100%, #67001F "],"labels":["0.6","0.8","1.0","1.2","1.4","1.6","1.8","2.0","2.2"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"numeric","title":"Male to Female Ratio","extra":{"p_1":0.00386004233594826,"p_n":1},"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-65bd74d8a8087a177c16" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-65bd74d8a8087a177c16">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircles","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],15000,null,null,{"interactive":true,"className":"","stroke":true,"color":"grey","weight":1,"opacity":0.5,"fill":true,"fillColor":["#FBE8DE","#67001F","#C0DCEB","#FAC0A5","#FAEBE2","#DBEAF2","#66A7CE","#1D5EA1","#77B2D4","#367EB9","#F7B293","#FAC4AA","#ADD2E6","#E8F0F4","#2469AD","#569DC8","#3178B5","#FAC4AA","#BEDBEB","#70ADD1","#64A5CD","#A4CEE3","#053061","#9CCAE1","#F5F6F7","#124882","#E8F0F4","#3881BA","#3E8BBF","#3A85BC","#CCE2EE"],"fillOpacity":0.7},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addLegend","args":[{"colors":["#053061 , #063264 0.386004233594826%, #2D72B3 12.8377537043955%, #70ADD1 25.2895031751961%, #C3DEEC 37.7412526459968%, #F7F6F6 50.1930021167974%, #FCCDB4 62.6447515875981%, #E58266 75.0965010583987%, #BB2F33 87.5482505291994%, #67001F 100%, #67001F "],"labels":["0.6","0.8","1.0","1.2","1.4","1.6","1.8","2.0","2.2"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"numeric","title":"Male to Female Ratio","extra":{"p_1":0.00386004233594826,"p_n":1},"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
 ]
 
 
@@ -522,8 +818,8 @@ leaflet() %&gt;%
 &amp;nbsp;
 
 
-<div id="htmlwidget-6be535e4afe51694eb0a" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6be535e4afe51694eb0a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-9a68ab31a7946a01f763" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9a68ab31a7946a01f763">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
 ]
 
 
@@ -544,8 +840,8 @@ leaflet(beetles) %&gt;%
 ]
 
 .pull-right[
-<div id="htmlwidget-eb3bd90953a4ca5f4863" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-eb3bd90953a4ca5f4863">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addPopups","args":[25,-111,"beetles live here",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"className":""}]}],"setView":[[25,-111],7,[]],"limits":{"lat":[25,25],"lng":[-111,-111]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-44f3dc0ec1f69cf642b9" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-44f3dc0ec1f69cf642b9">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addPopups","args":[25,-111,"beetles live here",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"className":""}]}],"setView":[[25,-111],7,[]],"limits":{"lat":[25,25],"lng":[-111,-111]}},"evals":[],"jsHooks":[]}</script>
 
 ]
 
@@ -575,24 +871,24 @@ leaflet(beetle) %&gt;%
 
 &amp;nbsp;
 
-<div id="htmlwidget-984934a4639852ffa3a2" style="width:504px;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-984934a4639852ffa3a2">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addAwesomeMarkers","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],{"icon":"bug","markerColor":"lightgreen","iconColor":"blue","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Site:32","Site:73","Site:93","Site:const","Site:159","Site:88","Site:177","Site:166","Site:161","Site:64","Site:169","Site:sfran","Site:12","Site:160","Site:84","Site:89","Site:51","Site:175","Site:77","Site:163","Site:171","Site:168","Site:173","Site:9","Site:162","Site:48","Site:Aqu","Site:153","Site:75","Site:157","Site:58"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bda09ed32f955a24ae1b" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bda09ed32f955a24ae1b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addAwesomeMarkers","args":[[26.63783,24.00789,26.94589,25.0247,27.52944,29.32541,28.66056,25.91409,27.0367,25.60521,26.20876,27.3632,27.18232,27.40498,28.96651,28.03661,25.34819,28.72796,24.87611,24.2115,28.22308,25.55757,28.40846,29.01457,27.2028,24.21441,23.2855,24.13389,24.58843,24.0195,26.0155],[-109.327,-109.85071,-112.04613,-111.675,-113.31609,-114.29353,-113.99141,-112.08062,-112.986,-111.32638,-111.37833,-112.964,-112.66552,-112.52959,-113.66787,-113.39991,-111.60056,-113.48973,-110.69175,-110.951,-113.18263,-111.21563,-112.86985,-113.94486,-112.408,-110.27252,-110.10429,-110.46236,-110.74599,-110.096,-111.35475],{"icon":"bug","markerColor":"lightgreen","iconColor":"blue","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Site:32","Site:73","Site:93","Site:const","Site:159","Site:88","Site:177","Site:166","Site:161","Site:64","Site:169","Site:sfran","Site:12","Site:160","Site:84","Site:89","Site:51","Site:175","Site:77","Site:163","Site:171","Site:168","Site:173","Site:9","Site:162","Site:48","Site:Aqu","Site:153","Site:75","Site:157","Site:58"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[23.2855,29.32541],"lng":[-114.29353,-109.327]}},"evals":[],"jsHooks":[]}</script>
 ]
 
 
 ---
 
-# 15 Minute Activity - Interactive Map
+# Large-ish Activity - Interactive Map
 
 Make a new R file in the same folder as the project named `leaflet_examples.R`.  In this file, 
 
-1. Load in the contentsof the `GIS_Data.csv` using `read_csv()` from `tidyverse`.  By now, you should be getting the handle of this, make sure to import the proper libraries, including `library(leaflet)`.  Name the variable you assign these data `Stations`.
+1. Load in the contents of the `GIS_Data.csv` using `read_csv()` from `tidyverse`.  By now, you should be getting the handle of this, make sure to import the proper libraries, including `library(leaflet)`.  Name the variable you assign these data `Stations`.
 
 2. Create a basic map with from these data with each station shown as a plain marker.
 
 3. Add labels defined by `Sta_Desc` to that map as a popup.
 
-4. Load in the `Field_Data.csv` using the awesome function you made and find the variance in depth for each station (`var()` is variance).  Assign this data.frame to a variable named `Depths` and make surethe name for the Station in this one is `Sta_Id` so that it matches that for the same variable in the `GIS_Data`. We are going to merge these data with the the `GIS_Data.csv` and we must have the common name of the station as a key (or I have to explain more about shared keys). Now, we need to join these two data.frames by mapping the variance in depth (in `Depths`)  into the `Stations` data.frame using `Sta_Id` as the common key.  Do this and you should now have a new column for the depths.  Use this to make a map where the size of the icon is depicted by the variation in depth for each location.
+4. Left join the `GIS_Data.csv` and the `Field_Data.csv` to make a single data.frame that also includes the variance in depths for each station.  Use this to make a map where the size of the icon is depicted by the variation in depth for each location.
 
 
 

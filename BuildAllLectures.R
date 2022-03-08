@@ -77,7 +77,7 @@ rmarkdown::render("lectures/index.Rmd")
 #system("cp -R lectures/ docs/")
 system("rsync -raz --progress  lectures/ docs/")
 system("find docs -iname '*.Rmd' -delete" )
-system("find docs -iname '*.zip' -delete" )
+#system("find docs -iname '*.zip' -delete" )
 
 # clean up the lecture folder
 # system("find lectures -iname '*.html' -delete")

@@ -18,6 +18,8 @@ library( tidyverse )
 library( knitr )
 library( kableExtra )
 
+knitr::opts_chunk$set(eval=FALSE)
+
 url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/DietData.csv"
 
 ```

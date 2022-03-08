@@ -1249,7 +1249,7 @@ get_patches( land_2016, class=42)[[1]] %>%
 ```
 ]
 .pull-right[
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 get_patches( land_2016, class=42)[[1]] %>%
   plot( )
 ```
@@ -1267,7 +1267,7 @@ get_patches( land_2016, class=43)[[1]] %>%
 ```
 ]
 .pull-right[
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 plot( get_patches( land_2016, class=43)[[1]] ) 
 ```
 ]
@@ -1284,7 +1284,7 @@ get_patches( land_2016, class=90)[[1]] %>%
 ```
 ]
 .pull-right[
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 plot( get_patches( land_2016, class=90)[[1]] ) 
 ```
 ]
@@ -1315,7 +1315,7 @@ If you think of something later though, <br/>feel free to [ask me via email](mai
 
 
 
-```{r}
+```{r eval=FALSE}
 system("rm *.zip")
 system("rm -rf __MACOSX/")
 system("rm -rf NLCD_RVA_Gradient")

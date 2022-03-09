@@ -195,6 +195,17 @@ makeTable( files, caption="A series of lectures and activities focused on the sp
 ```
 
 
+## 2-Day Introduction to R Workshop
+
+Here are some lectures that I gave in a 2-day workshop to new R users covering basic functionality focusing on `tidyverse`
+
+```{r}
+files <- list.dirs( path = "deq", recursive = FALSE)
+makeTable(files,caption="A series of presentations (and included activities) for a 2-day Introduction to R workshop for new users focusing on tidyverse.")
+```
+
+
+
 
 <hr>
 

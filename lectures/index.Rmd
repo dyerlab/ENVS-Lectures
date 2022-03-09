@@ -54,15 +54,19 @@ video <- function( path, color, name ) {
   return(btn)
 }
 
-nonunderscorification <- function( files ) {
+nonunderscorification <- function( files, drop_numbers = FALSE ) {
   lastPart <- matrix(unlist(str_split( files, "/")),ncol=2, byrow=TRUE)[,2]
-  return(unlist( map( str_replace( str_replace_all(lastPart,"_", " "), "./", "" ),
-                       gtools::capwords ) ))
+  ret <- unlist( map( str_replace( str_replace_all(lastPart,"_", " "), "./", "" ),
+                       gtools::capwords ) )
+  if( drop_numbers ) { 
+    ret <- str_remove(ret, "^\\d ")
+  }
+  return(ret)
 }
 
 
 
-makeTable <- function( files, caption = "" ) {
+makeTable <- function( files, caption = "", drop_numbers=FALSE ) {
   buttons <- numeric(0)
   for( path in files ) {
     
@@ -91,7 +95,7 @@ makeTable <- function( files, caption = "" ) {
     
   }
   
-  titles <- nonunderscorification( files )
+  titles <- nonunderscorification( files, drop_numbers )
   
   df <- data.frame( Topic=titles,
                     Connections = buttons
@@ -195,13 +199,15 @@ makeTable( files, caption="A series of lectures and activities focused on the sp
 ```
 
 
-## 2-Day Introduction to R Workshop
+## Intro Workshop
 
-Here are some lectures that I gave in a 2-day workshop to new R users covering basic functionality focusing on `tidyverse`
+Here are some lectures that I gave in a 2-day workshop to new R users covering basic functionality focusing on `tidyverse` usage.
 
 ```{r}
 files <- list.dirs( path = "deq", recursive = FALSE)
-makeTable(files,caption="A series of presentations (and included activities) for a 2-day Introduction to R workshop for new users focusing on tidyverse.")
+makeTable(files, 
+          caption="A series of presentations (and included activities) for a 2-day Introduction to R workshop for new users focusing on tidyverse.",
+          drop_numbers = TRUE)
 ```
 
 

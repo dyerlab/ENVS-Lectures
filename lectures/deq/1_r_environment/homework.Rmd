@@ -1,0 +1,33 @@
+---
+title: "Worked Activities - Section 1"
+output: html_notebook
+---
+
+Here are the worked examples for the in-session activities associated with the lecture [here](slides.html)
+
+
+&nbsp;
+
+*1. Explore RStudio: Open up `Tools → Global Options` and look through the various panes to familiarize yourself.*
+
+These are activities in the interface and need no explanation.
+
+&nbsp;
+
+*2. Change `General → Save Workspace to .RData` on exit to NEVER & uncheck Restore .RData into workspace at startup.*
+
+These are activities in the interface and need no explanation.
+
+&nbsp;
+
+*3. In the Pane Layout options, set the top left to Source and the top right to Console.*
+
+These are activities in the interface and need no explanation.
+
+&nbsp;
+
+*4. Explore the Appearance options and change the editor theme to suit your own tastes.*
+
+
+These are activities in the interface and need no explanation.
+
